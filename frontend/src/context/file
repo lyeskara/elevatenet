@@ -1,0 +1,48 @@
+// import { firestore } from 'firebase/app';
+
+// // create a user
+// export const createUser = async (userId, data) => {
+//   try {
+//     const userRef = firestore().collection('users').doc(userId);
+//     await userRef.set(data);
+//     return userRef.id;
+//   } catch (error) {
+//     console.log(error);
+//     throw error;
+//   }
+// };
+
+// // update a user
+// export const updateUser = async (userId, data) => {
+//   try {
+//     const userRef = firestore().collection('users').doc(userId);
+//     await userRef.update(data);
+//     return userRef.id;
+//   } catch (error) {
+//     console.log(error);
+//     throw error;
+//   }
+// };
+
+// // add a skill to user
+// export const addSkill = async (userId, skill) => {
+//     try {
+//     const skillRef = firestore().collection('users').doc(userId).collection('skills').doc();
+//     await skillRef.set(skill);
+//     return skillRef.id;
+//   } catch (error) {
+//     console.log(error);
+//     throw error;
+//   }
+// };
+
+// // remove a skill from user
+// export const removeSkill = async (userId, skillId) => {
+//     try {
+//     const skillRef = firestore().collection('users').doc(userId).collection('skills').doc(skillId);
+//     await skillRef.delete();
+//   } catch (error) {
+//     console.log(error);
+//     throw error;
+//   }
+// // };
