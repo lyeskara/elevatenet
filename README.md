@@ -19,11 +19,11 @@ ElevateNet is a networking platform that caters to the business needs of its use
 ## Team members
 - Leon Zhang (40177866) - [LeonZhang7](https://github.com/LeonZhang7) 
 - Fatema Akther (40177866) - [fatema-a](https://github.com/fatema-a)
-- Jasmit Kalsi - [kalsij](https://github.com/kalsij)
-- William Chong - [Chovv](https://github.com/Chovv)
-- Julie Trinh - [julietrinh1](https://github.com/julietrinh1)
-- Lyes Kara - [lyeskara](https://github.com/lyeskara)
-- Zahin Khan - [ZahinK7](https://github.com/ZahinK7)
+- Jasmit Kalsi (40173635) - [kalsij](https://github.com/kalsij)
+- William Chong (40176360) - [Chovv](https://github.com/Chovv)
+- Julie Trinh (40175335) - [julietrinh1](https://github.com/julietrinh1)
+- Lyes Kara (40107680) - [lyeskara](https://github.com/lyeskara)
+- Zahin Khan (40060174) - [ZahinK7](https://github.com/ZahinK7)
 
 <!-- Links for buttons -->
 [contributors-shield]: https://img.shields.io/github/contributors/lyeskara/SOEN390.svg?style=for-the-badge
