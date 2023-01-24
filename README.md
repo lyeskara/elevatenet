@@ -17,8 +17,8 @@ ElevateNet is a networking platform that caters to the business needs of its use
 - Storage of users' Resume & CV
 
 ## Team members
-- Leon Zhang - [LeonZhang7](https://github.com/LeonZhang7)
-- Fatema Akther - [fatema-a](https://github.com/fatema-a)
+- Leon Zhang - [LeonZhang7](https://github.com/LeonZhang7) 
+- Fatema Akther - [fatema-a](https://github.com/fatema-a) (40177866)
 - Jasmit Kalsi - [kalsij](https://github.com/kalsij)
 - William Chong - [Chovv](https://github.com/Chovv)
 - Julie Trinh - [julietrinh1](https://github.com/julietrinh1)
