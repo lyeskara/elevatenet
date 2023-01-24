@@ -1,7 +1,7 @@
 # ElevateNet 
 
 ## Objective
-ElevateNet is a profesionnal networking platform mainly looking to facilitate the process of job seeking & to build solid communities and professional connections in the work field. 
+ElevateNet is a professionnal networking platform mainly looking to facilitate the process of job seeking & to build solid communities and professional connections in the work field. 
 
 ## Project Description
 ElevateNet is a networking platform that caters to the business needs of its users. It enables professionals to connect with one another, search for job opportunities and manage job postings. It is compatible with all devices supporting web browsing including mobile phones. Professionals all over the world will be able to network on the platform.
