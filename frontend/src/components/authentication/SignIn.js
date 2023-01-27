@@ -1,8 +1,6 @@
 import React , {useState}from 'react'
 import { useUserAuth } from '../../context/UserAuthContext.js'
 import { useNavigate } from 'react-router-dom'
-import { auth } from '../../firebase.js'
-
 
 function SignIn() {
 
@@ -12,19 +10,15 @@ function SignIn() {
   const navigate = useNavigate()
   
  
- 
   const handleSubmit = async (e) => {
         e.preventDefault()
-   
       try {
-       await Login(email,password);
-       navigate("/ProfileForm");
-       console.log(Login(email,password));
-       
-    } catch (error) {
-      console.log(error.message);
-    }
-  
+       await Login(email,password) 
+       navigate("/Profile");
+       console.log(Login(email,password)); 
+      } catch (error) {
+       console.log(error.message);
+       }
   };
  
       return (
