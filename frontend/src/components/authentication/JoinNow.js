@@ -1,20 +1,34 @@
-import React , {useState, useEffect}from 'react'
-import { auth } from '../../firebase.js'
+import React , {useState}from 'react'
 import {useNavigate} from 'react-router-dom'
 import { useUserAuth } from '../../context/UserAuthContext.js'
-function JoinNow() {
+import { auth } from '../../firebase.js'
+import { collection, setDoc, doc } from 'firebase/firestore'
+import { db } from '../../firebase.js'
 
+
+
+function JoinNow() {
 
   const [email, setEmail] = new useState("")
   const [password, setPassword] = new useState("")
   const {Registration} = useUserAuth();
   
   const navigate = useNavigate();
-
+  
   const handleSubmit = async (e) => {
         e.preventDefault();
     try {
-      await Registration(email,password)
+      await Registration(email,password).then(word =>{
+        return setDoc(doc(collection(db,'users_information'),auth.currentUser.uid),{  profileImage: '',
+        firstName: '',
+        lastName: '',
+        city: '',
+        bio: '',
+        workExperience: '',
+        education: '',
+        skills: '',
+        languages: ''})
+       })
       navigate("/ProfileForm")
      
     } catch (error) {
@@ -22,10 +36,6 @@ function JoinNow() {
     }
   
   };
-
-  
- 
- 
 
       return (
     
