@@ -24,7 +24,7 @@ ElevateNet is a networking platform that caters to the business needs of its use
 - Julie Trinh (40175335) - [julietrinh1](https://github.com/julietrinh1)
 - Lyes Kara (40107680) - [lyeskara](https://github.com/lyeskara)
 - Zahin Khan (40060174) - [ZahinK7](https://github.com/ZahinK7)
-- Flora Avakian (40158192) - [flo351] (https://github.com/flo351)
+- Flora Avakian (40158192) - [flo351](https://github.com/flo351)
 
 <!-- Links for buttons -->
 [contributors-shield]: https://img.shields.io/github/contributors/lyeskara/SOEN390.svg?style=for-the-badge

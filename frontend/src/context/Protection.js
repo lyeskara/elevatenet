@@ -10,6 +10,4 @@ function Protection({ children}) {
 };
 
 
-
-
 export default Protection;
