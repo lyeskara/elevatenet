@@ -1,21 +1,13 @@
-import { useNavigate,Route, Await } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../firebase";
+import { useNavigate,  } from "react-router-dom";
+import { useUserAuth } from "./UserAuthContext";
+
 function Protection({ children}) {
+ 
   const {user} = useUserAuth();
   const navigate = useNavigate();
 
-  
- 
-if (user){
-  return children;
-} else{
-   return  navigate('/');
-}
-
-
+  return (user) ? children : navigate('/');
 };
-};
+
 
 export default Protection;

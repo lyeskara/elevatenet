@@ -15,7 +15,6 @@ export function UserAuthContextProvider({children}){
     return createUserWithEmailAndPassword(auth,email,password);
    }
 
-
    const Login = async (email, password) => {
     await setPersistence(auth, browserSessionPersistence).then(() => {
       return signInWithEmailAndPassword(auth, email, password);

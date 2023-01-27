@@ -1,22 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from "react-router";
+import React, { useState } from 'react';
 import { useUserAuth } from '../../context/UserAuthContext';
-
-
-
+import { auth, db } from '../../firebase';
+import { collection, setDoc ,doc} from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 function ProfileForm() {
 
-  const { logOut, user } = useUserAuth();
-  const navigate = useNavigate();
-  const handleLogout = async () => {
-    try {
-      await logOut();
-      navigate("/");
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
+  const { user } = useUserAuth();
+  const navigate =useNavigate();
   const [profileData, setProfileData] = useState({
     profileImage: '',
     firstName: '',
@@ -29,25 +19,77 @@ function ProfileForm() {
     languages: '',
   });
 
+  function update(e){
+    setProfileData(
+    { ...profileData,
+      [e.target.name]: e.target.value}  )
+  }
+  
+  function create_user(e){
+    e.preventDefault();
+    if (user) {
+        setDoc( doc(collection(db,'users_information'),auth.currentUser.uid),{
+            firstName: profileData.firstName,
+            lastName: profileData.lastName,
+            education: profileData.education,
+            city: profileData.city,
+            bio: profileData.bio,
+            workExperience: profileData.workExperience,
+            skills: profileData.skills,
+            languages: profileData.languages
+        })
+        // Clear the form fields
+        setProfileData({
+          profileImage: '',
+          firstName: '',
+          lastName: '',
+          city: '',
+          bio: '',
+          workExperience: '',
+          education: '',
+          skills: '',
+          languages: ''
+        });
+        navigate('/Profile');
+      } else {
+            console.log("error happened. Try again!");
+    }
+  }
   return (
     <>
-    <button onClick={handleLogout} >logout</button>
-    <div className="user-profile">
+    <form onSubmit={create_user} >
       <div className="user-profile__image">
         <img src={profileData.profileImage} alt="User Profile" />
       </div>
-      <div className="user-profile__name">
-        {profileData.firstName} {profileData.lastName}
+      <div>
+        <label> first name : </label> 
+        <input type="text" name="firstName" onChange={update} value={profileData.firstName} />
       </div>
-      <div className="user-profile__city">{profileData.city}</div>
-      <div className="user-profile__bio">{profileData.bio}</div>
-      <div className="user-profile__work-experience">
-        {profileData.workExperience}
+      <div>
+        <label> last name : </label><input type="text" name="lastName" onChange={update} value={profileData.lastName} />
       </div>
-      <div className="user-profile__education">{profileData.education}</div>
-      <div className="user-profile__skills">{profileData.skills}</div>
-      <div className="user-profile__languages">{profileData.languages}</div>
-    </div>
+      <div>
+        <label> bio : </label><input type="text" name="bio" onChange={update} value={profileData.bio} />
+      </div>
+      <div>
+        <label> city : </label><input type="text" name="city" onChange={update} value={profileData.city} />
+      </div>
+      <div>
+        <label> education : </label><input type="text" name="education" onChange={update} value={profileData.education} />
+      </div>
+      <div>
+        <label> work experience : </label><input type="text" name="workExperience" onChange={update} value={profileData.workExperience} />
+      </div>
+      <div>
+        <label> skills : </label><input type="text" name="skills" onChange={update} value={profileData.skills} />
+      </div>
+      <div>
+        <label> languages: </label><input type="text" name="languages" onChange={update} value={profileData.languages} />
+      </div>
+      <button type="submit" >Save</button>
+      
+
+    </form>
     </>
   );
 }
