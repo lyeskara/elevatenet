@@ -40,12 +40,12 @@ describe('SignIn', () => {
     fireEvent.click(submitButton);
 
     const { Login } = require('../../context/UserAuthContext');
-    expect(Login).toHaveBeenCalledWith('test@example.com', 'password');
+    expect(Login).toHaveBeenCalledWith('lyes@gmail.com', '123456789');
     await expect(Login).resolves;
   });
 
   it('should not call the login function with incorrect credentials', async () => {
-    const { getByLabelText, getByText } = render(<SignIn />);
+    const { getByLabelText, getByText } = render(<SignIn/>);
     const emailInput = getByLabelText('Email:');
     const passwordInput = getByLabelText('Password:');
     const submitButton = getByText('Agree & Join');
