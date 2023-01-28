@@ -21,10 +21,10 @@ jobs:
       run: npm ci
 
     - name: Lint
-      run: npx eslint --config .eslintrc.json "../frontend/src/**/*.js"
+      run: npx eslint --config .eslintrc.json "../frontend/"
 
     - name: Format
-      run: npx prettier --check "../frontend/src/**/*.js"
+      run: npx prettier --check "../frontend/"
 
     - name: Analyze
-      run: npx jshint "../frontend/src/**/*.js"
+      run: npx jshint "../frontend/"
