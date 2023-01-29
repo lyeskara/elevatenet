@@ -21,10 +21,10 @@ jobs:
       run: npm install --prefix "frontend/" 
 
     - name: Lint
-      run: npx eslint --config .eslintrc.json "frontend/src/"
+      run: npx eslint --config .eslintrc.json "frontend/"
 
     - name: Format
-      run: npx prettier --check --prefix "frontend/src/"
+      run: npx prettier --check "frontend/"
 
     - name: Analyze
-      run: npx jshint --prefix "frontend/src/"
+      run: npx jshint "frontend/"
