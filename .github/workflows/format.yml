@@ -21,7 +21,7 @@ jobs:
       run: npm install --prefix "frontend/" 
 
     - name: Lint
-      run: npx eslint --config frontend/.eslintrc.json 
+      run: npx eslint --config frontend/.eslintrc.json --ignore-path /home/runner/work/SOEN390/SOEN390/
 
     - name: Format
       run: npx prettier --check "frontend/"
