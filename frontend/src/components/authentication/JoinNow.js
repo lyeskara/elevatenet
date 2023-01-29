@@ -9,8 +9,8 @@ import { db } from '../../firebase.js'
 
 function JoinNow() {
 
-  const [email, setEmail] = new useState("")
-  const [password, setPassword] = new useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
   const {Registration} = useUserAuth();
   
   const navigate = useNavigate();
