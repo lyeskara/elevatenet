@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2     # checkout the repo
       - run: npm install --prefix "frontend/"                 # install packages
-      - run: npm test                 # run tests (configured to use jest-junit reporter)
+      - run: npm test --prefix "frontend/"                  # run tests (configured to use jest-junit reporter)
 
       - name: Test Report
         uses: dorny/test-reporter@v1
