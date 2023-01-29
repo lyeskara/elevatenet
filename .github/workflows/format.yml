@@ -18,13 +18,13 @@ jobs:
         node-version: 14
 
     - name: Install dependencies
-      run: npm ci
+      run: npm install --prefix "frontend/" 
 
     - name: Lint
-      run: npx eslint --config .eslintrc.json "../frontend/"
+      run: npx eslint --config .eslintrc.json --prefix "frontend/"
 
     - name: Format
-      run: npx prettier --check "../frontend/"
+      run: npx prettier --check --prefix "frontend/"
 
     - name: Analyze
-      run: npx jshint "../frontend/"
+      run: npx jshint --prefix "frontend/"
