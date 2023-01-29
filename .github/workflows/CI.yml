@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2     # checkout the repo
-      - run: npm install                   # install packages
+      - run: npm install --prefix "../frontend/"                 # install packages
       - run: npm test                 # run tests (configured to use jest-junit reporter)
 
       - name: Test Report
