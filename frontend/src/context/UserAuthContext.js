@@ -13,13 +13,20 @@ export const UserAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState(null);
+  
   function Registration(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
   }
 
   const Login = async (email, password) => {
-    await setPersistence(auth, browserSessionPersistence).then(() => {
-      return signInWithEmailAndPassword(auth, email, password);
+    return new Promise((resolve, reject) => {
+      setPersistence(auth, browserSessionPersistence)
+        .then(() => {
+          signInWithEmailAndPassword(auth, email, password)
+            .then((response) => resolve(response))
+            .catch((error) => reject(error));
+        })
+        .catch((error) => reject(error));
     });
   };
 
