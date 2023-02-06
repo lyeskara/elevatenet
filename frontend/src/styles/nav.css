@@ -1,7 +1,10 @@
+
 nav {
-    background-color: #f5f5f5;
+    background-color: white;
     display: flex;
-    justify-content: space-between;
+    height: 85px;
+  justify-content: space-between;
+  align-items: center;
   }
   
   nav ul {
@@ -13,7 +16,21 @@ nav {
   
   nav ul li {
     margin-right: 1em;
+    padding: 0  20px;
+    position: relative;
+    float: none;
+
   }
+
+  a{
+    font-size: 1.7rem;
+    
+  }
+
+  nav ul li Link{
+    font-size: 10rem;
+  }
+
   .list-item {
     display: block;
     padding: 10px;
@@ -34,4 +51,15 @@ nav {
   
   nav ul li a:hover {
     color: blue;
+  }
+
+  #mobile i{
+    color:black;
+  }
+  
+  @media screen and (max-width: 600px) {
+    nav ul li a {
+      float: none;
+      display: block;
+    }
   }

@@ -1,9 +1,11 @@
 import React from 'react'
 
+
 function Linkedin() {
   return (
     <div>
-            <h1>Home Page</h1>
+            <h2 class="">Bring your career to new heights</h2>
+            <h1>The platform <br></br> Where interests <br></br> become friendships </h1>
 
     </div>
   )
