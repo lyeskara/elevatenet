@@ -21,7 +21,7 @@ jobs:
       run: npm install
 
     - name: Lint
-      run: npx eslint -c /frontend/.eslintrc.js --ext .js,.jsx,.ts,.tsx
+      run: npx eslint -c ../frontend/.eslintrc.js --ext .js,.jsx,.ts,.tsx
 
     - name: Format
       run: npx prettier --write "frontend/"
