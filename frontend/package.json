@@ -7,7 +7,6 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.2.3",
-    "eslint-plugin-react": "^7.32.2",
     "firebase": "^9.16.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.0",
@@ -41,6 +40,8 @@
   },
   "devDependencies": {
     "@testing-library/react": "^13.4.0",
+    "eslint": "^8.33.0",
+    "eslint-plugin-react": "^7.32.2",
     "jest": "^27.5.1",
     "jest-junit": "^15.0.0",
     "react-router-dom": "^6.7.0"
