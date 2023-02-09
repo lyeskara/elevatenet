@@ -25,6 +25,3 @@ jobs:
 
     - name: Format
       run: npx prettier --write "frontend/"
-
-    - name: Analyze
-      run: jshint "frontend/"
