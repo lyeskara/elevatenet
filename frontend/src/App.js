@@ -10,6 +10,7 @@ import Linkedin from './components/Linkedin';
 import ProfileForm from './components/ProfileInfo/ProfileForm';
 import Profile from './components/ProfileInfo/Profile';
 import Protection from './context/Protection'
+import OtherUsersProfile from './components/ProfileInfo/OtherUsersProfile';
 import { UserAuthContextProvider } from './context/UserAuthContext';
 
 
@@ -23,6 +24,7 @@ function App() {
     <Route path="/" element={<Linkedin />} />
     <Route path="/SignIn" element={<SignIn/>} />
     <Route path="/JoinNow" element={<JoinNow/>} />
+    <Route path="profile/:id" element={<Protection><OtherUsersProfile/></Protection>}></Route>
 
     </Routes> 
     </UserAuthContextProvider>
