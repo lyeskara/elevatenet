@@ -4,7 +4,7 @@ import "../styles/nav.css";
 import { useUserAuth } from "../context/UserAuthContext";
 import { auth } from "../firebase";
 import logo from './../images/logo.JPG';
-
+import Search from "./connection/Search";
 
 function NavbarFun() {
   const userr = auth.currentUser;
@@ -30,6 +30,7 @@ function NavbarFun() {
             <>
               <li>
                 <Link to="/Profile">Profile</Link>
+                <button><Search/></button>
                 <button onClick={handleLogout} className="list-item">
                   logout
                 </button>
