@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useUserAuth } from "../../context/UserAuthContext.js";
 import { useNavigate } from "react-router-dom";
+import {} from "react-bootstrap";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -20,15 +21,20 @@ const SignIn = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <>
+    <div>
+      <p className="slogan">Bring your career to new heights</p>
+    </div>
+    
+    <div className="container">
+      <form onSubmit={handleSubmit}>
       <label>
         Email:
         <input
           type="email"
           placeholder="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+          onChange={(e) => setEmail(e.target.value)} />
       </label>
       <br />
       <label>
@@ -37,12 +43,15 @@ const SignIn = () => {
           type="password"
           placeholder="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+          onChange={(e) => setPassword(e.target.value)} />
       </label>
       <br />
       <button type="submit"> Agree & Join</button>
     </form>
+    </div>
+    </>
+    
+    
   );
 };
 
