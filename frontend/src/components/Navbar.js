@@ -13,6 +13,9 @@ import ellipses from './../images/icon_ellipses.png';
 import {Navbar, Nav, Container} from "react-bootstrap"; 
 
 
+import Search from "./connection/Search";
+
+
 function NavbarFun() {
   const userr = auth.currentUser;
   const { logOut } = useUserAuth();
@@ -44,6 +47,7 @@ function NavbarFun() {
           
           {userr && (
             <>
+
             <Nav>
               
               <Link  to="/"><img src={home} alt="home"></img></Link>
@@ -52,6 +56,11 @@ function NavbarFun() {
                 <Link  to="/"><img src={connection} alt="connection"></img></Link>
                 <Link  to="/"><img src={bell} alt="bell"></img></Link>
                 <Link  to="/"><img src={ellipses} alt="ellipses"></img></Link>
+
+              <li>
+                <Link to="/Profile">Profile</Link>
+                <button><Search/></button>
+
                 <button onClick={handleLogout} className="list-item">
                   logout
                 </button>
