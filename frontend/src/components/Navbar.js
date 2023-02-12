@@ -3,7 +3,20 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import "../styles/nav.css";
 import { useUserAuth } from "../context/UserAuthContext";
 import { auth } from "../firebase";
-function Navbar() {
+import logo from './../images/logo.JPG';
+import home from './../images/icon_home.png';
+import person from './../images/icon_person.png';
+import briefcase from './../images/icon_briefcase.png';
+import connection from './../images/connection.png';
+import bell from './../images/icon_bell.png';
+import ellipses from './../images/icon_ellipses.png';
+import {Navbar, Nav, Container} from "react-bootstrap"; 
+
+
+import Search from "./connection/Search";
+
+
+function NavbarFun() {
   const userr = auth.currentUser;
   const { logOut } = useUserAuth();
   const navigate = useNavigate();
@@ -15,38 +28,66 @@ function Navbar() {
       console.log(error.message);
     }
   };
+
   return (
     <>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Linkedin</Link>
-          </li>
+    
+    
+  
+        <Navbar bg="white" expand="lg">
+      <Container fluid>
+        <Navbar.Brand href="/"><img src={logo} alt="ElevateNet"></img></Navbar.Brand>
+        <Navbar.Toggle aria-controls="navbarScroll" />
+        <Navbar.Collapse id="navbarScroll">
+        <Nav className="me-auto">
+           
+          </Nav>
+          <Nav>
+          
+          
           {userr && (
             <>
+
+            <Nav>
+              
+              <Link  to="/"><img src={home} alt="home"></img></Link>
+                <Link  to="/Profile"><img src={person} alt="profile"></img></Link>
+                <Link  to="/"><img src={briefcase} alt="briefcase"></img></Link>
+                <Link  to="/"><img src={connection} alt="connection"></img></Link>
+                <Link  to="/"><img src={bell} alt="bell"></img></Link>
+                <Link  to="/"><img src={ellipses} alt="ellipses"></img></Link>
+
               <li>
                 <Link to="/Profile">Profile</Link>
+                <button><Search/></button>
+
                 <button onClick={handleLogout} className="list-item">
                   logout
                 </button>
-              </li>
+              
+            </Nav>
+              
             </>
           )}
           {!userr && (
             <>
-              <li>
-                <Link to="/SignIn">Sign In</Link>
-              </li>
-              <li>
-                <Link to="/JoinNow">Join Now</Link>
-              </li>
+              <div>
+                 <Link to="/SignIn">Sign In</Link>
+              </div>
+
+               <div><Link to="/JoinNow">Sign Up</Link>    </div>
+                
             </>
           )}
-        </ul>
-      </nav>
+        
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+     
       <Outlet />
     </>
   );
 }
 
-export default Navbar;
+export default NavbarFun;

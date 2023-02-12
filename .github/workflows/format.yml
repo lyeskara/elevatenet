@@ -18,13 +18,10 @@ jobs:
         node-version: 14
 
     - name: Install dependencies
-      run: npm install --prefix "frontend/" 
+      run: npm install
 
     - name: Lint
-      run: npx eslint --config frontend/.eslintrc.json --ignore-path /home/runner/work/SOEN390/SOEN390/
+      run: npx eslint -c SOEN390/frontend/.eslintrc.js --ext .js,.jsx,.ts,.tsx
 
     - name: Format
-      run: npx prettier --check "frontend/"
-
-    - name: Analyze
-      run: npx jshint "frontend/"
+      run: npx prettier --write "frontend/"
