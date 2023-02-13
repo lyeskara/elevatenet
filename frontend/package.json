@@ -9,7 +9,7 @@
     "bootstrap": "^5.2.3",
     "firebase": "^9.16.0",
     "react": "^18.2.0",
-    "react-bootstrap": "^2.7.0",
+    "react-bootstrap": "^2.7.1",
     "react-dom": "^18.2.0",
     "react-scripts": "^5.0.1",
     "styled-components": "^5.3.6",
@@ -20,12 +20,6 @@
     "build": "react-scripts build",
     "test": "jest",
     "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [
@@ -41,8 +35,6 @@
   },
   "devDependencies": {
     "@testing-library/react": "^13.4.0",
-    "eslint": "^8.33.0",
-    "eslint-plugin-react": "^7.32.2",
     "jest": "^27.5.1",
     "jest-junit": "^15.0.0",
     "react-router-dom": "^6.7.0"

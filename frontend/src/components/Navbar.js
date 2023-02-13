@@ -31,59 +31,60 @@ function NavbarFun() {
 
   return (
     <>
-    
-    
-  
-        <Navbar bg="white" expand="lg">
-      <Container fluid>
-        <Navbar.Brand href="/"><img src={logo} alt="ElevateNet"></img></Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarScroll" />
-        <Navbar.Collapse id="navbarScroll">
-        <Nav className="me-auto">
-           
-          </Nav>
-          <Nav>
-          
-          
-          {userr && (
-            <>
-
-            <Nav>
-              
-              <Link  to="/"><img src={home} alt="home"></img></Link>
-                <Link  to="/Profile"><img src={person} alt="profile"></img></Link>
-                <Link  to="/"><img src={briefcase} alt="briefcase"></img></Link>
-                <Link  to="/"><img src={connection} alt="connection"></img></Link>
-                <Link  to="/"><img src={bell} alt="bell"></img></Link>
-                <Link  to="/"><img src={ellipses} alt="ellipses"></img></Link>
-
-              <li>
-                <Link to="/Profile">Profile</Link>
-                <button><Search/></button>
-
-                <button onClick={handleLogout} className="list-item">
-                  logout
-                </button>
-              
+      <Navbar bg="white" expand="lg">
+        <Container fluid>
+          <Navbar.Brand href="/"><img src={logo} alt="ElevateNet" /></Navbar.Brand>
+          <Navbar.Toggle aria-controls="navbarScroll" />
+          <Navbar.Collapse id="navbarScroll">
+            <Nav className="me-auto">
             </Nav>
-              
-            </>
-          )}
-          {!userr && (
-            <>
-              <div>
-                 <Link to="/SignIn">Sign In</Link>
-              </div>
+            <Nav>
+              {userr && (
+                <>
+                  <Nav>
+                    <Link to="/">
+                      <img src={home} alt="home" />
+                    </Link>
+                    <Link to="/Profile">
+                      <img src={person} alt="profile" />
+                    </Link>
+                    <Link to="/">
+                      <img src={briefcase} alt="briefcase" />
+                    </Link>
+                    <Link to="/">
+                      <img src={connection} alt="connection" />
+                    </Link>
+                    <Link to="/">
+                      <img src={bell} alt="bell" />
+                    </Link>
+                    <Link to="/">
+                      <img src={ellipses} alt="ellipses" />
+                    </Link>
+                  </Nav>
+                  <Nav>
+                    <Link to="/Profile">Profile</Link>
+                    <button><Search /></button>
+                    <button onClick={handleLogout} className="list-item">
+                      logout
+                    </button>
+                  </Nav>
+                </>
+              )}
+              {!userr && (
+                <>
+                  <Nav>
+                    <Link to="/SignIn">Sign In</Link>
+                  </Nav>
+                  <Nav>
+                    <Link to="/JoinNow">Sign Up</Link>
+                  </Nav>
+                </>
+              )}
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
 
-               <div><Link to="/JoinNow">Sign Up</Link>    </div>
-                
-            </>
-          )}
-        
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
      
       <Outlet />
     </>
