@@ -48,7 +48,7 @@ function NavbarFun() {
                     <Link to="/Profile">
                       <img src={person} alt="profile" />
                     </Link>
-                    <Link to="/">
+                    <Link to="/job_postings">
                       <img src={briefcase} alt="briefcase" />
                     </Link>
                     <Link to="/">
