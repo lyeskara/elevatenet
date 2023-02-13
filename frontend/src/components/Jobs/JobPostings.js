@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import { collection, getDoc, doc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import Card from "react-bootstrap/Card";
-// import "../../styles/job_postings.css";
-import "../../styles/profile.css";
+import "../../styles/JobPostings.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 
-function job_postings() {
+function JobPostings() {
 	const [user, setUser] = useState({});
 	useEffect(() => {
 		async function getData() {
@@ -51,7 +50,7 @@ function job_postings() {
 					</Card>
 
 					<Card className="contactcard">
-						<h1> emaillll </h1>
+						<h1> email </h1>
 						<b> contact number </b>
 					</Card>
 				</Col>
@@ -85,7 +84,7 @@ function job_postings() {
 						<div className="profile-desc-row">
 							<img src=" "></img>
 							<div>
-								<h3>Concordia Universtiy</h3>
+								<h3>Leon Universtiy</h3>
 								<p style={{ color: "#272727" }}>
 									Bachelor's degree, software engineering
 								</p>
@@ -107,4 +106,37 @@ function job_postings() {
 	);
 }
 
-export default job_postings;
+export default JobPostings;
+
+/* <h1 className="name">{user.firstName} {user.lastName}</h1>
+  <p className="bio">{user.bio}</p>
+  <div className="education">
+    <h2>Education</h2>
+    <ul>
+      <li>{user.education}</li>
+    </ul>
+  </div>
+  <div className="work-experience">
+    <h2>Work Experience</h2>
+    <ul>
+      <li> {user.workExperience}</li>
+    </ul>
+  </div>
+  <div className="skills">
+    <h2>Skills</h2>
+    <ul>
+      <li>{user.skills}</li>
+    </ul>
+  </div>
+  <div className="languages">
+    <h2>Languages</h2>
+    <ul>
+      <li>{user.languages}</li>
+    </ul>
+  </div>
+  <div className="cotnactinfo">
+    <h2>ContactInfo</h2>
+    <ul>
+      <li>{user.contactinfo}</li>
+    </ul>
+  </div> */
