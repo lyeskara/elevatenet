@@ -1,22 +1,39 @@
-// Uncomment to implement Firebase
-// import { collection,doc } from 'firebase/firestore'
-// import { auth, db } from '../../firebase'
+//Uncomment code to use these imports
 
-import React, { useState } from 'react';
-//import { useNavigate } from "react-router-dom";
+// import { collection, doc, onSnapshot } from 'firebase/firestore';
+// import { auth, db } from '../../firebase';
+//import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 
 const Message = () => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
 
+  //Uncomment code to use Firebase function (must uncomment imports first) like onSnapshot
+
+  // useEffect(() => {
+  //   const messagesRef = collection(db, "messages");
+  //   const userDocRef = doc(messagesRef, auth.currentUser.uid);
+
+  //   // Listen for updates to the user's messages
+  //   const unsubscribe = onSnapshot(userDocRef, (doc) => {
+  //     if (doc.exists()) {
+  //       setMessages(doc.data().messages);
+  //     }
+  //   });
+
+  //   // Unsubscribe from real-time updates when the component unmounts
+  //   return unsubscribe;
+  // }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
   
-    // Uncomment to implement Firebase
-    // // Reference the "messages" collection and the document for the current user
+    //Uncomment code to use Firebase db (must uncomment import first)
+
     // const messagesRef = collection(db, "messages");
     // const userDocRef = doc(messagesRef, auth.currentUser.uid);
-  
+
     // // Write the message to the Firestore database
     // userDocRef.set({
     //   messages: [...messages, message]
