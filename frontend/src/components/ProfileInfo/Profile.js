@@ -7,7 +7,7 @@ import "../../styles/profile.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
-import person from "./WMHA.gif";
+import person from "./logo512.png";
 
 function Profile() {
 	const [user, setUser] = useState({});
@@ -56,8 +56,10 @@ function Profile() {
 					</Card>
 
 					<Card className="contactcard">
-						<h1> email </h1>
-						<b> contact number </b>
+          <h5>Contact Information</h5>
+          <hr></hr>
+						<h1> {user.email} </h1>
+						<b> {user.contact} </b>
 					</Card>
 				</Col>
 
