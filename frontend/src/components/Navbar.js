@@ -47,9 +47,6 @@ function NavbarFun() {
               <li>
                 <Link to="/JoinNow">Sign Up</Link>
               </li>
-              <li>
-                <Link to="/Messaging">Messaging</Link>
-              </li>
             </>
           )}
         </ul>
