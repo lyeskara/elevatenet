@@ -1,6 +1,6 @@
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
-import React, { useRef , useState } from 'react';
+import React, { useRef  } from 'react';
 
 const Message = () => {
 
