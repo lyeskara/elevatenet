@@ -29,8 +29,6 @@ const Message = () => {
       <form onSubmit={handleSubmit}>
         <label>Write a message...</label>
         <input type="text" 
-        //value={message} 
-       // onChange={(e) => setMessage(e.target.value)} 
         ref={messageRef}
          />
         <button type="submit">Send</button>
