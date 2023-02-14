@@ -34,6 +34,9 @@ function NavbarFun() {
                   logout
                 </button>
               </li>
+              <li>
+              <Link to="/Messaging">Messaging</Link>
+              </li>
             </>
           )}
           {!userr && (
