@@ -36,7 +36,7 @@ function NavbarFun() {
           <Navbar.Brand href="/"><img src={logo} alt="ElevateNet" /></Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
-            <Nav className="me-auto">
+            <Nav className="ms-auto">
             </Nav>
             <Nav>
               {userr && (
