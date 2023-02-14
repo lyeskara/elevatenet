@@ -1,6 +1,6 @@
-//import { useUserAuth } from '../../context/UserAuthContext';
-//import { auth, db } from '../../firebase';
-//import { collection, setDoc ,doc} from 'firebase/firestore';
+// Uncomment to implement Firebase
+// import { collection,doc } from 'firebase/firestore'
+// import { auth, db } from '../../firebase'
 
 import React, { useState } from 'react';
 //import { useNavigate } from "react-router-dom";
@@ -11,6 +11,17 @@ const Message = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+  
+    // Uncomment to implement Firebase
+    // // Reference the "messages" collection and the document for the current user
+    // const messagesRef = collection(db, "messages");
+    // const userDocRef = doc(messagesRef, auth.currentUser.uid);
+  
+    // // Write the message to the Firestore database
+    // userDocRef.set({
+    //   messages: [...messages, message]
+    // });
+  
     setMessages([...messages, message]);
     setMessage('');
   };
