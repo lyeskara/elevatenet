@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../firebase';
 
 const Message = () => {
@@ -12,6 +12,7 @@ const Message = () => {
     e.preventDefault();
     const data = {
       text: messageRef.current.value,
+      createdAt: serverTimestamp()
     };
     try {
       addDoc(ref, data);
