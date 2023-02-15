@@ -11,7 +11,7 @@ const Message = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
-      message: messageRef.current.value,
+      text: messageRef.current.value,
     };
     try {
       addDoc(ref, data);
