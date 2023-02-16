@@ -35,7 +35,6 @@ function CreateNewPosting() {
                                 </label>
                                 <input className="form-control" type="file" id="formFile" />
                             </div>
-                            <hr></hr>
                             {/* JOB TITLE */}
                             <div className="form-group mb-3">
                                 <label htmlFor="formFile" className="form-label">
