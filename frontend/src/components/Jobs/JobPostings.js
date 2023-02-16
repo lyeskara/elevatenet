@@ -18,15 +18,19 @@ function JobPostings() {
 	const handleClick = () => {
 		window.location.href = '/CreateNewPosting';
 	  };
+	const handleClickJobPostings = () => {
+		window.location.href = '/JobPostings';
+	  };
 	return (
 		//Profile card
 
 		<Container className="container">
 			<Row className="gap-6">
+				{/* JOB MENU BLOCK ON THE LEFT TO NAVIGATE BETWEEN JOB POSTINGS AND ADVERTS */}
 				<Col xs={12} md={3}>
 					<Card className="jobs-menu">
 						<h2> Jobs </h2>
-						<h5> Jobs Postings </h5>
+						<h5 onClick={handleClickJobPostings}> Job Postings </h5>
 						<h5> Advertisements </h5>
 					</Card>
 				</Col>

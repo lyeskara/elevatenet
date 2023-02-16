@@ -19,7 +19,7 @@ function CreateNewPosting() {
 	  };
 	return (
 		//Container for new job posting
-		<Container className="container mx-auto">
+		<Container className="container mx-auto w-50">
 			<Row className="gap-6">
 				<Col >
 					<Card className="card">
