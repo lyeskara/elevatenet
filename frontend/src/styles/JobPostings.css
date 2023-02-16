@@ -98,3 +98,41 @@ background-color: #dadadaf5;
   hr{
     margin-top: 2%;
   }
+
+  input[type="radio"]::before {
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    border: 2px solid #27746A;
+    border-radius: 50%;
+    background-color: #fff;
+  }
+  
+  input[type="radio"]:checked::before {
+    background-color: #27746A;
+    border-color: #27746A;
+  }
+
+  /* .custom-control-input:checked::before {
+    background-color: rgb(150, 58, 58);
+    border-color: rgb(0, 255, 17);
+  } */
+
+  /* .custom-control-input:checked::before {
+    background-color: rgb(255, 0, 0);
+  }
+  
+  .custom-control-input:not(:disabled):active:checked::before {
+    background-color: red;
+  }
+
+  .custom-control-input:checked~.custom-control-label::before {
+    background-color: red;
+    border-color: red;
+  }
+  
+  .custom-control-input:focus~.custom-control-label::before {
+    box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
+  } */
