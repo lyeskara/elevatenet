@@ -19,7 +19,7 @@ function CreateNewPosting() {
 	  };
 	return (
 		//Container for new job posting
-		<Container className="container mx-auto">
+		<Container className="container mx-auto w-50">
 			<Row className="gap-6">
 				<Col >
 					<Card className="card">
@@ -35,7 +35,6 @@ function CreateNewPosting() {
                                 </label>
                                 <input className="form-control" type="file" id="formFile" />
                             </div>
-                            <hr></hr>
                             {/* JOB TITLE */}
                             <div className="form-group mb-3">
                                 <label htmlFor="formFile" className="form-label">
