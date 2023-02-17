@@ -42,9 +42,9 @@ function OtherUsersProfile() {
     }
   
   
-  const handleunfollow = ()=>{
+  const handleunfollow = async ()=>{
     const followRef = collection(db,'follows')
-    const authdoc = getDoc(doc(followRef,currId)).then((word)=>{
+    const authdoc = await getDoc(doc(followRef,currId)).then((word)=>{
       if(word.exists){
         const followedUsers = word.data().followd
         console.log(followedUsers)
