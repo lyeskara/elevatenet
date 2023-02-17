@@ -27,7 +27,10 @@
   .post-info > h2 {
     font-size: 15px;
   }
-  
+  .post-buttons button {
+    font-size: 12px;
+    padding: 5px;
+  }
   .post-buttons {
     display: flex;
     justify-content: space-evenly;

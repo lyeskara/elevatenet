@@ -12,11 +12,10 @@
 }
 
 .feed-input {
-    border: 1px solid lightgray;
+    
     border-radius: 30px;
     display: flex;
     padding: 10px;
-    color: gray;
     padding-left: 15px;
 
 }
@@ -33,17 +32,18 @@
     outline-width: 0;
     font-weight: 600;
 }
+.feed button {
+    font-size: 12px;
+    padding: 5px 10px;
+    }
 
-.feed-inputOptions{
-    display:flex;
+.feed-inputOptions {
+    display: flex;
     justify-content: space-evenly;
 }
 
-
 @media screen and (max-width: 750px) {
-    .feed_inputOptions {
-       
+    .feed-inputOptions {
         font-size: 13px;
     }
-  
-  }
+}
