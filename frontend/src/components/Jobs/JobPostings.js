@@ -37,7 +37,7 @@ function JobPostings() {
 
 				<Col xs={12} md={8}>
 				{/* button at the top */}
-					<div top-margin="12px">
+					<div>
 						<Button variant="primary" size="lg" block className="w-100" style={{backgroundColor:'#27746a'}} onClick={handleClick} >
 							Create a New Job Posting
 						</Button>
