@@ -2,6 +2,7 @@ import {React,useState,useEffect} from 'react'
 import {useParams} from 'react-router-dom'
 import {getDoc,query,where,getDocs, setDoc,collection,doc,updateDoc, documentId} from 'firebase/firestore';
 import { auth, db } from '../../firebase';
+
 function OtherUsersProfile() {
   
   const [follow,setfollow] = useState(false)
@@ -10,27 +11,36 @@ function OtherUsersProfile() {
   const currId = auth.currentUser.uid
   const followedId = id
 
-  const handlefollow = ()=>{
+  const handlefollow = async ()=>{
 
-    const followRef = collection(db,'follows')
-    const authdoc = getDoc(doc(followRef,currId)).then((word)=>{
-      if(word.exists){
-        const followedUsers = word.data().followd
-        if(!followedUsers.includes(followedId)){
-          followedUsers.push(followedId)
-          return updateDoc(doc(followRef, currId), {...word.data(), followd: followedUsers})
+    const followRef = collection(db,'follows');
+    const authdoc = doc(followRef,currId)
+    const array =[]
+    const addDoc = await getDocs((followRef)).then((word)=>{
+       word.docs.forEach((doc)=>{
+        array.push(doc.id)
+       })
+       const condition = array.includes(authdoc.id)
+         if(!condition){
+          setDoc(doc(followRef, currId), {followd:[followedId]});
+         }
+         else{
+         const getFollowers = getDoc(authdoc).then((document)=>{
+          const followedUsers = document.data().followd;
+          if(!followedUsers.includes(followedId)){
+            followedUsers.push(followedId)
+            return updateDoc(doc(followRef, currId), {...document.data(), followd: followedUsers})
+        }else{
+          console.log("already followed!")
         }
-      }else{
-        return updateDoc(doc(followRef, currId), {followd:[followedId]});
-      }
-    }).catch((error)=>{
+         })
+         }
+  }).catch((error)=>{
         console.log(error);
     })
     setfollow(true);
     }
   
-  
-   
   
   const handleunfollow = ()=>{
     const followRef = collection(db,'follows')
@@ -47,7 +57,6 @@ function OtherUsersProfile() {
     }).catch((error)=>{
          console.log(error);
     })
-
     setfollow(false);
   }
  
