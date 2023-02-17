@@ -1,21 +1,13 @@
 body {
     background-color: #E2E2E2;
-    }
-
+}
 
 p.slogan{
-position: absolute;
-width: 638px;
-height: 44px;
-left: 409px;
-top: 149px;
-
 font-family: 'Inter';
 font-style: normal;
 font-weight: 400;
 font-size: 40px;
 line-height: 48px;
-
 }
 
 span.green{
@@ -23,28 +15,14 @@ span.green{
 }
 
 p.frontCatchPhrase{
-    position: absolute;
-width: 550px;
-height: 185px;
-left: 149px;
-top: 350px;
-
 font-family: 'Inter';
 font-style: normal;
 font-weight: 700;
 font-size: 50px;
 line-height: 61px;
-
-
 }
 
 p.catch{
-    position: absolute;
-width: 603px;
-height: 78px;
-left: 146px;
-top: 552px;
-
 font-family: 'Inter';
 font-style: normal;
 font-weight: 400;
@@ -55,39 +33,16 @@ text-align: justify;
 color: #000000;
 }
 
+img.gif{
+  float:right;
+}
 
-  /* If the screen size is 600px wide or less, set the font-size of <div> to 30px */
-  @media screen and (max-width: 600px) {
-    p.slogan {
-      font-size: 10vw;
-    }
 
-    p.frontCatchPhrase{
-        font-size:15vw;
-    }
-
-    p.catch{
-        font-size:5vw;
-    }
-  }
-  @media screen and (max-width: 600px ) and (min-width:440px) {
-    p.slogan {
-      font-size: 8vw;
-    }
-
-    p.frontCatchPhrase{
-        font-size:11vw;
-    }
-
-    p.catch{
-        font-size:3vw;
-    }
-  }
+ @media screen and (max-width: 600px )  { 
+  
   img.gif{
-    position: absolute;
-width: 580px;
-height: 540px;
-left: 766px;
-top: 228px;
+  width: 95%;
   height: auto;
   }
+}
+  
