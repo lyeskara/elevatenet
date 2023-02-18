@@ -68,6 +68,7 @@ function ProfileForm() {
                 onChange={update}
                 value={profileData.firstName}
                 placeholder="First Name"
+                required
               />
             </Form.Group>
 
@@ -79,6 +80,7 @@ function ProfileForm() {
                 onChange={update}
                 value={profileData.lastName}
                 placeholder="Last Name"
+                required
               />
             </Form.Group>
 
