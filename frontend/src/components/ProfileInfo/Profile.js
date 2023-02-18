@@ -5,43 +5,38 @@ import Card from "react-bootstrap/Card";
 import "../../styles/profile.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
+import { GrMailOption, GrPhone } from "react-icons/gr";
+import EditProfile from "./EditProfile";
 
 function Profile() {
 	const [user, setUser] = useState({});
-	useEffect(() => {
-		async function getData() {
-			await getDoc(
+	const getUserData = async () => {
+		try {
+			const userDoc = await getDoc(
 				doc(collection(db, "users_information"), auth.currentUser.uid)
-			)
-				.then((doc) => {
-					console.log("doc");
-					if (doc.exists) {
-						console.log(doc.data + " ");
-						setUser({ ...doc.data(), id: doc.id });
-					} else {
-						console.log("nikmok");
-					}
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+			);
+			if (userDoc.exists) {
+				setUser({ ...userDoc.data(), id: userDoc.id });
+			} else {
+				console.log("User not found");
+			}
+		} catch (error) {
+			console.log(error);
 		}
-		console.log(getData());
-
-		return () => {
-			getData();
-		};
+	};
+	useEffect(() => {
+		getUserData();
 	}, []);
+
 	return (
 		//Profile card
 
-		<Container className="container">
-			<Row className="gap-6">
-				<Col xs={12} md={4}>
+		<div className="contain">
+			<EditProfile user={user} setUser={setUser}></EditProfile>
+			<Row className="gap-5">
+				<Col className="col1" xs={12} md={{ span: 3, offset: 1 }}>
 					<Card className="profilecard">
-						<img src="file" alt="Avatar" class="avatar"></img>
-						<input className="form-control" type="file"></input>
+						<img src={person} alt="Avatar" className="avatar"></img>
 						<h1>
 							{user.firstName} {user.lastName}
 						</h1>
@@ -50,12 +45,26 @@ function Profile() {
 					</Card>
 
 					<Card className="contactcard">
-						<h1> email </h1>
-						<b> contact number </b>
+						<h5>Contact Information</h5>
+						<hr></hr>
+						<div className="email">
+							<GrMailOption />
+							<h5
+								style={{
+									color: "#626262",
+								}}
+							>
+								{user.email}
+							</h5>
+						</div>
+						<div className="contact">
+							<GrPhone />
+							<b> {user.contact} </b>
+						</div>
 					</Card>
 				</Col>
 
-				<Col xs={12} md={8}>
+				<Col xs={12} md={7}>
 					<Card className="card">
 						<h5>Work Experience</h5>
 						<hr></hr>
@@ -84,7 +93,7 @@ function Profile() {
 						<div className="profile-desc-row">
 							<img src=" "></img>
 							<div>
-								<h3>Concordia Universtiy</h3>
+								<h3>{user.education}</h3>
 								<p style={{ color: "#272727" }}>
 									Bachelor's degree, software engineering
 								</p>
@@ -102,41 +111,8 @@ function Profile() {
 					</Card>
 				</Col>
 			</Row>
-		</Container>
+		</div>
 	);
 }
-
 export default Profile;
-
-/* <h1 className="name">{user.firstName} {user.lastName}</h1>
-  <p className="bio">{user.bio}</p>
-  <div className="education">
-    <h2>Education</h2>
-    <ul>
-      <li>{user.education}</li>
-    </ul>
-  </div>
-  <div className="work-experience">
-    <h2>Work Experience</h2>
-    <ul>
-      <li> {user.workExperience}</li>
-    </ul>
-  </div>
-  <div className="skills">
-    <h2>Skills</h2>
-    <ul>
-      <li>{user.skills}</li>
-    </ul>
-  </div>
-  <div className="languages">
-    <h2>Languages</h2>
-    <ul>
-      <li>{user.languages}</li>
-    </ul>
-  </div>
-  <div className="cotnactinfo">
-    <h2>ContactInfo</h2>
-    <ul>
-      <li>{user.contactinfo}</li>
-    </ul>
-  </div> */
+//export { getUserData };
