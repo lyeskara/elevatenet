@@ -1,5 +1,9 @@
+//In this CreateNewPosting class with the CreateNewPosting() function
+//users and enter in the fields job title,company, description and deadline
+// and with after doing so and clicking post they can create a job posting job
+
 import React, { useEffect, useState } from "react";
-import { collection, getDoc, doc } from "firebase/firestore";
+// import { collection, getDoc, doc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import Card from "react-bootstrap/Card";
 import "../../styles/JobPostings.css";
@@ -11,12 +15,80 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import { useUserAuth } from '../../context/UserAuthContext';
+import { useNavigate } from 'react-router-dom';
+import { collection, setDoc ,doc, addDoc} from 'firebase/firestore';
 
 function CreateNewPosting() {
+
+    const { user } = useUserAuth();
+    const navigate =useNavigate();
     const [startDate, setStartDate] = useState(new Date());
     const handleCancel = () => {
 		window.location.href = '/JobPostings';
-	  };
+	};
+    //fields of posting
+    const [postingData, setPostingData] = useState({
+        job_title: '',
+        company: '',
+        description: '',
+        deadline: '',
+    })
+
+    //update with the handleInputChange() method 
+    // @param (event) 
+    //handles changes to the input and updates field 
+    const handleInputChange = (event) => {
+        setPostingData(
+            { ...postingData,
+              [event.target.name]: event.target.value}  ) 
+    };
+
+    //creates the job posting with handleSubmit() method
+    // @param event 
+    // adds the posting parameters job title, company, description, and deadline to the database
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if (user) {
+            // setDoc( doc(collection(db,'posting'),auth.currentUser.uid),{
+            const docRef = await addDoc(collection(db, "posting"),{
+                job_title: postingData.job_title,
+                company: postingData.company,
+                description: postingData.description,
+                deadline: postingData.deadline,
+                // full_time: postingData.full_time,
+            })
+            // Clear the form fields
+            setPostingData({
+                job_title: '',
+                company: '',
+                description: '',
+                deadline: '',
+                // full_time: false
+            });
+            navigate('/JobPostings');
+          } else {
+                console.log("error happened. Try again!");
+        }
+     };
+
+    //function handleDateInputChange() to handle both functions for date picker field
+    // @param {Date} 
+    // handles changes to date chosen and updates the field to current choice
+    const handleDateInputChange = (date) => {
+        setStartDate(date);
+        setPostingData((prevState) => ({
+           ...prevState,
+           deadline: date,
+        }));
+     }; 
+    // return of the CreateNewPosting() function
+    // lets users cancel the form 
+    // lets users change inputs on the form
+    // lets users submit the form 
+    // return users to JobPosting page with updates from database created with form submission
 	return (
 		//Container for new job posting
 		<Container className="container mx-auto w-50">
@@ -25,67 +97,96 @@ function CreateNewPosting() {
 					<Card className="card">
 
                     {/* INPUT FORM */}
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <h5 className="text-center">Create a new Job Posting</h5>
                             <hr></hr>
                             {/* LOGO */}
-                            <div className="mb-3">
+                            {/* <div className="mb-3">
                                 <label htmlFor="formFile" className="form-label">
                                     <h6>Logo</h6>
                                 </label>
                                 <input className="form-control" type="file" id="formFile" />
-                            </div>
+                            </div> */}
                             {/* JOB TITLE */}
                             <div className="form-group mb-3">
                                 <label htmlFor="formFile" className="form-label">
-                                    <h6>Job Tile</h6>
+                                    <h6>Job Title</h6>
                                 </label>
-                                <input className="form-control" type="text" placeholder="Add the title you are hiring for" aria-label="default input example" />
+                                <input 
+                                className="form-control" type="text" placeholder="Add the title you are hiring for" aria-label="default input example"
+                                id="job_title"
+                                name="job_title"
+                                value={postingData.job_title}
+                                onChange={handleInputChange} 
+                                />
                             </div>
                             {/* COMPANY */}
                             <div className="form-group mb-3">
                                 <label htmlFor="formFile" className="form-label">
                                     <h6>Company</h6>
                                 </label>
-                                <input className="form-control" type="text" placeholder="The company the job is for" aria-label="default input example" />
+                                <input 
+                                className="form-control" type="text" placeholder="The company the job is for" aria-label="default input example" 
+                                id="company"
+                                name="company"
+                                value={postingData.company}
+                                onChange={handleInputChange}
+                                />
                             </div>
                             {/* DESCRIPTION */}
                             <div className="form-group mb-3">
                                 <label htmlFor="formFile" className="form-label">
                                     <h6>Description</h6>
                                 </label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Tell us about the position and its requirements"></textarea>
+                                <textarea 
+                                className="form-control" rows="3" placeholder="Tell us about the position and its requirements"
+                                // id="exampleFormControlTextarea1"
+                                id="description"
+                                name="description"
+                                value={postingData.description}
+                                onChange={handleInputChange}
+                                ></textarea>
                             </div>
                             {/* DATE PICKER FOR DEADLINE */}
                             <div className="form-group mb-3">
                                 <label htmlFor="formFile" className="form-label">
                                     <h6>Deadline</h6>
                                 </label>
-                                <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
+                                <DatePicker 
+                                selected={startDate} onChange={(startDate) => handleDateInputChange(startDate)} 
+                                id="deadline"
+                                name="deadline"
+                                value={postingData.deadline}
+                                />
                             </div>  
                             {/* TOGGLE FOR FULL-TIME POSITION OR NOT */}
-                            <div className="form-group mb-3">
+                            {/* <div className="form-group mb-3">
                                 <div className="form-check form-switch">
                                     <label className="form-check-label" htmlFor="toggleSwitch">Full-Time Position</label>
-                                    <input className="form-check-input" type="checkbox" id="toggleSwitch" />
+                                    <input 
+                                    className="form-check-input" type="checkbox" id="toggleSwitch" 
+                                    // id="deadline"
+                                    name="full_time"
+                                    value={postingData.full_time}
+                                    onChange={handleInputChange}
+                                    />
                                 </div>
-                            </div>
-                             
+                            </div> */}
+
+                            {/* BUTTONS TO CANCEL OR POST THE POSITION */}
+                            <Row>
+                                <Col className="d-flex justify-content-center">
+                                    <Button variant="outline-secondary" size="lg" block className="w-100" onClick={handleCancel}>
+                                        Cancel
+                                    </Button>
+                                </Col>
+                                <Col className="d-flex justify-content-center">
+                                    <Button type="submit" variant="primary" size="lg" block className="w-100" style={{backgroundColor:'#27746a'}}>
+                                        Post
+                                    </Button>
+                                </Col>
+                            </Row>
                         </form>
-                        {/* BUTTONS TO CANCEL OR POST THE POSITION */}
-                        <Row>
-                            <Col className="d-flex justify-content-center">
-                                <Button variant="outline-secondary" size="lg" block className="w-100" onClick={handleCancel}>
-                                    Cancel
-                                </Button>
-                            </Col>
-                            <Col className="d-flex justify-content-center">
-                                <Button variant="primary" size="lg" block className="w-100" style={{backgroundColor:'#27746a'}}>
-                                    Post
-                                </Button>
-                            </Col>
-                        </Row>
-                        
 					</Card>
 				</Col>
 			</Row>
