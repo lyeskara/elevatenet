@@ -1,48 +1,39 @@
 body {
-    background-color: #E2E2E2;
+  background-color: #e2e2e2;
 }
 
-p.slogan{
-font-family: 'Inter';
-font-style: normal;
-font-weight: 400;
-font-size: 40px;
-line-height: 48px;
+/*Front page*/
+p.slogan {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 48px;
 }
 
-span.green{
-    color: #27746A;
+span.green {
+  color: #27746a;
 }
 
-p.frontCatchPhrase{
-font-family: 'Inter';
-font-style: normal;
-font-weight: 700;
-font-size: 50px;
-line-height: 61px;
+p.frontCatchPhrase {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 50px;
+  line-height: 61px;
 }
 
-p.catch{
-font-family: 'Inter';
-font-style: normal;
-font-weight: 400;
-font-size: 20px;
-line-height: 24px;
-text-align: justify;
+p.catch {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  text-align: justify;
 
-color: #000000;
+  color: #000000;
 }
 
-img.gif{
-  float:right;
+img.gif {
+  float: right;
 }
-
-
- @media screen and (max-width: 600px )  { 
-  
-  img.gif{
-  width: 95%;
-  height: auto;
-  }
-}
-  
