@@ -5,6 +5,7 @@ import Card from "react-bootstrap/Card";
 import "../../styles/profile.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import person from "./test.gif";
 import { GrMailOption, GrPhone } from "react-icons/gr";
 import EditProfile from "./EditProfile";
 
@@ -38,10 +39,12 @@ function Profile() {
 					<Card className="profilecard">
 						<img src={person} alt="Avatar" className="avatar"></img>
 						<h1>
-							{user.firstName} {user.lastName}
+							{user.firstName}
+							<span style={{ color: "green" }}> {user.lastName}</span>
 						</h1>
-						<b> {user.bio} </b>
-						<p> {user.city}</p>
+						<p style={{ color: "#A6A6A6" }}> {user.city}</p>
+						<p> {user.bio} </p>
+						<p> {user.languages} </p>
 					</Card>
 
 					<Card className="contactcard">
@@ -69,7 +72,7 @@ function Profile() {
 						<h5>Work Experience</h5>
 						<hr></hr>
 						<div className="profile-desc-row">
-							<img src=" "></img>
+							<img src={person}></img>
 							<div>
 								<h3>Business Intelligence Analyst</h3>
 								<p>DODO Inc.</p>
@@ -78,7 +81,7 @@ function Profile() {
 						</div>
 						<hr></hr>
 						<div className="profile-desc-row">
-							<img src=" "></img>
+							<img src={person}></img>
 							<div>
 								<h3>Business Intelligence Analyst</h3>
 								<p>DODO Inc.</p>
@@ -91,7 +94,7 @@ function Profile() {
 						<h5>Education</h5>
 						<hr></hr>
 						<div className="profile-desc-row">
-							<img src=" "></img>
+							<img src={person}></img>
 							<div>
 								<h3>{user.education}</h3>
 								<p style={{ color: "#272727" }}>
@@ -106,8 +109,10 @@ function Profile() {
 					<Card className="skillscard">
 						<h5>Skills</h5>
 						<hr></hr>
-						<p className="skills-btn">English</p>
-						<p className="skills-btn">English</p>
+						<div>
+							<span className="skills-btn">{user.skills}</span>
+							<span className="skills-btn">English</span>
+						</div>
 					</Card>
 				</Col>
 			</Row>

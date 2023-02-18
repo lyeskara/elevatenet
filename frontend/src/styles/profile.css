@@ -40,9 +40,9 @@
   }
 
   .profile-desc-row img{
-    width: 50px;
-    margin-right: 25px;
-    margin-top: 5px;
+    width: 60px;
+    margin-right: 15px;
+    margin-top: -20px;
   }
   .profile-desc-row div{
     width: 100%;
@@ -79,7 +79,6 @@
     width: 80%;
     height: 80%;
     border-radius: 50%;
-    padding:5px;
     margin:auto;
     
   }
@@ -97,15 +96,16 @@
   margin-top: 5px;
 }
   .skills-btn{
-    display: inline-block;
     margin: 10px 5px;
-    padding:6px 18px;
+    padding: 6px 18px;
     border: 1px solid #777;
     border-radius: 30px;
     font-size: 12px;
     font-weight: 500;
-    width: fit-content;
     transition-duration: 0.4s;
+  }
+  .skills-btn div{
+    display: flex;
   }
 
   .skills-btn:hover{
