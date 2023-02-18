@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useUserAuth } from "../../context/UserAuthContext.js";
 import { useNavigate } from "react-router-dom";
 import { Container, Form, Button } from "react-bootstrap";
-import "../../styles/JoinPages.css";
 import { GoogleAuthProvider } from "firebase/auth";
 import { signInWithGoogle } from "../../firebase.js";
 
