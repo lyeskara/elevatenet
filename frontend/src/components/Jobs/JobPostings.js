@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { collection, getDoc, doc, onSnapshot } from "firebase/firestore";
+import { collection, getDoc, doc, onSnapshot, getDocs } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import Card from "react-bootstrap/Card";
 import "../../styles/JobPostings.css";
@@ -8,87 +8,25 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Button from 'react-bootstrap/Button';
 
-
 function JobPostings() {
 	const handleClick = () => {
 		window.location.href = '/CreateNewPosting';
 	  };
+	//handle the sidebar button
 	const handleClickJobPostings = () => {
 		window.location.href = '/JobPostings';
 	  };
 //=================================================================================================================
-	const [user, setUser] = useState({});
-
+	const [posts, setPosts] = useState([]);
+	//method to get the data from the database
 	useEffect(() => {
-		async function getData() {
-			await getDoc(
-				doc(collection(db, "posting"))
-			)
-				.then((doc) => {
-					console.log("doc");
-					if (doc.exists) {
-						console.log(doc.data + " ");
-						// setUser({ ...doc.data(), id: doc.id });
-					} else {
-						console.log("nikmok");
-					}
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		}
-		console.log(getData());
-
-		return () => {
-			getData();
+		const getData = async () =>{
+		const postingData = await getDocs(collection(db, "posting"));
+		setPosts(postingData.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+		console.log(postingData);
 		};
+		getData();
 	}, []);	  
-//=================================================================================================================
-	// const docRef = doc(db, "posting");
-	// //const docSnap = await getDoc(docRef);
-
-	// async function fetchDoc() {
-	// 	const docRef = doc(db, "my-collection", "my-doc");
-	// 	const docSnap = await getDoc(docRef);
-	// 	console.log(docSnap.data());
-	//   }
-	  
-	// //   fetchDoc();
-
-	// if (fetchDoc.exists()) {
-	// console.log("Document data:", fetchDoc.data());
-	// } else {
-	// // doc.data() will be undefined in this case
-	// console.log("No such document!");
-	// } 
-//=================================================================================================================
-	// const [books, setBooks] = useState([]);
-	// const fetchBooks = async () => {
-	// 	const req = await getDoc("posting").get();
-	// 	console.log(req)
-	// }
-
-	// useEffect(() =>{
-	// 	fetchBooks();
-	// }, [])
-//=================================================================================================================
-	// const [info , setInfo] = useState([]);
-	// window.addEventListener('load',() => {
-	// 	Fetchdata();
-	// });
-
-	// const Fetchdata = ()=>{
-    //     db.collection("posting").get().then((querySnapshot) => {
-            
-    //         // Loop through the data and store
-    //         // it in array to display
-    //         querySnapshot.forEach(element => {
-    //             var data = element.data();
-    //             setInfo(arr => [...arr , data]);
-                 
-    //         });
-    //     })
-    // }
 //=================================================================================================================
 	return (
 		<Container className="container">
@@ -111,35 +49,15 @@ function JobPostings() {
 					</div>
 				{/* CARD FOR POSTINGS */}
 					<Card className="card">
-
-						{/* <div className="App">
-      						{blogs && blogs.map(blog=>{
-									return(
-										<div className="blog-container">
-											<h4>{blog.title}</h4>
-											<p>{blog.body}</p>
-										</div>
-									)
-								})
-      						}
-    					</div> */}
-						{/* ================================ */}
-						{/* <div>
-							<center>
-							<h2>Job Posting</h2>
-							</center>
-						
-						{
-							user.map((data) => (
-							<Frame 
-								job_title={data.job_title}
-								company={data.company}
-								description={data.description}
-								deadline={data.deadline}/>
-							))
-						}
-						</div>
-						<p>{user.job_title}</p> */}
+						{posts.map((data) => (
+							<div className="post-content" key={data.id}>
+								<p>{data.job_title}</p>
+								<p>{data.company}</p>
+								<p>{data.description}</p>
+								{/* <p>{data.deadline}</p> */}
+								<hr></hr>
+							</div>
+						))}
 
 					</Card>
 				</Col>
@@ -148,6 +66,7 @@ function JobPostings() {
 	);
 }
 
+// WILL BE USED IN NEXT SPRINT TO HAVE INDIVIDUAL CARDS
 const Frame = ({job_title , company , description, deadline}) => {
     console.log(job_title + " " + company + " " + description + " " + deadline);
     return (
