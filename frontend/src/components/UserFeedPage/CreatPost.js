@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { setDoc, collection,doc, getDocs, getDoc, updateDoc } from "firebase/firestore";
+import { setDoc, collection,doc, getDocs, getDoc, updateDoc, query } from "firebase/firestore";
 import { db,auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import {
@@ -30,11 +30,18 @@ function CreatPost() {
             console.log(PicUrl)
          })
      })
+    const AllDocs = (await getDocs(postsCollectionRef)).docs
     const documentData = (await getDoc(doc(postsCollectionRef,authUser.uid))).data()
+    const array =[] 
+    AllDocs.forEach((doc)=>{
+      array.push(doc.id);
+    })
+    const condition = array.includes(authUser.uid)
+    console.log(condition)
     const objectsSize = Object.keys(documentData).length
     console.log(objectsSize)
     const index = objectsSize + 1;
-    if(objectsSize==0){
+    if(!condition){
       await setDoc(doc(postsCollectionRef,authUser.uid), {
         [index]: {
           title, 
@@ -48,6 +55,7 @@ function CreatPost() {
           postText,
           PicUrl
         }
+        console.log("test")
         await updateDoc(doc(postsCollectionRef,authUser.uid), documentData)
     }
   };
