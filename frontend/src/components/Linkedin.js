@@ -13,9 +13,7 @@ function Linkedin() {
             <p class ="catch">Whatever your interest, from hiking and reading to networking<br></br> and skill sharing, there are thousands of people who share it on<br></br> Meetup. Events are happening every day—log in to join the fun.</p>
            
             </div>
-           <div className='d-flex align-items-baseline'>
-             
-           </div>
+           
     </div>       
     
            

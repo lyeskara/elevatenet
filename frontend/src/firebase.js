@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth} from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 //comment
 // TODO: Add SDKs for Firebase products that you want to use
@@ -15,7 +15,7 @@ const firebaseConfig = {
   storageBucket: "soen390-b027d.appspot.com",
   messagingSenderId: "825149516501",
   appId: "1:825149516501:web:84ec4df12eac831675905c",
-  measurementId: "G-VPHYPRJF37"
+  measurementId: "G-VPHYPRJF37",
 };
 
 // Initialize Firebase
@@ -23,3 +23,15 @@ export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
+//Google authentication
+const provider = new GoogleAuthProvider();
+
+export const signInWithGoogle = () => {
+  signInWithPopup(auth, provider)
+    .then((result) => {
+      const profilePic = result.user.photoURL;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
