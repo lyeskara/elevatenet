@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import './styles/Feed.css';
-import Post from '../Post/Post';
-import photo from '../images/logo.png';
-import video from '../images/video.png';
-import profile1 from '../images/profile1.png';
-import eventicon from '../images/eventicon.png';
-import personicon from '../images/personicon.png';
+import '../../styles/feed.css'
+import Post from './Post';
+import photo from '../../images/logo.JPG';
+import video from '../../images/video.png';
+import profile1 from '../../images/profile1.png';
+import eventicon from '../..//images/eventicon.png';
+import personicon from '../../images/personicon.png';
 import FlipMove from 'react-flip-move';
+import { useNavigate , Link} from 'react-router-dom';
 
 
 
@@ -18,7 +19,7 @@ function Feed() {
 
   return (
     <div className="feed">
-      <div className="feed-inputContainer">
+      <Link to="/user_posts"><div className="feed-inputContainer">
         <div className="feed-input">
           <img src={personicon} alt="person-icon" />
 
@@ -28,22 +29,13 @@ function Feed() {
 
         </div>
         <div className="feed-inputOption">
-          <button>
-            <img src={photo} alt="photo" />
-          </button>
-
-          <button>
-            <img src={video} alt="video" />
-          </button>
-
-          <button>
-            <img src={eventicon} alt="eventicon" />
-          </button>
+        
         </div>
       </div>
-
+      </Link>
+   
     
-      <FlipMove>
+      
         {posts.map(({ id, data: { name, description, message, photo}}) => (
           <Post 
             key={id}
@@ -53,7 +45,7 @@ function Feed() {
             photo={photo}
           />
         ))}
-      </FlipMove>
+     
     </div>
   );
 }
