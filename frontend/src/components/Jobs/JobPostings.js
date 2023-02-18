@@ -1,3 +1,9 @@
+//In this class users will have the possibility to now view their jobs page
+//Here they have a button that redirects them to a page to create a new job posting
+//Here they can also view all the job postings they created thus far
+//The JobPostings() function returns the side menu of the jobs page, the create a new posting button,
+//And lastly is displays all the job postings created
+
 import React, { useEffect, useState } from "react";
 import { collection, getDoc, doc, onSnapshot, getDocs } from "firebase/firestore";
 import { auth, db } from "../../firebase";
@@ -18,7 +24,8 @@ function JobPostings() {
 	  };
 //=================================================================================================================
 	const [posts, setPosts] = useState([]);
-	//method to get the data from the database
+
+	//this use effect() method is used to get the data from the database, native to react
 	useEffect(() => {
 		const getData = async () =>{
 		const postingData = await getDocs(collection(db, "posting"));
@@ -41,14 +48,17 @@ function JobPostings() {
 				</Col>
 
 				<Col xs={12} md={8}>
-				{/* button at the top */}
+				{/* button at the top to create a job posting*/}
 					<div>
 						<Button variant="primary" size="lg" block className="w-100" style={{backgroundColor:'#27746a'}} onClick={handleClick} >
 							Create a New Job Posting
 						</Button>
 					</div>
-				{/* CARD FOR POSTINGS */}
+
+				{/* CARD FOR JOB POSTINGS */}
 					<Card className="card">
+						{/*this map method returns an array with results and the results from this
+						are the data needed that creates a post being job title, company and description*/}
 						{posts.map((data) => (
 							<div className="post-content" key={data.id}>
 								<p>{data.job_title}</p>

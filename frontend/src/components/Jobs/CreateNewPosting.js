@@ -1,3 +1,7 @@
+//In this CreateNewPosting class with the CreateNewPosting() function
+//users and enter in the fields job title,company, description and deadline
+// and with after doing so and clicking post they can create a job posting job
+
 import React, { useEffect, useState } from "react";
 // import { collection, getDoc, doc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
@@ -32,13 +36,19 @@ function CreateNewPosting() {
         description: '',
         deadline: '',
     })
-    //update
+
+    //update with the handleInputChange() method 
+    // @param (event) 
+    //handles changes to the input and updates field 
     const handleInputChange = (event) => {
         setPostingData(
             { ...postingData,
               [event.target.name]: event.target.value}  ) 
     };
-    //creates the job posting
+
+    //creates the job posting with handleSubmit() method
+    // @param event 
+    // adds the posting parameters job title, company, description, and deadline to the database
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (user) {
@@ -63,7 +73,10 @@ function CreateNewPosting() {
                 console.log("error happened. Try again!");
         }
      };
-    //function to handle both functions for date picker field
+
+    //function handleDateInputChange() to handle both functions for date picker field
+    // @param {Date} 
+    // handles changes to date chosen and updates the field to current choice
     const handleDateInputChange = (date) => {
         setStartDate(date);
         setPostingData((prevState) => ({
@@ -71,6 +84,11 @@ function CreateNewPosting() {
            deadline: date,
         }));
      }; 
+    // return of the CreateNewPosting() function
+    // lets users cancel the form 
+    // lets users change inputs on the form
+    // lets users submit the form 
+    // return users to JobPosting page with updates from database created with form submission
 	return (
 		//Container for new job posting
 		<Container className="container mx-auto w-50">
