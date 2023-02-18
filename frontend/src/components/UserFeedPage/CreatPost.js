@@ -71,11 +71,11 @@ function CreatPost() {
     setPicture(event.target.files[0]);
   };
   return (
-    <form>
+    <div>
       <div >
         <h1>Create A Post</h1>
         <div >
-          <label for='title'> Title:</label>
+          <label> Title:</label>
           <input
             placeholder="Title..."
             id="title"
@@ -85,7 +85,7 @@ function CreatPost() {
           />
         </div>
         <div >
-          <label for='post'> Post:</label>
+          <label> Post:</label>
           <textarea
             placeholder="Post..."
             id="post"
@@ -95,14 +95,14 @@ function CreatPost() {
           />
         </div>
         <div>
-        <label for='file'> Picture: </label>
+        <label> Picture: </label>
         <input type="file" id="file" onChange={handlePictureChange} />
         </div>
 
 
         <button onClick={createPost}> Submit Post</button>
       </div>
-    </form>
+    </div>
   );
 }
 

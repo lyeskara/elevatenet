@@ -35,7 +35,9 @@ function Feed() {
       <div key={post.title} style={{ flexDirection:'row', margin: '10px' }}>
         <h2>{post.title}</h2>
         <p>{post.postText}</p>
+        {post.PicUrl!==null &&
         <img src={post.PicUrl} alt={post.title} style={{ width: '300px', height: 'auto' }} />
+        }
       </div>
     ))}
   </div>
