@@ -14,36 +14,20 @@ function JobPostings() {
 	const handleClick = () => {
 		window.location.href = '/CreateNewPosting';
 	  };
+	//handle the sidebar button
 	const handleClickJobPostings = () => {
 		window.location.href = '/JobPostings';
 	  };
 //=================================================================================================================
 	const [posts, setPosts] = useState([]);
-
+	//method to get the data from the database
 	useEffect(() => {
 		const getData = async () =>{
-			// await getDoc(
-			// 	doc(collection(db, "posting"))
-			// )
-			// 	.then((doc) => {
-			// 		console.log("doc");
-			// 		if (doc.exists) {
-			// 			console.log(doc.data + " ");
-			// 			// setUser({ ...doc.data(), id: doc.id });
-			// 		} else {
-			// 			console.log("nikmok");
-			// 		}
-			// 	})
-			// 	.catch((error) => {
-			// 		console.log(error);
-			// 	});
-			//==================================================================
-			const postingData = await getDocs(collection(db, "posting"));
-			setPosts(postingData.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
-			console.log(postingData);
+		const postingData = await getDocs(collection(db, "posting"));
+		setPosts(postingData.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+		console.log(postingData);
 		};
 		getData();
-
 	}, []);	  
 //=================================================================================================================
 	return (
@@ -73,6 +57,7 @@ function JobPostings() {
 								<p>{data.company}</p>
 								<p>{data.description}</p>
 								{/* <p>{data.deadline}</p> */}
+								<hr></hr>
 							</div>
 						))}
 
@@ -83,6 +68,7 @@ function JobPostings() {
 	);
 }
 
+// WILL BE USED IN NEXT SPRINT TO HAVE INDIVIDUAL CARDS
 const Frame = ({job_title , company , description, deadline}) => {
     console.log(job_title + " " + company + " " + description + " " + deadline);
     return (
