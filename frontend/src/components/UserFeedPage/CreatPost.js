@@ -71,36 +71,38 @@ function CreatPost() {
     setPicture(event.target.files[0]);
   };
   return (
-    <div>
+    <form>
       <div >
         <h1>Create A Post</h1>
         <div >
-          <label> Title:</label>
+          <label for='title'> Title:</label>
           <input
             placeholder="Title..."
+            id="title"
             onChange={(event) => {
               setTitle(event.target.value);
             }}
           />
         </div>
         <div >
-          <label> Post:</label>
+          <label for='post'> Post:</label>
           <textarea
             placeholder="Post..."
+            id="post"
             onChange={(event) => {
               setPostText(event.target.value);
             }}
           />
         </div>
         <div>
-        <label> Picture: </label>
-        <input type="file" onChange={handlePictureChange} />
+        <label for='file'> Picture: </label>
+        <input type="file" id="file" onChange={handlePictureChange} />
         </div>
 
 
         <button onClick={createPost}> Submit Post</button>
       </div>
-    </div>
+    </form>
   );
 }
 
