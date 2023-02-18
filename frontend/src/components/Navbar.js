@@ -62,7 +62,6 @@ function NavbarFun() {
                     </Link>
                   </Nav>
                   <Nav>
-                    <Link to="/Profile">Profile</Link>
                     <button><Search /></button>
                     <button onClick={handleLogout} className="list-item">
                       logout
