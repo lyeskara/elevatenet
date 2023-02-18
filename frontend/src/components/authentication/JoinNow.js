@@ -4,6 +4,8 @@ import { useUserAuth } from "../../context/UserAuthContext.js";
 import { auth } from "../../firebase.js";
 import { collection, setDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase.js";
+import { Container, Form, Button } from "react-bootstrap";
+import "../../styles/JoinPages.css";
 
 function JoinNow() {
 	const [email, setEmail] = useState("");
