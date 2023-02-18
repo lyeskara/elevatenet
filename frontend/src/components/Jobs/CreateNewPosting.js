@@ -110,7 +110,7 @@ function CreateNewPosting() {
                             {/* JOB TITLE */}
                             <div className="form-group mb-3">
                                 <label htmlFor="formFile" className="form-label">
-                                    <h6>Job Tile</h6>
+                                    <h6>Job Title</h6>
                                 </label>
                                 <input 
                                 className="form-control" type="text" placeholder="Add the title you are hiring for" aria-label="default input example"

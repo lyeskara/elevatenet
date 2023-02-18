@@ -36,18 +36,21 @@ function JobPostings() {
 	}, []);	  
 //=================================================================================================================
 	return (
-		<Container className="container">
-			<Row className="gap-6">
+		<Container className="container d-flex justify-content-center mx-auto">
+			<Row className="gap-6 d-flex justify-content-center">
 				{/* JOB MENU BLOCK ON THE LEFT TO NAVIGATE BETWEEN JOB POSTINGS AND ADVERTS */}
 				<Col xs={12} md={3}>
 					<Card className="jobs-menu">
 						<h2> Jobs </h2>
+						<hr></hr>
 						<h5 onClick={handleClickJobPostings}> Job Postings </h5>
 						<h5> Advertisements </h5>
+						<br></br>
 					</Card>
 				</Col>
 
 				<Col xs={12} md={8}>
+				
 				{/* button at the top to create a job posting*/}
 					<div>
 						<Button variant="primary" size="lg" block className="w-100" style={{backgroundColor:'#27746a'}} onClick={handleClick} >
@@ -56,39 +59,23 @@ function JobPostings() {
 					</div>
 
 				{/* CARD FOR JOB POSTINGS */}
-					<Card className="card">
 						{/*this map method returns an array with results and the results from this
 						are the data needed that creates a post being job title, company and description*/}
 						{posts.map((data) => (
 							<div className="post-content" key={data.id}>
-								<p>{data.job_title}</p>
-								<p>{data.company}</p>
-								<p>{data.description}</p>
-								{/* <p>{data.deadline}</p> */}
-								<hr></hr>
+								<Card className="card">
+									<h5>{data.job_title}</h5>
+									<hr></hr>
+									<h6>{data.company}</h6>
+									<p>{data.description}</p>
+									{/* <p>{data.deadline}</p> */}
+								</Card>
 							</div>
 						))}
-
-					</Card>
 				</Col>
 			</Row>
 		</Container>
 	);
-}
-
-// WILL BE USED IN NEXT SPRINT TO HAVE INDIVIDUAL CARDS
-const Frame = ({job_title , company , description, deadline}) => {
-    console.log(job_title + " " + company + " " + description + " " + deadline);
-    return (
-        <center>
-            <div className="div">
-				<p>Job Title : {job_title}</p>
-				<p>Company : {company}</p>						
-				<p>Description : {description}</p>
-				<p>Deadline : {deadline}</p>
-            </div>
-        </center>
-    );
 }
 
 export default JobPostings;
