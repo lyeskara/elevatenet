@@ -1,7 +1,3 @@
-/**
- * @jest-environment jsdom
- */
-
 import React, { useEffect, useState } from "react";
 import { collection, getDoc, doc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
@@ -9,12 +5,20 @@ import Card from "react-bootstrap/Card";
 import "../../styles/profile.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import profilepic from "./test.gif";
 import { GrMailOption, GrPhone } from "react-icons/gr";
 import EditProfile from "./EditProfile";
+import person from "./test.gif";
+import { getStorage, ref } from "firebase/storage";
 
+/**
+ * Profile loads values stored in the data base and allows us to view them in a styled page.
+ */
 function Profile() {
 	const [user, setUser] = useState({});
+	const storage = getStorage();
+	/**
+	 * getUserData gets all values pertaining to the logged in user.
+	 */
 	const getUserData = async () => {
 		try {
 			const userDoc = await getDoc(
@@ -41,7 +45,12 @@ function Profile() {
 			<Row className="gap-5">
 				<Col className="col1" xs={12} md={{ span: 3, offset: 1 }}>
 					<Card className="profilecard">
-						<img src={profilepic} alt="Avatar" className="avatar"></img>
+						<img
+							src={person}
+							id="profilepic"
+							alt="Avatar"
+							className="avatar"
+						></img>
 						<h1>
 							{user.firstName}
 							<span style={{ color: "green" }}> {user.lastName}</span>
@@ -76,7 +85,7 @@ function Profile() {
 						<h5>Work Experience</h5>
 						<hr></hr>
 						<div className="profile-desc-row">
-							<img src={profilepic}></img>
+							<img src={person}></img>
 							<div>
 								<h3>Business Intelligence Analyst</h3>
 								<p>DODO Inc.</p>
@@ -85,7 +94,7 @@ function Profile() {
 						</div>
 						<hr></hr>
 						<div className="profile-desc-row">
-							<img src={profilepic}></img>
+							<img src={person}></img>
 							<div>
 								<h3>Business Intelligence Analyst</h3>
 								<p>DODO Inc.</p>
@@ -98,7 +107,7 @@ function Profile() {
 						<h5>Education</h5>
 						<hr></hr>
 						<div className="profile-desc-row">
-							<img src={profilepic}></img>
+							<img src={person}></img>
 							<div>
 								<h3>{user.education}</h3>
 								<p style={{ color: "#272727" }}>
@@ -124,4 +133,3 @@ function Profile() {
 	);
 }
 export default Profile;
-//export { getUserData };

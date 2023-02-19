@@ -8,21 +8,38 @@ import { auth, db } from "../../firebase";
 import { collection, setDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
-function EditProfile({ user, setUser }) {
+const storageRef = ref(
+	"https://console.firebase.google.com/project/soen390-b027d/storage/soen390-b027d.appspot.com/images"
+);
+/**
+ * EditProfile allows us to edit the database for an individual user and updating the information provided
+ * by said user.
+ * @constructor
+ * @param {object} user - User object containing attributes.
+ * @param {object} setUser - updated user attributes.
+ */
+function EditProfile({ user, setUser, profilepic }) {
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
 	const navigate = useNavigate();
 	const storage = getStorage();
-	const storageRef = ref(
-		"https://console.firebase.google.com/project/soen390-b027d/storage/soen390-b027d.appspot.com/images"
-	);
 	const [selectedFile, setSelectedFile] = useState(null);
-
+	/**
+	 * setUser allows us to set the User to our changled values stored in setUser.
+	 * @constructor
+	 * @param {object} user - User object containing attributes.
+	 * @param {object} e - Any element.
+	 */
 	function update(e) {
 		setUser({ ...user, [e.target.name]: e.target.value });
 	}
 
+	/**
+	 * UpdateUSer allows us to send the new information in the form to the database.
+	 * @constructor
+	 * @param {object} e - Any element.
+	 */
 	async function updateUser(e) {
 		e.preventDefault();
 		if (user) {
