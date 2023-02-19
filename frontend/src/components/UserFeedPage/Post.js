@@ -1,7 +1,6 @@
 import React from "react";
-import './styles/Post.css"';
-import like from '../images/like.png';
-import comment from '../images/comment.png';
+import '../../styles/post.css'
+import like from '../../images/like.png';
 
 
 function Post({ name, description, message, photo }) {
@@ -28,7 +27,6 @@ function Post({ name, description, message, photo }) {
           <p>Like</p>
         </button>
         <button>
-          <img src={comment} alt="comment" />
           <p>Comment</p>
         </button>
       </div>
