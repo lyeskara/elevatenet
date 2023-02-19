@@ -2,6 +2,7 @@
 <testsuites name="jest tests" tests="5" failures="3" errors="0" time="12.09">
   <testsuite name="undefined" errors="0" failures="1" skipped="0" timestamp="2023-02-19T00:32:17" time="6.83" tests="2">
     <testcase classname=" use jsdom in this test file" name=" use jsdom in this test file" time="0.006">
+
     </testcase>
     <testcase classname=" clicking the sign in button calls the login function with the entered email and password" name=" clicking the sign in button calls the login function with the entered email and password" time="0.157">
       <failure>TypeError: Cannot destructure property &apos;Login&apos; of &apos;(0 , _UserAuthContext.useUserAuth)(...)&apos; as it is undefined.

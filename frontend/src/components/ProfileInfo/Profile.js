@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { collection, getDoc, doc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
+import { getStorage, ref } from "firebase/storage";
 import Card from "react-bootstrap/Card";
 import "../../styles/profile.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
+import person from "./logo512.png";
 
 function Profile() {
 	const [user, setUser] = useState({});
+	const storageRef = ref(
+		"https://console.firebase.google.com/project/soen390-b027d/storage/soen390-b027d.appspot.com/files"
+	);
 	useEffect(() => {
 		async function getData() {
 			await getDoc(
@@ -40,18 +45,21 @@ function Profile() {
 			<Row className="gap-6">
 				<Col xs={12} md={4}>
 					<Card className="profilecard">
-						<img src="file" alt="Avatar" class="avatar"></img>
-						<input className="form-control" type="file"></input>
+						<img src={person} alt="Avatar" class="avatar"></img>
 						<h1>
-							{user.firstName} {user.lastName}
+							{user.firstName}
+							<span style={{ color: "green" }}> {user.lastName}</span>
 						</h1>
-						<b> {user.bio} </b>
-						<p> {user.city}</p>
+						<p style={{ color: "#A6A6A6" }}> {user.city}</p>
+						<p> {user.bio} </p>
+						<p> {user.languages} </p>
 					</Card>
 
 					<Card className="contactcard">
-						<h1> email </h1>
-						<b> contact number </b>
+          <h5>Contact Information</h5>
+          <hr></hr>
+						<h1> {user.email} </h1>
+						<b> {user.contact} </b>
 					</Card>
 				</Col>
 
@@ -60,7 +68,7 @@ function Profile() {
 						<h5>Work Experience</h5>
 						<hr></hr>
 						<div className="profile-desc-row">
-							<img src=" "></img>
+							<img src={person}></img>
 							<div>
 								<h3>Business Intelligence Analyst</h3>
 								<p>DODO Inc.</p>
@@ -69,7 +77,7 @@ function Profile() {
 						</div>
 						<hr></hr>
 						<div className="profile-desc-row">
-							<img src=" "></img>
+							<img src={person}></img>
 							<div>
 								<h3>Business Intelligence Analyst</h3>
 								<p>DODO Inc.</p>
@@ -82,7 +90,7 @@ function Profile() {
 						<h5>Education</h5>
 						<hr></hr>
 						<div className="profile-desc-row">
-							<img src=" "></img>
+							<img src={person}></img>
 							<div>
 								<h3>Concordia Universtiy</h3>
 								<p style={{ color: "#272727" }}>
@@ -97,8 +105,10 @@ function Profile() {
 					<Card className="skillscard">
 						<h5>Skills</h5>
 						<hr></hr>
-						<p className="skills-btn">English</p>
-						<p className="skills-btn">English</p>
+						<div>
+							<span className="skills-btn">{user.skills}</span>
+							<span className="skills-btn">English</span>
+						</div>
 					</Card>
 				</Col>
 			</Row>
