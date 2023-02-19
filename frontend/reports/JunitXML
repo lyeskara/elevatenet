@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="1" failures="1" errors="0" time="1.521">
-  <testsuite name="EditProfile" errors="0" failures="1" skipped="0" timestamp="2023-02-19T00:34:08" time="1.313" tests="1">
-    <testcase classname="EditProfile should close the modal when close button is clicked" name="EditProfile should close the modal when close button is clicked" time="0.001">
-      <failure>ReferenceError: document is not defined
-    at render (C:\Users\Legend\Documents\GitHub\SOEN390\frontend\node_modules\@testing-library\react\dist\pure.js:210:5)
-    at Object.&lt;anonymous&gt; (C:\Users\Legend\Documents\GitHub\SOEN390\frontend\src\components\ProfileInfo\EditProfile.test.js:7:44)
-    at Promise.then.completed (C:\Users\Legend\Documents\GitHub\SOEN390\frontend\node_modules\jest-circus\build\utils.js:391:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (C:\Users\Legend\Documents\GitHub\SOEN390\frontend\node_modules\jest-circus\build\utils.js:316:10)
-    at _callCircusTest (C:\Users\Legend\Documents\GitHub\SOEN390\frontend\node_modules\jest-circus\build\run.js:218:40)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)
-    at _runTest (C:\Users\Legend\Documents\GitHub\SOEN390\frontend\node_modules\jest-circus\build\run.js:155:3)
-    at _runTestsForDescribeBlock (C:\Users\Legend\Documents\GitHub\SOEN390\frontend\node_modules\jest-circus\build\run.js:66:9)
-    at _runTestsForDescribeBlock (C:\Users\Legend\Documents\GitHub\SOEN390\frontend\node_modules\jest-circus\build\run.js:60:9)</failure>
+<testsuites name="jest tests" tests="2" failures="0" errors="0" time="12.05">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2023-02-18T20:27:09"
+    time="1.859" tests="2">
+    <testcase classname=" test" name=" test" time="0.002">
+    </testcase>
+    <testcase classname=" should throw an error when the credentials are invalid"
+      name=" should throw an error when the credentials are invalid" time="0.001">
     </testcase>
   </testsuite>
 </testsuites>

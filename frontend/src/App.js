@@ -15,6 +15,8 @@ import OtherUsersProfile from "./components/ProfileInfo/OtherUsersProfile";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
 import EditProfile from "./components/ProfileInfo/EditProfile";
 import CreateNewPosting from "./components/Jobs/CreateNewPosting";
+import Feed from "./components/UserFeedPage/Feed";
+import CreatPost from "./components/UserFeedPage/CreatPost";
 
 function App() {
 	return (
@@ -38,6 +40,14 @@ function App() {
 				<Route path="/SignIn" element={<SignIn />} />
 				<Route path="/JoinNow" element={<JoinNow />} />
 				<Route
+					path="/userfeed"
+					element={
+						<Protection>
+							<Feed />
+						</Protection>
+					}
+				></Route>
+				<Route
 					path="profile/:id"
 					element={
 						<Protection>
@@ -45,7 +55,15 @@ function App() {
 						</Protection>
 					}
 				></Route>
-				<Route path="/EditProfile" element={<EditProfile />} />
+				<Route path="/EditProfile" element={<EditProfile />} />{" "}
+				<Route
+					path="/user_posts"
+					element={
+						<Protection>
+							<CreatPost />
+						</Protection>
+					}
+				></Route>
 			</Routes>
 		</UserAuthContextProvider>
 	);
