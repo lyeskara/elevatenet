@@ -54,7 +54,6 @@ function JobPostings() {
 							Create a New Job Posting
 						</Button>
 					</div>
-
 				{/* CARD FOR JOB POSTINGS */}
 					<Card className="card">
 						{/*this map method returns an array with results and the results from this
