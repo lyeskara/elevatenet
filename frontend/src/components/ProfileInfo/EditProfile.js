@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import { getStorage, ref } from "firebase/storage";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 import { useUserAuth } from "../../context/UserAuthContext";
 import { auth, db } from "../../firebase";
 import { collection, setDoc, doc } from "firebase/firestore";
@@ -13,14 +13,26 @@ function EditProfile({ user, setUser }) {
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
 	const navigate = useNavigate();
+	const storage = getStorage();
+	const storageRef = ref(
+		"https://console.firebase.google.com/project/soen390-b027d/storage/soen390-b027d.appspot.com/images"
+	);
+	const [selectedFile, setSelectedFile] = useState(null);
 
 	function update(e) {
 		setUser({ ...user, [e.target.name]: e.target.value });
 	}
 
-	function updateUser(e) {
+	async function updateUser(e) {
 		e.preventDefault();
 		if (user) {
+			if (selectedFile) {
+				const storageRef = ref(
+					storage,
+					`profilepics/${auth.currentUser.uid}/${selectedFile.name}`
+				);
+				await uploadBytes(storageRef, selectedFile);
+			}
 			setDoc(doc(collection(db, "users_information"), auth.currentUser.uid), {
 				firstName: user.firstName,
 				lastName: user.lastName,
@@ -34,9 +46,6 @@ function EditProfile({ user, setUser }) {
 		}
 		navigate("/Profile");
 	}
-	const storageRef = ref(
-		"https://console.firebase.google.com/project/soen390-b027d/storage/soen390-b027d.appspot.com/files"
-	);
 
 	return (
 		<>
@@ -52,7 +61,10 @@ function EditProfile({ user, setUser }) {
 					<Form>
 						<Form.Group controlId="formFile" className="mb-3">
 							<Form.Label>Avatar</Form.Label>
-							<Form.Control type="file" />
+							<Form.Control
+								type="file"
+								onChange={(e) => setSelectedFile(e.target.files[0])}
+							/>
 						</Form.Group>
 						<div style={{ display: "flex" }}>
 							<Form.Group

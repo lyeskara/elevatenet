@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import React, { useEffect, useState } from "react";
 import { collection, getDoc, doc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
@@ -5,7 +9,7 @@ import Card from "react-bootstrap/Card";
 import "../../styles/profile.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import person from "./test.gif";
+import profilepic from "./test.gif";
 import { GrMailOption, GrPhone } from "react-icons/gr";
 import EditProfile from "./EditProfile";
 
@@ -37,7 +41,7 @@ function Profile() {
 			<Row className="gap-5">
 				<Col className="col1" xs={12} md={{ span: 3, offset: 1 }}>
 					<Card className="profilecard">
-						<img src={person} alt="Avatar" className="avatar"></img>
+						<img src={profilepic} alt="Avatar" className="avatar"></img>
 						<h1>
 							{user.firstName}
 							<span style={{ color: "green" }}> {user.lastName}</span>
@@ -72,7 +76,7 @@ function Profile() {
 						<h5>Work Experience</h5>
 						<hr></hr>
 						<div className="profile-desc-row">
-							<img src={person}></img>
+							<img src={profilepic}></img>
 							<div>
 								<h3>Business Intelligence Analyst</h3>
 								<p>DODO Inc.</p>
@@ -81,7 +85,7 @@ function Profile() {
 						</div>
 						<hr></hr>
 						<div className="profile-desc-row">
-							<img src={person}></img>
+							<img src={profilepic}></img>
 							<div>
 								<h3>Business Intelligence Analyst</h3>
 								<p>DODO Inc.</p>
@@ -94,7 +98,7 @@ function Profile() {
 						<h5>Education</h5>
 						<hr></hr>
 						<div className="profile-desc-row">
-							<img src={person}></img>
+							<img src={profilepic}></img>
 							<div>
 								<h3>{user.education}</h3>
 								<p style={{ color: "#272727" }}>

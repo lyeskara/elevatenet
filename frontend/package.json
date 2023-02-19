@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@testing-library/react": "^13.4.0",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^27.5.1",
     "jest-junit": "^15.0.0",
     "react-router-dom": "^6.7.0"
