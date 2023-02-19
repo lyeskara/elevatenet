@@ -57,7 +57,6 @@ function JobPostings() {
 							Create a New Job Posting
 						</Button>
 					</div>
-
 				{/* CARD FOR JOB POSTINGS */}
 						{/*this map method returns an array with results and the results from this
 						are the data needed that creates a post being job title, company and description*/}
