@@ -1,3 +1,20 @@
+/*
+ * this file is responsible for user post creation
+ * at first, multiple functions, libraries are imported to facilitate our task
+ * second, useState is used to declare title,posttext,picture,picurl variables and set to null
+ * third, from the backend, the authenticated user and the post collection (table) are initialised inside the file 
+ * fourth, a function is created for making post request for adding post documents(columns) into the post collection
+ * the process first involved into making the html input tags, attaching event listeners which call the createpost() function 
+ * which then will store the title, postText and picture input, for storing the picture inside a NOSQL database, we first worked on 
+ * storing the image inside a storage unit in the backend, then these images are converted into browser urls, later we store these urls as strings
+ * in the database
+ * now into storing the data in the db, we first need to check whether there is a need into creating a new document for this user, if not then we just push additional posts data
+ * then data is stored accordingly, if user has a document of posts, then update function is called otherwise setDoc is called
+ * as for the user effect its just in case a user logout it will redirect to homepage and deny access to an unauthorized page 
+ */
+
+
+
 import React, { useState, useEffect } from "react";
 import { setDoc, collection,doc, getDocs, getDoc, updateDoc, query } from "firebase/firestore";
 import { db,auth } from "../../firebase";
@@ -59,6 +76,7 @@ function CreatPost() {
         await updateDoc(doc(postsCollectionRef,authUser.uid), documentData)
     }
   };
+
   useEffect(() => {
     if (!authUser) {
       navigate("/login");
