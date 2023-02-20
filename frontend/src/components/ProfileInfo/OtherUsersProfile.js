@@ -1,3 +1,20 @@
+/**
+ * this file is reponsible of handling displayment of other users profile and follow functionalities. 
+ * first, hooks, functions, middlewares are imported
+ * second, reactive data is initialised into null with useState
+ * third, we store the authenticated user and the visited user ids into variables 
+ * for displaying the vistied user data, useEffect and queries handles the task
+ *  (useEffect act as change happen, queries get data that is stored in states then displayed in templates)
+ * data is rendered conditionaly, users should be allow to search for themselves and not have follow button appear in their profiles
+ * as for the ability to follow someone, two functions are attached to event listeners (onClick) 
+ * handlefollowing works as follows: reference to the follows collection and and to the current user document inside that collection
+ * then a query into getting all documents from the collection, in the result contains the user, the we update, if user doesnt exist 
+ * we create a new follow document for that user, handleunfollow, checks wether user has document, and if yes, filter into finding the visited user id and deleting them from the document data
+ *
+ * 
+ */
+
+
 import {React,useState,useEffect} from 'react'
 import {useParams} from 'react-router-dom'
 import {getDoc,query,where,getDocs, setDoc,collection,doc,updateDoc, documentId} from 'firebase/firestore';

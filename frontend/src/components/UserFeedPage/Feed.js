@@ -1,9 +1,15 @@
+/*
+ * this file represent the feedpage component
+ * in it, React hooks are used. (state to store user data and Effect to update the view accordingly to the model)
+ * inside the useEffect an asynchronous function getData is responsible of fetching data from backend and store it in the Data variable
+ * after storing the data in Data variable, we will use functional patterns such as map to display the informations stored in the UI
+*/
+
+
 import { useEffect, useState } from 'react';
 import { useNavigate , Link} from 'react-router-dom';
 import { getDoc,doc, collection, setDoc } from 'firebase/firestore';
 import { db,auth } from '../../firebase';
-
-
 
 
 function Feed() {
