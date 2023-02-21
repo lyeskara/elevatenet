@@ -59,6 +59,8 @@ function EditProfile({ user, setUser, profilepic }) {
 				workExperience: user.workExperience,
 				skills: user.skills,
 				languages: user.languages,
+				email: auth.currentUser.email,
+				contact: user.contact,
 			});
 		}
 		navigate("/Profile");
@@ -179,7 +181,7 @@ function EditProfile({ user, setUser, profilepic }) {
 						>
 							<Form.Label>Bio</Form.Label>
 							<Form.Control
-								name="location"
+								name="bio"
 								as="textarea"
 								defaultValue={user.bio}
 								onChange={update}

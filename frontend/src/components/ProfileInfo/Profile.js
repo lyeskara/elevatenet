@@ -96,9 +96,9 @@ function Profile() {
 						<div className="profile-desc-row">
 							<img src={person}></img>
 							<div>
-								<h3>Business Intelligence Analyst</h3>
-								<p>DODO Inc.</p>
-								<p> Feb 2022 - Present</p>
+								<h3>Junior Analyst</h3>
+								<p>FOFO Inc.</p>
+								<p> Feb 2021 - Feb 2022</p>
 							</div>
 						</div>
 					</Card>
