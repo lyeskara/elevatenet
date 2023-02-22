@@ -25,6 +25,7 @@ function App() {
     <Route path="/SignIn" element={<SignIn/>} />
     <Route path="/JoinNow" element={<JoinNow/>} />
     <Route path="/Messaging" element={<Messaging/>} />
+ 
 
     </Routes> 
     </UserAuthContextProvider>
