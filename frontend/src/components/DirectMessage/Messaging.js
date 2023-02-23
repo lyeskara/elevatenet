@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { collection, addDoc, onSnapshot, serverTimestamp, query, orderBy, where } from 'firebase/firestore';
 import { auth } from "../../firebase";
 import { db } from '../../firebase';
+import "../../styles/Messaging.css";
 
 
 // useState is used to update the messages with the most recent one
@@ -77,37 +78,41 @@ const Message = () =>
   
   return (
     
-    <div>
-
+    <>
+    <div className="container">
+      <div className="chat-list">
       <h2>Chat List</h2>
-      <div className="container-left">
-      <div className="list">
+
         <ul>
           <li>Person 1:<a href="" onClick={handlePersonClick} data-recipient-id="WpubLzGEbHbgXhx4Bj1Bdh6mklg1"> WpubLzGEbHbgXhx4Bj1Bdh6mklg1</a></li>{/*leon*/}
           <li>Person 2:<a href="" onClick={handlePersonClick} data-recipient-id="v7nXsR4QSiUi5fLgapTsXtmJOF62">v7nXsR4QSiUi5fLgapTsXtmJOF62</a></li>{/*fatema*/}
           <li>Person 3:<a href="" onClick={handlePersonClick} data-recipient-id="5XAWmTROsXdhyqsqClXpfnXPIXm1">5XAWmTROsXdhyqsqClXpfnXPIXm1</a></li>{/*alan*/}
         </ul>
       </div>
-    </div>
+    
 
       <h2>Messages</h2>
-      <div className="container-left">
-      <form onSubmit={handleSubmit}>
+      <div className="messages">
+      <div className='text'>
+      {messages.map((msg, index) => (
+        <p key={index}>{msg.text}</p>
+      ))}
+      </div>
+      <form onSubmit={handleSubmit} className="button">
         <input
           type="text"
           value={message}
           onChange={handleMessageChange}
           ref={messageRef}
-          placeholder="Write a message..."
+          placeholder="Enter Message..."
         />
         <button type="submit">Send</button>
       </form>
-
-      {messages.map((msg, index) => (
-        <p key={index}>{msg.text}</p>
-      ))}
+      
+      
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 
