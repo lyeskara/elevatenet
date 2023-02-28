@@ -64,8 +64,8 @@ function NavbarFun() {
 										<button>
 											<Search />
 										</button>
-										<button onClick={handleLogout} className="list-item">
-											logout
+										<button onClick={handleLogout} className="logout_button">
+											Sign Out
 										</button>
 									</Nav>
 								</>
