@@ -19,6 +19,7 @@ function JoinNow() {
         e.preventDefault();
     try {
       await Registration(email,password).then(word =>{
+        console.log(word)
         return setDoc(doc(collection(db,'users_information'),auth.currentUser.uid),{  profileImage: '',
         firstName: '',
         lastName: '',
