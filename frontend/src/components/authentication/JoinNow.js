@@ -1,61 +1,122 @@
-import React , {useState}from 'react'
-import {useNavigate} from 'react-router-dom'
-import { useUserAuth } from '../../context/UserAuthContext.js'
-import { auth } from '../../firebase.js'
-import { collection, setDoc, doc } from 'firebase/firestore'
-import { db } from '../../firebase.js'
-
-
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUserAuth } from "../../context/UserAuthContext.js";
+import { auth } from "../../firebase.js";
+import { collection, setDoc, doc } from "firebase/firestore";
+import { db } from "../../firebase.js";
+import { Container, Form, Button } from "react-bootstrap";
+import "../../styles/JoinPages.css";
 
 function JoinNow() {
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const { Registration } = useUserAuth();
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const {Registration} = useUserAuth();
-  
-  const navigate = useNavigate();
-  
-  const handleSubmit = async (e) => {
-        e.preventDefault();
-    try {
-      await Registration(email,password).then(word =>{
-        console.log(word)
-        return setDoc(doc(collection(db,'users_information'),auth.currentUser.uid),{  profileImage: '',
-        firstName: '',
-        lastName: '',
-        city: '',
-        bio: '',
-        workExperience: '',
-        education: '',
-        skills: '',
-        languages: ''})
-       })
-      navigate("/ProfileForm")
-     
-    } catch (error) {
-      console.log(error.message);
-    }
-  
-  };
+	const navigate = useNavigate();
 
-      return (
-    
-    <form  onSubmit={handleSubmit}>
-    <label>
-        Email:
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-    </label>
-    <br />
-    <label>
-        Password:
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-    </label>
-    <br />
-        <button type='submit' >Agree & Join</button>
-</form>
-    
-  )
-      }
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		try {
+			await Registration(email, password).then((word) => {
+				return setDoc(
+					doc(collection(db, "users_information"), auth.currentUser.uid),
+					{
+						profileImage: "",
+						firstName: "",
+						lastName: "",
+						city: "",
+						bio: "",
+						workExperience: "",
+						education: "",
+						skills: "",
+						languages: "",
+					}
+				);
+			});
+			navigate("/ProfileForm");
+		} catch (error) {
+			console.log(error.message);
+		}
+	};
 
 
-export default JoinNow
+	return (
+		<>
+			<Container fluid>
+				<div>
+					<p className="text-center slogan pt-4 pb-3">
+						Bring your career to new heights
+					</p>
+				</div>
+
+
+				<div className="text-center containerForm">
+					<Form onSubmit={handleSubmit}>
+						<Form.Text className="sign center">Sign Up</Form.Text>
+						<div>
+							<input
+								className="input_radio mt-4"
+								type="radio"
+								id="recruiter"
+								name="age"
+								value="recruiter"
+							></input>
+							<label for="recruiter" className="label_radio">
+								I'm a Recruiter
+							</label>
+							<input
+								className="input_radio"
+								type="radio"
+								id="seeker"
+								name="age"
+								value="seeker"
+							></input>
+							<label for="seeker" className="label_radio">
+								I'm a Job Seeker
+							</label>
+						</div>
+						<Button className="google_button sign_button mb-3 mt-4">
+							Continue with Google
+						</Button>
+						<p className="line">
+							<span className="span_line">OR</span>
+						</p>
+						<center>
+							<Form.Group className="mb-3 mt-4" controlId="formBasicEmail">
+								<Form.Control
+									className="input_box"
+									type="email"
+									placeholder="Enter email"
+									value={email}
+									onChange={(e) => setEmail(e.target.value)}
+								/>
+							</Form.Group>
+
+							<Form.Group className="mb-3" controlId="formBasicPassword">
+								<Form.Control
+									className="input_box"
+									type="password"
+									placeholder="Password"
+									value={password}
+									onChange={(e) => setPassword(e.target.value)}
+								/>
+							</Form.Group>
+						</center>
+						<Button className="sign_button mb-3 mt-4" type="submit">
+							Sign Up
+						</Button>
+						<br></br>
+						<Form.Text className="text-muted">
+							Already have an account?{" "}
+							<a href="/SignIn" className="join">
+								Sign In
+							</a>
+						</Form.Text>
+					</Form>
+				</div>
+			</Container>
+		</>
+	);
+}
+
+export default JoinNow;
