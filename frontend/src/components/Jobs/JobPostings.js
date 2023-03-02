@@ -63,8 +63,20 @@ function JobPostings() {
 						{posts.map((data) => (
 							<div className="post-content" key={data.id}>
 								<Card className="card">
-									<h5>{data.job_title}</h5>
-									<hr></hr>
+									<div className="row">
+										<div className="col-sm-8">
+											<h5>{data.job_title}</h5>
+										</div>
+										<div className="col-sm-4 d-flex justify-content-end align-items-center">
+											<Button variant="primary" className="btn-sm" style={{backgroundColor:'#27746a'}}>
+												Edit
+											</Button>
+											<Button variant="outline-danger" className="btn-sm" style={{backgroundColor:'white', color:'#ff4336', border:'2px solid #ff4336'}}>
+												Delete
+											</Button>
+										</div>
+									</div>
+									<hr />
 									<h6>{data.company}</h6>
 									<p>{data.description}</p>
 									{/* <p>{data.deadline}</p> */}
