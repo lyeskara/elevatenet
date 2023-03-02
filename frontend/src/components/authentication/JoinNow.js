@@ -11,6 +11,9 @@ function JoinNow() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const { Registration } = useUserAuth();
+	const [recruiter, Setrecruiter]= useState(false)
+	console.log(recruiter)
+
 
 	const navigate = useNavigate();
 
@@ -18,7 +21,18 @@ function JoinNow() {
 		e.preventDefault();
 		try {
 			await Registration(email, password).then((word) => {
-				return setDoc(
+				if(recruiter){
+					return setDoc(
+						doc(collection(db, "recruiters_informations"), auth.currentUser.uid),
+						{
+							firstName: "",
+						lastName: "",
+						city: "",
+						company:""
+						}
+					);
+				}else{				
+				 setDoc(
 					doc(collection(db, "users_information"), auth.currentUser.uid),
 					{
 						profileImage: "",
@@ -32,6 +46,7 @@ function JoinNow() {
 						languages: "",
 					}
 				);
+				}
 			});
 			navigate("/ProfileForm");
 		} catch (error) {
@@ -42,14 +57,15 @@ function JoinNow() {
 
 	return (
 		<>
+	
+						
 			<Container fluid>
+				
 				<div>
 					<p className="text-center slogan pt-4 pb-3">
 						Bring your career to new heights
 					</p>
 				</div>
-
-
 				<div className="text-center containerForm">
 					<Form onSubmit={handleSubmit}>
 						<Form.Text className="sign center">Sign Up</Form.Text>
@@ -60,6 +76,7 @@ function JoinNow() {
 								id="recruiter"
 								name="age"
 								value="recruiter"
+								onClick={()=>Setrecruiter(true)}
 							></input>
 							<label for="recruiter" className="label_radio">
 								I'm a Recruiter
@@ -70,6 +87,7 @@ function JoinNow() {
 								id="seeker"
 								name="age"
 								value="seeker"
+								onChange={()=>Setrecruiter(false)}
 							></input>
 							<label for="seeker" className="label_radio">
 								I'm a Job Seeker
