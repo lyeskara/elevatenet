@@ -35,7 +35,7 @@ function Profile() {
 	};
 	useEffect(() => {
 		getUserData();
-	}, []);
+	}, [auth]);
 
 	return (
 		//Profile card

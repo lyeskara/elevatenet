@@ -17,6 +17,9 @@ import EditProfile from "./components/ProfileInfo/EditProfile";
 import CreateNewPosting from "./components/Jobs/CreateNewPosting";
 import Feed from "./components/UserFeedPage/Feed";
 import CreatPost from "./components/UserFeedPage/CreatPost";
+import RequestsPage from "./components/connection/RequestsPage";
+import ConnectionPage from "./components/connection/ConnectionPage";
+
 
 function App() {
 	return (
@@ -39,6 +42,9 @@ function App() {
 				<Route path="/" element={<Linkedin />} />
 				<Route path="/SignIn" element={<SignIn />} />
 				<Route path="/JoinNow" element={<JoinNow />} />
+				<Route path="/requests" element={<Protection><RequestsPage/></Protection>}></Route>
+				<Route path="/connections" element={<Protection><ConnectionPage/></Protection>}></Route>
+
 				<Route
 					path="/userfeed"
 					element={

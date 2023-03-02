@@ -30,7 +30,7 @@ function OtherUsersProfile() {
 
   const handlefollow = async ()=>{
 
-    const followRef = collection(db,'follows');
+    const followRef = collection(db,'connection_requests');
     const authdoc = doc(followRef,currId)
     const array =[]
     const addDoc = await getDocs((followRef)).then((word)=>{
@@ -39,14 +39,15 @@ function OtherUsersProfile() {
        })
        const condition = array.includes(authdoc.id)
          if(!condition){
-          setDoc(doc(followRef, currId), {followd:[followedId]});
+          setDoc(doc(followRef, currId), {requests
+            :[followedId]});
          }
          else{
          const getFollowers = getDoc(authdoc).then((document)=>{
-          const followedUsers = document.data().followd;
+          const followedUsers = document.data().requests;
           if(!followedUsers.includes(followedId)){
             followedUsers.push(followedId)
-            return updateDoc(doc(followRef, currId), {...document.data(), followd: followedUsers})
+            return updateDoc(doc(followRef, currId), {...document.data(), requests : followedUsers})
         }else{
           console.log("already followed!")
         }
