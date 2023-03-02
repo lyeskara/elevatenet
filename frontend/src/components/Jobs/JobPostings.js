@@ -5,7 +5,7 @@
 //And lastly is displays all the job postings created
 
 import React, { useEffect, useState } from "react";
-import { collection, getDoc, doc, onSnapshot, getDocs } from "firebase/firestore";
+import { collection, getDoc, doc, onSnapshot, getDocs, deleteDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import Card from "react-bootstrap/Card";
 import "../../styles/JobPostings.css";
@@ -13,6 +13,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+
 
 function JobPostings() {
 	const handleClick = () => {
@@ -22,6 +24,31 @@ function JobPostings() {
 	const handleClickJobPostings = () => {
 		window.location.href = '/JobPostings';
 	  };
+	//handles the delete button to delete that job posting document from the posting collection on firebase
+	const handleDelete = async(id) =>{
+		try {
+			await deleteDoc(doc(db, "posting", id));
+			window.location.reload(); // Reload the page after deleting the post
+		  } catch (error) {
+			console.error("Error deleting document: ", error);
+		  }
+	};
+	//handle the save when editing the job posting
+	const handleSave = async (id) => {
+		const jobTitle = document.getElementById('job_title').value;
+		const company = document.getElementById('company').value;
+		const description = document.getElementById('description').value;
+		await updateDoc(doc(db, "posting", id), {
+			job_title: jobTitle,
+			company: company,
+			description: description
+		});
+		setShowModal(false);
+		window.location.reload();
+	}
+	//const & states for editing the job posting
+	const [showModal, setShowModal] = useState(false);
+	const [currentJob, setCurrentJob] = useState({});
 //=================================================================================================================
 	const [posts, setPosts] = useState([]);
 
@@ -63,8 +90,20 @@ function JobPostings() {
 						{posts.map((data) => (
 							<div className="post-content" key={data.id}>
 								<Card className="card">
-									<h5>{data.job_title}</h5>
-									<hr></hr>
+									<div className="row">
+										<div className="col-sm-8">
+											<h5>{data.job_title}</h5>
+										</div>
+										<div className="col-sm-4 d-flex justify-content-end align-items-center">
+											<Button variant="primary" className="btn-sm" style={{backgroundColor:'#27746a'}} onClick={() => {setCurrentJob(data); setShowModal(true)}}>
+												Edit
+											</Button>
+											<Button variant="outline-danger" className="btn-sm" style={{backgroundColor:'white', color:'#ff7a7a', border:'2px solid #ff7a7a'}} onClick={() => handleDelete(data.id)}>
+												Delete
+											</Button>
+										</div>
+									</div>
+									<hr />
 									<h6>{data.company}</h6>
 									<p>{data.description}</p>
 									{/* <p>{data.deadline}</p> */}
@@ -73,8 +112,42 @@ function JobPostings() {
 						))}
 				</Col>
 			</Row>
+			
+			{/* the pop up that comes out when clicking on edit button */}
+			<Modal show={showModal} onHide={() => setShowModal(false)}>
+				<Modal.Header closeButton>
+					<Modal.Title>Edit Job Posting</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					<form>
+						<div className="form-group">
+							<label htmlFor="job_title">Job Title:</label>
+							<input type="text" className="form-control" id="job_title" defaultValue={currentJob.job_title} />
+						</div>
+						<div className="form-group">
+							<label htmlFor="company">Company:</label>
+							<input type="text" className="form-control" id="company" defaultValue={currentJob.company} />
+						</div>
+						<div className="form-group">
+							<label htmlFor="description">Description:</label>
+							<textarea className="form-control" id="description" rows="3" defaultValue={currentJob.description}></textarea>
+						</div>
+					</form>
+				</Modal.Body>
+				<Modal.Footer>
+					<Button variant="secondary" onClick={() => setShowModal(false)}>
+						Close
+					</Button>
+					<Button variant="primary" onClick={() => handleSave(currentJob.id)}>
+						Save Changes
+					</Button>
+				</Modal.Footer>
+			</Modal>
+
 		</Container>
+	
 	);
+	
 }
 
 export default JobPostings;
