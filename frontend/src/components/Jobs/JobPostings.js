@@ -5,7 +5,7 @@
 //And lastly is displays all the job postings created
 
 import React, { useEffect, useState } from "react";
-import { collection, getDoc, doc, onSnapshot, getDocs } from "firebase/firestore";
+import { collection, getDoc, doc, onSnapshot, getDocs, deleteDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import Card from "react-bootstrap/Card";
 import "../../styles/JobPostings.css";
@@ -22,6 +22,15 @@ function JobPostings() {
 	const handleClickJobPostings = () => {
 		window.location.href = '/JobPostings';
 	  };
+	//handles the delete button to delete that job posting document from the posting collection on firebase
+	const handleDelete = async(id) =>{
+		try {
+			await deleteDoc(doc(db, "posting", id));
+			window.location.reload(); // Reload the page after deleting the post
+		  } catch (error) {
+			console.error("Error deleting document: ", error);
+		  }
+	};
 //=================================================================================================================
 	const [posts, setPosts] = useState([]);
 
@@ -71,7 +80,7 @@ function JobPostings() {
 											<Button variant="primary" className="btn-sm" style={{backgroundColor:'#27746a'}}>
 												Edit
 											</Button>
-											<Button variant="outline-danger" className="btn-sm" style={{backgroundColor:'white', color:'#ff4336', border:'2px solid #ff4336'}}>
+											<Button variant="outline-danger" className="btn-sm" style={{backgroundColor:'white', color:'#ff7a7a', border:'2px solid #ff7a7a'}} onClick={() => handleDelete(data.id)}>
 												Delete
 											</Button>
 										</div>
