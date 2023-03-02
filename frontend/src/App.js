@@ -21,6 +21,8 @@ import ConnectionNetwork from "./components/Network/ConnectionNetwork";
 import GroupNetwork from "./components/Network/GroupNetwork";
 import Event from "./components/Network/Event";
 import PendingRequests from "./components/Network/PendingRequests";
+import RequestsPage from "./components/connection/RequestsPage";
+import ConnectionPage from "./components/connection/ConnectionPage";
 
 function App() {
   return (
@@ -43,6 +45,8 @@ function App() {
         <Route path="/" element={<Linkedin />} />
         <Route path="/SignIn" element={<SignIn />} />
         <Route path="/JoinNow" element={<JoinNow />} />
+        <Route path="/requests" element={<Protection><RequestsPage/></Protection>}></Route>
+				<Route path="/connections" element={<Protection><ConnectionPage/></Protection>}></Route>
         <Route
           path="/userfeed"
           element={
@@ -75,6 +79,7 @@ function App() {
       </Routes>
     </UserAuthContextProvider>
   );
+
 }
 
 export default App;
