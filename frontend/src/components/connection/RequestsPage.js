@@ -83,6 +83,7 @@ function handleConnect(userId){
         updateDoc(doc(dbRef, userId), {...document.data(), requests: updatedArray} )
       }
     })
+    SetUserData(UserData.filter((element)=>element.id !== userId))
     }
 
 function handleCancel(userId) {
