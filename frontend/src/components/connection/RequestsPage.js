@@ -5,11 +5,10 @@ import { useEffect, useState} from 'react'
     
     const [Users,SetUsers]= useState([])
     const [UserData, SetUserData] = useState([])
-
+    const [requests,Setrequests] = useState([])
     const currentId = auth.currentUser.uid;
     const dbRef = collection(db, 'connection_requests');
     const profileRef = collection(db, 'users_information')
-
      useEffect(() => {
       
         const q = query(dbRef, where('requests', 'array-contains', currentId));
@@ -40,7 +39,8 @@ import { useEffect, useState} from 'react'
             })
          })
       }
-    ,[Users])
+    ,[Users]);
+
      
 function handleConnect(userId){
 
@@ -79,7 +79,6 @@ function handleConnect(userId){
       if(document.exists()){
         const array = document.data().requests
         const updatedArray = array.filter((id)=> id !== currentId)
-        console.log(updatedArray)
         updateDoc(doc(dbRef, userId), {...document.data(), requests: updatedArray} )
       }
     })
@@ -91,14 +90,45 @@ function handleCancel(userId) {
         if(document.exists()){
           const array = document.data().requests
           const updatedArray = array.filter((id)=> id !== currentId)
-          console.log(updatedArray)
           updateDoc(doc(dbRef, userId), {...document.data(), requests: updatedArray} )
         }
       })
       SetUserData(UserData.filter((element)=>element.id !== userId))
 }
-      
+useEffect(()=>{
+    getDoc(doc(dbRef,currentId)).then((user)=>{
+       const ReqArray = user.data().requests
+       ReqArray.forEach((id)=>{
+        getDoc(doc(profileRef,id)).then((other)=>{
+            const {firstName,lastName} = other.data()
+            const otherId = other.id
+            const set = new Set();
+            set.add({id,firstName,lastName})
+            const array = []
+            set.forEach((element)=>{
+                array.push(element)
+            })
+                Setrequests(array);
+            
+        })
+       })
+    })
+  },[]);
+
+  function handleWithdraw(userId){
+    getDoc(doc(dbRef,currentId)).then(user=>{
+   if(user.exists()){
+        const RequestArray = user.data().requests
+        const FilteredArray = RequestArray.filter((id)=>id !== userId)
+        console.log(FilteredArray)
+        updateDoc(doc(dbRef,currentId),{...user.data(), requests: FilteredArray} )
+   }
+    });
+    Setrequests(requests.filter((element)=>element.id !== userId))
+
+  }
       return (
+        <>
         <div>
       {UserData.map((user) => (
         <div key={user.id}>
@@ -108,6 +138,16 @@ function handleCancel(userId) {
         </div>
       ))}
     </div>
+     <div>
+     {requests.map((user) => (
+       <div key={user.id}>
+         <p>{user.firstName} {user.lastName}</p>
+         <button onClick={()=>{handleWithdraw(user.id)}} >Withdraw</button>
+       </div>
+     ))}
+   </div>
+   </>
+
       );
 }
 
