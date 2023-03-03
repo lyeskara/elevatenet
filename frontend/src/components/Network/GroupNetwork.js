@@ -11,6 +11,10 @@ import "../../styles/network.css";
 
 function GroupNetwork() {
   
+  //Redirect to the Create Group page
+  const handleClick = () => {
+    window.location.href = '/CreateGroup';
+  };
 
   return (
     <>
@@ -35,7 +39,7 @@ function GroupNetwork() {
             <Card className="card">
               <div className="containRequest">
                 <h5 className="requests">Groups</h5>
-                <Button className="create_Group_Button">Create New Group</Button>
+                <Button className="create_Group_Button" onClick={handleClick}>Create New Group</Button>
               </div>
             </Card>
             <Card>
