@@ -23,8 +23,19 @@
 .text {
   flex: 2;
   background-color: white;
-  /* add any other styles you need for the messages */
   font-size: 30px;
+  padding: 20px;
+}
+
+.text p {
+  border: 1px solid black;
+  border-radius: 20px;
+  color: white;
+  background-color: rgb(7, 80, 19); /* Green */
+  padding: 20px;
+  margin: 20px;
+  max-width: 40%;
+  
 }
 
 .button {
