@@ -91,13 +91,14 @@ const Message = () =>
       </div>
     
 
-      <h2>Messages</h2>
+      
       <div className="messages">
+      
       <div className='text'>
+      <h2>Messages</h2>
       {messages.map((msg, index) => (
         <p key={index}>{msg.text}</p>
       ))}
-      </div>
       <form onSubmit={handleSubmit} className="button">
         <input
           type="text"
@@ -108,6 +109,8 @@ const Message = () =>
         />
         <button type="submit">Send</button>
       </form>
+      </div>
+      
       
       
       </div>

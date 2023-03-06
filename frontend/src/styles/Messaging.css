@@ -1,27 +1,43 @@
 .container {
     display: flex;
     flex-direction: row;
-    border: 1px solid black;
+    border: 1px solid rgb(88, 88, 88);
+    background-color: white;
     position: relative;
+    border-radius: 10px;
+    padding: 70px;
+    margin: 70px;
 
   }
   
   .chat-list {
     flex: 1;
     /* add any other styles you need for the chat list */
-    border: 1px solid red;
+    background-color: white;
+    
 
   }
   
+  .text {
+    flex: 2;
+    background-color: white;
+    /* add any other styles you need for the messages */
+    border: 1px solid rgb(2, 2, 2);
+    padding: 20px 100px;
+    
+  }
+
   .messages {
     flex: 2;
+    background-color: white;
     /* add any other styles you need for the messages */
-    border: 1px solid purple;
-
+   
+    padding: 0px;
+    
   }
 
   .button{
-    background-color: black; /* Green */
+    background-color: rgb(7, 80, 19); /* Green */
     position: absolute;
     bottom: 0;
   }
