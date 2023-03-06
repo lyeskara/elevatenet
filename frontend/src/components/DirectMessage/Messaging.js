@@ -88,18 +88,16 @@ const Message = () =>
           <li>Person 2:<a href="" onClick={handlePersonClick} data-recipient-id="v7nXsR4QSiUi5fLgapTsXtmJOF62">v7nXsR4QSiUi5fLgapTsXtmJOF62</a></li>{/*fatema*/}
           <li>Person 3:<a href="" onClick={handlePersonClick} data-recipient-id="5XAWmTROsXdhyqsqClXpfnXPIXm1">5XAWmTROsXdhyqsqClXpfnXPIXm1</a></li>{/*alan*/}
         </ul>
-      </div>
-    
+        </div>
 
-      
-      <div className="messages">
-      
-      <div className='text'>
+  <div className="messages">
+    <div className="text">
       <h2>Messages</h2>
       {messages.map((msg, index) => (
         <p key={index}>{msg.text}</p>
       ))}
-      <form onSubmit={handleSubmit} className="button">
+
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
           value={message}
@@ -109,12 +107,9 @@ const Message = () =>
         />
         <button type="submit">Send</button>
       </form>
-      </div>
-      
-      
-      
-      </div>
-      </div>
+    </div>
+  </div>
+</div>
     </>
   );
 };
