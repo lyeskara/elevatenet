@@ -1,10 +1,10 @@
 import React from "react";
-import './styles/Post.css"';
+import '../styles/post.css';
 import like from '../images/like.png';
 import comment from '../images/comment.png';
 
 
-function Post({ name, description, message, photo }) {
+function Post({ name, description, message, photo,image}) {
   return (
     <div className="post">
       <div className="post-header">
@@ -20,6 +20,8 @@ function Post({ name, description, message, photo }) {
       </div>
       <div className="post-body">
         <p>{message}</p>
+        {image && <img src={image} alt="post-image" />} {/* Render image if it exists */}
+        
       </div>
 
       <div className="post-buttons">

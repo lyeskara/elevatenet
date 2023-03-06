@@ -1,49 +1,117 @@
 .post {
-    background-color: white;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    -webkit-box-shadow: 0px 3px 11px 1px rgba(0, 0, 0, 0.1);
-    box-shadow: 0px 2px 8px 1px rgba(0, 0, 0, 0.1);
-  }
+  background-color: white;
+  padding: 2px;
+  margin-bottom: 5px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0px 2px 1px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 2px 8px 1px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
   
-  .post-header {
-    display: flex;
-    margin-bottom: 8px;
-  }
-  .post-info {
-    margin-left: 8px;
-  }
+}
+
+.post-header {
+  margin-top: 40px;
+  margin-left: 8%;
+    margin-right: 25%;
+  display: flex;
+  margin-bottom: 8px;
+}
+.post-header img {
+  width: 70px;
+  height: 70px;
+}
+
+
+.post-info {
+  margin-left: 8px;
+}
+
+.post-info > p {
+  font-size: 10px;
+  color: gray;
+}
+
+.post-body {
+  overflow-wrap: anywhere;
+}
+
+.post-info > h2 {
+  font-size: 20px;
+}
+
+.post-buttons button {
+  font-size: 20px;
+  border: none;
+  margin-left: 25%;
+  margin-right: 25%;
+  margin: 0 3px;
+  background-color: transparent;
+  font-size: 10px;
+  padding: 2px;
+  width: 1%;
   
-  .post-info > p {
-    font-size: 10px;
-    color: gray;
-  }
-  
-  .post-body {
-    overflow-wrap: anywhere;
-  }
-  
-  .post-info > h2 {
-    font-size: 13px;
-  }
-  .post-buttons button {
-    font-size: 10px;
-    padding: 3px;
-  }
-  .post-buttons {
-    display: flex;
-    justify-content: space-evenly;
-  }
-  .post-buttons .like {
-    color: #006400;
-  }
-  
-  .post-buttons .comment {
-    color: #6e706e;
-  }
-  
-  
-  
-  
-  
+}
+
+.post-buttons {
+  font-size: 5rem !important;
+  transform: scale(0.5);
+  border: none;
+  margin: 0 1px;
+  background-color: transparent;
+  display: flex;
+  justify-content: space-evenly;
+}
+.post-buttons button p {
+  margin-left: 0.5rem;
+  Font-size: 4 rem;
+}
+
+.post-buttons .like {
+  border: none;
+  margin: 0 1px;
+  background-color: transparent;
+  color: #006400;
+}
+
+.post-buttons .comment {
+  font-size: 20px;
+  color: #6e706e;
+}
+.post-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.post-buttons button {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  margin-right: 0.5rem; 
+}
+
+.post-buttons button:last-child {
+  margin-right: 0.5rem; /* Remove margin from the last button */
+}
+
+.post-buttons button p {
+  margin-left: 0.5rem;
+}
+
+.post-body img {
+  width: 100%;
+  height: auto;
+}
+.post-buttons button {
+  display: flex;
+  align-items: center;
+}
+
+.post-buttons button img {
+  margin-right: 5px;
+}
+
+.post-buttons button p {
+  margin: 0;
+  font-size: 20px;
+}

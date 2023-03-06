@@ -1,59 +1,70 @@
 import React, { useState } from 'react';
-import './styles/Feed.css';
-import Post from '../Post/Post';
-import photo from '../images/logo.png';
+import '../styles/feed.css';
+import Post from './Post';
+import photo from '../images/photo.png';
 import video from '../images/video.png';
 import profile1 from '../images/profile1.png';
+import post1 from '../images/post1.png';
 import eventicon from '../images/eventicon.png';
 import personicon from '../images/personicon.png';
-import FlipMove from 'react-flip-move';
-
-
 
 function Feed() {
   const [input, setInput] = useState('');
   const posts = [
-    { id: 1, data: { name: 'CloudFare', description: 'Storage Company', message: 'Today, we would like to highlight two of the employees promoted respectively to the positions of EMEA Sales Executive and Team Lead in Paris.', photo: profile1 } },   
+    {
+      id: 1,
+      data: {
+        name: ' Cloud Fare',
+        description: 'Storage Company',
+        message: 'Today, we would like to highlight two of the employees promoted respectively to the positions of EMEA Sales Executive and Team Lead in Paris.',
+        photo: profile1,
+        image: post1 // Add image property here
+      }
+    }
   ];
 
   return (
     <div className="feed">
       <div className="feed-inputContainer">
         <div className="feed-input">
-          <img src={personicon} alt="person-icon" />
+         
+        <button onClick={() => window.location.href = 'CreatePost'}> 
+         <img src={personicon} alt="person-icon" /> 
+      </button>
+ 
 
-          <form>
-            <input value={input} onChange={e => setInput(e.target.value)} type="text" placeholder= "Create a post" />
+          <form class="create-post">
+            <input value={input} onChange={e => setInput(e.target.value)} type="text" placeholder="Create a post" />
           </form>
-
         </div>
-        <div className="feed-inputOption">
+
+        <div className="feedinputOption">
           <button>
             <img src={photo} alt="photo" />
           </button>
+          <button>
+            <img src={eventicon} alt="eventicon" />
+          </button>
+
 
           <button>
             <img src={video} alt="video" />
           </button>
 
-          <button>
-            <img src={eventicon} alt="eventicon" />
-          </button>
+          
         </div>
       </div>
 
-    
-      <FlipMove>
-        {posts.map(({ id, data: { name, description, message, photo}}) => (
-          <Post 
-            key={id}
-            name={name}
-            description={description}
-            message={message}
-            photo={photo}
-          />
-        ))}
-      </FlipMove>
+      {posts.map(post => (
+        <Post
+          key={post.id}
+          name={post.data.name}
+          description={post.data.description}
+          message={post.data.message}
+          photo={post.data.photo}
+          image={post.data.image} // Pass image property to Post component
+        />
+      ))}
     </div>
   );
 }
