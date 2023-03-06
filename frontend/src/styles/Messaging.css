@@ -1,14 +1,16 @@
 .container {
-    display: flex;
-    flex-direction: row;
- 
-    background-color: white;
-    position: relative;
-    border-radius: 30px;
-    padding: 30px;
-    margin: 70px;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid rgb(88, 88, 88);
+  background-color: white;
+  position: relative;
+  border-radius: 20px;
+  padding: 30px; /* decrease the padding */
+  margin-top: 100px;
+  margin-left: 100px;
+  margin-right: 100px; /* decrease the margin */
+}
 
-  }
   
   .chat-list {
     flex: 0.5;
@@ -23,10 +25,12 @@
     background-color: white;
     /* add any other styles you need for the messages */
     border: 1px solid rgb(2, 2, 2);
-    padding: 20px 100px;
-    
-    padding: 70px 70px;
-    margin: -30px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    padding-top: 10px;
+    padding-left: 15px;
+    padding-right: 210px ;
+    margin: -25px;
     
   }
 
@@ -37,3 +41,9 @@
     bottom: 0;
   }
  
+
+  .divider {
+    border-left: 1px solid rgb(88, 88, 88);
+    height: 100%;
+    margin: 0 20px;
+  }

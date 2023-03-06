@@ -89,7 +89,7 @@ const Message = () =>
           <li>Person 3:<a href="" onClick={handlePersonClick} data-recipient-id="5XAWmTROsXdhyqsqClXpfnXPIXm1">5XAWmTROsXdhyqsqClXpfnXPIXm1</a></li>{/*alan*/}
         </ul>
         </div>
-
+        <div className="divider"></div>
   <div className="messages">
     <div className="text">
       <h2>Messages</h2>
