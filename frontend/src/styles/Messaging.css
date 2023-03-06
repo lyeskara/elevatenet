@@ -1,49 +1,74 @@
 .container {
   display: flex;
   flex-direction: row;
-  border: 1px solid rgb(88, 88, 88);
   background-color: white;
   position: relative;
+  
   border-radius: 20px;
-  padding: 30px; /* decrease the padding */
-  margin-top: 100px;
-  margin-left: 100px;
-  margin-right: 100px; /* decrease the margin */
+  padding: 15px;
+  margin-top: 50px;
+  margin-left: 50px;
+  margin-right: 50px;
+  padding-bottom: 50px;
+  
 }
 
+.chat-list {
+  flex: 0.5;
+  background-color: white;
+  font-size: 20px;
+  /* add any other styles you need for the chat list */
+}
+
+.text {
+  flex: 2;
+  background-color: white;
+  /* add any other styles you need for the messages */
+  font-size: 30px;
+}
+
+.button {
+  background-color: rgb(7, 80, 19); /* Green */
+  position: absolute;
+  bottom: 0;
+  padding: 10px 20px;
+}
+
+.divider {
+  margin: 1px 100px;
+  border-right: 1px solid rgb(0, 0, 0);
   
-  .chat-list {
-    flex: 0.5;
-    /* add any other styles you need for the chat list */
-    background-color: white;
-    
+}
 
-  }
-  
-  .text {
-    flex: 2;
-    background-color: white;
-    /* add any other styles you need for the messages */
-    border: 1px solid rgb(2, 2, 2);
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    padding-top: 10px;
-    padding-left: 15px;
-    padding-right: 210px ;
-    margin: -25px;
-    
-  }
+.text input[type="text"] {
+  width: 100%;
+  height: 50px;
+  padding: 100px;
+  font-size: 16px;
+  margin-top: 5px;
+  border-radius: 5px;
+  background-color: rgb(209, 209, 209);
+  border: 1px solid #ffffff;
+}
 
+.text form {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #000000;
+  padding-top: 10px;
+  position: relative; /* add this */
+}
 
-  .button{
-    background-color: rgb(7, 80, 19); /* Green */
-    position: absolute;
-    bottom: 0;
-  }
- 
-
-  .divider {
-    border-left: 1px solid rgb(88, 88, 88);
-    height: 100%;
-    margin: 0 20px;
-  }
+.text button[type="submit"] {
+  height: 50px;
+  padding: 10px;
+  font-size: 16px;
+  background-color: rgb(7, 80, 19);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  position: absolute; /* add this */
+  bottom: 0; /* add this */
+  right: 0; /* add this */
+  margin: 10px; /* add this */
+}
