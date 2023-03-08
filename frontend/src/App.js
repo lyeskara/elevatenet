@@ -23,6 +23,8 @@ import Event from "./components/Network/Event";
 import PendingRequests from "./components/Network/PendingRequests";
 import RequestsPage from "./components/connection/RequestsPage";
 import ConnectionPage from "./components/connection/ConnectionPage";
+import FeedPage from './components/FeedPage';
+import PostPage from './components/PostPage';
 
 function App() {
   return (
@@ -63,6 +65,8 @@ function App() {
             </Protection>
           }
         ></Route>
+           <Route path="/FeedPage" element={<FeedPage/>} />
+        <Route path="/PostPage" element={<PostPage/>} />
         <Route path="/EditProfile" element={<EditProfile />} />{" "}
         <Route
           path="/user_posts"
