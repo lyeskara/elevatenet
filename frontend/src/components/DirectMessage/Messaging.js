@@ -3,6 +3,7 @@ import { collection, addDoc, onSnapshot, serverTimestamp, query, orderBy, where 
 import { auth } from "../../firebase";
 import { db } from '../../firebase';
 import "../../styles/Messaging.css";
+//import { Navbar, Nav, Container } from "react-bootstrap";
 
 
 // useState is used to update the messages with the most recent one
