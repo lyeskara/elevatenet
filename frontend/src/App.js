@@ -14,8 +14,11 @@ import Profile from './components/ProfileInfo/Profile';
 import Protection from './context/Protection'
 import OtherUsersProfile from './components/ProfileInfo/OtherUsersProfile';
 import { UserAuthContextProvider } from './context/UserAuthContext';
+
+// review from fatema: feed and post are not in components it is in components/userfeedpage so this creates errors
 import Feed from './components/Feed';
 import Post from './components/Post';
+// this does not exist so it creates errors 
 import CreatePost from "./components/CreatePost";
 
 
