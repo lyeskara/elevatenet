@@ -23,6 +23,7 @@ import Event from "./components/Network/Event";
 import PendingRequests from "./components/Network/PendingRequests";
 import RequestsPage from "./components/connection/RequestsPage";
 import ConnectionPage from "./components/connection/ConnectionPage";
+import RecruiterForm from "./components/ProfileInfo/RecruiterFrom";
 
 function App() {
   return (
@@ -32,6 +33,10 @@ function App() {
         <Route
           path="/ProfileForm"
           element={<Protection>{<ProfileForm />}</Protection>}
+        ></Route>
+        <Route
+          path="/RecruiterForm"
+          element={<Protection>{<RecruiterForm />}</Protection>}
         ></Route>
         <Route
           path="/Profile"
