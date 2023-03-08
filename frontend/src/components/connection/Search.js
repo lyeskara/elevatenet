@@ -1,3 +1,17 @@
+/**
+ *this file is responsible of handling search functionality
+ *first imported files are imported
+ *second, variables that handle our inputs are created such as search, result useStates, 
+ * the process goes as follows : a user write a firstname, then an event listener (onchange) set the search state into the input
+ * then with the name stored a query a preformed to fetch all users with that first name and store results inside result variable.
+ * inside the template, we use map to map these results as a user is writing the names, then if a user clicked.
+ * we take that user id and pass it into a decorator which handles dynamic routing, later we redirect to that url which will be another component
+ * that handles displaying other users info dynamically 
+ */
+ 
+
+
+
 import { useEffect, useState } from "react"
 import { getDocs, query ,where,collection} from "firebase/firestore"
 import { db } from "../../firebase"

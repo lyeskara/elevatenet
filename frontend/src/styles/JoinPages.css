@@ -1,0 +1,106 @@
+/*Sign in/sign up page*/
+.sign {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 44px;
+  color: black;
+}
+
+a.password {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #555555;
+}
+
+a.join {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 15px;
+
+  color: #27746a;
+}
+
+.containerForm {
+  margin: 2% auto 20px !important;
+  max-width: 637px !important;
+  padding: 1% 6% 3%;
+
+  background: #ffffff;
+  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+}
+.input_box {
+  background-color: #f3f3f3;
+  border-radius: 6px;
+  max-width: 428px;
+
+  height: 56.95px;
+  border-color: #f3f3f3;
+}
+
+.input_radio {
+  accent-color: #232323;
+  margin: 0 6px 0 6px;
+}
+
+.label_radio{
+  padding: 0 2% 0 2%;
+}
+
+p.line {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #8c8c8c;
+  line-height: 0.1em;
+  margin: 10px 0 20px;
+}
+
+.span_line {
+  background: #fff;
+  padding: 0 20px;
+  color: #8c8c8c;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.sign_button {
+  background: #27746a;
+  border-radius: 6px;
+  max-width: 428px;
+  width: 100%;
+  height: 56.95px;
+  border-color: #27746a;
+  color: white;
+}
+
+.sign_button:hover {
+  background: #27746a;
+  border-color: #27746a;
+}
+.google_button {
+  background: #f3f3f3;
+  border-color: #f3f3f3;
+  color: #393939;
+}
+.google_button:hover {
+  background: #f3f3f3;
+  border-color: #f3f3f3;
+  color: #393939;
+}
+
+@media screen and (max-width: 600px) {
+  img.gif {
+    width: 95%;
+    height: auto;
+  }
+}
