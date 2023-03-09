@@ -5,7 +5,7 @@
 //And lastly is displays all the job postings created
 
 import React, { useEffect, useState } from "react";
-import { collection, getDoc, doc, onSnapshot, getDocs, deleteDoc, updateDoc } from "firebase/firestore";
+import { collection, query,where , getDoc, doc, onSnapshot, getDocs, deleteDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import Card from "react-bootstrap/Card";
 import "../../styles/JobPostings.css";
@@ -14,9 +14,14 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { useHistory } from 'react-router-dom';
 
 
 function JobPostings() {
+	//========================================================================================/========================================================================================
+	
+	//========================================================================================/========================================================================================
+	//handle the button to redirect to the posting creation page
 	const handleClick = () => {
 		window.location.href = '/CreateNewPosting';
 	  };
@@ -49,19 +54,32 @@ function JobPostings() {
 	//const & states for editing the job posting
 	const [showModal, setShowModal] = useState(false);
 	const [currentJob, setCurrentJob] = useState({});
-//=================================================================================================================
 	const [posts, setPosts] = useState([]);
 
 	//this use effect() method is used to get the data from the database, native to react
 	useEffect(() => {
-		const getData = async () =>{
-		const postingData = await getDocs(collection(db, "posting"));
-		setPosts(postingData.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
-		console.log(postingData);
+		const getData = async () => {
+		  const user = auth.currentUser;
+		  if (user) {
+			const email = user.email;
+			const q = query(collection(db, "posting"), where("created_by", "==", email));
+			const postingData = await getDocs(q);
+			setPosts(postingData.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+			console.log(postingData);
+		  }
 		};
 		getData();
-	}, []);	  
-//=================================================================================================================
+	  },
+	
+	
+	
+	[]);	  
+
+
+
+
+
+
 	return (
 		<Container className="container d-flex justify-content-center mx-auto">
 			<Row className="gap-6 d-flex justify-content-center">
@@ -138,7 +156,7 @@ function JobPostings() {
 					<Button variant="secondary" onClick={() => setShowModal(false)}>
 						Close
 					</Button>
-					<Button variant="primary" onClick={() => handleSave(currentJob.id)}>
+					<Button variant="primary" onClick={() => handleSave(currentJob.id)} style={{ backgroundColor: "#27746a" }}>
 						Save Changes
 					</Button>
 				</Modal.Footer>
