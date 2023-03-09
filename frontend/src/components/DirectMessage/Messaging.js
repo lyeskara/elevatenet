@@ -95,7 +95,10 @@ const Message = () => {
             {messages.map((msg, index) => (
         <p key={index} 
         //sender and receiver have different background colors
-        style={{backgroundColor: msg.sender === currentUser.uid ? 'rgb(7, 80, 19)' : 'grey'}}>
+        style={{
+          backgroundColor: msg.sender === currentUser.uid ? 'rgb(7, 80, 19)' : 'grey',
+          textAlign: msg.sender === currentUser.uid ? 'right' : 'left'
+          }}>
           {msg.text}
           </p>
       ))}
