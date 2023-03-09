@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { collection, addDoc, onSnapshot, serverTimestamp, query, orderBy, where } from 'firebase/firestore';
+import { collection, addDoc, onSnapshot, serverTimestamp, query, orderBy } from 'firebase/firestore';
 import { auth } from "../../firebase";
 import { db } from '../../firebase';
 import "../../styles/Messaging.css";
@@ -28,10 +28,10 @@ const Message = () => {
   useEffect(() => {
     const senderId = currentUser.uid;
     if (recipientId !== null) {
-      const q = query(messagesRef,
-        where('sender', '==', senderId),
-        where('recipient', '==', recipientId),
-        orderBy('createdAt'));
+      // Generate a unique conversation ID based on the IDs of the two users
+      const conversationId = [senderId, recipientId].sort().join('-');
+      const conversationRef = collection(messagesRef, conversationId, 'conversation');
+      const q = query(conversationRef, orderBy('createdAt'));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const messagesArray = [];
         querySnapshot.forEach((doc) => {
@@ -49,10 +49,12 @@ const Message = () => {
       text: messageRef.current.value,
       createdAt: serverTimestamp(),
       sender: currentUser.uid,
-      recipient: recipientId,
     };
     try {
-      addDoc(messagesRef, data);
+      // Generate a unique conversation ID based on the IDs of the two users
+      const conversationId = [currentUser.uid, recipientId].sort().join('-');
+      const conversationRef = collection(messagesRef, conversationId, 'conversation');
+      addDoc(conversationRef, data);
       setMessages([...messages, data]);
       setMessage('');
     } catch (e) {
