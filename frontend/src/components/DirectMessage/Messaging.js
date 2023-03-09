@@ -93,8 +93,12 @@ const Message = () => {
           <div className="text">
             <h2>Messages</h2>
             {messages.map((msg, index) => (
-              <p key={index}>{msg.text}</p>
-            ))}
+        <p key={index} 
+        //sender and receiver have different background colors
+        style={{backgroundColor: msg.sender === currentUser.uid ? 'rgb(7, 80, 19)' : 'grey'}}>
+          {msg.text}
+          </p>
+      ))}
             <form onSubmit={handleSubmit}>
               <input
                 type="text"
