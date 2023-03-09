@@ -29,39 +29,97 @@ h5.NetworkTitle {
 .connectButton {
   justify-content: center;
   align-items: center;
-  width: 50%;
   height: 40px;
-  
+  margin-left: 2%;
 }
 
 .connectButton,
 .connectButton:hover {
-  background-color: white;
-  color: #27746A;
-  border-color: #27746A;
+  color: #fff;
+  background-color: #27746a !important;
+  border-color: #27746a !important;
+  box-shadow: 0 0 0 0.2rem white !important;
 }
 .connectButton:active,
 .connectButton:focus {
-  color: #fff;
-  background-color: #27746A !important;
-  border-color: #27746A !important;
-  box-shadow: 0 0 0 0.2rem #27746A !important;
+  
+  background-color: white;
+  color: white;
+  border-color: #27746a;
 }
 
-.create_Group_Button, .create_Group_Button:hover{
-    color: #fff;
-    background-color: #27746A;
-    border-color: #27746A ;
-   
+.create_Group_Button,
+.create_Group_Button:hover {
+  color: #fff;
+  background-color: #27746a;
+  border-color: #27746a;
 }
 .create_Group_Button:active,
 .create_Group_Button:focus {
   color: #fff;
-  background-color: #27746A !important;
-  border-color: #27746A !important;
-  box-shadow: 0 0 0 0.2rem #27746A !important;
+  background-color: #27746a !important;
+  border-color: #27746a !important;
+  box-shadow: 0 0 0 0.2rem #27746a !important;
 }
 
-h5.time{
-    color: #27746A;
+h5.time {
+  color: #27746a;
+}
+
+
+.card_request {
+  background: #fff;
+  padding: 10px 30px 20px;
+  margin: 2rem 0;
+  box-shadow: 0 4px 2px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.link_selected {
+  color: #27746a;
+}
+
+.ignore_button,
+.ignore_button:hover {
+  background-color: white;
+  color: #888888;
+  border-color: #888888;
+}
+.ignore_button:active,
+.ignore_button:focus {
+  color: #fff;
+  background-color: #888888 !important;
+  border-color: #888888 !important;
+  box-shadow: 0 0 0 0.2rem white !important;
+}
+
+.right_button{
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.connection_name {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+
+  color: #3F3F3F;
+}
+
+.trash_button,
+.trash_button:hover {
+  background-color: white;
+  color: #888888;
+  border-color: #888888;
+}
+.trash_button:active,
+.trash_button:focus {
+  color: #888888;
+  background-color: #F3F3F3 !important;
+  border-color: #888888 !important;
+  box-shadow: 0 0 0 0.2rem white !important;
+}
+.trash_button{
+  margin-left: auto;
+  margin-right: 0;
 }

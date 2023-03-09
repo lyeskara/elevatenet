@@ -15,7 +15,7 @@ import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 import backward from ".././../images/backward.png";
 import "../../styles/network.css";
 import { Link, useNavigate } from "react-router-dom";
-function RequestsPage() {
+function RequestSent() {
   const [Users, SetUsers] = useState([]);
   const [UserData, SetUserData] = useState([]);
   const [requests, Setrequests] = useState([]);
@@ -161,49 +161,40 @@ function RequestsPage() {
       <div className="contain">
         <Row className="gap-5">
           <center>
+            {" "}
             <Col xs={6} md={6}>
               <Card className="card">
                 <div className="containRequest">
                   <Link to="/connections">
                     <img src={backward} alt="back" />
                   </Link>
-                  <h5 className=" NetworkTitle">Manage Invitations </h5>
+                  <h5 className=" NetworkTitle">Manage Invitations</h5>
                 </div>
                 <br></br>
                 <div className="containRequest">
-                  <Link to="/requests" className="link_selected">
-                    Received
+                  <Link to="/requests">Received</Link>
+                  <Link className="link_selected" to="/RequestSent">
+                    Sent
                   </Link>
-                  <Link to="/RequestSent">Sent</Link>
                 </div>
                 <hr></hr>
-                <div >
-                  {UserData.map((user) => (
+                <div>
+                  {requests.map((user) => (
                     <div className="containRequest" key={user.id}>
                       <p className="connection_name">
                         {user.firstName} {user.lastName}
                       </p>
-                      <div className="right_button">
-                        <Button
-                        className="ignore_button"
+                      <Button
+                        className="right_button ignore_button"
                         onClick={() => {
-                          handleCancel(user.id);
+                          handleWithdraw(user.id);
                         }}
                       >
-                        Ignore
+                        Withdraw
                       </Button>
-                      <Button
-                        className="connectButton"
-                        onClick={() => handleConnect(user.id)}
-                      >
-                        Accept
-                      </Button>
-                      
-                      <hr></hr>
-                        </div>
-                      
                     </div>
                   ))}
+                  <hr></hr>
                 </div>
               </Card>
             </Col>
@@ -214,4 +205,4 @@ function RequestsPage() {
   );
 }
 
-export default RequestsPage;
+export default RequestSent;

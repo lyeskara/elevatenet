@@ -16,7 +16,7 @@ function PendingRequests() {
             <Col xs={6} md={8}>
               <Card className="card">
                 <div className="containRequest">
-                <Link to="/ConnectionNetwork">
+                <Link to="/connections">
                     <img src={backward} alt="back" />
                   </Link>
                   <h5 className=" NetworkTitle">Manage Invitations</h5>

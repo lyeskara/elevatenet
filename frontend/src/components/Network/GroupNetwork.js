@@ -19,7 +19,7 @@ function GroupNetwork() {
           <Col className="col1" xs={12} md={{ span: 3, offset: 1 }}>
             <Card className="networkcard">
               <h5 className="NetworkTitle">My Network</h5>
-              <Link to="/ConnectionNetwork">
+              <Link to="/connections">
                 <img src={node} alt="node" /> Connections
               </Link>
               <Link to="/GroupNetwork">
