@@ -5,7 +5,7 @@ import gif from "./../images/test.gif";
 function Linkedin() {
 	return (
 		<Container fluid>
-			<div class="container">
+			<div class="container mt-5">
 				<div>
 					<p className="text-center slogan">
 						Bring your career to new <span class="green">heights</span>{" "}

@@ -1,0 +1,67 @@
+.networkcard {
+  box-shadow: 0 4px 2px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  text-align: center;
+}
+.containRequest {
+  display: flex;
+}
+
+.requests {
+  margin-right: auto;
+  padding-top: 1%;
+}
+
+h5.NetworkTitle {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 39px;
+  color: #626262;
+}
+
+.connectCard {
+  outline-style: solid;
+  outline-color: #c7c7c7;
+  outline-width: 1px;
+}
+
+.connectButton {
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 40px;
+  
+}
+
+.connectButton,
+.connectButton:hover {
+  background-color: white;
+  color: #27746A;
+  border-color: #27746A;
+}
+.connectButton:active,
+.connectButton:focus {
+  color: #fff;
+  background-color: #27746A !important;
+  border-color: #27746A !important;
+  box-shadow: 0 0 0 0.2rem #27746A !important;
+}
+
+.create_Group_Button, .create_Group_Button:hover{
+    color: #fff;
+    background-color: #27746A;
+    border-color: #27746A ;
+   
+}
+.create_Group_Button:active,
+.create_Group_Button:focus {
+  color: #fff;
+  background-color: #27746A !important;
+  border-color: #27746A !important;
+  box-shadow: 0 0 0 0.2rem #27746A !important;
+}
+
+h5.time{
+    color: #27746A;
+}
