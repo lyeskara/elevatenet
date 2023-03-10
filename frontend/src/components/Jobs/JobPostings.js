@@ -19,7 +19,12 @@ import { useHistory } from 'react-router-dom';
 
 function JobPostings() {
 	//========================================================================================/========================================================================================
-	
+	// window.onload = function() {
+	// 	location.reload();
+	// }
+	const [isLoaded, setIsLoaded] = useState(false);
+
+
 	//========================================================================================/========================================================================================
 	//handle the button to redirect to the posting creation page
 	const handleClick = () => {
@@ -33,7 +38,6 @@ function JobPostings() {
 	const handleDelete = async(id) =>{
 		try {
 			await deleteDoc(doc(db, "posting", id));
-			//window.location.reload(); // Reload the page after deleting the post
 		  } catch (error) {
 			console.error("Error deleting document: ", error);
 		  }
@@ -49,7 +53,7 @@ function JobPostings() {
 			description: description
 		});
 		setShowModal(false);
-		//window.location.reload();
+
 	}
 	//const & states for editing the job posting
 	const [showModal, setShowModal] = useState(false);
@@ -65,12 +69,18 @@ function JobPostings() {
 			const q = query(collection(db, "posting"), where("created_by", "==", email));
 			const postingData = await getDocs(q);
 			setPosts(postingData.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+			setIsLoaded(true);
 			console.log(postingData);
 		  }
 		};
 		getData();
-	  }, [posts]);
+		// Set up a timer to trigger the getData function every 2 seconds
+		const intervalId = setInterval(getData, 2000);
 
+		// Clean up the interval timer when the component unmounts
+		return () => clearInterval(intervalId);
+	  }, []); // pass an empty dependency array
+	  
 
 
 
@@ -101,29 +111,31 @@ function JobPostings() {
 				{/* CARD FOR JOB POSTINGS */}
 						{/*this map method returns an array with results and the results from this
 						are the data needed that creates a post being job title, company and description*/}
-						{posts.map((data) => (
-							<div className="post-content" key={data.id}>
-								<Card className="card">
-									<div className="row">
-										<div className="col-sm-8">
-											<h5>{data.job_title}</h5>
+						{isLoaded ? (
+							posts.map((data) => (
+								<div className="post-content" key={data.id}>
+									<Card className="card">
+										<div className="row">
+											<div className="col-sm-8">
+												<h5>{data.job_title}</h5>
+											</div>
+											<div className="col-sm-4 d-flex justify-content-end align-items-center">
+												<Button variant="primary" className="btn-sm" style={{backgroundColor:'#27746a'}} onClick={() => {setCurrentJob(data); setShowModal(true)}}>
+													Edit
+												</Button>
+												<Button variant="outline-danger" className="btn-sm" style={{backgroundColor:'white', color:'#ff7a7a', border:'2px solid #ff7a7a'}} onClick={() => handleDelete(data.id)}>
+													Delete
+												</Button>
+											</div>
 										</div>
-										<div className="col-sm-4 d-flex justify-content-end align-items-center">
-											<Button variant="primary" className="btn-sm" style={{backgroundColor:'#27746a'}} onClick={() => {setCurrentJob(data); setShowModal(true)}}>
-												Edit
-											</Button>
-											<Button variant="outline-danger" className="btn-sm" style={{backgroundColor:'white', color:'#ff7a7a', border:'2px solid #ff7a7a'}} onClick={() => handleDelete(data.id)}>
-												Delete
-											</Button>
-										</div>
-									</div>
-									<hr />
-									<h6>{data.company}</h6>
-									<p>{data.description}</p>
-									{/* <p>{data.deadline}</p> */}
-								</Card>
-							</div>
-						))}
+										<hr />
+										<h6>{data.company}</h6>
+										<p>{data.description}</p>
+										{/* <p>{data.deadline}</p> */}
+									</Card>
+								</div>
+							))
+						) : (<p>Loading job postings...</p>)}
 				</Col>
 			</Row>
 			

@@ -20,14 +20,19 @@ import 'firebase/firestore';
 import { useUserAuth } from '../../context/UserAuthContext';
 import { useNavigate } from 'react-router-dom';
 import { collection, setDoc ,doc, addDoc} from 'firebase/firestore';
+import { Spinner } from 'react-bootstrap';
 
 function CreateNewPosting() {
+    const [isLoading, setIsLoading] = useState(false);
 
     const { user } = useUserAuth();
     const navigate =useNavigate();
     const [startDate, setStartDate] = useState(new Date());
     const handleCancel = () => {
-		window.location.href = '/JobPostings';
+		setIsLoading(true);
+        setTimeout(() => {
+        window.location.href = '/JobPostings';
+        }, 2000); // wait for 2 seconds before navigating to simulate a loading screen
 	};
     //fields of posting
     const [postingData, setPostingData] = useState({
@@ -211,12 +216,22 @@ function CreateNewPosting() {
                             {/* BUTTONS TO CANCEL OR POST THE POSITION */}
                             <Row>
                                 <Col className="d-flex justify-content-center">
-                                    <Button variant="outline-secondary" size="lg" block className="w-100" onClick={handleCancel}>
-                                        Cancel
-                                    </Button>
+                                <>
+      {isLoading && <Spinner animation="border" />}
+      <Button
+        variant="outline-secondary"
+        size="lg"
+        block
+        className="w-100"
+        onClick={handleCancel}
+        disabled={isLoading} // disable the button while loading
+      >
+        {isLoading ? 'Loading...' : 'Cancel'}
+      </Button>
+    </>
                                 </Col>
                                 <Col className="d-flex justify-content-center">
-                                    <Button type="submit" variant="primary" size="lg" block className="w-100" style={{backgroundColor:'#27746a'}}>
+                                    <Button type="submit" variant="primary" size="lg" block className="w-100" style={{backgroundColor:'#27746a'}} >
                                         Post
                                     </Button>
                                 </Col>
