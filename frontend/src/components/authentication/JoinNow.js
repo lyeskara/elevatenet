@@ -28,8 +28,11 @@ function JoinNow() {
 						bio: "",
 						workExperience: "",
 						education: "",
-						skills: "",
+						skills: [],
 						languages: "",
+						courses: [],
+						projects: [],
+						volunteering: [],
 					}
 				);
 			});

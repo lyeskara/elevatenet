@@ -78,6 +78,66 @@ function Profile() {
 							<b> {user.contact} </b>
 						</div>
 					</Card>
+					<Card className="connectioncard">
+						<div className="Connections">
+							<h5
+								style={{
+									color: "#626262",
+								}}
+							>
+								{user.connections} <u>Connections</u>
+							</h5>
+						</div>
+					</Card>
+
+					<Card className="recommendationcard">
+						<h5>Recommendation</h5>
+						<hr></hr>
+						<div className="Recommendation">
+							<h5
+								style={{
+									color: "black",
+								}}
+							>
+								<u>Jasmit Kalsi</u>
+							</h5>
+						</div>
+					</Card>
+
+					<Card className="awardscard">
+						<h5>Awards</h5>
+						<hr></hr>
+						<div className="Awards">
+							<h5
+								style={{
+									color: "black",
+								}}
+							>
+								Awards
+							</h5>
+						</div>
+					</Card>
+					<Card className="docscard">
+						<div className="resume">
+							<h5
+								style={{
+									color: "#626262",
+								}}
+							>
+								Resume
+							</h5>
+						</div>
+						<hr></hr>
+						<div className="coverletter">
+							<h5
+								style={{
+									color: "#626262",
+								}}
+							>
+								Cover Letter
+							</h5>
+						</div>
+					</Card>
 				</Col>
 
 				<Col xs={12} md={7}>
@@ -122,10 +182,39 @@ function Profile() {
 					<Card className="skillscard">
 						<h5>Skills</h5>
 						<hr></hr>
-						<div>
-							<span className="skills-btn">{user.skills}</span>
-							<span className="skills-btn">English</span>
-						</div>
+						{user.skills &&
+							Array.isArray(user.skills) &&
+							user.skills.map((skill) => (
+								<div key={skill}>
+									<span className="skills-btn">{skill}</span>
+								</div>
+							))}
+					</Card>
+
+					<Card className="courses">
+						<h5>Courses</h5>
+						<hr></hr>
+						{user.courses &&
+							Array.isArray(user.courses) &&
+							user.courses.map((courses) => <div key={courses}>{courses}</div>)}
+					</Card>
+					<Card className="projects">
+						<h5>Projects</h5>
+						<hr></hr>
+						{user.courses &&
+							Array.isArray(user.projects) &&
+							user.projects.map((projects) => (
+								<div key={projects}>{projects}</div>
+							))}
+					</Card>
+					<Card className="volunteering">
+						<h5>Volunteering</h5>
+						<hr></hr>
+						{user.volunteering &&
+							Array.isArray(user.volunteering) &&
+							user.projects.map((volunteering) => (
+								<div key={volunteering}>{volunteering}</div>
+							))}
 					</Card>
 				</Col>
 			</Row>

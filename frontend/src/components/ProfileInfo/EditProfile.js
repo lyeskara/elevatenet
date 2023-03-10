@@ -61,6 +61,10 @@ function EditProfile({ user, setUser, profilepic }) {
 				languages: user.languages,
 				email: auth.currentUser.email,
 				contact: user.contact,
+				awards: user.awards,
+				courses: user.courses,
+				projects: user.projects,
+				volunteering: user.volunteering,
 			});
 		}
 		navigate("/Profile");
@@ -184,6 +188,45 @@ function EditProfile({ user, setUser, profilepic }) {
 								name="bio"
 								as="textarea"
 								defaultValue={user.bio}
+								onChange={update}
+								rows={3}
+							/>
+						</Form.Group>
+						<Form.Group
+							className="mb-3"
+							controlId="exampleForm.ControlTextarea1"
+						>
+							<Form.Label>Courses</Form.Label>
+							<Form.Control
+								name="courses"
+								as="textarea"
+								defaultValue={user.courses}
+								onChange={update}
+								rows={3}
+							/>
+						</Form.Group>
+						<Form.Group
+							className="mb-3"
+							controlId="exampleForm.ControlTextarea1"
+						>
+							<Form.Label>Projects</Form.Label>
+							<Form.Control
+								name="projects"
+								as="textarea"
+								defaultValue={user.projects}
+								onChange={update}
+								rows={3}
+							/>
+						</Form.Group>
+						<Form.Group
+							className="mb-3"
+							controlId="exampleForm.ControlTextarea1"
+						>
+							<Form.Label>Volunteering</Form.Label>
+							<Form.Control
+								name="volunteering"
+								as="textarea"
+								defaultValue={user.volunteering}
 								onChange={update}
 								rows={3}
 							/>

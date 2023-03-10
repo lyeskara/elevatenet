@@ -1,12 +1,7 @@
 .profilecard{
-  box-shadow: 0 4px 2px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   text-align: center;
-  
 }
 
-.contactcard{
-  box-shadow: 0 4px 2px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
 .contactcard hr{
   margin-bottom: 0;
 
@@ -16,7 +11,7 @@
   padding: 20px 30px 20px;
   margin: 2rem 0;
   box-shadow: 0 4px 2px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  
+  font-family: "Epilogue", sans-serif;
 }
 
 .col1{
@@ -112,7 +107,7 @@ margin-top: 5px;
 background-color: #dadadaf5;
 }
 
-
 hr{
 margin-top: 1%;
 }
+
