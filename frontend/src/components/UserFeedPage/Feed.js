@@ -10,6 +10,15 @@ import { useEffect, useState } from 'react';
 import { useNavigate , Link} from 'react-router-dom';
 import { getDoc,doc, collection, setDoc } from 'firebase/firestore';
 import { db,auth } from '../../firebase';
+import '../../styles/feed.css';
+import Post from './Post';
+import photo from '../../images/photo.png';
+import video from '../../images/video.png';
+import profile1 from '../../images/profile1.png';
+import post1 from '../../images/post1.png';
+import eventicon from '../../images/eventicon.png';
+import personicon from '../../images/personicon.png';
+
 
 
 function Feed() {
@@ -34,21 +43,62 @@ function Feed() {
     }
     getData();
   }, [currentId, SetData]);
+  const posts = [
+    {
+      id: 1,
+      data: {
+        name: 'Cloud Fare',
+        description: 'Storage Company',
+        message: 'Today, we would like to highlight two of the employees promoted respectively to the positions of EMEA Sales Executive and Team Lead in Paris.',
+        photo: profile1,
+        image: post1
+      }
+    }
+  ];
 
   return (
-    <div style={{ display: 'flex', flexDirection:'row', justifyContent: 'center'}}>
-    {Data.map((post) => (
-      <div key={post.title} style={{ flexDirection:'row', margin: '10px' }}>
-        <h2>{post.title}</h2>
-        <p>{post.postText}</p>
-        {post.PicUrl!==null &&
-        <img src={post.PicUrl} alt={post.title} style={{ width: '300px', height: 'auto' }} />
-        }
-      </div>
-    ))}
-  </div>
-  )
+    <div className="feed">
+      <div className="feed-inputContainer">
+        <div className="feed-input">
+         
+        <button onClick={() => window.location.href = 'CreatePost'}> 
+         <img src={personicon} alt="person-icon" /> 
+      </button>
  
-}   
 
+          <form class="create-post">
+            <input value={input} onChange={e => setInput(e.target.value)} type="text" placeholder="Create a post" />
+          </form>
+        </div>
+
+        <div className="feedinputOption">
+          <button>
+            <img src={photo} alt="photo" />
+          </button>
+          <button>
+            <img src={eventicon} alt="eventicon" />
+          </button>
+
+
+          <button>
+            <img src={video} alt="video" />
+          </button>
+
+          
+        </div>
+      </div>
+
+      {Data.map(post => (
+        <Post
+          key={post.title}
+          name={post.title}
+          description={post.postText}
+          message={post.postText}
+          photo={post.PicUrl} 
+          image={post.PicUrl} 
+        />
+      ))}
+    </div>
+  );
+}
 export default Feed;

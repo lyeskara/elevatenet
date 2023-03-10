@@ -26,6 +26,7 @@ import ConnectionPage from "./components/connection/ConnectionPage";
 import FeedPage from './components/FeedPage';
 import PostPage from './components/PostPage';
 
+
 function App() {
   return (
     <UserAuthContextProvider>
@@ -66,13 +67,17 @@ function App() {
           }
         ></Route>
            <Route path="/FeedPage" element={<FeedPage/>} />
+           <Route path="/Feed" element={<Feed/>} />
+           <Route path="/CreatPost" element={<CreatPost/>} /> 
         <Route path="/PostPage" element={<PostPage/>} />
+        
+        
         <Route path="/EditProfile" element={<EditProfile />} />{" "}
         <Route
           path="/user_posts"
           element={
             <Protection>
-              <CreatPost />
+              
             </Protection>
           }
         ></Route>
