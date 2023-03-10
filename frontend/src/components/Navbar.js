@@ -50,7 +50,7 @@ function NavbarFun() {
 										<Link to="/JobPostings">
 											<img src={briefcase} alt="briefcase" />
 										</Link>
-										<Link to="/">
+										<Link to="/ConnectionNetwork">
 											<img src={connection} alt="connection" />
 										</Link>
 										<Link to="/">
@@ -64,8 +64,8 @@ function NavbarFun() {
 										<button>
 											<Search />
 										</button>
-										<button onClick={handleLogout} className="list-item">
-											logout
+										<button onClick={handleLogout} className="logout_button">
+											Sign Out
 										</button>
 									</Nav>
 								</>

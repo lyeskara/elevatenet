@@ -21,3 +21,21 @@ nav{
     width: 100vw;
   }
 }
+
+.logout_button{
+  background-color: white;
+  border: none;
+  border-color: #888888;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  max-height: 60%;
+  font-family: 'Epilogue';
+font-style: normal;
+font-weight: 400;
+font-size: 24px;
+line-height: 25px;
+color: #4F4F4F;
+}
