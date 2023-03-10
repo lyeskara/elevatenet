@@ -33,7 +33,7 @@ function JobPostings() {
 	const handleDelete = async(id) =>{
 		try {
 			await deleteDoc(doc(db, "posting", id));
-			window.location.reload(); // Reload the page after deleting the post
+			//window.location.reload(); // Reload the page after deleting the post
 		  } catch (error) {
 			console.error("Error deleting document: ", error);
 		  }
@@ -49,7 +49,7 @@ function JobPostings() {
 			description: description
 		});
 		setShowModal(false);
-		window.location.reload();
+		//window.location.reload();
 	}
 	//const & states for editing the job posting
 	const [showModal, setShowModal] = useState(false);
@@ -69,11 +69,7 @@ function JobPostings() {
 		  }
 		};
 		getData();
-	  },
-	
-	
-	
-	[]);	  
+	  }, [posts]);
 
 
 
