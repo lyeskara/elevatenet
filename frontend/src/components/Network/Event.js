@@ -32,9 +32,11 @@ function Event() {
             <Card className="card">
               <div className="containRequest">
                 <h5 className="requests">Events</h5>
-                <Button className="create_Group_Button">
-                  Create New Event
-                </Button>
+                <Link to="/CreateEvent">
+                  <Button className="create_Group_Button">
+                    Create New Event
+                  </Button>
+                </Link>
               </div>
             </Card>
 

@@ -62,6 +62,10 @@ h5.NetworkTitle {
   box-shadow: 0 0 0 0.2rem #27746A !important;
 }
 
+
 h5.time{
     color: #27746A;
+}
+div.pair {
+  float:left;
 }
