@@ -98,7 +98,6 @@ function Feed() {
           name={post.title}
           description={post.postText}
           message={post.postText}
-          photo={post.PicUrl} 
           image={post.PicUrl} 
         />
       ))}

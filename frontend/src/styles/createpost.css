@@ -117,4 +117,10 @@
   .create-post-options button:last-child {
     margin-right: 0px;
   }
+  .create-post-preview-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
   
