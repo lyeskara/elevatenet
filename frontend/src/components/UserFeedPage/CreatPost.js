@@ -79,7 +79,7 @@ function CreatPost() {
 
   useEffect(() => {
     if (!authUser) {
-      navigate("/login");
+      navigate("/CreatPost");
     }else{
 
     }
