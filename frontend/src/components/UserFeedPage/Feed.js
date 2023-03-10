@@ -24,26 +24,30 @@ import personicon from '../../images/personicon.png';
 function Feed() {
   const [input, setInput] = useState('');
   const [Data,SetData] = useState([])
-  const currentId = auth.currentUser.uid
+  const currentId = auth.currentUser?.uid; // adding a conditional operator in case of null id
   const postRef = collection(db, "user_posts")
  
   useEffect(() => {
     async function getData() {
-      const document = await getDoc(doc(postRef, currentId));
-      const values = document.data();
-      const postArray = Object.values(values).map((obj) => {
-        return {
-          title: obj.title,
-          postText: obj.postText,
-          PicUrl: obj.PicUrl,
-        };
-      });
-      SetData(postArray);
-      console.log(postArray)
+      // Check if the user is authenticated before fetching the data
+      if (auth.currentUser) {
+        const document = await getDoc(doc(postRef, currentId));
+        const values = document.data();
+        const postArray = Object.values(values).map((obj) => {
+          return {
+            title: obj.title,
+            postText: obj.postText,
+            PicUrl: obj.PicUrl,
+          };
+        });
+        SetData(postArray);
+        console.log(postArray);
+      }
     }
     getData();
-  }, [currentId, SetData]);
-  const posts = [
+  }, [currentId, SetData, postRef]); // Add postRef to the dependency array
+
+  const post = [
     {
       id: 1,
       data: {
@@ -61,7 +65,7 @@ function Feed() {
       <div className="feed-inputContainer">
         <div className="feed-input">
          
-        <button onClick={() => window.location.href = 'CreatePost'}> 
+        <button onClick={() => window.location.href = 'CreatPost'}> 
          <img src={personicon} alt="person-icon" /> 
       </button>
  
@@ -101,4 +105,5 @@ function Feed() {
     </div>
   );
 }
+
 export default Feed;
