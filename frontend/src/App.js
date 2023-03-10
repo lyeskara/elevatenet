@@ -24,6 +24,8 @@ import PendingRequests from "./components/Network/PendingRequests";
 import RequestsPage from "./components/connection/RequestsPage";
 import ConnectionPage from "./components/connection/ConnectionPage";
 
+
+
 function App() {
   return (
     <UserAuthContextProvider>
@@ -63,12 +65,18 @@ function App() {
             </Protection>
           }
         ></Route>
+           
+           <Route path="/Feed" element={<Feed/>} />
+           <Route path="/CreatPost" element={<CreatPost/>} /> 
+       
+        
+        
         <Route path="/EditProfile" element={<EditProfile />} />{" "}
         <Route
           path="/user_posts"
           element={
             <Protection>
-              <CreatPost />
+              
             </Protection>
           }
         ></Route>
