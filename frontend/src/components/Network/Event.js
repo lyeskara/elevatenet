@@ -1,14 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserAuth } from "../../context/UserAuthContext.js";
-import { auth } from "../../firebase.js";
 import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 import node from ".././../images/node_gray.png";
 import group from ".././../images/group.png";
 import event from ".././../images/event_color.png";
 import "../../styles/network.css";
+import { auth, db } from "../../firebase";
+import {
+  collection,
+  getDoc,
+  doc,
+  onSnapshot,
+  getDocs,
+} from "firebase/firestore";
+
 
 function Event() {
+  const [events, setEvents] = useState([]);
+
+  //this use effect() method is used to get the data from the database, native to react
+  useEffect(() => {
+    const getData = async () => {
+      const eventData = await getDocs(collection(db, "events"));
+      setEvents(eventData.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      console.log(eventData);
+    };
+    getData();
+  }, []);
+
   return (
     <>
       <div className="contain">
@@ -41,13 +61,17 @@ function Event() {
             </Card>
 
             {/* Template for events*/}
-            <Card>
-              <Row className="mt-3">
-                <h5 className="time">Time</h5>
-                <h4>Title of Event</h4>
-                <p>Event descrition</p>
-              </Row>
-            </Card>
+            {events.map((data) => (
+              <div className="post-content" key={data.id}>
+                <Card className="card">
+                  <h5 className="time">{data.start_date}, {data.start_time.toString()} <span className="type_event"> {data.event_type}</span></h5>
+                  <h5 className="time"></h5>
+                  <h3>{data.event_title}</h3>
+                  <h6>Duration: {data.duration}</h6>
+                  <p>{data.description}</p>
+                </Card>
+              </div>
+            ))}
           </Col>
         </Row>
       </div>
