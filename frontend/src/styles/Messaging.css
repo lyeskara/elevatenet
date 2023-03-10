@@ -22,6 +22,8 @@
   padding: 30px;
   margin-right: 20px;
   /* add any other styles you need for the chat list */
+  overflow-y: scroll; /* added this for scrolling */
+  height: calc(100vh - 260px); /* added this for scrolling */
 }
 
 .text {
@@ -29,7 +31,10 @@
   background-color: white;
   font-size: 20px;
   padding: 20px;
+  overflow-y: scroll; /*added this for scrolling */
+  height: calc(100vh - 310px); /* added this for scrolling */
 }
+
 
 .text p {
   border: 1px solid rgb(255, 255, 255);
