@@ -6,7 +6,7 @@ import ReactImagePickerEditor from "react-image-picker-editor";
 
 //Firebase imports
 import { auth, db } from "../../firebase";
-import { collection, setDoc ,doc, addDoc} from "firebase/firestore";
+import { collection, setDoc ,doc, addDoc, arrayUnion} from "firebase/firestore";
 
 //FrontEnd imports
 import Row from "react-bootstrap/Row";
@@ -24,21 +24,24 @@ function CreateGroup(){
     const navigate = useNavigate();
 
     
-    //Group info fields
+    //Here we set the Group Info data fields
     const[groupData, setNewGroupData] = useState(
         {
             group_name: '',
             description: '',
             industry: '',
-            location: ''
+            location: '',
+            memberUIDs: [],
+            adminUIDs: [],
         }
     );
 
-    //Event handling
+    //Data field change
     const handleInputChange = (event) => {
         setNewGroupData({...groupData, [event.target.name]: event.target.value})
     };
 
+    //Submission of data fields when the Submit button is clicked
     const handleContent = async (event) =>
     {event.preventDefault();
     if (user) {
@@ -47,7 +50,9 @@ function CreateGroup(){
             group_name: groupData.group_name,
             description: groupData.description,
             industry: groupData.industry,
-            location: groupData.location
+            location: groupData.location,
+            memberUIDs: arrayUnion(auth.currentUser.uid),
+            adminUIDs: arrayUnion(auth.currentUser.uid),
         }
         )
         setNewGroupData(
@@ -55,9 +60,12 @@ function CreateGroup(){
                 group_name: '',
                 description: '',
                 industry: '',
-                location: ''
+                location: '',
+                memberUIDs: [],
+                adminUIDs: [],
             }
         );
+        //Redirect to GroupNetwork page
         navigate('/GroupNetwork');
     }
     else{
@@ -65,8 +73,7 @@ function CreateGroup(){
     }
     };
 
-    //Extra Settings
-
+    //Extra Settings for Image selector, still WIP
     const image_picker_settings = {
         borderRadius: '1px',
         width: '180px',
