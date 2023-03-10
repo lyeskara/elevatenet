@@ -34,6 +34,9 @@ function Event() {
       <div className="contain">
         <Row className="gap-5">
           <Col className="col1" xs={12} md={{ span: 3, offset: 1 }}>
+            
+            {/* NAVIGATION BAR FOR EVERYTHING NETWORK RELATED */}
+						
             <Card className="networkcard">
               <h5 className="NetworkTitle">My Network</h5>
               <Link to="/ConnectionNetwork">
@@ -60,7 +63,9 @@ function Event() {
               </div>
             </Card>
 
-            {/* Template for events*/}
+           {/* CARD FOR EVENT POSTINGS */}
+						{/*this map method returns an array with results and the results from this
+						are the data needed that creates a post being event title, event type, start date, start time, duration, and description*/}
             {events.map((data) => (
               <div className="post-content" key={data.id}>
                 <Card className="card">

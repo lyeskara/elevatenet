@@ -1,3 +1,7 @@
+//In this CreateEvent class with the CreateEvent() function
+//users and enter in the fields event title, event type, description, start date and start time
+// and with after doing so and clicking create they can create an event posting
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserAuth } from "../../context/UserAuthContext.js";
@@ -26,10 +30,16 @@ function CreateEvent() {
     start_time: "",
     duration: "",
   });
+
+  //update with the handleChange() method
+  // @param (event)
+  //handles changes to the input and updates field
   const handleChange = (event) => {
     setEventData({ ...eventData, [event.target.name]: event.target.value });
   };
-
+  //creates the job posting with handleSubmit() method
+  // @param event
+  // adds the posting parameters event title, event type, description, start time, and start date to the database
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (user) {
@@ -60,6 +70,10 @@ function CreateEvent() {
   };
   console.log(eventData);
 
+  // return of the CreateEvent() function
+  // lets users change inputs on the form
+  // lets users submit the form
+  // return users to Event page with updates from database created with form submission
   return (
     <>
       <Container className="container mx-auto w-60">
@@ -67,7 +81,7 @@ function CreateEvent() {
           <Col>
             <center>
               {" "}
-              <h5 className=" NetworkTitle mt-5">Create An Event</h5>
+              <h5 className=" NetworkTitle mt-5">Create An <span className="event_title">Event</span></h5>
             </center>
             <Card className="card">
               <div className="containRequest">
@@ -78,9 +92,10 @@ function CreateEvent() {
               {/* INPUT FORM */}
               <Form onSubmit={handleSubmit}>
                 <hr></hr>
-
+                {/* INPUT FORM */}
                 <div className="form-group mb-3">
                   <label htmlFor="formFile" className="form-label">
+                    {/* Title*/}
                     <h6>Event Title</h6>
                   </label>
                   <input
@@ -95,7 +110,7 @@ function CreateEvent() {
                     required
                   />
                 </div>
-
+                {/*Type */}
                 <div className="form-group mb-3 ">
                   <label htmlFor="formFile" className="form-label">
                     <h6>Event Type </h6>
@@ -140,6 +155,7 @@ function CreateEvent() {
                     required
                   ></textarea>
                 </div>
+                {/*Start Date */}
                 <div className="form-group mb-3">
                   <label htmlFor="formFile" className="form-label">
                     <h6>Start Date</h6>
@@ -154,6 +170,7 @@ function CreateEvent() {
                     ></input>
                   </div>
                 </div>
+                {/* Start Time */}
                 <div className="form-group mb-3">
                   <label htmlFor="formFile" className="form-label">
                     <h6>Start Time</h6>
@@ -168,13 +185,13 @@ function CreateEvent() {
                     ></input>
                   </div>
                 </div>
+                {/* Duration */}
                 <div className="form-group mb-3">
                   <label htmlFor="formFile" className="form-label"></label>
                   <label for="cars">
                     <h6>Duration</h6>
                   </label>
                   <div>
-                    {" "}
                     <select
                       id="duration"
                       name="duration"

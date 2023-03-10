@@ -11,13 +11,19 @@
   padding-top: 1%;
 }
 
-h5.NetworkTitle {
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 32px;
-  line-height: 39px;
-  color: #626262;
+.NetworkTitle {
+  font-family: 'Inter';
+font-style: normal;
+font-weight: 400;
+font-size: 40px;
+line-height: 48px;
+
+color: #2B2B2B;
+
+}
+
+.event_title{
+  color: #27746A;
 }
 
 .connectCard {
