@@ -22,6 +22,7 @@ import Event from "./components/Network/Event";
 
 import RequestsPage from "./components/connection/RequestsPage";
 import ConnectionPage from "./components/connection/ConnectionPage";
+import CreateGroup from "./components/Network/CreateGroup";
 
 import CreateEvent from "./components/Network/CreateEvent";
 
@@ -72,6 +73,7 @@ function App() {
             </Protection>
           }
         ></Route>
+
         <Route
           path="profile/:id"
           element={
@@ -88,6 +90,8 @@ function App() {
         <Route path="/GroupNetwork" element={<GroupNetwork />} />
         <Route path="/Event" element={<Event />} />
         <Route path="/CreateEvent" element={<CreateEvent />} />
+        <Route path="/CreateGroup" element={<CreateGroup />} />
+
       </Routes>
     </UserAuthContextProvider>
   );

@@ -141,3 +141,21 @@ h5.time {
   margin-right: 0;
 }
 
+h5.time{
+    color: #27746A;
+}
+
+.group_pic_center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50% 50% 50% 0%;
+}
+
+
+.center-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0% 0% 0% 1%;
+}
