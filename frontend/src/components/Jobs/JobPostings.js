@@ -82,15 +82,11 @@ function JobPostings() {
 	  }, []); // pass an empty dependency array
 	  
 
-
-
-
-
 	return (
 		<Container className="container d-flex justify-content-center mx-auto">
-			<Row className="gap-6 d-flex justify-content-center">
+			<Row className="gap-6 d-flex justify-content-center" style={{minWidth: "80%"}}>
 				{/* JOB MENU BLOCK ON THE LEFT TO NAVIGATE BETWEEN JOB POSTINGS AND ADVERTS */}
-				<Col xs={12} md={3}>
+				<Col xs={12} sm={8}  lg={4} style={{minWidth: "30%"}}>
 					<Card className="jobs-menu">
 						<h2> Jobs </h2>
 						<hr></hr>
@@ -100,7 +96,7 @@ function JobPostings() {
 					</Card>
 				</Col>
 
-				<Col xs={12} md={8}>
+				<Col xs={12} sm={12}  lg={8} >
 				
 				{/* button at the top to create a job posting*/}
 					<div>
