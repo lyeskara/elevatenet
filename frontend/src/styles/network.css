@@ -159,3 +159,51 @@ h5.time{
   align-items: center;
   padding: 0% 0% 0% 1%;
 }
+
+.off_point{
+  list-style-type: none;
+}
+
+.follow_button {
+  justify-content: center;
+  align-items: center;
+  height: 20%;
+  width: 50%;
+}
+
+.follow_button,
+.follow_button:hover {
+  color: #fff;
+  background-color: #27746a !important;
+  border-color: #27746a !important;
+
+}
+.follow_button:active,
+.follow_button:focus {
+  
+  background-color: white;
+  color: white;
+  border-color: #27746a;
+}
+
+.unfollow_button {
+  justify-content: center;
+  align-items: center;
+  height: 20%;
+  width: 50%;
+}
+
+.unfollow_button,
+.unfollow_button:hover {
+  background-color: white;
+  color: #27746a;
+  border-color: #27746a;
+
+}
+.unfollow_button:active,
+.unfollow_button:focus {
+  background-color: white;
+  color: #27746a;
+  border-color: #27746a;
+ 
+}
