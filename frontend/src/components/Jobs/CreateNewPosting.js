@@ -29,10 +29,10 @@ function CreateNewPosting() {
     const navigate =useNavigate();
     const [startDate, setStartDate] = useState(new Date());
     const handleCancel = () => {
-		setIsLoading(true);
-        setTimeout(() => {
+		// setIsLoading(true);
+        // setTimeout(() => {
         window.location.href = '/JobPostings';
-        }, 2000); // wait for 2 seconds before navigating to simulate a loading screen
+        // }, 2000); // wait for 2 seconds before navigating to simulate a loading screen
 	};
     //fields of posting
     const [postingData, setPostingData] = useState({
@@ -217,16 +217,16 @@ function CreateNewPosting() {
                             <Row>
                                 <Col className="d-flex justify-content-center">
                                 <>
-      {isLoading && <Spinner animation="border" />}
+      {/* {isLoading && <Spinner animation="border" />} */}
       <Button
         variant="outline-secondary"
         size="lg"
         block
         className="w-100"
         onClick={handleCancel}
-        disabled={isLoading} // disable the button while loading
+        // disabled={isLoading} // disable the button while loading
       >
-        {isLoading ? 'Loading...' : 'Cancel'}
+        Cancel
       </Button>
     </>
                                 </Col>
