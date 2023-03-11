@@ -17,13 +17,19 @@ import EditProfile from "./components/ProfileInfo/EditProfile";
 import CreateNewPosting from "./components/Jobs/CreateNewPosting";
 import Feed from "./components/UserFeedPage/Feed";
 import CreatPost from "./components/UserFeedPage/CreatPost";
-import ConnectionNetwork from "./components/Network/ConnectionNetwork";
 import GroupNetwork from "./components/Network/GroupNetwork";
 import Event from "./components/Network/Event";
 import PendingRequests from "./components/Network/PendingRequests";
 import RequestsPage from "./components/connection/RequestsPage";
 import ConnectionPage from "./components/connection/ConnectionPage";
 import CreateGroup from "./components/Network/CreateGroup";
+
+import CreateEvent from "./components/Network/CreateEvent";
+
+import RequestSent from "./components/connection/RequestSent";
+
+
+
 
 function App() {
   return (
@@ -64,20 +70,27 @@ function App() {
             </Protection>
           }
         ></Route>
+           
+           <Route path="/Feed" element={<Feed/>} />
+           <Route path="/CreatPost" element={<CreatPost/>} /> 
+       
+        
+        
         <Route path="/EditProfile" element={<EditProfile />} />{" "}
         <Route
           path="/user_posts"
           element={
             <Protection>
-              <CreatPost />
+              
             </Protection>
           }
         ></Route>
-        <Route path="/ConnectionNetwork" element={<ConnectionNetwork />} />
+    <Route path="/RequestSent" element={<RequestSent/>}/>
 		<Route path="/GroupNetwork" element={<GroupNetwork />} />
 		<Route path="/Event" element={<Event />} />
 		<Route path="/PendingRequests" element={<PendingRequests />} />
     <Route path="/CreateGroup" element={<CreateGroup />} />
+    <Route path="/CreateEvent" element={<CreateEvent />} />
       </Routes>
     </UserAuthContextProvider>
   );
