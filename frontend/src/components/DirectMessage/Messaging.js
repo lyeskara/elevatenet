@@ -99,7 +99,7 @@ const Message = () => {
       key={index}
       // sender and receiver have different background colors
       style={{
-        backgroundColor: msg.sender === currentUser.uid ? 'rgb(7, 80, 19)' : 'grey',
+        backgroundColor: msg.sender === currentUser.uid ? '#27746A' : 'grey',
         textAlign: msg.sender === currentUser.uid ? 'right' : 'left'
       }}
     >
