@@ -125,14 +125,15 @@ function RequestsPage() {
   }
   useEffect(() => {
     getDoc(doc(dbRef, currentId)).then((user) => {
-      const ReqArray = user.data().requests;
+      const ReqArray = user.data().requests; 
+      const array = [];
       ReqArray.forEach((id) => {
         getDoc(doc(profileRef, id)).then((other) => {
           const { firstName, lastName } = other.data();
           const otherId = other.id;
           const set = new Set();
           set.add({ id, firstName, lastName });
-          const array = [];
+         
           set.forEach((element) => {
             array.push(element);
           });
@@ -177,31 +178,35 @@ function RequestsPage() {
                   <Link to="/RequestSent">Sent</Link>
                 </div>
                 <hr></hr>
-                <div >
+                <div>
                   {UserData.map((user) => (
-                    <div className="containRequest" key={user.id}>
+                    <div className="containRequest mb-4" key={user.id}>
                       <p className="connection_name">
                         {user.firstName} {user.lastName}
                       </p>
                       <div className="right_button">
-                        <Button
-                        className="ignore_button"
-                        onClick={() => {
-                          handleCancel(user.id);
-                        }}
-                      >
-                        Ignore
-                      </Button>
-                      <Button
-                        className="connectButton"
-                        onClick={() => handleConnect(user.id)}
-                      >
-                        Accept
-                      </Button>
-                      
-                      <hr></hr>
+                        <div>
+                          <Button
+                            
+                            className="ignore_button"
+                            onClick={() => {
+                              handleCancel(user.id);
+                            }}
+                          >
+                            Ignore
+                          </Button>
                         </div>
-                      
+                      </div>
+                      <div>
+                        <Button
+                          
+                          className="connectButton"
+                          onClick={() => handleConnect(user.id)}
+                        >
+                          Accept
+                        </Button>
+                      </div>
+                      <hr></hr>
                     </div>
                   ))}
                 </div>

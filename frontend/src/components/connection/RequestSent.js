@@ -126,13 +126,14 @@ function RequestSent() {
   useEffect(() => {
     getDoc(doc(dbRef, currentId)).then((user) => {
       const ReqArray = user.data().requests;
+      const array = [];
       ReqArray.forEach((id) => {
         getDoc(doc(profileRef, id)).then((other) => {
           const { firstName, lastName } = other.data();
           const otherId = other.id;
           const set = new Set();
           set.add({ id, firstName, lastName });
-          const array = [];
+
           set.forEach((element) => {
             array.push(element);
           });
@@ -180,7 +181,7 @@ function RequestSent() {
                 <hr></hr>
                 <div>
                   {requests.map((user) => (
-                    <div className="containRequest" key={user.id}>
+                    <div className="containRequest  mb-4" key={user.id}>
                       <p className="connection_name">
                         {user.firstName} {user.lastName}
                       </p>
@@ -194,7 +195,6 @@ function RequestSent() {
                       </Button>
                     </div>
                   ))}
-                  <hr></hr>
                 </div>
               </Card>
             </Col>
