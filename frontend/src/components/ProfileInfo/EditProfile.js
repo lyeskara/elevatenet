@@ -46,7 +46,7 @@ function EditProfile({ user, setUser, profilepic }) {
 			if (selectedFile) {
 				const storageRef = ref(
 					storage,
-					`profilepics/${auth.currentUser.uid}/${selectedFile.name}`
+					`profilepics/${auth.currentUser.uid}/profilePic`
 				);
 				await uploadBytes(storageRef, selectedFile);
 			}
@@ -203,6 +203,16 @@ function EditProfile({ user, setUser, profilepic }) {
 								defaultValue={user.courses}
 								onChange={update}
 								rows={3}
+							/>
+						</Form.Group>
+						<Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+							<Form.Label>Awards</Form.Label>
+							<Form.Control
+								name="awards"
+								type="text"
+								defaultValue={user.awards}
+								onChange={update}
+								autoFocus
 							/>
 						</Form.Group>
 						<Form.Group

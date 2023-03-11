@@ -8,17 +8,20 @@ import Col from "react-bootstrap/Col";
 import { GrMailOption, GrPhone } from "react-icons/gr";
 import EditProfile from "./EditProfile";
 import person from "./test.gif";
-import { getStorage, ref } from "firebase/storage";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 /**
  * Profile loads values stored in the data base and allows us to view them in a styled page.
  */
 function Profile() {
 	const [user, setUser] = useState({});
+	const [profilePicURL, setProfilePicURL] = useState("");
 	const storage = getStorage();
+
 	/**
 	 * getUserData gets all values pertaining to the logged in user.
 	 */
+
 	const getUserData = async () => {
 		try {
 			const userDoc = await getDoc(
@@ -26,6 +29,16 @@ function Profile() {
 			);
 			if (userDoc.exists) {
 				setUser({ ...userDoc.data(), id: userDoc.id });
+
+				// Get the profile picture URL from the Firebase Storage URL
+				const storageRef = ref(
+					storage,
+					`profilepics/${auth.currentUser.uid}/profilePic`
+				);
+
+				const downloadURL = await getDownloadURL(storageRef);
+				console.log(downloadURL);
+				setProfilePicURL(downloadURL); // Set the profile picture URL state
 			} else {
 				console.log("User not found");
 			}
@@ -33,6 +46,7 @@ function Profile() {
 			console.log(error);
 		}
 	};
+
 	useEffect(() => {
 		getUserData();
 	}, [auth]);
@@ -46,7 +60,7 @@ function Profile() {
 				<Col className="col1" xs={12} md={{ span: 3, offset: 1 }}>
 					<Card className="profilecard">
 						<img
-							src={person}
+							src={profilePicURL}
 							id="profilepic"
 							alt="Avatar"
 							className="avatar"
@@ -113,7 +127,11 @@ function Profile() {
 									color: "black",
 								}}
 							>
-								Awards
+								{user.awards &&
+									Array.isArray(user.awards) &&
+									user.skills.map((awards) => (
+										<div key={awards}>{user.awards}</div>
+									))}
 							</h5>
 						</div>
 					</Card>

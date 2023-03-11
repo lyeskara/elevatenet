@@ -18,6 +18,7 @@ function ProfileForm() {
 		skills: [],
 		languages: "",
 		contact: "",
+		awards: [],
 		courses: [],
 		projects: [],
 		volunteering: [],
@@ -29,7 +30,8 @@ function ProfileForm() {
 			name === "skills" ||
 			name === "courses" ||
 			name === "projects" ||
-			name === "volunteering"
+			name === "volunteering" ||
+			name === "awards"
 		) {
 			// split the input string into an array of strings
 			const arrayValue = value.split(",");
@@ -56,6 +58,7 @@ function ProfileForm() {
 				courses: profileData.courses,
 				volunteering: profileData.volunteering,
 				projects: profileData.projects,
+				awards: profileData.awards,
 			});
 			// Clear the form fields
 			setProfileData({
@@ -72,6 +75,7 @@ function ProfileForm() {
 				courses: "",
 				volunteering: "",
 				projects: "",
+				awards: "",
 			});
 			navigate("/Profile");
 		} else {
@@ -185,6 +189,17 @@ function ProfileForm() {
 								onChange={update}
 								value={profileData.contact}
 								placeholder="contact-number"
+							/>
+						</Form.Group>
+						<Form.Group className="mb-3" controlId="formAwards">
+							<Form.Control
+								as="textarea"
+								rows={3}
+								className="input_box"
+								name="awards"
+								onChange={update}
+								value={profileData.awards}
+								placeholder="Awards"
 							/>
 						</Form.Group>
 						<Form.Group className="mb-3" controlId="formCourses">
