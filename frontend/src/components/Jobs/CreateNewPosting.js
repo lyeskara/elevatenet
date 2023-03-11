@@ -243,5 +243,5 @@ function CreateNewPosting() {
 		</Container>
 	);
 }
-
+//....
 export default CreateNewPosting;
