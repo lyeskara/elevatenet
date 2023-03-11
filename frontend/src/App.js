@@ -17,12 +17,16 @@ import EditProfile from "./components/ProfileInfo/EditProfile";
 import CreateNewPosting from "./components/Jobs/CreateNewPosting";
 import Feed from "./components/UserFeedPage/Feed";
 import CreatPost from "./components/UserFeedPage/CreatPost";
-import ConnectionNetwork from "./components/Network/ConnectionNetwork";
 import GroupNetwork from "./components/Network/GroupNetwork";
 import Event from "./components/Network/Event";
-import PendingRequests from "./components/Network/PendingRequests";
+
 import RequestsPage from "./components/connection/RequestsPage";
 import ConnectionPage from "./components/connection/ConnectionPage";
+import CreateGroup from "./components/Network/CreateGroup";
+
+import CreateEvent from "./components/Network/CreateEvent";
+
+import RequestSent from "./components/connection/RequestSent";
 
 function App() {
   return (
@@ -45,8 +49,22 @@ function App() {
         <Route path="/" element={<Linkedin />} />
         <Route path="/SignIn" element={<SignIn />} />
         <Route path="/JoinNow" element={<JoinNow />} />
-        <Route path="/requests" element={<Protection><RequestsPage/></Protection>}></Route>
-				<Route path="/connections" element={<Protection><ConnectionPage/></Protection>}></Route>
+        <Route
+          path="/requests"
+          element={
+            <Protection>
+              <RequestsPage />
+            </Protection>
+          }
+        ></Route>
+        <Route
+          path="/connections"
+          element={
+            <Protection>
+              <ConnectionPage />
+            </Protection>
+          }
+        ></Route>
         <Route
           path="/userfeed"
           element={
@@ -55,6 +73,7 @@ function App() {
             </Protection>
           }
         ></Route>
+
         <Route
           path="profile/:id"
           element={
@@ -63,23 +82,19 @@ function App() {
             </Protection>
           }
         ></Route>
+        <Route path="/Feed" element={<Feed />} />
+        <Route path="/CreatPost" element={<CreatPost />} />
         <Route path="/EditProfile" element={<EditProfile />} />{" "}
-        <Route
-          path="/user_posts"
-          element={
-            <Protection>
-              <CreatPost />
-            </Protection>
-          }
-        ></Route>
-        <Route path="/ConnectionNetwork" element={<ConnectionNetwork />} />
-		<Route path="/GroupNetwork" element={<GroupNetwork />} />
-		<Route path="/Event" element={<Event />} />
-		<Route path="/PendingRequests" element={<PendingRequests />} />
+        <Route path="/user_posts" element={<Protection></Protection>}></Route>
+        <Route path="/RequestSent" element={<RequestSent />} />
+        <Route path="/GroupNetwork" element={<GroupNetwork />} />
+        <Route path="/Event" element={<Event />} />
+        <Route path="/CreateEvent" element={<CreateEvent />} />
+        <Route path="/CreateGroup" element={<CreateGroup />} />
+
       </Routes>
     </UserAuthContextProvider>
   );
-
 }
 
 export default App;

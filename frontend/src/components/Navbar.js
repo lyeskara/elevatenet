@@ -50,7 +50,7 @@ function NavbarFun() {
 										<Link to="/JobPostings">
 											<img src={briefcase} alt="briefcase" />
 										</Link>
-										<Link to="/ConnectionNetwork">
+										<Link to="/connections">
 											<img src={connection} alt="connection" />
 										</Link>
 										<Link to="/">
