@@ -7,6 +7,7 @@ import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 import node from ".././../images/node_gray.png";
 import group from ".././../images/group_color.png";
 import event from ".././../images/event.png";
+import grouplogo from ".././../images/group.png";
 
 import "../../styles/network.css";
 import "../../styles/JobPostings.css";
@@ -64,7 +65,7 @@ function GroupNetwork() {
       return newButtonTexts;
     });
   };
- 
+
 
   return (
     <>
@@ -102,14 +103,18 @@ function GroupNetwork() {
                     <div className="post-content" key={groupInfos.id}> 
                       <Card className="card">
                         <Row>
-                          <Col md={10}>
-                          <h5> {groupInfos.group_name}</h5>
+                          <Col md={1}>
+                            <img src={grouplogo} alt="template_group_pic" className="group_pic_center" />
+                          </Col>
+                          <Col md={9}>
+                            <h5> {groupInfos.group_name}</h5>
+                            <h5> {groupInfos.memberUIDs.length} members</h5>
                         <hr></hr>
                         <h5> {groupInfos.description}</h5>
                         <h5> {groupInfos.industry}</h5>
                         <h5> {groupInfos.location}</h5>
                           </Col>
-                          <Col md={2}>
+                          <Col className="center-col" md={2}>
                             <Button className="create_Group_Button" >View Group</Button>
                           </Col>
                         </Row>
@@ -125,20 +130,24 @@ function GroupNetwork() {
 
               {/* Here, we post the Cards of the groups that the current user doesn't belongs in*/}  
 
-              {myGroupCards.map((groupInfos, index) => (
+              {otherGroupCards.map((groupInfos, index) => (
                 <div className="post-content" key={groupInfos.id}> 
                   <Card className="card">
                     <Row>
-                      <Col md={10}>
+                      <Col md={1}>
+                      <img src={grouplogo} alt="template_group_pic" className="group_pic_center" />
+                      </Col>
+                      <Col md={9}>
                         <h5> {groupInfos.group_name}</h5>
+                        <h5> {groupInfos.memberUIDs.length} members</h5>
                         <hr />
                         <h5> {groupInfos.description}</h5>
                         <h5> {groupInfos.industry}</h5>
                         <h5> {groupInfos.location}</h5>
                       </Col>
-                      <Col md={2}>
+                      <Col className="center-col" md={2}>
                         <Button className="create_Group_Button" onClick={() => handleRequest(index)}>
-                        {buttonTexts[index] || "Send Join Request"}
+                        {buttonTexts[index] || "Send Join Request" }
                         </Button>
                       </Col>
                     </Row>
