@@ -14,12 +14,14 @@
 
 import { useEffect, useState } from "react"
 import { getDocs, query ,where,collection} from "firebase/firestore"
-import { db } from "../../firebase"
+import { auth, db } from "../../firebase"
 import { useNavigate, Link, useParams} from "react-router-dom"
+import { async } from "@firebase/util"
 function Search() {
    const [search, Setsearch]= useState("")
    const [Result,SetResult] = useState([])
    const navigate = useNavigate()
+   const[url, setUrl] = useState(null);
   
    useEffect( ()=>{
     async function getResult(){
@@ -31,7 +33,22 @@ function Search() {
      getResult();
    },[search])
 
-   const { id } = useParams();
+   useEffect(()=>{
+    if(url){
+      if(url == auth.currentUser.uid){
+        navigate("/profile");
+      }else{
+        navigate(`/profile/${url}`);
+      }
+      
+    }
+   },[url])
+   
+
+   function handleClick(id){
+      Setsearch("");
+      setUrl(id);
+   }
 
 
 
@@ -46,15 +63,13 @@ function Search() {
   <ul>
         {Result.map((user) => (    
           <li key={user.id}>
-             <Link 
-             to={`/profile/${user.id}`}
-             onClick={(e) =>{
-              navigate(`/profile/${user.id}`)
-              Setsearch("")
+             <p 
+             onClick={() =>{
+             handleClick(user.id);
             }}
              >
             {user.firstName} {user.lastName}
-            </Link>
+            </p>
             </li>
         ))
     }
