@@ -2,7 +2,7 @@
 import React, {useState } from "react";
 import { useUserAuth } from "../../context/UserAuthContext";
 import { useNavigate } from "react-router-dom";
-import ReactImagePickerEditor from "react-image-picker-editor";
+// import ReactImagePickerEditor from "react-image-picker-editor";
 
 //Firebase imports
 import { auth, db } from "../../firebase";
@@ -15,7 +15,7 @@ import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import "../../styles/GroupCreation.css";
-import "react-image-picker-editor/dist/index.css"
+// import "react-image-picker-editor/dist/index.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function CreateGroup(){
@@ -74,17 +74,17 @@ function CreateGroup(){
     };
 
     //Extra Settings for Image selector, still WIP
-    const image_picker_settings = {
-        borderRadius: '1px',
-        width: '180px',
-        height: '180px',
-        objectFit: 'cover',
-        compressInitial: null,
-        hideDeleteBtn: false,
-        hideDownloadBtn: true,
-        hideEditBtn: true,
-        hideAddBtn: true
-      };
+    // const image_picker_settings = {
+    //     borderRadius: '1px',
+    //     width: '180px',
+    //     height: '180px',
+    //     objectFit: 'cover',
+    //     compressInitial: null,
+    //     hideDeleteBtn: false,
+    //     hideDownloadBtn: true,
+    //     hideEditBtn: true,
+    //     hideAddBtn: true
+    //   };
 
 return(
 
@@ -95,7 +95,7 @@ return(
                 <Card className = "card">
                     <form onSubmit = {handleContent}>
                         <div className = "row1">
-                            <div className = "side-by-side-div"><ReactImagePickerEditor config = {image_picker_settings}></ReactImagePickerEditor></div>
+                            {/* <div className = "side-by-side-div"><ReactImagePickerEditor config = {image_picker_settings}></ReactImagePickerEditor></div> */}
                             <div className = "side-by-side-div2">
                                 <label htmlFor="formFile" className="form-label">
                                     <h6>Group Name</h6>
