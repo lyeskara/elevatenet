@@ -22,6 +22,7 @@ import Event from "./components/Network/Event";
 import PendingRequests from "./components/Network/PendingRequests";
 import RequestsPage from "./components/connection/RequestsPage";
 import ConnectionPage from "./components/connection/ConnectionPage";
+import CreateGroup from "./components/Network/CreateGroup";
 
 import CreateEvent from "./components/Network/CreateEvent";
 
@@ -88,6 +89,7 @@ function App() {
 		<Route path="/GroupNetwork" element={<GroupNetwork />} />
 		<Route path="/Event" element={<Event />} />
 		<Route path="/PendingRequests" element={<PendingRequests />} />
+    <Route path="/CreateGroup" element={<CreateGroup />} />
     <Route path="/CreateEvent" element={<CreateEvent />} />
       </Routes>
     </UserAuthContextProvider>
