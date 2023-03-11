@@ -66,42 +66,47 @@ const Message = () => {
     setMessage(e.target.value);
   };
 
-  const handlePersonClick = (e) => {
-    e.preventDefault();
-    const recipientId = e.target.getAttribute('data-recipient-id');
-    setRecipientId(recipientId);
-  };
+  // const handlePersonClick = (e) => {
+  //   e.preventDefault();
+  //   const recipientId = e.target.getAttribute('data-recipient-id');
+  //   setRecipientId(recipientId);
+  // };
 
   return (
     <>
       <div className="container">
-        <div className="chat-list">
-          <h2>Chat List</h2>
-          <ul>
-          {users_information.map((users_information) => (
-            users_information.id !== currentUser.uid && (
-              <li key={users_information.id}>
-                <a href="" onClick={handlePersonClick} data-recipient-id={users_information.id}>{users_information.firstName}</a>
-              </li>
-            )
-          ))}
-          
-          </ul>
-        </div>
+      <div className="chat-list">
+      <h2>Chat List</h2>
+      {users_information.map((user) => (
+        user.id !== currentUser.uid && (
+          <div key={user.id} className="user-tab" onClick={() => setRecipientId(user.id)}>
+
+          <img src={user.avatarUrl} style={{ marginRight: '20px' }}  />
+              <h3>{user.firstName} {user.lastName}</h3>
+              
+            
+          </div>
+        )
+      ))}
+    </div>
         <div className="divider"></div>
         <div className="messages">
           <div className="text">
             <h2>Messages</h2>
-            {messages.map((msg, index) => (
-        <p key={index} 
-        //sender and receiver have different background colors
-        style={{
-          backgroundColor: msg.sender === currentUser.uid ? 'rgb(7, 80, 19)' : 'grey',
-          textAlign: msg.sender === currentUser.uid ? 'right' : 'left'
-          }}>
-          {msg.text}
-          </p>
-      ))}
+            <div style={{ overflowY: 'scroll', height: '300px' }}>
+  {messages.map((msg, index) => (
+    <p
+      key={index}
+      // sender and receiver have different background colors
+      style={{
+        backgroundColor: msg.sender === currentUser.uid ? 'rgb(7, 80, 19)' : 'grey',
+        textAlign: msg.sender === currentUser.uid ? 'right' : 'left'
+      }}
+    >
+      {msg.text}
+    </p>
+  ))}
+</div>
             <form onSubmit={handleSubmit}>
               <input
                 type="text"
