@@ -1,3 +1,4 @@
+//RequestSent.js will display the invitation that were sent. The user can see the list of people they sent an invitation to
 import { auth, db } from "../../firebase";
 import {
   collection,
@@ -61,78 +62,18 @@ function RequestSent() {
     });
   }, [Users]);
 
-  function handleConnect(userId) {
-    const connectionRef = collection(db, "connection");
-    const authdoc = doc(connectionRef, currentId);
-    const acceptedoc = doc(connectionRef, userId);
-    getDocs(connectionRef).then((docs) => {
-      const condition = docs.docs.includes(authdoc);
-      const condition2 = docs.docs.includes(userId);
-      if (condition) {
-        const getConnection = getDoc(authdoc).then((document) => {
-          const connections = document.data().connections;
-          if (!connections.includes(userId)) {
-            connections.push(userId);
-            return updateDoc(doc(followRef, currId), {
-              ...document.data(),
-              connections: connections,
-            });
-          }
-        });
-      } else {
-        setDoc(doc(connectionRef, currentId), { connections: [userId] });
-      }
-      if (condition2) {
-        const getConnection = getDoc(userId).then((document) => {
-          const connections = document.data().connections;
-          if (!connections.includes(currentId)) {
-            connections.push(currentId);
-            return updateDoc(doc(followRef, userId), {
-              ...document.data(),
-              connections: connections,
-            });
-          }
-        });
-      } else {
-        setDoc(doc(connectionRef, userId), { connections: [currentId] });
-      }
-    });
-    getDoc(doc(dbRef, userId)).then((document) => {
-      if (document.exists()) {
-        const array = document.data().requests;
-        const updatedArray = array.filter((id) => id !== currentId);
-        updateDoc(doc(dbRef, userId), {
-          ...document.data(),
-          requests: updatedArray,
-        });
-      }
-    });
-    SetUserData(UserData.filter((element) => element.id !== userId));
-  }
 
-  function handleCancel(userId) {
-    getDoc(doc(dbRef, userId)).then((document) => {
-      if (document.exists()) {
-        const array = document.data().requests;
-        const updatedArray = array.filter((id) => id !== currentId);
-        updateDoc(doc(dbRef, userId), {
-          ...document.data(),
-          requests: updatedArray,
-        });
-      }
-    });
-    SetUserData(UserData.filter((element) => element.id !== userId));
-  }
   useEffect(() => {
     getDoc(doc(dbRef, currentId)).then((user) => {
       const ReqArray = user.data().requests;
+      const array = [];
       ReqArray.forEach((id) => {
         getDoc(doc(profileRef, id)).then((other) => {
           const { firstName, lastName } = other.data();
           const otherId = other.id;
           const set = new Set();
           set.add({ id, firstName, lastName });
-          const array = [];
+
           set.forEach((element) => {
             array.push(element);
           });
@@ -142,6 +83,7 @@ function RequestSent() {
     });
   }, []);
 
+  //This function will remove the invitation from the database
   function handleWithdraw(userId) {
     getDoc(doc(dbRef, currentId)).then((user) => {
       if (user.exists()) {
@@ -178,9 +120,10 @@ function RequestSent() {
                   </Link>
                 </div>
                 <hr></hr>
+                {/*This is the displayal of the users onto the page, fetched from the database*/}
                 <div>
                   {requests.map((user) => (
-                    <div className="containRequest" key={user.id}>
+                    <div className="containRequest  mb-4" key={user.id}>
                       <p className="connection_name">
                         {user.firstName} {user.lastName}
                       </p>
@@ -194,7 +137,6 @@ function RequestSent() {
                       </Button>
                     </div>
                   ))}
-                  <hr></hr>
                 </div>
               </Card>
             </Col>

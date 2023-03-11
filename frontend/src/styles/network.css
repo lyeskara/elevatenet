@@ -91,6 +91,9 @@ h5.time {
   color: #27746a;
 }
 
+.ignore_button{
+  margin-right: 10px;
+}
 .ignore_button,
 .ignore_button:hover {
   background-color: white;
