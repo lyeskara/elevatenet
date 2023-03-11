@@ -23,7 +23,7 @@ import PendingRequests from "./components/Network/PendingRequests";
 import RequestsPage from "./components/connection/RequestsPage";
 import ConnectionPage from "./components/connection/ConnectionPage";
 import RequestSent from "./components/connection/RequestSent";
-
+import RecruiterForm from './components/ProfileInfo/RecruiterForm'
 
 
 function App() {
@@ -40,6 +40,10 @@ function App() {
           element={<Protection>{<Profile />}</Protection>}
         ></Route>
         <Route
+          path="/RecruiterForm"
+          element={<Protection>{<RecruiterForm/>}</Protection>}
+        ></Route>
+        <Route
           path="/CreateNewPosting"
           element={<Protection>{<CreateNewPosting />}</Protection>}
         ></Route>
@@ -47,8 +51,8 @@ function App() {
         <Route path="/" element={<Linkedin />} />
         <Route path="/SignIn" element={<SignIn />} />
         <Route path="/JoinNow" element={<JoinNow />} />
-        <Route path="/requests" element={<Protection><RequestsPage/></Protection>}></Route>
-				<Route path="/connections" element={<Protection><ConnectionPage/></Protection>}></Route>
+        <Route path="/requests" element={<Protection><RequestsPage /></Protection>}></Route>
+        <Route path="/connections" element={<Protection><ConnectionPage /></Protection>}></Route>
         <Route
           path="/userfeed"
           element={
@@ -65,25 +69,25 @@ function App() {
             </Protection>
           }
         ></Route>
-           
-           <Route path="/Feed" element={<Feed/>} />
-           <Route path="/CreatPost" element={<CreatPost/>} /> 
-       
-        
-        
+
+        <Route path="/Feed" element={<Feed />} />
+        <Route path="/CreatPost" element={<CreatPost />} />
+
+
+
         <Route path="/EditProfile" element={<EditProfile />} />{" "}
         <Route
           path="/user_posts"
           element={
             <Protection>
-              
+
             </Protection>
           }
         ></Route>
-    <Route path="/RequestSent" element={<RequestSent/>}/>
-		<Route path="/GroupNetwork" element={<GroupNetwork />} />
-		<Route path="/Event" element={<Event />} />
-		<Route path="/PendingRequests" element={<PendingRequests />} />
+        <Route path="/RequestSent" element={<RequestSent />} />
+        <Route path="/GroupNetwork" element={<GroupNetwork />} />
+        <Route path="/Event" element={<Event />} />
+        <Route path="/PendingRequests" element={<PendingRequests />} />
       </Routes>
     </UserAuthContextProvider>
   );
