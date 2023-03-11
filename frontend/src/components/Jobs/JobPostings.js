@@ -38,6 +38,7 @@ function JobPostings() {
 	const handleDelete = async(id) =>{
 		try {
 			await deleteDoc(doc(db, "posting", id));
+			//window.location.reload(); // Reload the page after deleting the post
 		  } catch (error) {
 			console.error("Error deleting document: ", error);
 		  }
