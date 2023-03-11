@@ -83,7 +83,11 @@
   position: relative; /* add this */
 }
 
-.text button[type="submit"] {
+
+
+
+
+button[type="button"] {
   height: 50px;
   padding: 10px;
   
@@ -99,21 +103,7 @@
   margin-bottom: -60px; /* add this */
 }
 
-.text button[type="attach"] {
-  height: 50px;
-  padding: 10px;
-  
-  font-size: 16px;
-  background-color: #27746A;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  position: absolute; /* add this */
-  bottom: 0; /* add this */
-  right: 0; /* add this */
-  margin: 120px; /* add this */
-  margin-bottom: 20px; /* add this */
-}
+
 
 
 /* Added tabs to chat-list with the code below */

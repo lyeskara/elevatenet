@@ -13,6 +13,12 @@ const Message = () => {
   const [recipientId, setRecipientId] = useState(null);
   const [users_information, setUsers] = useState([]);
 
+  const fileRef = useRef();
+  const [file, setFile] = useState(null);
+  const handleFileChange = (e) => {
+  setFile(e.target.files[0]);
+  };
+
   useEffect(() => {
     console.log('currentUser',currentUser);
     const unsubscribe = onSnapshot(collection(db, 'users_information'), (snapshot) => {
@@ -47,6 +53,7 @@ const Message = () => {
     e.preventDefault();
     const data = {
       text: messageRef.current.value,
+      file: file,
       createdAt: serverTimestamp(),
       sender: currentUser.uid,
     };
@@ -57,6 +64,7 @@ const Message = () => {
       addDoc(conversationRef, data);
       setMessages([...messages, data]);
       setMessage('');
+      setFile(null);
     } catch (e) {
       console.log(e);
     }
@@ -104,6 +112,9 @@ const Message = () => {
       }}
     >
       {msg.text}
+      {msg.file && (
+        <a href={msg.file.url} target="_blank" rel="noopener noreferrer">{msg.file.name}</a>
+      )}
     </p>
   ))}
 </div>
@@ -116,9 +127,13 @@ const Message = () => {
                 placeholder="Enter Message..."
               />
               
-              <button type="submit">Send</button>
+              <button type="button" onClick={handleSubmit}>Send</button>
             </form>
-            <button type="attach">Attach</button>
+            <input
+        type="file"
+        onChange={handleFileChange}
+        ref={fileRef}
+      />
           </div>
         </div>
       </div>
