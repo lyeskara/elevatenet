@@ -11,13 +11,19 @@
   padding-top: 1%;
 }
 
-h5.NetworkTitle {
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 32px;
-  line-height: 39px;
-  color: #626262;
+.NetworkTitle {
+  font-family: 'Inter';
+font-style: normal;
+font-weight: 400;
+font-size: 40px;
+line-height: 48px;
+
+color: #2B2B2B;
+
+}
+
+.event_title{
+  color: #27746A;
 }
 
 .connectCard {
@@ -60,6 +66,14 @@ h5.NetworkTitle {
   background-color: #27746a !important;
   border-color: #27746a !important;
   box-shadow: 0 0 0 0.2rem #27746a !important;
+}
+
+
+div.pair {
+  float:left;
+}
+.type_event{
+  color:#626262;
 }
 
 h5.time {
@@ -123,3 +137,4 @@ h5.time {
   margin-left: auto;
   margin-right: 0;
 }
+
