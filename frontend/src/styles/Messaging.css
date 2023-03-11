@@ -31,8 +31,8 @@
   background-color: white;
   font-size: 20px;
   padding: 20px;
-  overflow-y: scroll; /*added this for scrolling */
-  height: calc(100vh - 310px); /* added this for scrolling */
+ /*overflow-y: scroll; added this for scrolling */
+  /*height: calc(100vh - 310px);  added this for scrolling */
 }
 
 
@@ -97,4 +97,34 @@
   right: 0; /* add this */
   margin: 1px; /* add this */
   margin-bottom: -60px; /* add this */
+}
+
+
+/* Added tabs to chat-list with the code below */
+
+.user-tab {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.user-tab img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.user-tab h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.user-tab p {
+  margin: 0;
+  font-size: 14px;
+  color: #777;
 }
