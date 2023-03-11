@@ -74,12 +74,12 @@ function JobPostings() {
 		  }
 		};
 		getData();
-		// Set up a timer to trigger the getData function every 2 seconds
-		const intervalId = setInterval(getData, 2000);
+		// // Set up a timer to trigger the getData function every 2 seconds
+		// const intervalId = setInterval(getData, 2000);
 
-		// Clean up the interval timer when the component unmounts
-		return () => clearInterval(intervalId);
-	  }, []); // pass an empty dependency array
+		// // Clean up the interval timer when the component unmounts
+		// return () => clearInterval(intervalId);
+	  }, [posts]); // pass an empty dependency array
 	  
 
 	return (
