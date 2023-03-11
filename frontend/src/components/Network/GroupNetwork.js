@@ -107,10 +107,12 @@ function GroupNetwork() {
                             <img src={grouplogo} alt="template_group_pic" className="group_pic_center" />
                           </Col>
                           <Col md={9}>
-                            <h3> {groupInfos.group_name}</h3>
+                            <h5> {groupInfos.group_name}</h5>
                             <h5> {groupInfos.memberUIDs.length} members</h5>
                         <hr></hr>
-                        <p> {groupInfos.description}</p>
+                        <h5> {groupInfos.description}</h5>
+                        <h5> {groupInfos.industry}</h5>
+                        <h5> {groupInfos.location}</h5>
                           </Col>
                           <Col className="center-col" md={2}>
                             <Button className="create_Group_Button" >View Group</Button>
@@ -136,10 +138,12 @@ function GroupNetwork() {
                       <img src={grouplogo} alt="template_group_pic" className="group_pic_center" />
                       </Col>
                       <Col md={9}>
-                        <h3> {groupInfos.group_name}</h3>
-                        <h5 > {groupInfos.memberUIDs.length} members</h5>
+                        <h5> {groupInfos.group_name}</h5>
+                        <h5> {groupInfos.memberUIDs.length} members</h5>
                         <hr />
-                        <p> {groupInfos.description}</p>
+                        <h5> {groupInfos.description}</h5>
+                        <h5> {groupInfos.industry}</h5>
+                        <h5> {groupInfos.location}</h5>
                       </Col>
                       <Col className="center-col" md={2}>
                         <Button className="create_Group_Button" onClick={() => handleRequest(index)}>
