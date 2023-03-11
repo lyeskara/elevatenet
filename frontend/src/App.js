@@ -41,7 +41,7 @@ function App() {
           path="/CreateNewPosting"
           element={<Protection>{<CreateNewPosting />}</Protection>}
         ></Route>
-        <Route path="/JobPostings" element={<JobPostings />} />
+        <Route path="/JobPostings" element={<Protection><JobPostings/></Protection>}></Route>
         <Route path="/" element={<Linkedin />} />
         <Route path="/SignIn" element={<SignIn />} />
         <Route path="/JoinNow" element={<JoinNow />} />
