@@ -17,12 +17,12 @@ import EditProfile from "./components/ProfileInfo/EditProfile";
 import CreateNewPosting from "./components/Jobs/CreateNewPosting";
 import Feed from "./components/UserFeedPage/Feed";
 import CreatPost from "./components/UserFeedPage/CreatPost";
-import ConnectionNetwork from "./components/Network/ConnectionNetwork";
 import GroupNetwork from "./components/Network/GroupNetwork";
 import Event from "./components/Network/Event";
 import PendingRequests from "./components/Network/PendingRequests";
 import RequestsPage from "./components/connection/RequestsPage";
 import ConnectionPage from "./components/connection/ConnectionPage";
+import RequestSent from "./components/connection/RequestSent";
 
 
 
@@ -80,7 +80,7 @@ function App() {
             </Protection>
           }
         ></Route>
-        <Route path="/ConnectionNetwork" element={<ConnectionNetwork />} />
+    <Route path="/RequestSent" element={<RequestSent/>}/>
 		<Route path="/GroupNetwork" element={<GroupNetwork />} />
 		<Route path="/Event" element={<Event />} />
 		<Route path="/PendingRequests" element={<PendingRequests />} />
