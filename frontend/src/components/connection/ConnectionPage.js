@@ -1,3 +1,4 @@
+//ConnectionPage is the main page of the network set of pages. It shows the connections of the user and allows them to manage their invitations through other pages: RequestsPage and RequestSent
 import { collection, doc, getDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { auth, db } from "../../firebase";
@@ -46,7 +47,7 @@ function ConnectionPage() {
         });
     });
   }, [ids]);
-
+//This function will display the list of connections that a user have
   function handle(userId) {
     getDoc(doc(colRef, userId)).then((user) => {
       if (user.exists()) {
@@ -111,9 +112,10 @@ function ConnectionPage() {
               <br></br>
               <hr></hr>
               <Row className="mt-3">
+                  {/*This is the displayal of the users onto the page, fetched from the database*/}
                 <div>
                   {connections.map((user) => (
-                    <div className="containRequest" key={user.id}>
+                    <div className="containRequest mb-3" key={user.id}>
                       <p className="connection_name">
                         {user.firstName} {user.lastName}
                       </p>
