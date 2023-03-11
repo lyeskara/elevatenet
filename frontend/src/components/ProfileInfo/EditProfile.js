@@ -21,10 +21,14 @@ const storageRef = ref(
 function EditProfile({ user, setUser, profilepic }) {
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
+	const handleShow = () => {
+		setUpdatedUser(user);
+		setShow(true);
+	};
 	const navigate = useNavigate();
 	const storage = getStorage();
 	const [selectedFile, setSelectedFile] = useState(null);
+	const [updatedUser, setUpdatedUser] = useState(null); // create a copy of the user object using useState
 	/**
 	 * setUser allows us to set the User to our changled values stored in setUser.
 	 * @constructor
@@ -32,7 +36,18 @@ function EditProfile({ user, setUser, profilepic }) {
 	 * @param {object} e - Any element.
 	 */
 	function update(e) {
-		setUser({ ...user, [e.target.name]: e.target.value });
+		const name = e.target.name;
+		const value = e.target.value;
+
+		setUpdatedUser((prevState) => {
+			// Handle array fields
+			if (Array.isArray(prevState[name])) {
+				const values = value.split(","); // split input by comma
+				return { ...prevState, [name]: values };
+			}
+			// Handle non-array fields
+			return { ...prevState, [name]: value };
+		});
 	}
 
 	/**
@@ -50,24 +65,16 @@ function EditProfile({ user, setUser, profilepic }) {
 				);
 				await uploadBytes(storageRef, selectedFile);
 			}
-			setDoc(doc(collection(db, "users_information"), auth.currentUser.uid), {
-				firstName: user.firstName,
-				lastName: user.lastName,
-				education: user.education,
-				city: user.city,
-				bio: user.bio,
-				workExperience: user.workExperience,
-				skills: user.skills,
-				languages: user.languages,
-				email: auth.currentUser.email,
-				contact: user.contact,
-				awards: user.awards,
-				courses: user.courses,
-				projects: user.projects,
-				volunteering: user.volunteering,
-			});
+			await setDoc(
+				doc(collection(db, "users_information"), auth.currentUser.uid),
+				{
+					...user,
+					...updatedUser,
+				}
+			);
+			setUser({ ...user, ...updatedUser });
+			setShow(false);
 		}
-		navigate("/Profile");
 	}
 
 	return (

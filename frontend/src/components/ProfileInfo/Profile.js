@@ -60,7 +60,7 @@ function Profile() {
 				<Col className="col1" xs={12} md={{ span: 3, offset: 1 }}>
 					<Card className="profilecard">
 						<img
-							src={profilePicURL}
+							src={profilePicURL || person}
 							id="profilepic"
 							alt="Avatar"
 							className="avatar"
@@ -129,7 +129,7 @@ function Profile() {
 							>
 								{user.awards &&
 									Array.isArray(user.awards) &&
-									user.skills.map((awards) => (
+									user.awards.map((awards) => (
 										<div key={awards}>{user.awards}</div>
 									))}
 							</h5>
