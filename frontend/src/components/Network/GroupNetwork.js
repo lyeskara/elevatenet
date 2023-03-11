@@ -110,7 +110,7 @@ function GroupNetwork() {
                             <h3> {groupInfos.group_name}</h3>
                             <h5> {groupInfos.memberUIDs.length} members</h5>
                         <hr></hr>
-                        <h6> {groupInfos.description}</h6>
+                        <p> {groupInfos.description}</p>
                           </Col>
                           <Col className="center-col" md={2}>
                             <Button className="create_Group_Button" >View Group</Button>
@@ -139,7 +139,7 @@ function GroupNetwork() {
                         <h3> {groupInfos.group_name}</h3>
                         <h5 > {groupInfos.memberUIDs.length} members</h5>
                         <hr />
-                        <h6> {groupInfos.description}</h6>
+                        <p> {groupInfos.description}</p>
                       </Col>
                       <Col className="center-col" md={2}>
                         <Button className="create_Group_Button" onClick={() => handleRequest(index)}>
