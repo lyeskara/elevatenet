@@ -20,20 +20,26 @@ import 'firebase/firestore';
 import { useUserAuth } from '../../context/UserAuthContext';
 import { useNavigate } from 'react-router-dom';
 import { collection, setDoc ,doc, addDoc} from 'firebase/firestore';
+import { Spinner } from 'react-bootstrap';
 
 function CreateNewPosting() {
+    const [isLoading, setIsLoading] = useState(false);
 
     const { user } = useUserAuth();
     const navigate =useNavigate();
     const [startDate, setStartDate] = useState(new Date());
     const handleCancel = () => {
-		window.location.href = '/JobPostings';
+		// setIsLoading(true);
+        // setTimeout(() => {
+        window.location.href = '/JobPostings';
+        // }, 2000); // wait for 2 seconds before navigating to simulate a loading screen
 	};
     //fields of posting
     const [postingData, setPostingData] = useState({
         job_title: '',
         company: '',
         description: '',
+        apply_here:'',
         deadline: '',
     })
 
@@ -57,7 +63,9 @@ function CreateNewPosting() {
                 job_title: postingData.job_title,
                 company: postingData.company,
                 description: postingData.description,
+                apply_here: postingData.description,
                 deadline: postingData.deadline,
+                created_by: user.email
                 // full_time: postingData.full_time,
             })
             // Clear the form fields
@@ -65,6 +73,7 @@ function CreateNewPosting() {
                 job_title: '',
                 company: '',
                 description: '',
+                apply_here: '',
                 deadline: '',
                 // full_time: false
             });
@@ -84,6 +93,23 @@ function CreateNewPosting() {
            deadline: date,
         }));
      }; 
+    
+     useEffect(() => {
+        async function getCurrentUserEmail() {
+          if (user) {
+            const docRef = doc(db, "users_information", user.uid);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+              const email = docSnap.get("email");
+              setPostingData((prevState) => ({
+                ...prevState,
+                created_by: email,
+              }));
+            }
+          }
+        }
+        getCurrentUserEmail();
+      }, [user]);
     // return of the CreateNewPosting() function
     // lets users cancel the form 
     // lets users change inputs on the form
@@ -147,6 +173,20 @@ function CreateNewPosting() {
                                 onChange={handleInputChange}
                                 ></textarea>
                             </div>
+                            {/* APPLY HERE */}
+                            <div className="form-group mb-3">
+                                <label htmlFor="formFile" className="form-label">
+                                    <h6>Apply Here (optional)</h6>
+                                </label>
+                                <input 
+                                className="form-control" rows="3" placeholder="To redirect to a third-party website"
+                                // id="exampleFormControlTextarea1"
+                                id="apply_here"
+                                name="apply_here"
+                                value={postingData.apply_here}
+                                onChange={handleInputChange}
+                                />
+                            </div>
                             {/* DATE PICKER FOR DEADLINE */}
                             <div className="form-group mb-3">
                                 <label htmlFor="formFile" className="form-label">
@@ -176,12 +216,22 @@ function CreateNewPosting() {
                             {/* BUTTONS TO CANCEL OR POST THE POSITION */}
                             <Row>
                                 <Col className="d-flex justify-content-center">
-                                    <Button variant="outline-secondary" size="lg" block className="w-100" onClick={handleCancel}>
-                                        Cancel
-                                    </Button>
+                                <>
+      {/* {isLoading && <Spinner animation="border" />} */}
+      <Button
+        variant="outline-secondary"
+        size="lg"
+        block
+        className="w-100"
+        onClick={handleCancel}
+        // disabled={isLoading} // disable the button while loading
+      >
+        Cancel
+      </Button>
+    </>
                                 </Col>
                                 <Col className="d-flex justify-content-center">
-                                    <Button type="submit" variant="primary" size="lg" block className="w-100" style={{backgroundColor:'#27746a'}}>
+                                    <Button type="submit" variant="primary" size="lg" block className="w-100" style={{backgroundColor:'#27746a'}} >
                                         Post
                                     </Button>
                                 </Col>
