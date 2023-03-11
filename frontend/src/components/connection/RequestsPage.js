@@ -1,3 +1,5 @@
+/*This page is used for the connections invitation that were received. A user can view the list of network invitation and decide to ignore or accept the request
+*/
 import { auth, db } from "../../firebase";
 import {
   collection,
@@ -60,20 +62,27 @@ function RequestsPage() {
         });
     });
   }, [Users]);
-
+//This function will add the connection to the database whenver a user accepts the connection invitation. 
   function handleConnect(userId) {
     const connectionRef = collection(db, "connection");
     const authdoc = doc(connectionRef, currentId);
     const acceptedoc = doc(connectionRef, userId);
+    const array = []
     getDocs(connectionRef).then((docs) => {
-      const condition = docs.docs.includes(authdoc);
-      const condition2 = docs.docs.includes(userId);
+      docs.docs.forEach(document=>{
+        array.push(document.id)
+      })
+      console.log(array)
+      const condition = array.includes(authdoc.id);
+      const condition2 = array.includes(userId);
+      console.log(condition2)
+
       if (condition) {
         const getConnection = getDoc(authdoc).then((document) => {
           const connections = document.data().connections;
           if (!connections.includes(userId)) {
             connections.push(userId);
-            return updateDoc(doc(followRef, currId), {
+            return updateDoc(doc(connectionRef, currentId), {
               ...document.data(),
               connections: connections,
             });
@@ -83,11 +92,11 @@ function RequestsPage() {
         setDoc(doc(connectionRef, currentId), { connections: [userId] });
       }
       if (condition2) {
-        const getConnection = getDoc(userId).then((document) => {
+        const getConnection = getDoc(acceptedoc).then((document) => {
           const connections = document.data().connections;
           if (!connections.includes(currentId)) {
             connections.push(currentId);
-            return updateDoc(doc(followRef, userId), {
+            return updateDoc(doc(connectionRef, userId), {
               ...document.data(),
               connections: connections,
             });
@@ -109,7 +118,7 @@ function RequestsPage() {
     });
     SetUserData(UserData.filter((element) => element.id !== userId));
   }
-
+//Function allows the cancellation of an invitation through the button ignore
   function handleCancel(userId) {
     getDoc(doc(dbRef, userId)).then((document) => {
       if (document.exists()) {
@@ -125,15 +134,14 @@ function RequestsPage() {
   }
   useEffect(() => {
     getDoc(doc(dbRef, currentId)).then((user) => {
-      const ReqArray = user.data().requests; 
-      const array = [];
+      const ReqArray = user.data().requests;
       ReqArray.forEach((id) => {
         getDoc(doc(profileRef, id)).then((other) => {
           const { firstName, lastName } = other.data();
           const otherId = other.id;
           const set = new Set();
           set.add({ id, firstName, lastName });
-         
+          const array = [];
           set.forEach((element) => {
             array.push(element);
           });
@@ -143,20 +151,7 @@ function RequestsPage() {
     });
   }, []);
 
-  function handleWithdraw(userId) {
-    getDoc(doc(dbRef, currentId)).then((user) => {
-      if (user.exists()) {
-        const RequestArray = user.data().requests;
-        const FilteredArray = RequestArray.filter((id) => id !== userId);
-        console.log(FilteredArray);
-        updateDoc(doc(dbRef, currentId), {
-          ...user.data(),
-          requests: FilteredArray,
-        });
-      }
-    });
-    Setrequests(requests.filter((element) => element.id !== userId));
-  }
+
   return (
     <>
       <div className="contain">
@@ -178,6 +173,8 @@ function RequestsPage() {
                   <Link to="/RequestSent">Sent</Link>
                 </div>
                 <hr></hr>
+
+                {/*This is the displayal of the users onto the page, fetched from the database*/}
                 <div>
                   {UserData.map((user) => (
                     <div className="containRequest mb-4" key={user.id}>
