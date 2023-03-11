@@ -115,8 +115,10 @@ const Message = () => {
                 ref={messageRef}
                 placeholder="Enter Message..."
               />
+              
               <button type="submit">Send</button>
             </form>
+            <button type="attach">Attach</button>
           </div>
         </div>
       </div>

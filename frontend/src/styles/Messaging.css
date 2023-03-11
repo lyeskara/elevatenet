@@ -99,6 +99,22 @@
   margin-bottom: -60px; /* add this */
 }
 
+.text button[type="attach"] {
+  height: 50px;
+  padding: 10px;
+  
+  font-size: 16px;
+  background-color: rgb(7, 80, 19);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  position: absolute; /* add this */
+  bottom: 0; /* add this */
+  right: 0; /* add this */
+  margin: 120px; /* add this */
+  margin-bottom: 20px; /* add this */
+}
+
 
 /* Added tabs to chat-list with the code below */
 
