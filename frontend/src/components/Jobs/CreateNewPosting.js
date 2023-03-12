@@ -3,7 +3,6 @@
 // and with after doing so and clicking post they can create a job posting job
 
 import React, { useEffect, useState } from "react";
-// import { collection, getDoc, doc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import Card from "react-bootstrap/Card";
 import "../../styles/JobPostings.css";
@@ -15,25 +14,16 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
-import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { useUserAuth } from '../../context/UserAuthContext';
 import { useNavigate } from 'react-router-dom';
 import { collection, setDoc ,doc, addDoc} from 'firebase/firestore';
-import { Spinner } from 'react-bootstrap';
+
 
 function CreateNewPosting() {
-    const [isLoading, setIsLoading] = useState(false);
-
     const { user } = useUserAuth();
     const navigate =useNavigate();
-    const [startDate, setStartDate] = useState(new Date());
-    const handleCancel = () => {
-		// setIsLoading(true);
-        // setTimeout(() => {
-        window.location.href = '/JobPostings';
-        // }, 2000); // wait for 2 seconds before navigating to simulate a loading screen
-	};
+    const [startDate, setStartDate] = useState(new Date());   
     //fields of posting
     const [postingData, setPostingData] = useState({
         job_title: '',
@@ -42,7 +32,12 @@ function CreateNewPosting() {
         apply_here:'',
         deadline: '',
     })
-
+    //update with the handleCancel() method 
+    // @param () 
+    //handles cancel, redirects to /JobPostings page
+    const handleCancel = () => {
+            window.location.href = '/JobPostings';
+        };
     //update with the handleInputChange() method 
     // @param (event) 
     //handles changes to the input and updates field 
@@ -66,7 +61,7 @@ function CreateNewPosting() {
                 apply_here: postingData.description,
                 deadline: postingData.deadline,
                 created_by: user.email
-                // full_time: postingData.full_time,
+                // full_time: postingData.full_time,                      no going to be used for this sprint
             })
             // Clear the form fields
             setPostingData({
@@ -126,13 +121,6 @@ function CreateNewPosting() {
                         <form onSubmit={handleSubmit}>
                             <h5 className="text-center">Create a new Job Posting</h5>
                             <hr></hr>
-                            {/* LOGO */}
-                            {/* <div className="mb-3">
-                                <label htmlFor="formFile" className="form-label">
-                                    <h6>Logo</h6>
-                                </label>
-                                <input className="form-control" type="file" id="formFile" />
-                            </div> */}
                             {/* JOB TITLE */}
                             <div className="form-group mb-3">
                                 <label htmlFor="formFile" className="form-label">
@@ -199,32 +187,17 @@ function CreateNewPosting() {
                                 value={postingData.deadline}
                                 />
                             </div>  
-                            {/* TOGGLE FOR FULL-TIME POSITION OR NOT */}
-                            {/* <div className="form-group mb-3">
-                                <div className="form-check form-switch">
-                                    <label className="form-check-label" htmlFor="toggleSwitch">Full-Time Position</label>
-                                    <input 
-                                    className="form-check-input" type="checkbox" id="toggleSwitch" 
-                                    // id="deadline"
-                                    name="full_time"
-                                    value={postingData.full_time}
-                                    onChange={handleInputChange}
-                                    />
-                                </div>
-                            </div> */}
 
                             {/* BUTTONS TO CANCEL OR POST THE POSITION */}
                             <Row>
                                 <Col className="d-flex justify-content-center">
                                 <>
-      {/* {isLoading && <Spinner animation="border" />} */}
       <Button
         variant="outline-secondary"
         size="lg"
         block
         className="w-100"
         onClick={handleCancel}
-        // disabled={isLoading} // disable the button while loading
       >
         Cancel
       </Button>
