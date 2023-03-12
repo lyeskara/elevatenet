@@ -1,7 +1,3 @@
-
-
-
-
 import React, { useState, useEffect, useRef } from "react";
 import { setDoc, collection, doc, getDocs, getDoc, updateDoc, query } from "firebase/firestore";
 import { db, auth } from "../../firebase";
@@ -14,24 +10,25 @@ import {
   ref,
   uploadBytes,
   getDownloadURL,
-  listAll,
-  list,
 } from "firebase/storage";
 import { storage } from "../../firebase";
 import { v4 } from "uuid";
 
 function CreatPost() {
 
+  // initializing state for inputs
   const [postText, setPostText] = useState("");
   const [Picture, setPicture] = useState(null);
   const [PicUrl, SetPicUrl] = useState(null);
 
-
+  // reference hook
   const inputRef = useRef();
+
+  // creating references to database instances
   const currentId = auth.currentUser.uid
   const postsCollectionRef = collection(db, "user_posts");
-  
-useEffect(() => {
+  // useEffect which handles storing picture in google storage bucket and converting it to browser url when the Picture state is mutated
+  useEffect(() => {
     const imageRef = ref(storage, `images/${v4() + Picture}`);
     uploadBytes(imageRef, Picture).then((word) => {
       getDownloadURL(word.ref).then((url) => {
@@ -40,11 +37,11 @@ useEffect(() => {
       })
     })
   }, [Picture])
-
-async function PostCreation(event) {
+  //function which pushes the data inputed in the form into the collection user-posts under the user id
+  async function PostCreation(event) {
     event.preventDefault(); // prevent the form from being submitted
-  
-    const AllDocs = (await getDocs(postsCollectionRef)).docs
+
+    const AllDocs = (await getDocs(postsCollectionRef)).docs 
 
     const documentData = (await getDoc(doc(postsCollectionRef, currentId)))
     const array = []
@@ -55,32 +52,31 @@ async function PostCreation(event) {
     console.log(condition)
 
     let objectsSize = 0;
-    if(documentData.data()===undefined){
-       objectsSize = 0;
-    }else{
-       objectsSize = Object.keys(documentData.data()).length
+    if (documentData.data() === undefined) {
+      objectsSize = 0;
+    } else {
+      objectsSize = Object.keys(documentData.data()).length
     }
-    const index = objectsSize+1;
-    if(!condition){
-      await setDoc(doc(postsCollectionRef,currentId), {
+    const index = objectsSize + 1;
+    if (!condition) {
+      await setDoc(doc(postsCollectionRef, currentId), {
         [index]: {
           postText,
           PicUrl
         }
       });
-    }else{
-        const obj= {
-          postText,
-          PicUrl
-        }
-       const Posts = documentData.data()
-       Posts[index] = obj
-       updateDoc(doc(postsCollectionRef,currentId), Posts)
+    } else {
+      const obj = {
+        postText,
+        PicUrl
+      }
+      const Posts = documentData.data()
+      Posts[index] = obj
+      updateDoc(doc(postsCollectionRef, currentId), Posts)
     }
   };
 
-  console.log(Picture, postText)
-
+  // the template for post creation
   return (
     <div className="create-post-container">
       <div className="create-post-header">
