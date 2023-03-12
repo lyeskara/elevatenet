@@ -28,6 +28,7 @@ import {
   documentId,
 } from "firebase/firestore";
 import { auth, db } from "../../firebase";
+import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 
 function OtherUsersProfile() {
   const [follow, setfollow] = useState(false);
