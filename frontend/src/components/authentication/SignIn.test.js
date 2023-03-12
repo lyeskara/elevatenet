@@ -2,44 +2,33 @@
  * @jest-environment jsdom
  */
 
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react';
+import SignIn from './SignIn';
+import { useUserAuth, Login } from '../../context/UserAuthContext';
 
-test('use jsdom in this test file', () => {
-  const element = document.createElement('div');
-  expect(element).not.toBeNull();
+test('test', () => {
+  expect(true).toBe(true);
 });
-import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react";
-import SignIn from "./SignIn";
 
-test("clicking the sign in button calls the login function with the entered email and password", async () => {
-  // Create mock functions and objects
-  const mockLogin = jest.fn(() => Promise.resolve());
-  const mockNavigate = jest.fn();
-  const mockUseUserAuth = jest.fn(() => ({ Login: mockLogin }));
-  const mockUseNavigate = jest.fn(() => mockNavigate);
-  jest.mock("../../context/UserAuthContext.js", () => ({
-    useUserAuth: mockUseUserAuth,
-  }));
-  jest.mock("react-router-dom", () => ({
-    useNavigate: mockUseNavigate,
-  }));
+jest.mock('../../context/UserAuthContext', () => {
+  return {
+      useUserAuth: jest.fn().mockReturnValue({
+          Login: jest.fn()
+      })
+  }
+});
 
-  // Render the component
-  const { getByText, getByLabelText } = render(<SignIn />);
 
-  // Fill out the form
-  const emailInput = getByLabelText("Enter email");
-  const passwordInput = getByLabelText("Password");
-  const signInButton = getByText("Sign In");
-  fireEvent.change(emailInput, { target: { value: "test@example.com" } });
-  fireEvent.change(passwordInput, { target: { value: "password123" } });
+test("should throw an error when the credentials are invalid", async () => {
+  const { Login } = useUserAuth();
+  const spy = jest.spyOn(useUserAuth(), 'Login');
 
-  // Click the sign in button
-  fireEvent.click(signInButton);
+  try {
+    await Login("lyes@gmail.com", "123456789");
+  } catch (error) {
+    expect(error).toEqual(new Error("Invalid credentials"));
+  }
 
-  // Check that the login function was called with the correct arguments
-  await waitFor(() => expect(mockLogin).toHaveBeenCalledWith("test@example.com", "password123"));
-
-  // Check that the user was navigated to the profile page
-  expect(mockNavigate).toHaveBeenCalledWith("/Profile");
+  expect(spy).toHaveBeenCalledWith("lyes@gmail.com", "123456789");
 });

@@ -1,39 +1,8 @@
 body {
-  background-color: #e2e2e2;
-}
+    background-color: #E2E2E2;
+    }
 
-/*Front page*/
-p.slogan {
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 40px;
-  line-height: 48px;
-}
 
-span.green {
-  color: #27746a;
-}
-
-p.frontCatchPhrase {
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 700;
-  font-size: 50px;
-  line-height: 61px;
-}
-
-p.catch {
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 24px;
-  text-align: justify;
-
-  color: #000000;
-}
-
-img.gif {
-  float: right;
+h{
+    font-family: 'Inter';
 }
