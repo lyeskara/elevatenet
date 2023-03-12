@@ -27,7 +27,7 @@ import CreateGroup from "./components/Network/CreateGroup";
 import CreateEvent from "./components/Network/CreateEvent";
 
 import RequestSent from "./components/connection/RequestSent";
-
+import RecruiterForm from './components/ProfileInfo/RecruiterFrom'
 function App() {
   return (
     <UserAuthContextProvider>
@@ -36,6 +36,10 @@ function App() {
         <Route
           path="/ProfileForm"
           element={<Protection>{<ProfileForm />}</Protection>}
+        ></Route>
+         <Route
+          path="/RecruiterForm"
+          element={<Protection>{<RecruiterForm />}</Protection>}
         ></Route>
         <Route
           path="/Profile"
@@ -66,7 +70,7 @@ function App() {
           }
         ></Route>
         <Route
-          path="/userfeed"
+          path="/feed"
           element={
             <Protection>
               <Feed />
@@ -82,8 +86,7 @@ function App() {
             </Protection>
           }
         ></Route>
-        <Route path="/Feed" element={<Feed />} />
-        <Route path="/CreatPost" element={<CreatPost />} />
+        <Route path="/CreatPost" element={<Protection><CreatPost/></Protection>} />
         <Route path="/EditProfile" element={<EditProfile />} />{" "}
         <Route path="/user_posts" element={<Protection></Protection>}></Route>
         <Route path="/RequestSent" element={<RequestSent />} />
