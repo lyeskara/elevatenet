@@ -10,7 +10,7 @@ function Post({ name, description, message, photo,image}) {
       <div className="post-header">
         <div>
           <img src={photo} alt={name} />
-          <span>{name[0]}</span>
+          <span>{name}</span>
         </div>
 
         <div className="post-info">
