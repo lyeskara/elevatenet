@@ -22,44 +22,27 @@ import personicon from '../../images/personicon.png';
 
 
 function Feed() {
+
+  // state variables
   const [input, setInput] = useState('');
   const [Data,SetData] = useState([])
-  const currentId = auth.currentUser?.uid; // adding a conditional operator in case of null id
+  // db references
+  const currentId = auth.currentUser.uid
   const postRef = collection(db, "user_posts")
- 
+ // fetching the user posts
   useEffect(() => {
-    async function getData() {
-      // Check if the user is authenticated before fetching the data
-      if (auth.currentUser) {
-        const document = await getDoc(doc(postRef, currentId));
-        const values = document.data();
+       getDoc(doc(postRef, currentId)).then((posts)=>{
+        const values = posts.data();
         const postArray = Object.values(values).map((obj) => {
           return {
-            title: obj.title,
             postText: obj.postText,
             PicUrl: obj.PicUrl,
           };
         });
         SetData(postArray);
-        console.log(postArray);
-      }
-    }
-    getData();
-  }, [currentId, SetData, postRef]); // Add postRef to the dependency array
-
-  const post = [
-    {
-      id: 1,
-      data: {
-        name: 'Cloud Fare',
-        description: 'Storage Company',
-        message: 'Today, we would like to highlight two of the employees promoted respectively to the positions of EMEA Sales Executive and Team Lead in Paris.',
-        photo: profile1,
-        image: post1
-      }
-    }
-  ];
-
+       })    
+  }, []);
+ // the templates for markup
   return (
     <div className="feed">
       <div className="feed-inputContainer">
