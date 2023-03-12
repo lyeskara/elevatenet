@@ -28,6 +28,8 @@ import CreateEvent from "./components/Network/CreateEvent";
 
 import RequestSent from "./components/connection/RequestSent";
 import RecruiterForm from './components/ProfileInfo/RecruiterFrom'
+
+import Messaging from './components/DirectMessage/Messaging';
 function App() {
   return (
     <UserAuthContextProvider>
@@ -77,7 +79,7 @@ function App() {
             </Protection>
           }
         ></Route>
-
+        <Route path="/Messaging" element={<Protection><Messaging/></Protection>}></Route>
         <Route
           path="profile/:id"
           element={
