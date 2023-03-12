@@ -1,0 +1,7 @@
+.w-100{
+  margin-top: 32px;
+  box-shadow: 0 4px 2px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);   
+  border-color: #27746a; 
+}
+.w-100:hover {
+  border: 1px solid #0e0e0e;}

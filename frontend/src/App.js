@@ -1,35 +1,103 @@
-import './styles/App.css';
-import './styles/common.css';
-
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./styles/App.css";
+import "./styles/common.css";
 import React from 'react';
-import {Route , Routes} from 'react-router-dom'
-import NavbarFun from './components/Navbar';
-import SignIn from './components/authentication/SignIn';
-import JoinNow from './components/authentication/JoinNow';
+import { Route, Routes } from "react-router-dom";
+import NavbarFun from "./components/Navbar";
+import SignIn from "./components/authentication/SignIn";
+import JoinNow from "./components/authentication/JoinNow";
+import Linkedin from "./components/Linkedin";
+import ProfileForm from "./components/ProfileInfo/ProfileForm";
+import Profile from "./components/ProfileInfo/Profile";
+import JobPostings from "./components/Jobs/JobPostings";
+import Protection from "./context/Protection";
+import OtherUsersProfile from "./components/ProfileInfo/OtherUsersProfile";
+import { UserAuthContextProvider } from "./context/UserAuthContext";
+import EditProfile from "./components/ProfileInfo/EditProfile";
+import CreateNewPosting from "./components/Jobs/CreateNewPosting";
+import Feed from "./components/UserFeedPage/Feed";
+import CreatPost from "./components/UserFeedPage/CreatPost";
+import GroupNetwork from "./components/Network/GroupNetwork";
+import Event from "./components/Network/Event";
 import Messaging from './components/DirectMessage/Messaging';
-import Linkedin from './components/Linkedin';
-import ProfileForm from './components/ProfileInfo/ProfileForm';
-import Profile from './components/ProfileInfo/Profile';
-import Protection from './context/Protection'
-import { UserAuthContextProvider } from './context/UserAuthContext';
+import RequestsPage from "./components/connection/RequestsPage";
+import ConnectionPage from "./components/connection/ConnectionPage";
+import CreateGroup from "./components/Network/CreateGroup";
+import CreateEvent from "./components/Network/CreateEvent";
 
-
+import RequestSent from "./components/connection/RequestSent";
+import RecruiterForm from './components/ProfileInfo/RecruiterFrom'
 function App() {
   return (
     <UserAuthContextProvider>
-    <NavbarFun/>
-    <Routes>
-    <Route path="/ProfileForm" element={<Protection>{<ProfileForm/>}</Protection>}></Route>
-    <Route path="/Profile" element={<Protection>{<Profile/>}</Protection>}></Route>
-    <Route path="/" element={<Linkedin />} />
-    <Route path="/SignIn" element={<SignIn/>} />
-    <Route path="/JoinNow" element={<JoinNow/>} />
-    <Route path="/Messaging" element={<Messaging/>} />
- 
+      <NavbarFun />
+      <Routes>
+        <Route
+          path="/ProfileForm"
+          element={<Protection>{<ProfileForm />}</Protection>}
+        ></Route>
+         <Route
+          path="/RecruiterForm"
+          element={<Protection>{<RecruiterForm />}</Protection>}
+        ></Route>
+        <Route
+          path="/Profile"
+          element={<Protection>{<Profile />}</Protection>}
+        ></Route>
+        <Route
+          path="/CreateNewPosting"
+          element={<Protection>{<CreateNewPosting />}</Protection>}
+        ></Route>
+        <Route path="/JobPostings" element={<Protection>{<JobPostings />}</Protection>} />
+        <Route path="/" element={<Linkedin />} />
+        <Route path="/SignIn" element={<SignIn />} />
+        <Route path="/JoinNow" element={<JoinNow />} />
+        <Route path="/Messaging" element={<Protection><Messaging/></Protection>}></Route>
+        <Route
+          path="/requests"
+          element={
+            <Protection>
+              <RequestsPage />
+            </Protection>
+          }
+        ></Route>
+        <Route
+          path="/connections"
+          element={
+            <Protection>
+              <ConnectionPage />
+            </Protection>
+          }
+        ></Route>
+        <Route
+          path="/feed"
+          element={
+            <Protection>
+              <Feed />
+            </Protection>
+          }
+        ></Route>
 
-    </Routes> 
+        <Route
+          path="profile/:id"
+          element={
+            <Protection>
+              <OtherUsersProfile />
+            </Protection>
+          }
+        ></Route>
+        <Route path="/CreatPost" element={<Protection><CreatPost/></Protection>} />
+        <Route path="/EditProfile" element={<EditProfile />} />{" "}
+        <Route path="/user_posts" element={<Protection></Protection>}></Route>
+        <Route path="/RequestSent" element={<RequestSent />} />
+        <Route path="/GroupNetwork" element={<GroupNetwork />} />
+        <Route path="/Event" element={<Event />} />
+        <Route path="/CreateEvent" element={<CreateEvent />} />
+        <Route path="/CreateGroup" element={<CreateGroup />} />
+
+      </Routes>
     </UserAuthContextProvider>
-    );
+  );
 }
 
 export default App;
