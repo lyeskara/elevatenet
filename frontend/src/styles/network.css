@@ -11,13 +11,19 @@
   padding-top: 1%;
 }
 
-h5.NetworkTitle {
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 32px;
-  line-height: 39px;
-  color: #626262;
+.NetworkTitle {
+  font-family: 'Inter';
+font-style: normal;
+font-weight: 400;
+font-size: 40px;
+line-height: 48px;
+
+color: #2B2B2B;
+
+}
+
+.event_title{
+  color: #27746A;
 }
 
 .connectCard {
@@ -29,39 +35,177 @@ h5.NetworkTitle {
 .connectButton {
   justify-content: center;
   align-items: center;
-  width: 50%;
   height: 40px;
-  
+  margin-left: 2%;
 }
 
 .connectButton,
 .connectButton:hover {
-  background-color: white;
-  color: #27746A;
-  border-color: #27746A;
+  color: #fff;
+  background-color: #27746a !important;
+  border-color: #27746a !important;
+  box-shadow: 0 0 0 0.2rem white !important;
 }
 .connectButton:active,
 .connectButton:focus {
-  color: #fff;
-  background-color: #27746A !important;
-  border-color: #27746A !important;
-  box-shadow: 0 0 0 0.2rem #27746A !important;
+  
+  background-color: white;
+  color: white;
+  border-color: #27746a;
 }
 
-.create_Group_Button, .create_Group_Button:hover{
-    color: #fff;
-    background-color: #27746A;
-    border-color: #27746A ;
-   
+.create_Group_Button,
+.create_Group_Button:hover {
+  color: #fff;
+  background-color: #27746a;
+  border-color: #27746a;
 }
 .create_Group_Button:active,
 .create_Group_Button:focus {
   color: #fff;
-  background-color: #27746A !important;
-  border-color: #27746A !important;
-  box-shadow: 0 0 0 0.2rem #27746A !important;
+  background-color: #27746a !important;
+  border-color: #27746a !important;
+  box-shadow: 0 0 0 0.2rem #27746a !important;
+}
+
+
+div.pair {
+  float:left;
+}
+.type_event{
+  color:#626262;
+}
+
+h5.time {
+  color: #27746a;
+}
+
+
+.card_request {
+  background: #fff;
+  padding: 10px 30px 20px;
+  margin: 2rem 0;
+  box-shadow: 0 4px 2px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.link_selected {
+  color: #27746a;
+}
+
+.ignore_button{
+  margin-right: 10px;
+}
+.ignore_button,
+.ignore_button:hover {
+  background-color: white;
+  color: #888888;
+  border-color: #888888;
+}
+.ignore_button:active,
+.ignore_button:focus {
+  color: #fff;
+  background-color: #888888 !important;
+  border-color: #888888 !important;
+  box-shadow: 0 0 0 0.2rem white !important;
+}
+
+.right_button{
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.connection_name {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+
+  color: #3F3F3F;
+}
+
+.trash_button,
+.trash_button:hover {
+  background-color: white;
+  color: #888888;
+  border-color: #888888;
+}
+.trash_button:active,
+.trash_button:focus {
+  color: #888888;
+  background-color: #F3F3F3 !important;
+  border-color: #888888 !important;
+  box-shadow: 0 0 0 0.2rem white !important;
+}
+.trash_button{
+  margin-left: auto;
+  margin-right: 0;
 }
 
 h5.time{
     color: #27746A;
+}
+
+.group_pic_center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50% 50% 50% 0%;
+}
+
+
+.center-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0% 0% 0% 1%;
+}
+
+
+
+.off_point{
+  list-style-type: none;
+}
+
+.follow_button {
+  justify-content: center;
+  align-items: center;
+  height: 20%;
+  width: 50%;
+}
+
+.follow_button,
+.follow_button:hover {
+  color: #fff;
+  background-color: #27746a !important;
+  border-color: #27746a !important;
+
+}
+.follow_button:active,
+.follow_button:focus {
+
+  background-color: white;
+  color: white;
+  border-color: #27746a;
+}
+
+.unfollow_button {
+  justify-content: center;
+  align-items: center;
+  height: 20%;
+  width: 50%;
+}
+
+.unfollow_button,
+.unfollow_button:hover {
+  background-color: white;
+  color: #27746a;
+  border-color: #27746a;
+
+}
+.unfollow_button:active,
+.unfollow_button:focus {
+  background-color: white;
+  color: #27746a;
+  border-color: #27746a;
+
 }

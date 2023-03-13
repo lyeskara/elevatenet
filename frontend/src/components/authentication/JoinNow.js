@@ -51,7 +51,12 @@ function JoinNow() {
 				);
 				}
 			});
-			navigate("/ProfileForm");
+			if(recruiter){
+			    navigate("/RecruiterForm")
+			}else{
+				navigate("/ProfileForm");
+			}
+			
 		} catch (error) {
 			console.log(error.message);
 		}
