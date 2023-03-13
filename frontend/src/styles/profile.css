@@ -78,6 +78,15 @@
   overflow: hidden;
   
 }
+
+.resume{
+  display: flex;
+  justify-content: space-between;
+}
+.coverletter{
+  display: flex;
+  justify-content: space-between;
+}
 .email>*{
 display: inline;
 }

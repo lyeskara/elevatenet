@@ -15,6 +15,7 @@ import { getStorage, ref, getDownloadURL } from "firebase/storage";
  */
 function Profile() {
 	const [user, setUser] = useState({});
+	const [downloadUrl, setDownloadUrl] = useState("");
 	const [profilePicURL, setProfilePicURL] = useState("");
 	const storage = getStorage();
 
@@ -51,6 +52,25 @@ function Profile() {
 		getUserData();
 	}, [auth]);
 
+	const downloadResume = async () => {
+		const storageRef = ref(storage, `resume/${auth.currentUser.uid}/resume`);
+		try {
+			const url = await getDownloadURL(storageRef);
+			window.open(url);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	const downloadCL = async () => {
+		const storageRef = ref(storage, `CL/${auth.currentUser.uid}/CL`);
+		try {
+			const url = await getDownloadURL(storageRef);
+			window.open(url);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		//Profile card
 
@@ -60,7 +80,7 @@ function Profile() {
 				<Col className="col1" xs={12} md={{ span: 3, offset: 1 }}>
 					<Card className="profilecard">
 						<img
-							src={profilePicURL || person}
+							src={profilePicURL}
 							id="profilepic"
 							alt="Avatar"
 							className="avatar"
@@ -144,8 +164,11 @@ function Profile() {
 							>
 								Resume
 							</h5>
+							<button className="btn btn-primary" onClick={downloadResume}>
+								Download
+							</button>
 						</div>
-						<hr></hr>
+						<hr style={{ marginBottom: "6px" }}></hr>
 						<div className="coverletter">
 							<h5
 								style={{
@@ -154,6 +177,13 @@ function Profile() {
 							>
 								Cover Letter
 							</h5>
+							<button
+								type="button"
+								className="btn btn-primary"
+								onClick={downloadCL}
+							>
+								Download
+							</button>
 						</div>
 					</Card>
 				</Col>

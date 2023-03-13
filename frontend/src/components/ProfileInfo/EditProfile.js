@@ -25,9 +25,10 @@ function EditProfile({ user, setUser, profilepic }) {
 		setUpdatedUser(user);
 		setShow(true);
 	};
-	const navigate = useNavigate();
 	const storage = getStorage();
 	const [selectedFile, setSelectedFile] = useState(null);
+	const [selectedResume, setSelectedResume] = useState(null);
+	const [selectedCL, setSelectedCL] = useState(null);
 	const [updatedUser, setUpdatedUser] = useState(null); // create a copy of the user object using useState
 	/**
 	 * setUser allows us to set the User to our changled values stored in setUser.
@@ -65,6 +66,17 @@ function EditProfile({ user, setUser, profilepic }) {
 				);
 				await uploadBytes(storageRef, selectedFile);
 			}
+			if (selectedResume) {
+				const storageRef = ref(
+					storage,
+					`resume/${auth.currentUser.uid}/resume`
+				);
+				await uploadBytes(storageRef, selectedResume);
+			}
+			if (selectedCL) {
+				const storageRef = ref(storage, `CL/${auth.currentUser.uid}/CL`);
+				await uploadBytes(storageRef, selectedCL);
+			}
 			await setDoc(
 				doc(collection(db, "users_information"), auth.currentUser.uid),
 				{
@@ -94,6 +106,20 @@ function EditProfile({ user, setUser, profilepic }) {
 							<Form.Control
 								type="file"
 								onChange={(e) => setSelectedFile(e.target.files[0])}
+							/>
+						</Form.Group>
+						<Form.Group controlId="formFile" className="mb-3">
+							<Form.Label>Resume</Form.Label>
+							<Form.Control
+								type="file"
+								onChange={(e) => setSelectedResume(e.target.files[0])}
+							/>
+						</Form.Group>
+						<Form.Group controlId="formFile" className="mb-3">
+							<Form.Label>Cover Letter</Form.Label>
+							<Form.Control
+								type="file"
+								onChange={(e) => setSelectedCL(e.target.files[0])}
 							/>
 						</Form.Group>
 						<div style={{ display: "flex" }}>
