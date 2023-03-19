@@ -17,6 +17,7 @@ import Button from "react-bootstrap/Button";
 import "../../styles/GroupCreation.css";
 // import "react-image-picker-editor/dist/index.css"
 import "bootstrap/dist/css/bootstrap.min.css";
+import grouplogo from ".././../images/group.png";
 
 function CreateGroup(){
 
@@ -95,8 +96,12 @@ return(
                 <Card className = "card">
                     <form onSubmit = {handleContent}>
                         <div className = "row1">
+                            <div className="col">
+                                <img src={grouplogo} width="180" height="180"></img>
+                                <input type="file"></input>
+                            </div>
                             {/* <div className = "side-by-side-div"><ReactImagePickerEditor config = {image_picker_settings}></ReactImagePickerEditor></div> */}
-                            <div className = "side-by-side-div2">
+                            <div className = "col-9" style={{ margin: "11% 0px 0px 40px", width: "65%"}}>
                                 <label htmlFor="formFile" className="form-label">
                                     <h6>Group Name</h6>
                                 </label>
@@ -121,7 +126,7 @@ return(
                                 ></textarea>
                         </div>
                         <Row>
-                            <div className = "form-group mb-3">
+                            <div className = "col">
                                 <label htmlFor="formFile" className="form-label">
                                     <h6>Industry</h6>
                                 </label>
@@ -132,7 +137,7 @@ return(
                                     value={groupData.industry}
                                     onChange={handleInputChange}/>
                             </div>
-                            <div className = "form-group mb-3">
+                            <div className = "col">
                                 <label htmlFor="formFile" className="form-label">
                                     <h6>Location</h6>
                                 </label>
