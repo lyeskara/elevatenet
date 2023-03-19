@@ -14,6 +14,7 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 import "../../styles/GroupCreation.css";
 // import "react-image-picker-editor/dist/index.css"
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -23,7 +24,6 @@ function CreateGroup(){
 
     const {user} = useUserAuth();
     const navigate = useNavigate();
-
     
     //Here we set the Group Info data fields
     const[groupData, setNewGroupData] = useState(
@@ -96,12 +96,12 @@ return(
                 <Card className = "card">
                     <form onSubmit = {handleContent}>
                         <div className = "row1">
-                            <div className="col">
-                                <img src={grouplogo} width="180" height="180"></img>
-                                <input type="file"></input>
+                            <div className="col-3" >
+                                <img src={grouplogo} width="80%" height="80%"></img>
+                                <Form.Control className= "form-control form-control-sm" type="file" style={{fontSize: "10px", width: "80%"}}/>
                             </div>
                             {/* <div className = "side-by-side-div"><ReactImagePickerEditor config = {image_picker_settings}></ReactImagePickerEditor></div> */}
-                            <div className = "col-9" style={{ margin: "11% 0px 0px 40px", width: "65%"}}>
+                            <div className = "col-9" style={{margin: "9% 0% 2% 0%"}}>
                                 <label htmlFor="formFile" className="form-label">
                                     <h6>Group Name</h6>
                                 </label>
