@@ -8,17 +8,21 @@ import Col from "react-bootstrap/Col";
 import { GrMailOption, GrPhone } from "react-icons/gr";
 import EditProfile from "./EditProfile";
 import person from "./test.gif";
-import { getStorage, ref } from "firebase/storage";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 /**
  * Profile loads values stored in the data base and allows us to view them in a styled page.
  */
 function Profile() {
 	const [user, setUser] = useState({});
+	const [downloadUrl, setDownloadUrl] = useState("");
+	const [profilePicURL, setProfilePicURL] = useState("");
 	const storage = getStorage();
+
 	/**
 	 * getUserData gets all values pertaining to the logged in user.
 	 */
+
 	const getUserData = async () => {
 		try {
 			const userDoc = await getDoc(
@@ -26,6 +30,16 @@ function Profile() {
 			);
 			if (userDoc.exists) {
 				setUser({ ...userDoc.data(), id: userDoc.id });
+
+				// Get the profile picture URL from the Firebase Storage URL
+				const storageRef = ref(
+					storage,
+					`profilepics/${auth.currentUser.uid}/profilePic`
+				);
+
+				const downloadURL = await getDownloadURL(storageRef);
+				console.log(downloadURL);
+				setProfilePicURL(downloadURL); // Set the profile picture URL state
 			} else {
 				console.log("User not found");
 			}
@@ -33,9 +47,29 @@ function Profile() {
 			console.log(error);
 		}
 	};
+
 	useEffect(() => {
 		getUserData();
 	}, [auth]);
+
+	const downloadResume = async () => {
+		const storageRef = ref(storage, `resume/${auth.currentUser.uid}/resume`);
+		try {
+			const url = await getDownloadURL(storageRef);
+			window.open(url);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	const downloadCL = async () => {
+		const storageRef = ref(storage, `CL/${auth.currentUser.uid}/CL`);
+		try {
+			const url = await getDownloadURL(storageRef);
+			window.open(url);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	return (
 		//Profile card
@@ -46,7 +80,7 @@ function Profile() {
 				<Col className="col1" xs={12} md={{ span: 3, offset: 1 }}>
 					<Card className="profilecard">
 						<img
-							src={person}
+							src={profilePicURL}
 							id="profilepic"
 							alt="Avatar"
 							className="avatar"
@@ -76,6 +110,80 @@ function Profile() {
 						<div className="contact">
 							<GrPhone />
 							<b> {user.contact} </b>
+						</div>
+					</Card>
+					<Card className="connectioncard">
+						<div className="Connections">
+							<h5
+								style={{
+									color: "#626262",
+								}}
+							>
+								{user.connections} <u>Connections</u>
+							</h5>
+						</div>
+					</Card>
+
+					<Card className="recommendationcard">
+						<h5>Recommendation</h5>
+						<hr></hr>
+						<div className="Recommendation">
+							<h5
+								style={{
+									color: "black",
+								}}
+							>
+								<u>Jasmit Kalsi</u>
+							</h5>
+						</div>
+					</Card>
+
+					<Card className="awardscard">
+						<h5>Awards</h5>
+						<hr></hr>
+						<div className="Awards">
+							<h5
+								style={{
+									color: "black",
+								}}
+							>
+								{user.awards &&
+									Array.isArray(user.awards) &&
+									user.awards.map((awards) => (
+										<div key={awards}>{user.awards}</div>
+									))}
+							</h5>
+						</div>
+					</Card>
+					<Card className="docscard">
+						<div className="resume">
+							<h5
+								style={{
+									color: "#626262",
+								}}
+							>
+								Resume
+							</h5>
+							<button className="btn btn-primary" onClick={downloadResume}>
+								Download
+							</button>
+						</div>
+						<hr style={{ marginBottom: "6px" }}></hr>
+						<div className="coverletter">
+							<h5
+								style={{
+									color: "#626262",
+								}}
+							>
+								Cover Letter
+							</h5>
+							<button
+								type="button"
+								className="btn btn-primary"
+								onClick={downloadCL}
+							>
+								Download
+							</button>
 						</div>
 					</Card>
 				</Col>
@@ -122,10 +230,39 @@ function Profile() {
 					<Card className="skillscard">
 						<h5>Skills</h5>
 						<hr></hr>
-						<div>
-							<span className="skills-btn">{user.skills}</span>
-							<span className="skills-btn">English</span>
-						</div>
+						{user.skills &&
+							Array.isArray(user.skills) &&
+							user.skills.map((skill) => (
+								<div key={skill}>
+									<span className="skills-btn">{skill}</span>
+								</div>
+							))}
+					</Card>
+
+					<Card className="courses">
+						<h5>Courses</h5>
+						<hr></hr>
+						{user.courses &&
+							Array.isArray(user.courses) &&
+							user.courses.map((courses) => <div key={courses}>{courses}</div>)}
+					</Card>
+					<Card className="projects">
+						<h5>Projects</h5>
+						<hr></hr>
+						{user.courses &&
+							Array.isArray(user.projects) &&
+							user.projects.map((projects) => (
+								<div key={projects}>{projects}</div>
+							))}
+					</Card>
+					<Card className="volunteering">
+						<h5>Volunteering</h5>
+						<hr></hr>
+						{user.volunteering &&
+							Array.isArray(user.volunteering) &&
+							user.projects.map((volunteering) => (
+								<div key={volunteering}>{volunteering}</div>
+							))}
 					</Card>
 				</Col>
 			</Row>

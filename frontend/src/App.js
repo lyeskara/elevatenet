@@ -27,7 +27,7 @@ import CreateGroup from "./components/Network/CreateGroup";
 import CreateEvent from "./components/Network/CreateEvent";
 
 import RequestSent from "./components/connection/RequestSent";
-
+import RecruiterForm from "./components/ProfileInfo/RecruiterFrom";
 function App() {
   return (
     <UserAuthContextProvider>
@@ -38,6 +38,10 @@ function App() {
           element={<Protection>{<ProfileForm />}</Protection>}
         ></Route>
         <Route
+          path="/RecruiterForm"
+          element={<Protection>{<RecruiterForm />}</Protection>}
+        ></Route>
+        <Route
           path="/Profile"
           element={<Protection>{<Profile />}</Protection>}
         ></Route>
@@ -45,7 +49,10 @@ function App() {
           path="/CreateNewPosting"
           element={<Protection>{<CreateNewPosting />}</Protection>}
         ></Route>
-        <Route path="/JobPostings" element={<Protection>{<JobPostings />}</Protection>} />
+        <Route
+          path="/JobPostings"
+          element={<Protection>{<JobPostings />}</Protection>}
+        />
         <Route path="/" element={<Linkedin />} />
         <Route path="/SignIn" element={<SignIn />} />
         <Route path="/JoinNow" element={<JoinNow />} />
@@ -66,7 +73,7 @@ function App() {
           }
         ></Route>
         <Route
-          path="/userfeed"
+          path="/feed"
           element={
             <Protection>
               <Feed />
@@ -82,16 +89,63 @@ function App() {
             </Protection>
           }
         ></Route>
-        <Route path="/Feed" element={<Feed />} />
-        <Route path="/CreatPost" element={<CreatPost />} />
-        <Route path="/EditProfile" element={<EditProfile />} />{" "}
+        <Route
+          path="/CreatPost"
+          element={
+            <Protection>
+              <CreatPost />
+            </Protection>
+          }
+        />
+        <Route
+          path="/EditProfile"
+          element={
+            <Protection>
+              <EditProfile />
+            </Protection>
+          }
+        />
         <Route path="/user_posts" element={<Protection></Protection>}></Route>
-        <Route path="/RequestSent" element={<RequestSent />} />
-        <Route path="/GroupNetwork" element={<GroupNetwork />} />
-        <Route path="/Event" element={<Event />} />
-        <Route path="/CreateEvent" element={<CreateEvent />} />
-        <Route path="/CreateGroup" element={<CreateGroup />} />
-
+        <Route
+          path="/RequestSent"
+          element={
+            <Protection>
+              <RequestSent />
+            </Protection>
+          }
+        />
+        <Route
+          path="/GroupNetwork"
+          element={
+            <Protection>
+              <GroupNetwork />
+            </Protection>
+          }
+        />
+        <Route
+          path="/Event"
+          element={
+            <Protection>
+              <Event />
+            </Protection>
+          }
+        />
+        <Route
+          path="/CreateEvent"
+          element={
+            <Protection>
+              <CreateEvent />
+            </Protection>
+          }
+        />
+        <Route
+          path="/CreateGroup"
+          element={
+            <Protection>
+              <CreateGroup />
+            </Protection>
+          }
+        />
       </Routes>
     </UserAuthContextProvider>
   );
