@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 //Firebase imports
 import { auth, db } from "../../firebase";
 import { collection, setDoc ,doc, addDoc, arrayUnion} from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 //FrontEnd imports
 import Row from "react-bootstrap/Row";
@@ -24,6 +25,17 @@ function CreateGroup(){
 
     const {user} = useUserAuth();
     const navigate = useNavigate();
+
+    const storage = getStorage();
+    const [imageUrl, setImageUrl] = useState(null);
+
+    const handleFileSelect = (event) => {
+        const file = event.target.files[0];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                setImageUrl(url);
+                }
+      };
     
     //Here we set the Group Info data fields
     const[groupData, setNewGroupData] = useState(
@@ -56,6 +68,7 @@ function CreateGroup(){
             adminUIDs: arrayUnion(auth.currentUser.uid),
         }
         )
+        //Empty the fields
         setNewGroupData(
             {
                 group_name: '',
@@ -66,6 +79,27 @@ function CreateGroup(){
                 adminUIDs: [],
             }
         );
+
+        //Set the new group picture in the Firebase storage
+        if(imageUrl){
+
+            fetch(imageUrl)
+            .then(response => response.blob())
+            .then(blob => {
+                const storageRef = ref(storage, `grouppics/${docRef.id}/groupPic`);
+                return uploadBytes(storageRef, blob);
+            })
+            .then(() => {
+                console.log('Image uploaded successfully!');
+            })
+            .catch(error => {
+                console.error('Error uploading image:', error);
+            });
+            
+            //const storageRef = ref(storage, `grouppics/${auth.currentUser.uid}/groupPic`);
+            //await uploadBytes(storageRef, file);
+        };
+
         //Redirect to GroupNetwork page
         navigate('/GroupNetwork');
     }
@@ -97,8 +131,13 @@ return(
                     <form onSubmit = {handleContent}>
                         <div className = "row1">
                             <div className="col-3" >
-                                <img src={grouplogo} width="80%" height="80%"></img>
-                                <Form.Control className= "form-control form-control-sm" type="file" style={{fontSize: "10px", width: "80%"}}/>
+                                <img src={imageUrl ? imageUrl : grouplogo} width="80%" height="80%" className="img-constrained" alt={"Default Group Logo"}></img>
+                                <Form.Control
+                                    className= "form-control form-control-sm"
+                                    type="file"
+                                    style={{fontSize: "10px", width: "80%"}}
+                                    onChange={handleFileSelect}
+                                />
                             </div>
                             {/* <div className = "side-by-side-div"><ReactImagePickerEditor config = {image_picker_settings}></ReactImagePickerEditor></div> */}
                             <div className = "col-9" style={{margin: "9% 0% 2% 0%"}}>

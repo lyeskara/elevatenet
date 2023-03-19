@@ -34,5 +34,10 @@
     
 }
 
+.img-constrained {
+    max-width: 200px;
+    max-height: 200px;
+  }
+
 /* border: 2px solid red; */
 /* border: 2px solid blue; */
