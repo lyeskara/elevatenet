@@ -31,6 +31,7 @@ function JobPostings() {
 	const handleDelete = async (id) => {
 		try {
 			await deleteDoc(doc(db, "posting", id));
+			window.location.reload();
 		} catch (error) {
 			console.error("Error deleting document: ", error);
 		}
@@ -50,6 +51,7 @@ function JobPostings() {
 		});
 		// Hide the modal
 		setShowModal(false);
+		window.location.reload();
 	}
 
 	// UseEffect to get job postings data from the database
@@ -68,7 +70,7 @@ function JobPostings() {
 			}
 		};
 		getData();
-	}, [posts]); // pass an posts dependency array
+	}, []); // pass an posts dependency array
 
 	// This component displays a page for job postings
 // and advertisements with a menu block on the left to navigate between them.
