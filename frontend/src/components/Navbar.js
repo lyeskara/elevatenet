@@ -34,6 +34,15 @@ function NavbarFun() {
           <Navbar.Brand href="/">
             <img src={logo} alt="ElevateNet" />
           </Navbar.Brand>
+          {userr && (
+                <>
+                  <Nav>
+                    <div className="mt-3">
+                      <Search />
+                    </div>
+                  </Nav> 
+                </>
+              )}
 
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
@@ -41,11 +50,6 @@ function NavbarFun() {
             <Nav>
               {userr && (
                 <>
-                  <Nav>
-                    <div className="mt-3">
-                      <Search />
-                    </div>
-                  </Nav>
                   <Nav>
                     <Link to="/">
                       <img src={home} alt="home" />
