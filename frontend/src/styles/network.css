@@ -11,13 +11,19 @@
   padding-top: 1%;
 }
 
-h5.NetworkTitle {
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 32px;
-  line-height: 39px;
-  color: #626262;
+.NetworkTitle {
+  font-family: 'Inter';
+font-style: normal;
+font-weight: 400;
+font-size: 40px;
+line-height: 48px;
+
+color: #2B2B2B;
+
+}
+
+.event_title{
+  color: #27746A;
 }
 
 .connectCard {
@@ -60,6 +66,14 @@ h5.NetworkTitle {
   background-color: #27746a !important;
   border-color: #27746a !important;
   box-shadow: 0 0 0 0.2rem #27746a !important;
+}
+
+
+div.pair {
+  float:left;
+}
+.type_event{
+  color:#626262;
 }
 
 h5.time {
@@ -127,3 +141,71 @@ h5.time {
   margin-right: 0;
 }
 
+h5.time{
+    color: #27746A;
+}
+
+.group_pic_center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50% 50% 50% 0%;
+}
+
+
+.center-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0% 0% 0% 1%;
+}
+
+
+
+.off_point{
+  list-style-type: none;
+}
+
+.follow_button {
+  justify-content: center;
+  align-items: center;
+  height: 20%;
+  width: 50%;
+}
+
+.follow_button,
+.follow_button:hover {
+  color: #fff;
+  background-color: #27746a !important;
+  border-color: #27746a !important;
+
+}
+.follow_button:active,
+.follow_button:focus {
+
+  background-color: white;
+  color: white;
+  border-color: #27746a;
+}
+
+.unfollow_button {
+  justify-content: center;
+  align-items: center;
+  height: 20%;
+  width: 50%;
+}
+
+.unfollow_button,
+.unfollow_button:hover {
+  background-color: white;
+  color: #27746a;
+  border-color: #27746a;
+
+}
+.unfollow_button:active,
+.unfollow_button:focus {
+  background-color: white;
+  color: #27746a;
+  border-color: #27746a;
+
+}

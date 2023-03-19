@@ -35,7 +35,7 @@ const SignIn = () => {
 				<div className="text-center containerForm">
 					<Form onSubmit={handleSubmit}>
 						<Form.Text className="sign center">Sign In</Form.Text>
-						<div>
+						{/* <div>
 							<input
 								className="input_radio mt-4"
 								type="radio"
@@ -56,7 +56,7 @@ const SignIn = () => {
 							<label for="seeker" className="label_radio">
 								I'm a Job Seeker
 							</label>
-						</div>
+						</div> */}
 						<Button className="google_button sign_button mb-3 mt-4">
 							Continue with Google
 						</Button>
