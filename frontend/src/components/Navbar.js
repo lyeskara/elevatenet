@@ -15,25 +15,27 @@ import { Navbar, Nav, Container } from "react-bootstrap";
 import Search from "./connection/Search";
 
 function NavbarFun() {
-  const userr = auth.currentUser;
-  const { logOut } = useUserAuth();
-  const navigate = useNavigate();
-  const handleLogout = async () => {
-    try {
-      await logOut();
-      navigate("/");
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+	const userr = auth.currentUser;
+	const { logOut } = useUserAuth();
+	const navigate = useNavigate();
+	const handleLogout = async () => {
+		try {
+			await logOut();
+			navigate("/");
+		} catch (error) {
+			console.log(error.message);
+		}
+	};
 
-  return (
-    <>
-      <Navbar bg="white" expand="lg">
-        <Container fluid>
-          <Navbar.Brand href="/">
-            <img src={logo} alt="ElevateNet" />
-          </Navbar.Brand>
+
+
+	return (
+		<>
+			<Navbar bg="white" expand="lg">
+				<Container fluid>
+					<Navbar.Brand href="/">
+						<img src={logo} alt="ElevateNet" />
+					</Navbar.Brand>
           {userr && (
                 <>
                   <Nav>
@@ -43,59 +45,58 @@ function NavbarFun() {
                   </Nav> 
                 </>
               )}
-          <Navbar.Toggle aria-controls="navbarScroll" />
-          <Navbar.Collapse id="navbarScroll">
-            <Nav className="ms-auto"></Nav>
-            <Nav>
-              {userr && (
-                <>
-                 
-                  <Nav>
-                    <Link to="/">
-                      <img src={home} alt="home" />
-                    </Link>
+					<Navbar.Toggle aria-controls="navbarScroll" />
+					<Navbar.Collapse id="navbarScroll">
+						<Nav className="ms-auto"></Nav>
+						<Nav>
+							{userr && (
+								<>
+									<Nav>
+										<Link to="/">
+											<img src={home} alt="home" />
+										</Link>
+										<Link to="/Profile">
+											<img src={person} alt="profile" />
+										</Link>
+										<Link to="/JobPostings">
+											<img src={briefcase} alt="briefcase" />
+										</Link>
+										<Link to="/connections">
+											<img src={connection} alt="connection" />
+										</Link>
+										<Link to="/">
+											<img src={bell} alt="bell" />
+										</Link>
+										<Link to="/">
+											<img src={ellipses} alt="ellipses" />
+										</Link>
+									</Nav>
+									<Nav>
+									
+										<button onClick={handleLogout} className="logout_button">
+											Sign Out
+										</button>
+									</Nav>
+								</>
+							)}
+							{!userr && (
+								<>
+									<Nav>
+										<Link to="/SignIn">Sign In</Link>
+									</Nav>
+									<Nav>
+										<Link to="/JoinNow">Sign Up</Link>
+									</Nav>
+								</>
+							)}
+						</Nav>
+					</Navbar.Collapse>
+				</Container>
+			</Navbar>
 
-                    <Link to="/Profile">
-                      <img src={person} alt="profile" />
-                    </Link>
-                    <Link to="/JobPostings">
-                      <img src={briefcase} alt="briefcase" />
-                    </Link>
-                    <Link to="/connections">
-                      <img src={connection} alt="connection" />
-                    </Link>
-                    <Link to="/">
-                      <img src={bell} alt="bell" />
-                    </Link>
-                    <Link to="/">
-                      <img src={ellipses} alt="ellipses" />
-                    </Link>
-                  </Nav>
-                  <Nav>
-                    <button onClick={handleLogout} className="logout_button">
-                      Sign Out
-                    </button>
-                  </Nav>
-                </>
-              )}
-              {!userr && (
-                <>
-                  <Nav>
-                    <Link to="/SignIn">Sign In</Link>
-                  </Nav>
-                  <Nav>
-                    <Link to="/JoinNow">Sign Up</Link>
-                  </Nav>
-                </>
-              )}
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-
-      <Outlet />
-    </>
-  );
+			<Outlet />
+		</>
+	);
 }
 
 export default NavbarFun;
