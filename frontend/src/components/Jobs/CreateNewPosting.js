@@ -122,7 +122,7 @@ function CreateNewPosting() {
                             <h5 className="text-center">Create a new Job Posting</h5>
                             <hr></hr>
                             {/* JOB TITLE */}
-                            <div className="form-group mb-3">
+                            <div className="form-group mb-3" >
                                 <label htmlFor="formFile" className="form-label">
                                     <h6>Job Title</h6>
                                 </label>
@@ -131,7 +131,8 @@ function CreateNewPosting() {
                                 id="job_title"
                                 name="job_title"
                                 value={postingData.job_title}
-                                onChange={handleInputChange} 
+                                onChange={handleInputChange}
+                                style={{backgroundColor: "#F3F3F3"}} 
                                 />
                             </div>
                             {/* COMPANY */}
@@ -145,6 +146,7 @@ function CreateNewPosting() {
                                 name="company"
                                 value={postingData.company}
                                 onChange={handleInputChange}
+                                style={{backgroundColor: "#F3F3F3"}}
                                 />
                             </div>
                             {/* DESCRIPTION */}
@@ -159,6 +161,7 @@ function CreateNewPosting() {
                                 name="description"
                                 value={postingData.description}
                                 onChange={handleInputChange}
+                                style={{backgroundColor: "#F3F3F3"}}
                                 ></textarea>
                             </div>
                             {/* APPLY HERE */}
@@ -173,6 +176,7 @@ function CreateNewPosting() {
                                 name="apply_here"
                                 value={postingData.apply_here}
                                 onChange={handleInputChange}
+                                style={{backgroundColor: "#F3F3F3"}}
                                 />
                             </div>
                             {/* DATE PICKER FOR DEADLINE */}
@@ -185,6 +189,7 @@ function CreateNewPosting() {
                                 id="deadline"
                                 name="deadline"
                                 value={postingData.deadline}
+                                style={{backgroundColor: "#F3F3F3"}}
                                 />
                             </div>  
 

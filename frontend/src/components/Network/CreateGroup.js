@@ -70,7 +70,7 @@ function CreateGroup(){
         navigate('/GroupNetwork');
     }
     else{
-        console.log("An error has occured, please try again!");
+        console.log("An error has occurred");
     }
     };
 
@@ -110,7 +110,8 @@ return(
                                     id="group_name"
                                     name="group_name"
                                     value={groupData.group_name}
-                                    onChange={handleInputChange}/>
+                                    onChange={handleInputChange}
+                                    style={{backgroundColor: "#F3F3F3"}}/>
                             </div>
                         </div>
                         <div className="form-group mb-3">
@@ -123,6 +124,7 @@ return(
                                     name="description"
                                     value={groupData.description}
                                     onChange={handleInputChange}
+                                    style={{backgroundColor: "#F3F3F3"}}
                                 ></textarea>
                         </div>
                         <Row>
@@ -135,7 +137,8 @@ return(
                                     id="industry"
                                     name="industry"
                                     value={groupData.industry}
-                                    onChange={handleInputChange}/>
+                                    onChange={handleInputChange}
+                                    style={{backgroundColor: "#F3F3F3"}}/>
                             </div>
                             <div className = "col">
                                 <label htmlFor="formFile" className="form-label">
@@ -146,7 +149,8 @@ return(
                                     id="location"
                                     name="location"
                                     value={groupData.location}
-                                    onChange={handleInputChange}/>
+                                    onChange={handleInputChange}
+                                    style={{backgroundColor: "#F3F3F3"}}/>
                             </div>
                         </Row>
                         <Row>
