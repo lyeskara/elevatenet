@@ -110,12 +110,12 @@ function GroupNetwork() {
                     <div className="post-content" key={groupInfos.id}> 
                       <Card className="card">
                         <Row>
-                          <Col md={1}>
-                            <img src={grouplogo} alt="template_group_pic" className="group_pic_center" />
+                          <Col md={1} className="text-center">
+                            <img src={groupInfos.group_img_url ? groupInfos.group_img_url : grouplogo} style={{ maxHeight: '150px' }} alt="template_group_pic" className="group_pic_center" />
                           </Col>
-                          <Col md={9}>
+                          <Col md={9} >
                             <h3> {groupInfos.group_name}</h3>
-                            <h5> {groupInfos.memberUIDs.length} members</h5>
+                            <h5> {groupInfos.memberUIDs.length} {groupInfos.memberUIDs.length === 1 ? "member" : "members"}</h5>
                         <hr></hr>
                         <p> {groupInfos.description}</p>
                           </Col>
@@ -140,11 +140,11 @@ function GroupNetwork() {
                   <Card className="card">
                     <Row>
                       <Col md={1}>
-                      <img src={grouplogo} alt="template_group_pic" className="group_pic_center" />
+                      <img src={groupInfos.group_img_url ? groupInfos.group_img_url : grouplogo} style={{ maxHeight: '150px' }} alt="template_group_pic" className="group_pic_center" />
                       </Col>
                       <Col md={9}>
                         <h3> {groupInfos.group_name}</h3>
-                        <h5> {groupInfos.memberUIDs.length} members</h5>
+                        <h5> {groupInfos.memberUIDs.length} {groupInfos.memberUIDs.length === 1 ? "member" : "members"}</h5>
                         <hr />
                         <p> {groupInfos.description}</p>
                       </Col>

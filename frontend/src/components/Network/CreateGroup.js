@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 //Firebase imports
 import { auth, db } from "../../firebase";
-import { collection, setDoc ,doc, addDoc, arrayUnion} from "firebase/firestore";
+import { collection, setDoc, updateDoc ,doc, addDoc, arrayUnion} from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 //FrontEnd imports
@@ -28,6 +28,7 @@ function CreateGroup(){
 
     const storage = getStorage();
     const [imageUrl, setImageUrl] = useState(null);
+    let groupPicURL = '';
 
     const handleFileSelect = (event) => {
         const file = event.target.files[0];
@@ -46,6 +47,7 @@ function CreateGroup(){
             location: '',
             memberUIDs: [],
             adminUIDs: [],
+            group_img_url: '',
         }
     );
 
@@ -66,8 +68,43 @@ function CreateGroup(){
             location: groupData.location,
             memberUIDs: arrayUnion(auth.currentUser.uid),
             adminUIDs: arrayUnion(auth.currentUser.uid),
+            group_img_url: '',
         }
         )
+
+        //Set the new group picture in the Firebase storage
+
+        if(imageUrl){
+
+            let groupImgURL = '';
+
+            fetch(imageUrl)
+            .then(response => response.blob())
+            .then(blob => {
+                const storageRef = ref(storage, `grouppics/${docRef.id}/groupPic`);
+                return uploadBytes(storageRef, blob);
+            })
+            .then(uploadTaskSnapshot => {
+                console.log('Image uploaded successfully!');
+                return getDownloadURL(uploadTaskSnapshot.ref);
+              })
+              .then(async downloadURL => {
+                groupImgURL = downloadURL;
+                console.log("Extracted URL", groupImgURL);
+                console.log("Download URL", downloadURL);
+                
+                //Update the group image attribute
+                const docRef1 = doc(db, "groups", docRef.id); // Replace "group_id" with the ID of the group you want to update
+                await updateDoc(docRef1, { "group_img_url": groupImgURL });
+
+              })
+
+            //Update the group image attribute
+            
+            //const storageRef = ref(storage, `grouppics/${auth.currentUser.uid}/groupPic`);
+            //await uploadBytes(storageRef, file);
+        };
+
         //Empty the fields
         setNewGroupData(
             {
@@ -77,28 +114,9 @@ function CreateGroup(){
                 location: '',
                 memberUIDs: [],
                 adminUIDs: [],
+                group_img_url: '',
             }
         );
-
-        //Set the new group picture in the Firebase storage
-        if(imageUrl){
-
-            fetch(imageUrl)
-            .then(response => response.blob())
-            .then(blob => {
-                const storageRef = ref(storage, `grouppics/${docRef.id}/groupPic`);
-                return uploadBytes(storageRef, blob);
-            })
-            .then(() => {
-                console.log('Image uploaded successfully!');
-            })
-            .catch(error => {
-                console.error('Error uploading image:', error);
-            });
-            
-            //const storageRef = ref(storage, `grouppics/${auth.currentUser.uid}/groupPic`);
-            //await uploadBytes(storageRef, file);
-        };
 
         //Redirect to GroupNetwork page
         navigate('/GroupNetwork');
