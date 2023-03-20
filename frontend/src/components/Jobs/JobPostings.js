@@ -43,11 +43,15 @@ function JobPostings() {
 		const jobTitle = document.getElementById('job_title').value;
 		const company = document.getElementById('company').value;
 		const description = document.getElementById('description').value;
+		const resume_required = document.getElementById('resume_required').checked;
+		const cover_letter_required = document.getElementById('cover_letter_required').checked;
 		// Update the job posting with the new data
 		await updateDoc(doc(db, "posting", id), {
 			job_title: jobTitle,
 			company: company,
-			description: description
+			description: description,
+			resume_required: resume_required,
+			cover_letter_required: cover_letter_required,
 		});
 		// Hide the modal
 		setShowModal(false);
@@ -126,8 +130,9 @@ return (
 								{/* The company and description */}
 								<h6>{data.company}</h6>
 								<p>{data.description}</p>
-								{data.cover_letter_required === "on" && <p>Cover Letter Required</p>}
-								{data.resume_required === "on" && <p>Resume Required</p>}
+								{data.cover_letter_required && <p>Cover Letter Required</p>}
+								{data.resume_required && <p>Resume Required</p>}
+
 								{/* <p>{data.deadline}</p> */}
 							</Card>
 						</div>
