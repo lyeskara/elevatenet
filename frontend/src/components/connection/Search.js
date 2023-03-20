@@ -12,26 +12,33 @@
 
 
 
-import { useEffect, useState } from "react"
-import { getDocs, query ,where,collection} from "firebase/firestore"
-import { auth, db } from "../../firebase"
-import { useNavigate, Link, useParams} from "react-router-dom"
-import { async } from "@firebase/util"
-function Search() {
-   const [search, Setsearch]= useState("")
-   const [Result,SetResult] = useState([])
-   const navigate = useNavigate()
-   const[url, setUrl] = useState(null);
-  
-   useEffect( ()=>{
-    async function getResult(){
-        const usersRef =  collection(db,"users_information")
-        const q = query(usersRef, where("firstName","==",search))
-        const querySnapShot = await getDocs(q);
-        SetResult(querySnapShot.docs.map(doc =>({ ...doc.data(), id: doc.id })));
-    }
+ import { useEffect, useState } from "react";
+ import { getDocs, query, where, collection } from "firebase/firestore";
+ import { auth, db } from "../../firebase";
+ import { useNavigate, Link, useParams } from "react-router-dom";
+ import { async } from "@firebase/util";
+ import defaultpic from ".././../images/test.gif";
+ function Search() {
+   const [search, Setsearch] = useState("");
+   const [Result, SetResult] = useState([]);
+   const navigate = useNavigate();
+   const [url, setUrl] = useState(null);
+ 
+   useEffect(() => {
+     async function getResult() {
+       if (search !== "") {
+         const usersRef = collection(db, "users_information");
+         const q = query(usersRef, where("firstName", "==", search));
+         const querySnapShot = await getDocs(q);
+         SetResult(
+           querySnapShot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+         );
+       } else {
+         SetResult([]);
+       }
+     }
      getResult();
-   },[search])
+   }, [search]);
 
    useEffect(()=>{
     if(url){
@@ -54,25 +61,35 @@ function Search() {
 
   return (
     <>
-    <form >
-    <input type="text" placeholder="Search..." 
-           value={search} onChange={(e)=>{ Setsearch(e.target.value) }}
-          
-           />
-  </form>
-  <ul>
-        {Result.map((user) => (    
-          <li key={user.id}>
-             <p 
-             onClick={() =>{
-             handleClick(user.id);
-            }}
-             >
-            {user.firstName} {user.lastName}
-            </p>
-            </li>
-        ))
-    }
+   <form className="search_bar">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={search}
+          onChange={(e) => {
+            Setsearch(e.target.value);
+          }}
+        />
+      </form>
+      <ul>
+        {Result.map((user) => (
+          <li className="off_point mt-2" key={user.id}>
+            <div className="containRequest">
+              <img
+                className="search_pic"
+                src={defaultpic}
+                alt={user.firstName}
+              />
+              <p
+                onClick={() => {
+                  handleClick(user.id);
+                }}
+              >
+                {user.firstName} {user.lastName}
+              </p>
+            </div>
+          </li>
+        ))}
       </ul>
   </>
   //show list of users, with link to route of each

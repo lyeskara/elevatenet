@@ -85,6 +85,7 @@ function JoinNow() {
 								name="age"
 								value="recruiter"
 								onClick={()=>Setrecruiter(true)}
+								required
 							></input>
 							<label for="recruiter" className="label_radio">
 								I'm a Recruiter
@@ -96,6 +97,7 @@ function JoinNow() {
 								name="age"
 								value="seeker"
 								onChange={()=>Setrecruiter(false)}
+								
 							></input>
 							<label for="seeker" className="label_radio">
 								I'm a Job Seeker
