@@ -1,0 +1,136 @@
+.container-m {
+  display: flex;
+  flex-direction: row;
+  background-color: white;
+  position: relative;
+  
+  border-radius: 20px;
+  padding: 30px;
+  margin-top: 50px;
+  margin-left: 5px;
+  margin-right: -20px;
+  margin-bottom:50px;
+  padding-bottom: 60px;
+  padding-right: 30px;
+  
+}
+
+.chat-list-m {
+  flex: 1;
+  background-color: white;
+  font-size: 20px;
+  padding: 30px;
+  margin-right: 20px;
+  /* add any other styles you need for the chat list */
+  overflow-y: scroll; /* added this for scrolling */
+  height: calc(100vh - 260px); /* added this for scrolling */
+}
+
+.text-m {
+  flex: 2;
+  background-color: white;
+  font-size: 20px;
+  padding: 20px;
+ /*overflow-y: scroll; added this for scrolling */
+  /*height: calc(100vh - 310px);  added this for scrolling */
+}
+
+
+.text-m p {
+  border: 1px solid rgb(255, 255, 255);
+  border-radius: 20px;
+  color: white;
+  background-color: #27746A; /* Green */
+  padding: 20px;
+  margin: 20px;
+  max-width: 40%;
+  
+}
+
+.button-m {
+  background-color: #27746A; /* Green */
+  position: absolute;
+  bottom: 0;
+  padding: 10px 20px;
+}
+
+.divider-m {
+  margin: 1px 100px;
+  border-right: 1px solid rgb(0, 0, 0);
+  
+}
+
+.text-m input[type="text"] {
+  width: 100%;
+  height: 50px;
+  padding: 100px;
+  padding-right: 800px;
+  font-size: 16px;
+  margin-top: 5px;
+  border-radius: 5px;
+  text-align: left;
+  padding-left: 10px;
+  background-color: rgb(209, 209, 209);
+  border: 1px solid rgb(255, 255, 255);
+  
+}
+
+.text-m form {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #000000;
+  padding-top: 10px;
+  position: relative; /* add this */
+}
+
+
+
+
+
+.button-m button[type="button"] {
+  height: 50px;
+  padding: 10px;
+  
+  font-size: 16px;
+  background-color: #27746A;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  position: absolute; /* add this */
+  bottom: 0; /* add this */
+  right: 0; /* add this */
+  margin: 1px; /* add this */
+  margin-bottom: -60px; /* add this */
+}
+
+
+
+
+/* Added tabs to chat-list with the code below */
+
+.user-tab-m {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.user-tab-m img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.user-tab-m h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.user-tab-m p {
+  margin: 0;
+  font-size: 14px;
+  color: #777;
+}
