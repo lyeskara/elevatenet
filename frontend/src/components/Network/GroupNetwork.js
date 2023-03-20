@@ -27,7 +27,6 @@ function GroupNetwork() {
   };
 
   //Returning Card of group
-
   const [myGroupCards, setMyGroupCards] = useState([]);
   const [otherGroupCards, setOtherGroupCards] = useState([]);
   

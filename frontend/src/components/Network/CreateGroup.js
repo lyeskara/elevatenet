@@ -25,11 +25,10 @@ function CreateGroup(){
 
     const {user} = useUserAuth();
     const navigate = useNavigate();
-
     const storage = getStorage();
     const [imageUrl, setImageUrl] = useState(null);
-    let groupPicURL = '';
 
+    //This updates the avatar when a new image is chosen
     const handleFileSelect = (event) => {
         const file = event.target.files[0];
             if (file) {
@@ -72,8 +71,7 @@ function CreateGroup(){
         }
         )
 
-        //Set the new group picture in the Firebase storage
-
+        //Here we store the image in the Firebase storage, and add the Firebase URL link to the Group Collection's attribute storing the image URL.
         if(imageUrl){
 
             let groupImgURL = '';
@@ -94,15 +92,10 @@ function CreateGroup(){
                 console.log("Download URL", downloadURL);
                 
                 //Update the group image attribute
-                const docRef1 = doc(db, "groups", docRef.id); // Replace "group_id" with the ID of the group you want to update
+                const docRef1 = doc(db, "groups", docRef.id); 
                 await updateDoc(docRef1, { "group_img_url": groupImgURL });
 
               })
-
-            //Update the group image attribute
-            
-            //const storageRef = ref(storage, `grouppics/${auth.currentUser.uid}/groupPic`);
-            //await uploadBytes(storageRef, file);
         };
 
         //Empty the fields
@@ -125,19 +118,6 @@ function CreateGroup(){
         console.log("An error has occurred");
     }
     };
-
-    //Extra Settings for Image selector, still WIP
-    // const image_picker_settings = {
-    //     borderRadius: '1px',
-    //     width: '180px',
-    //     height: '180px',
-    //     objectFit: 'cover',
-    //     compressInitial: null,
-    //     hideDeleteBtn: false,
-    //     hideDownloadBtn: true,
-    //     hideEditBtn: true,
-    //     hideAddBtn: true
-    //   };
 
 return(
 
