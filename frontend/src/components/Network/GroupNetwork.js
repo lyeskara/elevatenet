@@ -1,16 +1,23 @@
+//React imports
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useUserAuth } from "../../context/UserAuthContext.js";
+import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
+
+//Firebase imports
 import {collection, getDocs, where, query} from "firebase/firestore";
 import {db, auth} from "../../firebase";
-import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
+
+
+//Image imports
 import node from ".././../images/node_gray.png";
 import group from ".././../images/group_color.png";
 import event from ".././../images/event.png";
 import grouplogo from ".././../images/group.png";
 
+//Styling imports
 import "../../styles/network.css";
 import "../../styles/JobPostings.css";
+import "../../styles/profile.css";
 
 function GroupNetwork() {
   
@@ -107,12 +114,10 @@ function GroupNetwork() {
                             <img src={grouplogo} alt="template_group_pic" className="group_pic_center" />
                           </Col>
                           <Col md={9}>
-                            <h5> {groupInfos.group_name}</h5>
+                            <h3> {groupInfos.group_name}</h3>
                             <h5> {groupInfos.memberUIDs.length} members</h5>
                         <hr></hr>
-                        <h5> {groupInfos.description}</h5>
-                        <h5> {groupInfos.industry}</h5>
-                        <h5> {groupInfos.location}</h5>
+                        <p> {groupInfos.description}</p>
                           </Col>
                           <Col className="center-col" md={2}>
                             <Button className="create_Group_Button" >View Group</Button>
@@ -138,12 +143,10 @@ function GroupNetwork() {
                       <img src={grouplogo} alt="template_group_pic" className="group_pic_center" />
                       </Col>
                       <Col md={9}>
-                        <h5> {groupInfos.group_name}</h5>
+                        <h3> {groupInfos.group_name}</h3>
                         <h5> {groupInfos.memberUIDs.length} members</h5>
                         <hr />
-                        <h5> {groupInfos.description}</h5>
-                        <h5> {groupInfos.industry}</h5>
-                        <h5> {groupInfos.location}</h5>
+                        <p> {groupInfos.description}</p>
                       </Col>
                       <Col className="center-col" md={2}>
                         <Button className="create_Group_Button" onClick={() => handleRequest(index)}>
