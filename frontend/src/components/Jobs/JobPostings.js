@@ -126,6 +126,8 @@ return (
 								{/* The company and description */}
 								<h6>{data.company}</h6>
 								<p>{data.description}</p>
+								{data.cover_letter_required === "on" && <p>Cover Letter Required</p>}
+								{data.resume_required === "on" && <p>Resume Required</p>}
 								{/* <p>{data.deadline}</p> */}
 							</Card>
 						</div>
@@ -172,6 +174,26 @@ return (
 							defaultValue={currentJob.description} // Sets the default value of the textarea field to the current job description
 						></textarea>
 					</div>
+					<div className="form-group">
+						<label htmlFor="cover_letter_required">Cover Letter Required:</label>
+						<input 
+							type="checkbox" 
+							className="form-check-input" 
+							id="cover_letter_required" 
+							defaultChecked={currentJob.cover_letter_required} // Sets the default value of the checkbox to the current value of the cover_letter_required field
+						/>
+					</div>
+
+					<div className="form-group">
+						<label htmlFor="resume_required">Resume Required:</label>
+						<input 
+							type="checkbox" 
+							className="form-check-input" 
+							id="resume_required" 
+							defaultChecked={currentJob.resume_required} // Sets the default value of the checkbox to the current value of the resume_required field
+						/>
+					</div>
+
 				</form>
 			</Modal.Body>
 			<Modal.Footer>
