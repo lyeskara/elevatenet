@@ -26,7 +26,7 @@ const Message = () => {
     setFile(e.target.files[0]);
   };
 
-  useEffect(() => { // Effect hook for fetching users' information from Firestore
+  useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'users_information'), (snapshot) => {
       const usersArray = [];
       snapshot.forEach((doc) => {
@@ -34,8 +34,22 @@ const Message = () => {
       });
       setUsers(usersArray);
     });
-    return unsubscribe; // Unsubscribe from the snapshot listener when the component unmounts
-  }, []);
+    return () => {
+      unsubscribe();
+    };
+  }, [setUsers]);
+  
+  // useEffect(() => { // Effect hook for fetching users' information from Firestore
+  //   const unsubscribe = onSnapshot(collection(db, 'users_information'), (snapshot) => {
+  //     const usersArray = [];
+  //     snapshot.forEach((doc) => {
+  //       usersArray.push({ id: doc.id, ...doc.data() });
+  //     });
+  //     setUsers(usersArray);
+  //   });
+  //   return unsubscribe; // Unsubscribe from the snapshot listener when the component unmounts
+  // }, []);
+
 
   useEffect(() => { // Effect hook for fetching messages from Firestore
     const senderId = currentUser.uid;
