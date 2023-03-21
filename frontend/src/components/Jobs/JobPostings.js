@@ -126,7 +126,7 @@ return (
 										</Button>
 									</div>
 								</div>
-								<hr />
+								<hr/>
 								{/* The company and description */}
 								<h6>{data.company}</h6>
 								<p>{data.description}</p>
