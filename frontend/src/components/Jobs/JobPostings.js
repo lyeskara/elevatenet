@@ -45,6 +45,9 @@ function JobPostings() {
 		const description = document.getElementById('description').value;
 		const resume_required = document.getElementById('resume_required').checked;
 		const cover_letter_required = document.getElementById('cover_letter_required').checked;
+		const skillsElement = document.getElementById('skills');
+		const skills = skillsElement.value.split(',');
+
 		// Update the job posting with the new data
 		await updateDoc(doc(db, "posting", id), {
 			job_title: jobTitle,
@@ -52,6 +55,7 @@ function JobPostings() {
 			description: description,
 			resume_required: resume_required,
 			cover_letter_required: cover_letter_required,
+			skills: skills,
 		});
 		// Hide the modal
 		setShowModal(false);
@@ -187,6 +191,15 @@ return (
 							id="description" 
 							rows="3" 
 							defaultValue={currentJob.description} // Sets the default value of the textarea field to the current job description
+						></textarea>
+					</div>
+					<div className="form-group">
+						<label htmlFor="skills">Skills:</label>
+						<textarea 
+							className="form-control" 
+							id="skills" 
+							rows="3" 
+							defaultValue={currentJob.skills} // Sets the default value of the textarea field to the current job description
 						></textarea>
 					</div>
 					<div className="form-group">
