@@ -112,7 +112,7 @@ return (
 								{/* The job title */}
 								<div className="row">
 									<div className="col-sm-8">
-										<h5>{data.job_title}</h5>
+										<h4>{data.job_title}</h4>
 									</div>
 									{/* Edit and Delete buttons */}
 									<div className="col-sm-4 d-flex justify-content-end align-items-center">
@@ -130,6 +130,7 @@ return (
 								{/* The company and description */}
 								<h6>{data.company}</h6>
 								<p>{data.description}</p>
+								<hr/>
 								{data.cover_letter_required && <p>Cover Letter Required</p>}
 								{data.resume_required && <p>Resume Required</p>}
 
