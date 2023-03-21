@@ -31,6 +31,8 @@ function CreateNewPosting() {
         description: '',
         apply_here:'',
         deadline: '',
+        resume_required: false,
+        cover_letter_required: false,
     })
     //update with the handleCancel() method 
     // @param () 
@@ -60,7 +62,9 @@ function CreateNewPosting() {
                 description: postingData.description,
                 apply_here: postingData.description,
                 deadline: postingData.deadline,
-                created_by: user.email
+                created_by: user.email,
+                resume_required: postingData.resume_required,
+                cover_letter_required: postingData.cover_letter_required,
                 // full_time: postingData.full_time,                      no going to be used for this sprint
             })
             // Clear the form fields
@@ -70,6 +74,8 @@ function CreateNewPosting() {
                 description: '',
                 apply_here: '',
                 deadline: '',
+                resume_required: false,
+                cover_letter_required: false,
                 // full_time: false
             });
             navigate('/JobPostings');
@@ -164,7 +170,40 @@ function CreateNewPosting() {
                                 style={{backgroundColor: "#F3F3F3"}}
                                 ></textarea>
                             </div>
-                            {/* APPLY HERE */}
+                           {/* RESUME OR COVER LETTER REQUIRED */}
+                            <div className="form-group mb-3">
+                                <label htmlFor="formFile" className="form-label">
+                                    <h6>Forms Required</h6>
+                                </label>
+                                <div className="form-check">
+                                    <input 
+                                        className="form-check-input" 
+                                        type="checkbox" 
+                                        id="resume_required"
+                                        name="resume_required"
+                                        checked={postingData.resume_required}
+                                        onChange={handleInputChange}
+                                    />
+                                    <label className="form-check-label" htmlFor="resume_required">
+                                        Resume
+                                    </label>
+                                </div>
+                                <div className="form-check">
+                                    <input 
+                                        className="form-check-input" 
+                                        type="checkbox" 
+                                        id="cover_letter_required"
+                                        name="cover_letter_required"
+                                        checked={postingData.cover_letter_required}
+                                        onChange={handleInputChange}
+                                    />
+                                    <label className="form-check-label" htmlFor="cover_letter_required">
+                                        Cover Letter Required
+                                    </label>
+                                </div>
+                            </div>
+
+                            {/* APPLY HERE (OPTIONAL) */}
                             <div className="form-group mb-3">
                                 <label htmlFor="formFile" className="form-label">
                                     <h6>Apply Here (optional)</h6>
