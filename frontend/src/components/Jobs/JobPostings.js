@@ -130,7 +130,16 @@ return (
 								{/* The company and description */}
 								<h6>{data.company}</h6>
 								<p>{data.description}</p>
+								{/* SKILLS */}
+								{data.skills &&
+									Array.isArray(data.skills) &&
+									data.skills.map((skill) => (
+								<div key={skill}>
+									<span className="skills-btn">{skill}</span>
+								</div>
+								))}
 								<hr/>
+								{/* RESUME AND COVER LETTER REQUIRED */}
 								{data.cover_letter_required && <p>Cover Letter Required</p>}
 								{data.resume_required && <p>Resume Required</p>}
 
