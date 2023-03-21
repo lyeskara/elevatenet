@@ -39,7 +39,7 @@ function App() {
           path="/ProfileForm"
           element={<Protection>{<ProfileForm />}</Protection>}
         ></Route>
-         <Route
+        <Route
           path="/RecruiterForm"
           element={<Protection>{<RecruiterForm />}</Protection>}
         ></Route>
@@ -51,7 +51,10 @@ function App() {
           path="/CreateNewPosting"
           element={<Protection>{<CreateNewPosting />}</Protection>}
         ></Route>
-        <Route path="/JobPostings" element={<Protection>{<JobPostings />}</Protection>} />
+        <Route
+          path="/JobPostings"
+          element={<Protection>{<JobPostings />}</Protection>}
+        />
         <Route path="/" element={<Linkedin />} />
         <Route path="/SignIn" element={<SignIn />} />
         <Route path="/JoinNow" element={<JoinNow />} />
@@ -88,15 +91,63 @@ function App() {
             </Protection>
           }
         ></Route>
-        <Route path="/CreatPost" element={<Protection><CreatPost/></Protection>} />
-        <Route path="/EditProfile" element={<EditProfile />} />{" "}
+        <Route
+          path="/CreatPost"
+          element={
+            <Protection>
+              <CreatPost />
+            </Protection>
+          }
+        />
+        <Route
+          path="/EditProfile"
+          element={
+            <Protection>
+              <EditProfile />
+            </Protection>
+          }
+        />
         <Route path="/user_posts" element={<Protection></Protection>}></Route>
-        <Route path="/RequestSent" element={<RequestSent />} />
-        <Route path="/GroupNetwork" element={<GroupNetwork />} />
-        <Route path="/Event" element={<Event />} />
-        <Route path="/CreateEvent" element={<CreateEvent />} />
-        <Route path="/CreateGroup" element={<CreateGroup />} />
-
+        <Route
+          path="/RequestSent"
+          element={
+            <Protection>
+              <RequestSent />
+            </Protection>
+          }
+        />
+        <Route
+          path="/GroupNetwork"
+          element={
+            <Protection>
+              <GroupNetwork />
+            </Protection>
+          }
+        />
+        <Route
+          path="/Event"
+          element={
+            <Protection>
+              <Event />
+            </Protection>
+          }
+        />
+        <Route
+          path="/CreateEvent"
+          element={
+            <Protection>
+              <CreateEvent />
+            </Protection>
+          }
+        />
+        <Route
+          path="/CreateGroup"
+          element={
+            <Protection>
+              <CreateGroup />
+            </Protection>
+          }
+        />
       </Routes>
     </UserAuthContextProvider>
   );

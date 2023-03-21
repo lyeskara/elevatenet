@@ -21,10 +21,15 @@ const storageRef = ref(
 function EditProfile({ user, setUser, profilepic }) {
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
-	const navigate = useNavigate();
+	const handleShow = () => {
+		setUpdatedUser(user);
+		setShow(true);
+	};
 	const storage = getStorage();
 	const [selectedFile, setSelectedFile] = useState(null);
+	const [selectedResume, setSelectedResume] = useState(null);
+	const [selectedCL, setSelectedCL] = useState(null);
+	const [updatedUser, setUpdatedUser] = useState(null); // create a copy of the user object using useState
 	/**
 	 * setUser allows us to set the User to our changled values stored in setUser.
 	 * @constructor
@@ -32,7 +37,18 @@ function EditProfile({ user, setUser, profilepic }) {
 	 * @param {object} e - Any element.
 	 */
 	function update(e) {
-		setUser({ ...user, [e.target.name]: e.target.value });
+		const name = e.target.name;
+		const value = e.target.value;
+
+		setUpdatedUser((prevState) => {
+			// Handle array fields
+			if (Array.isArray(prevState[name])) {
+				const values = value.split(","); // split input by comma
+				return { ...prevState, [name]: values };
+			}
+			// Handle non-array fields
+			return { ...prevState, [name]: value };
+		});
 	}
 
 	/**
@@ -46,24 +62,31 @@ function EditProfile({ user, setUser, profilepic }) {
 			if (selectedFile) {
 				const storageRef = ref(
 					storage,
-					`profilepics/${auth.currentUser.uid}/${selectedFile.name}`
+					`profilepics/${auth.currentUser.uid}/profilePic`
 				);
 				await uploadBytes(storageRef, selectedFile);
 			}
-			setDoc(doc(collection(db, "users_information"), auth.currentUser.uid), {
-				firstName: user.firstName,
-				lastName: user.lastName,
-				education: user.education,
-				city: user.city,
-				bio: user.bio,
-				workExperience: user.workExperience,
-				skills: user.skills,
-				languages: user.languages,
-				email: auth.currentUser.email,
-				contact: user.contact,
-			});
+			if (selectedResume) {
+				const storageRef = ref(
+					storage,
+					`resume/${auth.currentUser.uid}/resume`
+				);
+				await uploadBytes(storageRef, selectedResume);
+			}
+			if (selectedCL) {
+				const storageRef = ref(storage, `CL/${auth.currentUser.uid}/CL`);
+				await uploadBytes(storageRef, selectedCL);
+			}
+			await setDoc(
+				doc(collection(db, "users_information"), auth.currentUser.uid),
+				{
+					...user,
+					...updatedUser,
+				}
+			);
+			setUser({ ...user, ...updatedUser });
+			setShow(false);
 		}
-		navigate("/Profile");
 	}
 
 	return (
@@ -83,6 +106,20 @@ function EditProfile({ user, setUser, profilepic }) {
 							<Form.Control
 								type="file"
 								onChange={(e) => setSelectedFile(e.target.files[0])}
+							/>
+						</Form.Group>
+						<Form.Group controlId="formFile" className="mb-3">
+							<Form.Label>Resume</Form.Label>
+							<Form.Control
+								type="file"
+								onChange={(e) => setSelectedResume(e.target.files[0])}
+							/>
+						</Form.Group>
+						<Form.Group controlId="formFile" className="mb-3">
+							<Form.Label>Cover Letter</Form.Label>
+							<Form.Control
+								type="file"
+								onChange={(e) => setSelectedCL(e.target.files[0])}
 							/>
 						</Form.Group>
 						<div style={{ display: "flex" }}>
@@ -184,6 +221,55 @@ function EditProfile({ user, setUser, profilepic }) {
 								name="bio"
 								as="textarea"
 								defaultValue={user.bio}
+								onChange={update}
+								rows={3}
+							/>
+						</Form.Group>
+						<Form.Group
+							className="mb-3"
+							controlId="exampleForm.ControlTextarea1"
+						>
+							<Form.Label>Courses</Form.Label>
+							<Form.Control
+								name="courses"
+								as="textarea"
+								defaultValue={user.courses}
+								onChange={update}
+								rows={3}
+							/>
+						</Form.Group>
+						<Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+							<Form.Label>Awards</Form.Label>
+							<Form.Control
+								name="awards"
+								type="text"
+								defaultValue={user.awards}
+								onChange={update}
+								autoFocus
+							/>
+						</Form.Group>
+						<Form.Group
+							className="mb-3"
+							controlId="exampleForm.ControlTextarea1"
+						>
+							<Form.Label>Projects</Form.Label>
+							<Form.Control
+								name="projects"
+								as="textarea"
+								defaultValue={user.projects}
+								onChange={update}
+								rows={3}
+							/>
+						</Form.Group>
+						<Form.Group
+							className="mb-3"
+							controlId="exampleForm.ControlTextarea1"
+						>
+							<Form.Label>Volunteering</Form.Label>
+							<Form.Control
+								name="volunteering"
+								as="textarea"
+								defaultValue={user.volunteering}
 								onChange={update}
 								rows={3}
 							/>

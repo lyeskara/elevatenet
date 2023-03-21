@@ -28,6 +28,7 @@ function NavbarFun() {
 		}
 	};
 
+
 	return (
 		<>
 			<Navbar bg="white" expand="lg">
@@ -35,6 +36,15 @@ function NavbarFun() {
 					<Navbar.Brand href="/">
 						<img src={logo} alt="ElevateNet" />
 					</Navbar.Brand>
+          {userr && (
+                <>
+                  <Nav>
+                    <div className="mt-3">
+                      <Search />
+                    </div>
+                  </Nav> 
+                </>
+              )}
 					<Navbar.Toggle aria-controls="navbarScroll" />
 					<Navbar.Collapse id="navbarScroll">
 						<Nav className="ms-auto"></Nav>
@@ -65,9 +75,6 @@ function NavbarFun() {
 										</Link>
 									</Nav>
 									<Nav>
-										<button>
-											<Search />
-										</button>
 										<button onClick={handleLogout} className="logout_button">
 											Sign Out
 										</button>

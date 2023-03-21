@@ -15,12 +15,30 @@ function ProfileForm() {
 		bio: "",
 		workExperience: "",
 		education: "",
-		skills: "",
+		skills: [],
 		languages: "",
+		contact: "",
+		awards: [],
+		courses: [],
+		projects: [],
+		volunteering: [],
 	});
 
 	function update(e) {
-		setProfileData({ ...profileData, [e.target.name]: e.target.value });
+		const { name, value } = e.target;
+		if (
+			name === "skills" ||
+			name === "courses" ||
+			name === "projects" ||
+			name === "volunteering" ||
+			name === "awards"
+		) {
+			// split the input string into an array of strings
+			const arrayValue = value.split(",");
+			setProfileData({ ...profileData, [name]: arrayValue });
+		} else {
+			setProfileData({ ...profileData, [name]: value });
+		}
 	}
 
 	function create_user(e) {
@@ -37,6 +55,10 @@ function ProfileForm() {
 				email: auth.currentUser.email,
 				languages: profileData.languages,
 				contact: profileData.contact,
+				courses: profileData.courses,
+				volunteering: profileData.volunteering,
+				projects: profileData.projects,
+				awards: profileData.awards,
 			});
 			// Clear the form fields
 			setProfileData({
@@ -50,6 +72,10 @@ function ProfileForm() {
 				skills: "",
 				languages: "",
 				contact: "",
+				courses: "",
+				volunteering: "",
+				projects: "",
+				awards: "",
 			});
 			navigate("/Profile");
 		} else {
@@ -154,14 +180,59 @@ function ProfileForm() {
 								placeholder="Language"
 							/>
 						</Form.Group>
-						<Form.Group className="mb-3" controlId="formcontact">
+
+						<Form.Group className="mb-3" controlId="formContact">
 							<Form.Control
 								className="input_box"
 								type="text"
 								name="contact"
 								onChange={update}
 								value={profileData.contact}
-								placeholder="contact"
+								placeholder="contact-number"
+							/>
+						</Form.Group>
+						<Form.Group className="mb-3" controlId="formAwards">
+							<Form.Control
+								as="textarea"
+								rows={3}
+								className="input_box"
+								name="awards"
+								onChange={update}
+								value={profileData.awards}
+								placeholder="Awards"
+							/>
+						</Form.Group>
+						<Form.Group className="mb-3" controlId="formCourses">
+							<Form.Control
+								as="textarea"
+								rows={3}
+								className="input_box"
+								name="courses"
+								onChange={update}
+								value={profileData.courses}
+								placeholder="Courses"
+							/>
+						</Form.Group>
+						<Form.Group className="mb-3" controlId="formProjects">
+							<Form.Control
+								as="textarea"
+								rows={3}
+								className="input_box"
+								name="projects"
+								onChange={update}
+								value={profileData.projects}
+								placeholder="Projects"
+							/>
+						</Form.Group>
+						<Form.Group className="mb-3" controlId="formVolunteering">
+							<Form.Control
+								as="textarea"
+								rows={3}
+								className="input_box"
+								name="volunteering"
+								onChange={update}
+								value={profileData.volunteering}
+								placeholder="Volunteering"
 							/>
 						</Form.Group>
 					</center>
