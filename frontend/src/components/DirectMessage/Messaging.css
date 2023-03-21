@@ -50,9 +50,14 @@
 .button-m {
   background-color: #27746A; /* Green */
   position: absolute;
-  bottom: 0;
-  right:0;
+
+  bottom: 0px;
+  right: 3px;
+
   padding: 10px 20px;
+  border-radius: 10px;
+  
+
 }
 
 .divider-m {
