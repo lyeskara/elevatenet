@@ -45,6 +45,9 @@ function JobPostings() {
 		const description = document.getElementById('description').value;
 		const resume_required = document.getElementById('resume_required').checked;
 		const cover_letter_required = document.getElementById('cover_letter_required').checked;
+		const skillsElement = document.getElementById('skills');
+		const skills = skillsElement.value.split(',');
+
 		// Update the job posting with the new data
 		await updateDoc(doc(db, "posting", id), {
 			job_title: jobTitle,
@@ -52,6 +55,7 @@ function JobPostings() {
 			description: description,
 			resume_required: resume_required,
 			cover_letter_required: cover_letter_required,
+			skills: skills,
 		});
 		// Hide the modal
 		setShowModal(false);
@@ -112,7 +116,7 @@ return (
 								{/* The job title */}
 								<div className="row">
 									<div className="col-sm-8">
-										<h5>{data.job_title}</h5>
+										<h4>{data.job_title}</h4>
 									</div>
 									{/* Edit and Delete buttons */}
 									<div className="col-sm-4 d-flex justify-content-end align-items-center">
@@ -126,10 +130,20 @@ return (
 										</Button>
 									</div>
 								</div>
-								<hr />
+								<hr/>
 								{/* The company and description */}
 								<h6>{data.company}</h6>
 								<p>{data.description}</p>
+								{/* SKILLS */}
+								{data.skills &&
+									Array.isArray(data.skills) &&
+									data.skills.map((skill) => (
+								<div key={skill}>
+									<span className="skills-btn">{skill}</span>
+								</div>
+								))}
+								<hr/>
+								{/* RESUME AND COVER LETTER REQUIRED */}
 								{data.cover_letter_required && <p>Cover Letter Required</p>}
 								{data.resume_required && <p>Resume Required</p>}
 
@@ -177,6 +191,15 @@ return (
 							id="description" 
 							rows="3" 
 							defaultValue={currentJob.description} // Sets the default value of the textarea field to the current job description
+						></textarea>
+					</div>
+					<div className="form-group">
+						<label htmlFor="skills">Skills:</label>
+						<textarea 
+							className="form-control" 
+							id="skills" 
+							rows="3" 
+							defaultValue={currentJob.skills} // Sets the default value of the textarea field to the current job description
 						></textarea>
 					</div>
 					<div className="form-group">
