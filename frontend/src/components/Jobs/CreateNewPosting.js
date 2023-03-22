@@ -33,6 +33,7 @@ function CreateNewPosting() {
         deadline: '',
         resume_required: false,
         cover_letter_required: false,
+        skills: [],
     })
     //update with the handleCancel() method 
     // @param () 
@@ -44,10 +45,20 @@ function CreateNewPosting() {
     // @param (event) 
     //handles changes to the input and updates field 
     const handleInputChange = (event) => {
-        setPostingData(
-            { ...postingData,
-              [event.target.name]: event.target.value}  ) 
-    };
+        const { name, value } = event.target;
+        if (name === "skills") {
+          const skillsArray = value.split(",");
+          setPostingData((prevState) => ({
+            ...prevState,
+            [name]: skillsArray,
+          }));
+        } else {
+          setPostingData((prevState) => ({
+            ...prevState,
+            [name]: value,
+          }));
+        }
+      };
 
     //creates the job posting with handleSubmit() method
     // @param event 
@@ -65,6 +76,8 @@ function CreateNewPosting() {
                 created_by: user.email,
                 resume_required: postingData.resume_required,
                 cover_letter_required: postingData.cover_letter_required,
+                skills: postingData.skills,
+
                 // full_time: postingData.full_time,                      no going to be used for this sprint
             })
             // Clear the form fields
@@ -76,6 +89,7 @@ function CreateNewPosting() {
                 deadline: '',
                 resume_required: false,
                 cover_letter_required: false,
+                skills: '',
                 // full_time: false
             });
             navigate('/JobPostings');
@@ -128,7 +142,7 @@ function CreateNewPosting() {
                             <h5 className="text-center">Create a new Job Posting</h5>
                             <hr></hr>
                             {/* JOB TITLE */}
-                            <div className="form-group mb-3">
+                            <div className="form-group mb-3" >
                                 <label htmlFor="formFile" className="form-label">
                                     <h6>Job Title</h6>
                                 </label>
@@ -137,7 +151,8 @@ function CreateNewPosting() {
                                 id="job_title"
                                 name="job_title"
                                 value={postingData.job_title}
-                                onChange={handleInputChange} 
+                                onChange={handleInputChange}
+                                style={{backgroundColor: "#F3F3F3"}} 
                                 />
                             </div>
                             {/* COMPANY */}
@@ -151,6 +166,7 @@ function CreateNewPosting() {
                                 name="company"
                                 value={postingData.company}
                                 onChange={handleInputChange}
+                                style={{backgroundColor: "#F3F3F3"}}
                                 />
                             </div>
                             {/* DESCRIPTION */}
@@ -165,9 +181,24 @@ function CreateNewPosting() {
                                 name="description"
                                 value={postingData.description}
                                 onChange={handleInputChange}
+                                style={{backgroundColor: "#F3F3F3"}}
                                 ></textarea>
                             </div>
-                           {/* RESUME OR COVER LETTER REQUIRED */}
+                            {/* SKILLS */}
+                            <div className="form-group mb-3">
+                                <label htmlFor="formFile" className="form-label">
+                                    <h6>Skills</h6>
+                                </label>
+                                <input 
+                                className="form-control" type="text" placeholder="Skills related to the position" aria-label="default input example" 
+                                id="skills"
+                                name="skills"
+                                value={postingData.skills}
+                                onChange={handleInputChange}
+                                style={{backgroundColor: "#F3F3F3"}}
+                                />
+                            </div>
+                            {/* RESUME OR COVER LETTER REQUIRED */}
                             <div className="form-group mb-3">
                                 <label htmlFor="formFile" className="form-label">
                                     <h6>Forms Required</h6>
@@ -212,6 +243,7 @@ function CreateNewPosting() {
                                 name="apply_here"
                                 value={postingData.apply_here}
                                 onChange={handleInputChange}
+                                style={{backgroundColor: "#F3F3F3"}}
                                 />
                             </div>
                             {/* DATE PICKER FOR DEADLINE */}
@@ -224,6 +256,7 @@ function CreateNewPosting() {
                                 id="deadline"
                                 name="deadline"
                                 value={postingData.deadline}
+                                style={{backgroundColor: "#F3F3F3"}}
                                 />
                             </div>  
 
