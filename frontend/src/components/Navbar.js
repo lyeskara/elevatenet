@@ -10,6 +10,7 @@ import briefcase from "./../images/icon_briefcase.png";
 import connection from "./../images/connection.png";
 import bell from "./../images/icon_bell.png";
 import ellipses from "./../images/icon_ellipses.png";
+import messaging from "./../images/messaging_icon.png";
 import { Navbar, Nav, Container } from "react-bootstrap";
 
 import Search from "./connection/Search";
@@ -26,7 +27,6 @@ function NavbarFun() {
 			console.log(error.message);
 		}
 	};
-
 
 
 	return (
@@ -58,6 +58,9 @@ function NavbarFun() {
 										<Link to="/Profile">
 											<img src={person} alt="profile" />
 										</Link>
+										<Link to="/Messaging">
+											<img src={messaging} alt="messaging" />
+										</Link>
 										<Link to="/JobPostings">
 											<img src={briefcase} alt="briefcase" />
 										</Link>
@@ -72,7 +75,7 @@ function NavbarFun() {
 										</Link>
 									</Nav>
 									<Nav>
-									
+
 										<button onClick={handleLogout} className="logout_button">
 											Sign Out
 										</button>
