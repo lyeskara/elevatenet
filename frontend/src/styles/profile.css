@@ -112,7 +112,9 @@ margin-top: 5px;
 .skills-btn div{
   display: flex;
 }
-
+.skillscard hr{
+  margin-bottom: 7px;
+}
 .skills-btn:hover{
 background-color: #dadadaf5;
 }

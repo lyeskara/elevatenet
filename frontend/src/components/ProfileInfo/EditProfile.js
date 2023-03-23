@@ -3,7 +3,6 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
-import { useUserAuth } from "../../context/UserAuthContext";
 import { auth, db } from "../../firebase";
 import { collection, setDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
@@ -84,6 +83,10 @@ function EditProfile({ user, setUser, profilepic }) {
 					...updatedUser,
 				}
 			);
+			console.log("Sending info");
+			console.log(user);
+			console.log("SPACED");
+			console.log(updatedUser);
 			setUser({ ...user, ...updatedUser });
 			setShow(false);
 		}
@@ -91,7 +94,11 @@ function EditProfile({ user, setUser, profilepic }) {
 
 	return (
 		<>
-			<Button variant="primary" onClick={handleShow}>
+			<Button
+				style={{ backgroundColor: "#27746A", borderColor: "#27746A" }}
+				variant="primary"
+				onClick={handleShow}
+			>
 				Edit
 			</Button>
 
@@ -277,10 +284,15 @@ function EditProfile({ user, setUser, profilepic }) {
 					</Form>
 				</Modal.Body>
 				<Modal.Footer>
-					<Button variant="secondary" onClick={handleClose}>
+					<Button
+						style={{ backgroundColor: "#27746A", borderColor: "#27746A" }}
+						variant="secondary"
+						onClick={handleClose}
+					>
 						Close
 					</Button>
 					<Button
+						style={{ backgroundColor: "#27746A", borderColor: "#27746A" }}
 						variant="primary"
 						onClick={(e) => {
 							updateUser(e);
