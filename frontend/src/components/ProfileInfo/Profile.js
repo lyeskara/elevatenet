@@ -80,7 +80,7 @@ function Profile() {
 				<Col className="col1" xs={12} md={{ span: 3, offset: 1 }}>
 					<Card className="profilecard">
 						<img
-							src={profilePicURL}
+							src={profilePicURL || person}
 							id="profilepic"
 							alt="Avatar"
 							className="avatar"
