@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 //Firebase imports
 import { auth, db } from "../../firebase";
-import { collection, setDoc ,doc, addDoc, arrayUnion} from "firebase/firestore";
+import { collection, setDoc, updateDoc ,doc, addDoc, arrayUnion} from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 //FrontEnd imports
 import Row from "react-bootstrap/Row";
@@ -14,15 +15,27 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 import "../../styles/GroupCreation.css";
 // import "react-image-picker-editor/dist/index.css"
 import "bootstrap/dist/css/bootstrap.min.css";
+import grouplogo from ".././../images/group.png";
 
 function CreateGroup(){
 
     const {user} = useUserAuth();
     const navigate = useNavigate();
+    const storage = getStorage();
+    const [imageUrl, setImageUrl] = useState(null);
 
+    //This updates the avatar when a new image is chosen
+    const handleFileSelect = (event) => {
+        const file = event.target.files[0];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                setImageUrl(url);
+                }
+      };
     
     //Here we set the Group Info data fields
     const[groupData, setNewGroupData] = useState(
@@ -33,6 +46,7 @@ function CreateGroup(){
             location: '',
             memberUIDs: [],
             adminUIDs: [],
+            group_img_url: '',
         }
     );
 
@@ -53,8 +67,38 @@ function CreateGroup(){
             location: groupData.location,
             memberUIDs: arrayUnion(auth.currentUser.uid),
             adminUIDs: arrayUnion(auth.currentUser.uid),
+            group_img_url: '',
         }
         )
+
+        //Here we store the image in the Firebase storage, and add the Firebase URL link to the Group Collection's attribute storing the image URL.
+        if(imageUrl){
+
+            let groupImgURL = '';
+
+            fetch(imageUrl)
+            .then(response => response.blob())
+            .then(blob => {
+                const storageRef = ref(storage, `grouppics/${docRef.id}/groupPic`);
+                return uploadBytes(storageRef, blob);
+            })
+            .then(uploadTaskSnapshot => {
+                console.log('Image uploaded successfully!');
+                return getDownloadURL(uploadTaskSnapshot.ref);
+              })
+              .then(async downloadURL => {
+                groupImgURL = downloadURL;
+                console.log("Extracted URL", groupImgURL);
+                console.log("Download URL", downloadURL);
+                
+                //Update the group image attribute
+                const docRef1 = doc(db, "groups", docRef.id); 
+                await updateDoc(docRef1, { "group_img_url": groupImgURL });
+
+              })
+        };
+
+        //Empty the fields
         setNewGroupData(
             {
                 group_name: '',
@@ -63,28 +107,17 @@ function CreateGroup(){
                 location: '',
                 memberUIDs: [],
                 adminUIDs: [],
+                group_img_url: '',
             }
         );
+
         //Redirect to GroupNetwork page
         navigate('/GroupNetwork');
     }
     else{
-        console.log("An error has occured, please try again!");
+        console.log("An error has occurred");
     }
     };
-
-    //Extra Settings for Image selector, still WIP
-    // const image_picker_settings = {
-    //     borderRadius: '1px',
-    //     width: '180px',
-    //     height: '180px',
-    //     objectFit: 'cover',
-    //     compressInitial: null,
-    //     hideDeleteBtn: false,
-    //     hideDownloadBtn: true,
-    //     hideEditBtn: true,
-    //     hideAddBtn: true
-    //   };
 
 return(
 
@@ -95,8 +128,17 @@ return(
                 <Card className = "card">
                     <form onSubmit = {handleContent}>
                         <div className = "row1">
+                            <div className="col-3" >
+                                <img src={imageUrl ? imageUrl : grouplogo} width="80%" height="80%" className="img-constrained" alt={"Default Group Logo"}></img>
+                                <Form.Control
+                                    className= "form-control form-control-sm"
+                                    type="file"
+                                    style={{fontSize: "10px", width: "80%"}}
+                                    onChange={handleFileSelect}
+                                />
+                            </div>
                             {/* <div className = "side-by-side-div"><ReactImagePickerEditor config = {image_picker_settings}></ReactImagePickerEditor></div> */}
-                            <div className = "side-by-side-div2">
+                            <div className = "col-9" style={{margin: "9% 0% 2% 0%"}}>
                                 <label htmlFor="formFile" className="form-label">
                                     <h6>Group Name</h6>
                                 </label>
@@ -105,7 +147,8 @@ return(
                                     id="group_name"
                                     name="group_name"
                                     value={groupData.group_name}
-                                    onChange={handleInputChange}/>
+                                    onChange={handleInputChange}
+                                    style={{backgroundColor: "#F3F3F3"}}/>
                             </div>
                         </div>
                         <div className="form-group mb-3">
@@ -118,10 +161,11 @@ return(
                                     name="description"
                                     value={groupData.description}
                                     onChange={handleInputChange}
+                                    style={{backgroundColor: "#F3F3F3"}}
                                 ></textarea>
                         </div>
                         <Row>
-                            <div className = "form-group mb-3">
+                            <div className = "col">
                                 <label htmlFor="formFile" className="form-label">
                                     <h6>Industry</h6>
                                 </label>
@@ -130,9 +174,10 @@ return(
                                     id="industry"
                                     name="industry"
                                     value={groupData.industry}
-                                    onChange={handleInputChange}/>
+                                    onChange={handleInputChange}
+                                    style={{backgroundColor: "#F3F3F3"}}/>
                             </div>
-                            <div className = "form-group mb-3">
+                            <div className = "col">
                                 <label htmlFor="formFile" className="form-label">
                                     <h6>Location</h6>
                                 </label>
@@ -141,7 +186,8 @@ return(
                                     id="location"
                                     name="location"
                                     value={groupData.location}
-                                    onChange={handleInputChange}/>
+                                    onChange={handleInputChange}
+                                    style={{backgroundColor: "#F3F3F3"}}/>
                             </div>
                         </Row>
                         <Row>

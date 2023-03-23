@@ -108,6 +108,7 @@ function CreateEvent() {
                     name="event_title"
                     value={eventData.event_title}
                     required
+                    style={{backgroundColor: "#F3F3F3"}}
                   />
                 </div>
                 {/*Type */}
@@ -153,6 +154,7 @@ function CreateEvent() {
                     name="description"
                     value={eventData.description}
                     required
+                    style={{backgroundColor: "#F3F3F3"}}
                   ></textarea>
                 </div>
                 {/*Start Date */}
