@@ -87,7 +87,7 @@ function Profile() {
 						></img>
 						<h1>
 							{user.firstName}
-							<span style={{ color: "green" }}> {user.lastName}</span>
+							<span style={{ color: "#27746A" }}> {user.lastName}</span>
 						</h1>
 						<p style={{ color: "#A6A6A6" }}> {user.city}</p>
 						<p> {user.bio} </p>
@@ -99,6 +99,7 @@ function Profile() {
 						<hr></hr>
 						<div className="email">
 							<GrMailOption />
+
 							<h5
 								style={{
 									color: "#626262",
@@ -164,7 +165,11 @@ function Profile() {
 							>
 								Resume
 							</h5>
-							<button className="btn btn-primary" onClick={downloadResume}>
+							<button
+								className="btn btn-primary"
+								style={{ backgroundColor: "#27746A", borderColor: "#27746A" }}
+								onClick={downloadResume}
+							>
 								Download
 							</button>
 						</div>
@@ -180,6 +185,7 @@ function Profile() {
 							<button
 								type="button"
 								className="btn btn-primary"
+								style={{ backgroundColor: "#27746A", borderColor: "#27746A" }}
 								onClick={downloadCL}
 							>
 								Download
@@ -230,13 +236,15 @@ function Profile() {
 					<Card className="skillscard">
 						<h5>Skills</h5>
 						<hr></hr>
-						{user.skills &&
-							Array.isArray(user.skills) &&
-							user.skills.map((skill) => (
-								<div key={skill}>
-									<span className="skills-btn">{skill}</span>
-								</div>
-							))}
+						{user.skills && Array.isArray(user.skills) && (
+							<div style={{ display: "flex", flexDirection: "row" }}>
+								{user.skills.map((skill) => (
+									<span key={skill} className="skills-btn">
+										{skill}
+									</span>
+								))}
+							</div>
+						)}
 					</Card>
 
 					<Card className="courses">
@@ -260,7 +268,7 @@ function Profile() {
 						<hr></hr>
 						{user.volunteering &&
 							Array.isArray(user.volunteering) &&
-							user.projects.map((volunteering) => (
+							user.volunteering.map((volunteering) => (
 								<div key={volunteering}>{volunteering}</div>
 							))}
 					</Card>
