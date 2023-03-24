@@ -46,7 +46,7 @@
 
 .button-m {
   background-color: #27746A; /* Green */
-  position: absolute;
+  
 
   bottom: 0px;
   right: 3px;
@@ -65,15 +65,14 @@
 
 .text-m input[type="text"] {
   width: 100%;
-  height: 50px;
-  padding: 100px;
-  padding-right: 800px;
+  
+ 
   font-size: 16px;
-  margin-top: 5px;
+
   border-radius: 5px;
   text-align: left;
   padding-left: 10px;
-  background-color: rgb(209, 209, 209);
+  background-color: #F3F3F3;
   border: 1px solid rgb(255, 255, 255);
   
 }
@@ -99,11 +98,7 @@
   color: white;
   border: none;
   border-radius: 5px;
-  position: absolute; /* add this */
-  bottom: 0; /* add this */
-  right: 0; /* add this */
-  margin: 1px; /* add this */
-  margin-bottom: -60px; /* add this */
+
 }
 
 
@@ -160,4 +155,14 @@
 
 .received-m p{
   background-color: #ACACAC;
+}
+
+.textarea-message{
+  width: 100%;
+  height: 50%;
+  display: flex;
+}
+
+input[type="file"] {
+  display: none;
 }

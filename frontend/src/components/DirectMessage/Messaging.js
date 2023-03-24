@@ -10,6 +10,8 @@ import {
 import { auth } from "../../firebase"; // Importing Firebase authentication
 import { db } from "../../firebase"; // Importing Firebase Firestore database
 import "./Messaging.css"; // Importing styling
+import { Container, Form, Button, FormGroup } from "react-bootstrap";
+import pin from ".././../images/paperclip.png";
 
 const Message = () => {
   const currentUser = auth.currentUser; // Get the current authenticated user
@@ -97,6 +99,13 @@ const Message = () => {
     setMessage(e.target.value);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13 && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e);
+    }
+  }
+
   // const handlePersonClick = (e) => {
   //   e.preventDefault();
   //   const recipientId = e.target.getAttribute('data-recipient-id');
@@ -105,6 +114,7 @@ const Message = () => {
 
   return (
     <>
+    <Container>
       {/* The main container for the chat */}
       <div className="container-m">
         {/* The chat list section */}
@@ -130,10 +140,9 @@ const Message = () => {
                     backgroundColor: msg.sender === currentUser.uid ? '#27746A' : 'grey',
                     textAlign: msg.sender === currentUser.uid ? 'right' : 'left',
                   }}
-                  */ )}
+                  */
+          )}
         </div>
-
-     
 
         {/* A divider between the chat list and messages section */}
         <div className="divider-m"></div>
@@ -164,32 +173,45 @@ const Message = () => {
             </div>
 
             {/* A form for sending a message */}
-            <form onSubmit={handleSubmit}>
-              <div>
-                <input
+            <Form onSubmit={handleSubmit}>
+             
+              <div className="textarea-message form-group">
+                <textarea
                   type="text"
+                  className="textarea-message"
+                  rows={4}
                   value={message}
                   onChange={handleMessageChange}
+                  onKeyDown={handleKeyDown} // Add event listener for "keydown" event
                   ref={messageRef}
                   placeholder="Enter Message..."
-                />
+                ></textarea>
               </div>
+
               <div>
                 <button
-                  className="button-m"
+                  className="button-m form-group"
                   type="button"
                   onClick={handleSubmit}
                 >
                   Send
                 </button>
               </div>
-            </form>
+            </Form>
 
             {/* An input field for uploading a file */}
-            <input type="file" onChange={handleFileChange} ref={fileRef} />
+            <label for="file-upload">
+              <img src={pin}></img>
+              <input
+                id="file-upload"
+                type="file"
+                onChange={handleFileChange}
+                ref={fileRef}
+              ></input>
+            </label>
           </div>
         </div>
-      </div>
+      </div></Container>
     </>
   );
 };
