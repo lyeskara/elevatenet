@@ -21,6 +21,15 @@ import "../../styles/GroupCreation.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import grouplogo from ".././../images/group.png";
 
+
+
+
+/* A function that initializes and creates a group instance in the Firestore
+*
+* @param {none}
+* @returns {collection item in database} A new group instance is stored in the Firestore database for further use. 
+*/
+
 function CreateGroup(){
 
     const {user} = useUserAuth();
