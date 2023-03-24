@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: row;
   background-color: white;
-  position: relative;
+  
   
   border-radius: 20px;
   padding: 30px;
@@ -27,10 +27,7 @@
 }
 
 .text-m {
-  flex: 2;
-  background-color: white;
-  font-size: 20px;
-  padding: 20px;
+ 
  /*overflow-y: scroll; added this for scrolling */
   /*height: calc(100vh - 310px);  added this for scrolling */
 }
@@ -139,4 +136,28 @@
   margin: 0;
   font-size: 14px;
   color: #777;
+}
+
+.message-m {
+  margin-bottom: -30px;
+  border-radius: 5px;
+}
+
+.sent-m {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  color: #fff;
+  align-self: flex-end;
+}
+
+.received-m {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: flex-start;
+}
+
+.received-m p{
+  background-color: #ACACAC;
 }
