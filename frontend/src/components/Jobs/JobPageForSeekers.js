@@ -46,6 +46,9 @@ function JobPageForSeekers() {
                       {posting.company}
                     </Card.Subtitle>
                     <Card.Text>{posting.description}</Card.Text>
+                    <Card.Text>
+                        {posting.skills}
+                    </Card.Text>
                     <Button variant="primary" style={{backgroundColor: "#27746A"}}>
                         Apply Now
                     </Button>
