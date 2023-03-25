@@ -1,5 +1,3 @@
-
-
 /*
  * this file represent the feedpage component
  * in it, React hooks are used. (state to store user data and Effect to update the view accordingly to the model)
