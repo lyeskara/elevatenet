@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 
 //Firebase imports
-import {collection, getDocs, where, query} from "firebase/firestore";
+import {collection, getDocs, where, query, getFirestore, updateDoc, arrayUnion, doc} from "firebase/firestore";
 import {db, auth} from "../../firebase";
 
 
@@ -72,11 +72,18 @@ function GroupNetwork() {
 
   //Send Request Button Behavior
   const [buttonTexts, setButtonTexts] = useState(
-    myGroupCards.map(() => "Send Join Request")
+    myGroupCards.map(() => "Join Group")
   );
 
   
-  const handleRequest = (index) => {
+  const handleRequest = async (index) => {
+
+    const group = otherGroupCards[index];
+    const groupRef = doc(db, "groups", group.id);
+    const updatedGroup = { ...group, memberUIDs: [...group.memberUIDs, auth.currentUser.uid] };
+    await updateDoc(groupRef, updatedGroup);
+
+
     setButtonTexts((prevButtonTexts) => {
 
       //Update Text on Button
@@ -166,7 +173,7 @@ function GroupNetwork() {
                       </Col>
                       <Col className="center-col" md={2}>
                         <Button className="create_Group_Button" onClick={() => handleRequest(index)}>
-                        {buttonTexts[index] || "Send Join Request" }
+                        {buttonTexts[index] || "Join Group" }
                         </Button>
                       </Col>
                     </Row>
