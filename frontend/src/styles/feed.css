@@ -5,27 +5,25 @@
     width: 50%;
     text-align: center;
     margin-top: 40px;
-  }
-  
-  .feed-inputContainer {
+}
+
+.feed-inputContainer {
     background-color: white;
     padding: 8px;
     padding-bottom: 10px;
     border-radius: 10px;
     margin-bottom: 10px;
-  }
-  
+}
 
-  
-  .feed-input {
+.feed-input {
     border: green;
     border-radius: 10px;
     display: flex;
     align-items: center;
     padding: 8px;
-  }
-  
-  .feed-input > form {
+}
+
+.feed-input> button.create-post {
     border: green;
     background-color: #f2f2f2;
     border-radius: 10px;
@@ -33,19 +31,24 @@
     align-items: center;
     padding: 8px;
     width: 75%;
-  }
-  .feed-input form.create-post input {
+}
+
+.feed-input > button.create-post {
     flex: 1;
     padding: 10px;
-    border: green;
+    border: none;
     outline: none;
     font-size: 16px;
     border-radius: 30px;
     background-color: transparent;
     width: 0.8;
-  }
-  
-  .feed-input > button {
+}
+
+.feed-input > button.create-post {
+    background-color: #f2f2f2;
+}
+
+.feed-input > img {
     transform: scale(0.8); 
     width: 20%;
     border: none;
@@ -53,26 +56,20 @@
     padding: 0;
     font-size: 12px;
     padding: 2px;
-  }
-  
-  .feed-input > form > input {
-    border: none;
-    flex: 1;
-    margin-left: 10px;
-    outline-width: 0;
-    font-size: 14px;
-    font-weight: 600;
-    
-  }
-  
-  .feedinputOption {
+}
+
+.feed-input > img:hover {
+    cursor: pointer;
+}
+
+.feedinputOption {
     display: flex;
     justify-content: center;
     margin-top: 2px;
     border: green;
-  }
-  
-  .feedinputOption > button {
+}
+
+.feedinputOption  {
     transform: scale(0.4);
     display: flex;
     justify-content: space-evenly;
@@ -80,23 +77,25 @@
     margin: 0 100px;
     background-color: transparent;
     padding: 2px 5px;
-    
-    
-  }
-  .feedinputOption > button:first-of-type {
+}
+.create-post {
+  font-family: Arial, sans-serif;
+  background-color: grey;
+  color: rgba(106, 104, 104, 0.507);
+ 
+
+}
+
+.feedinputOption > button:first-of-type {
     margin-right: 5px;
-  }
-  
-  .feedinputOption > button:last-of-type {
+}
+
+.feedinputOption > button:last-of-type {
     margin-left: 5px;
-  }
-  
+}
 
-  
-
-  @media screen and (max-width: 750px) {
+@media screen and (max-width: 750px) {
     .feedinputOption > button {
-      font-size: 11px;
+        font-size: 11px;
     }
-  }
-  
+}
