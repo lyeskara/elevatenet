@@ -110,6 +110,14 @@ function App() {
           }
         />
         <Route
+          path="/group/CreatPost"
+          element={
+            <Protection>
+              <CreatPost />
+            </Protection>
+          }
+        />
+        <Route
           path="/EditProfile"
           element={
             <Protection>
