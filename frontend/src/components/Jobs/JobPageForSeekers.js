@@ -38,7 +38,7 @@ function JobPageForSeekers() {
         <Container>
           <Row>
             {postings.map((posting) => (
-              <Col md={4} key={posting.id}>
+              <Col md={6} key={posting.id}>
                 <Card className="mb-3">
                   <Card.Body>
                     <Card.Title>{posting.title}</Card.Title>
