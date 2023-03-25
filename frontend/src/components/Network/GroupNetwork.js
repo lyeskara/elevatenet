@@ -1,6 +1,6 @@
 //React imports
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 
 //Firebase imports
@@ -18,8 +18,6 @@ import grouplogo from ".././../images/group.png";
 import "../../styles/network.css";
 import "../../styles/JobPostings.css";
 import "../../styles/profile.css";
-
-
 
 
 /* Renders the Group Networking page where all existing groups can be seen.
@@ -40,7 +38,7 @@ function GroupNetwork() {
   const [otherGroupCards, setOtherGroupCards] = useState([]);
   
 
-/* myGroups and otherGroups arrays are populated with releveant group data found in database.
+/* myGroups and otherGroups arrays are populated with relevant group data found in database.
 *  Filtered queries are made and the results are put into their respective arrays.
 *
 * @param {none}
@@ -91,13 +89,12 @@ function GroupNetwork() {
 
       //Update Text on Button
       const newButtonTexts = [...prevButtonTexts];
-      newButtonTexts[index] = "Request Sent!";
+      newButtonTexts[index] = "Group Joined!";
 
         return newButtonTexts;
     });
     
   };
-
 
   return (
     <>
@@ -145,7 +142,9 @@ function GroupNetwork() {
                         <p> {groupInfos.description}</p>
                           </Col>
                           <Col className="center-col" md={2}>
-                            <Button className="create_Group_Button" >View Group</Button>
+                            <Link to={`/group/${groupInfos.id}`}>
+                              <Button className="create_Group_Button" >View Group</Button>
+                            </Link>
                           </Col>
                         </Row>
                       </Card>
