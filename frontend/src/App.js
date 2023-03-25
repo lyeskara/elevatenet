@@ -19,6 +19,7 @@ import Feed from "./components/UserFeedPage/Feed";
 import CreatPost from "./components/UserFeedPage/CreatPost";
 import GroupNetwork from "./components/Network/GroupNetwork";
 import Event from "./components/Network/Event";
+import ApplyToJobs from "./components/Jobs/ApplyToJobs";
 
 import RequestsPage from "./components/connection/RequestsPage";
 import ConnectionPage from "./components/connection/ConnectionPage";
