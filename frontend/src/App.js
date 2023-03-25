@@ -19,7 +19,7 @@ import Feed from "./components/UserFeedPage/Feed";
 import CreatPost from "./components/UserFeedPage/CreatPost";
 import GroupNetwork from "./components/Network/GroupNetwork";
 import Event from "./components/Network/Event";
-import ApplyToJobs from "./components/Jobs/ApplyToJobs";
+import ApplyToJobs from "./components/Jobs/ApplyNow";
 
 import RequestsPage from "./components/connection/RequestsPage";
 import ConnectionPage from "./components/connection/ConnectionPage";
@@ -146,6 +146,14 @@ function App() {
           element={
             <Protection>
               <CreateGroup />
+            </Protection>
+          }
+        />
+        <Route
+          path="/ApplyToJobs"
+          element={
+            <Protection>
+              <ApplyToJobs />
             </Protection>
           }
         />

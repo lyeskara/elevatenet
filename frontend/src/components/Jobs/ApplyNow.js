@@ -10,7 +10,7 @@ import Container from "react-bootstrap/Container";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-function ApplyToJobs(
-
-)
-export default ApplyToJobs;
+function ApplyNow() {
+    
+}
+export default ApplyNow;
