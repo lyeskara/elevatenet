@@ -85,7 +85,7 @@ function Advertisements() {
 
     return (
         <Container className="container d-flex justify-content-center mx-auto">
-            <h1>Ad</h1>
+            <h1></h1>
             {/* JOB MENU BLOCK ON THE LEFT TO NAVIGATE BETWEEN JOB POSTINGS AND ADVERTS */}
             <Row className="gap-6 d-flex justify-content-center" style={{minWidth: "80%"}}>
                 <Col xs={12} sm={8}  lg={4} style={{minWidth: "30%"}}>
