@@ -20,12 +20,11 @@ import "../../styles/JobPostings.css";
 import "../../styles/profile.css";
 
 
-/* Renders the Group Networking page where all existing groups can be seen.
+/**
+* Renders the Group Networking page where all existing groups can be seen.
 *
-* @param {none}
-* @returns {page} The existing groups within the database are displayed and interactable.
+* @return { Object } The existing groups within the database are displayed and interactable.
 */
-
 function GroupNetwork() {
   
   //Redirect to the Create Group page
@@ -36,16 +35,8 @@ function GroupNetwork() {
   //Returning Card of group
   const [myGroupCards, setMyGroupCards] = useState([]);
   const [otherGroupCards, setOtherGroupCards] = useState([]);
-  
 
-/* myGroups and otherGroups arrays are populated with relevant group data found in database.
-*  Filtered queries are made and the results are put into their respective arrays.
-*
-* @param {none}
-* @returns {filled arrays} 
-*/
-
-  //We then populate the arrays with the relevant group data
+  //We then populate the myGroups and otherGroups arrays with the relevant group data
   useEffect(() => {
     const fetchData = async () => {
 

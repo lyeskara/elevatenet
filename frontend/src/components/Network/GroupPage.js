@@ -18,30 +18,24 @@ import Button from "react-bootstrap/Button";
 //Feed Import
 import Feed from "../UserFeedPage/Feed"
 
-
-/* This handles and renders the Group page of a selected group from the GroupNetwork page.
-   * This page has info regarding the group.
-   * You can leave the group from this page as well.
-   *
-   * @param {id} The ID of the group stored in the Firestore.
-   * @returns {page with attributes of the group}
-   */
+/**
+* The GroupPage displays a view of a group. It is used to select the target group, retrieve its information from the Firestore, and display it.
+*
+* @return { Object } The page as a React component with the information of the group.
+*/
 function GroupPage() {
 
   const navigate = useNavigate();
   const { id } = useParams();
   const [group, setGroup] = useState(null);
 
-  /* The information of the selected group is retrieved from the Firestore
-   *
-   * @param {none}
-   * @returns {group is set with the attributes of the group in question}
-   */
+  // Here we set the group variable with the information matching the group ID.
   useEffect(() => {
     const fetchGroup = async () => {
       const groupRef = doc(db, "groups", id);
       const groupDoc = await getDoc(groupRef);
 
+      // Set the group to the groupDoc.
       if (groupDoc.exists()) {
         setGroup(groupDoc.data());
       } else {
@@ -52,6 +46,7 @@ function GroupPage() {
     fetchGroup();
   }, [id]);
 
+  // Returns the loading div.
   if (!group) {
     return <div>Loading...</div>;
   }
