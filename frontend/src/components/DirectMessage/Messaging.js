@@ -120,7 +120,7 @@ const Message = () => {
       <div className="container-m">
         {/* The chat list section */}
         <div className="chat-list-m">
-          <h2>Chat List</h2>
+          <h2 className="mb-5">Chat List</h2>
           <div style={{ overflowY: "scroll", height: "500px" }}>
           {/* Maps through all the users in the 'users_information' array, 
               except the current user, and renders a 'user-tab' div for each */}
@@ -192,16 +192,7 @@ const Message = () => {
                 ></textarea>
               </div>
 
-              <div>
-                <button
-                  className="button-m form-control mt-2"
-                  type="button"
-                  onClick={handleSubmit}
-                >
-                  Send
-                </button>
-              </div>
-              <label for="file-upload">
+              <div className="containRequest right-side"><label for="file-upload">
               <img src={pin}></img>
               <input
                 id="file-upload"
@@ -210,6 +201,15 @@ const Message = () => {
                 ref={fileRef}
               ></input>
             </label>
+                <button
+                  className="button-m form-control mt-2"
+                  type="button"
+                  onClick={handleSubmit}
+                >
+                  Send
+                </button>
+              </div>
+              
             </Form>
 
             {/* An input field for uploading a file */}
