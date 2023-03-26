@@ -1,13 +1,15 @@
 //React Imports
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 //Firebase Imports
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../firebase";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { db, auth } from "../../firebase";
 
 //Styling Imports
 import "../../styles/profile.css";
+import "../../styles/network.css";
+import "../../styles/JobPostings.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
@@ -19,6 +21,8 @@ import Form from "react-bootstrap/Form";
 import Feed from "../UserFeedPage/Feed"
 
 function GroupPage() {
+
+  const navigate = useNavigate();
   const { id } = useParams();
   const [group, setGroup] = useState(null);
 
@@ -46,6 +50,21 @@ function GroupPage() {
     return <div>Loading...</div>;
   }
 
+  //This removes the user from the memberUIDs array of the group, essentially leaving the group.
+  const leaveGroup = async () => {
+    const groupRef = doc(db, "groups", id);
+    const groupDoc = await getDoc(groupRef);
+  
+    const updatedGroup = { 
+      ...groupDoc.data(),
+      memberUIDs: groupDoc.data().memberUIDs.filter(uid => uid !== auth.currentUser.uid)
+    };
+  
+    await updateDoc(groupRef, updatedGroup);
+
+    navigate('/GroupNetwork');
+  }
+
   //Here we display the information relevant to the group
   return (
     <div className="contain">
@@ -64,6 +83,7 @@ function GroupPage() {
             <h4>{group.industry}</h4>
             <h5>{group.location}</h5>
             <p>{group.description}</p>
+            <Button variant="primary" size="lg" block className="w-100" style={{backgroundColor:'#27746a'}} onClick={leaveGroup}>Leave Group</Button>
           </Card>
 
           <Card className="profilecard">
