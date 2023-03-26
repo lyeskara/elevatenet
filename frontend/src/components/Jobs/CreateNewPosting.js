@@ -264,16 +264,16 @@ function CreateNewPosting() {
                             <Row>
                                 <Col className="d-flex justify-content-center">
                                 <>
-      <Button
-        variant="outline-secondary"
-        size="lg"
-        block
-        className="w-100"
-        onClick={handleCancel}
-      >
-        Cancel
-      </Button>
-    </>
+                                    <Button
+                                        variant="outline-secondary"
+                                        size="lg"
+                                        block
+                                        className="w-100"
+                                        onClick={handleCancel}
+                                    >
+                                        Cancel
+                                    </Button>
+                                    </>
                                 </Col>
                                 <Col className="d-flex justify-content-center">
                                     <Button type="submit" variant="primary" size="lg" block className="w-100" style={{backgroundColor:'#27746a'}} >

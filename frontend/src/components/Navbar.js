@@ -52,7 +52,7 @@ function NavbarFun() {
 							{userr && (
 								<>
 									<Nav>
-										<Link to="/">
+										<Link to="/Feed">
 											<img src={home} alt="home" />
 										</Link>
 										<Link to="/Profile">
