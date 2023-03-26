@@ -21,6 +21,8 @@ import GroupNetwork from "./components/Network/GroupNetwork";
 import Event from "./components/Network/Event";
 import ApplyToJobs from "./components/Jobs/ApplyNow";
 import JobPageForSeekers from "./components/Jobs/JobPageForSeekers"
+import Advertisements from "./components/Jobs/Advertisements";
+import CreateAdvertisement from "./components/Jobs/CreateAdvertisement";
 
 import RequestsPage from "./components/connection/RequestsPage";
 import ConnectionPage from "./components/connection/ConnectionPage";
@@ -163,6 +165,22 @@ function App() {
           element={
             <Protection>
               <JobPageForSeekers />
+            </Protection>
+          }
+        />
+        <Route
+          path="/Advertisements"
+          element={
+            <Protection>
+              <Advertisements />
+            </Protection>
+          }
+        />
+        <Route
+          path="/CreateAdvertisement"
+          element={
+            <Protection>
+              <CreateAdvertisement/>
             </Protection>
           }
         />
