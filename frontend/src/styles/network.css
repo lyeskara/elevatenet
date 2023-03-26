@@ -209,3 +209,18 @@ h5.time{
   border-color: #27746a;
 
 }
+
+.modal_button,
+.modal_button:hover {
+  background-color: white;
+  color: #27746a;
+  border-color: #27746a;
+
+}
+.modal_button:active,
+.modal_button:focus {
+  background-color: white;
+  color: #27746a;
+  border-color: #27746a;
+
+}
