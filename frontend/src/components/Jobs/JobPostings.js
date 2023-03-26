@@ -104,9 +104,10 @@ return (
 			</Col>
 
 			<Col xs={12} sm={12}  lg={8} >
+				<h2 style={{ color: '#555555', marginTop: '32px' }}>Your Job Postings</h2>
 				{/* This button creates a new job posting */}
 				<div>
-					<Button variant="primary" size="lg" block className="w-100" style={{backgroundColor:'#27746a', marginTop: '32px' }} onClick={handleClick} >
+					<Button variant="primary" size="lg" block className="w-100" style={{backgroundColor:'#27746a'}} onClick={handleClick} >
 						Create a New Job Posting
 					</Button>
 				</div>
