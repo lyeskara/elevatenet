@@ -12,14 +12,20 @@ import "../../styles/network.css";
 import "../../styles/JobPostings.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
 
 //Feed Import
 import Feed from "../UserFeedPage/Feed"
 
+
+/* This handles and renders the Group page of a selected group from the GroupNetwork page.
+   * This page has info regarding the group.
+   * You can leave the group from this page as well.
+   *
+   * @param {id} The ID of the group stored in the Firestore.
+   * @returns {page with attributes of the group}
+   */
 function GroupPage() {
 
   const navigate = useNavigate();
@@ -87,8 +93,9 @@ function GroupPage() {
           </Card>
 
           <Card className="profilecard">
-            <h2> Events </h2>
+            <h2> Active Members </h2>
             <hr></hr>
+            <h4> WIP </h4>
           </Card>
 
         </Col>
