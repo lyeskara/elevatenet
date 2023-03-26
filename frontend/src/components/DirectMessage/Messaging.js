@@ -10,6 +10,7 @@ import {
 import { auth } from "../../firebase"; // Importing Firebase authentication
 import { db } from '../../firebase'; // Importing Firebase Firestore database
 import './Messaging.css'; // Importing styling
+import { getStorage, ref, getDownloadURL,uploadBytes } from "firebase/storage";
 
 const Message = () => {
   const currentUser = auth.currentUser; // Get the current authenticated user
@@ -69,26 +70,37 @@ const Message = () => {
     }
   }, [currentUser.uid, recipientId]); // Re-run the effect when either the current user ID or recipient ID changes
 
-  const handleSubmit = (e) => { // Event handler for message form submission
+  const storage = getStorage(); // Get Firebase Storage instance
+
+  const handleSubmit = async (e) => { // Event handler for message form submission
     e.preventDefault();
+  
+    // Upload file to Firebase Storage if a file was selected
+    let fileUrl = null;
+    if (file) {
+      const storageRef = ref(storage, `messages/${file.name}`);
+      await uploadBytes(storageRef, file);
+      fileUrl = await getDownloadURL(storageRef);
+    }
+  
     const data = {
       text: messageRef.current.value,
-      file: file,
-      createdAt: serverTimestamp(), // Firestore server timestamp for message creation time
-      sender: currentUser.uid, // ID of the message sender
+      fileUrl: fileUrl, // Add the file's download URL to the message data
+      createdAt: serverTimestamp(),
+      sender: currentUser.uid,
     };
     try {
-      // Generate a unique conversation ID based on the IDs of the two users
       const conversationId = [currentUser.uid, recipientId].sort().join('-');
-      const conversationRef = collection(messagesRef, conversationId, 'conversation');
-      addDoc(conversationRef, data); // Add the message to Firestore
-      setMessages([...messages, data]); // Update the local state with the new message
-      setMessage(''); // Clear the message input
-      setFile(null); // Clear the selected file
+      const conversationRef = collection(db, 'messages', conversationId, 'conversation');
+      await addDoc(conversationRef, data);
+      setMessages([...messages, data]);
+      setMessage('');
+      setFile(null);
     } catch (e) {
       console.log(e);
     }
   };
+  
 
 // This function is called whenever the input field for the message changes
 const handleMessageChange = (e) => {
