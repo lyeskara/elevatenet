@@ -74,15 +74,8 @@ function GroupPage() {
         </Col>
 
         {/* Main section where the group feed will be mapped*/}
-        <Col xs={12} md={7}>
-
-          <Card className="card">
+        <Col style={{margin:'0% -15% 0% -20%'}}>
             <Feed/>
-          </Card>
-
-          <Card>
-            <h2> The user posts will be here.</h2>
-          </Card>
         </Col>
 
       </Row>
