@@ -67,13 +67,6 @@ function GroupNetwork() {
     fetchData();
   }, []);
 
-
-  //Send Request Button Behavior
-  const [buttonTexts, setButtonTexts] = useState(
-    myGroupCards.map(() => "Join Group")
-  );
-
-
   //Here, we append the user into the group's firestore memberUIDs array.
   const handleRequest = async (index) => {
 
@@ -85,14 +78,7 @@ function GroupNetwork() {
     const updatedGroup = { ...group, memberUIDs: [...group.memberUIDs, auth.currentUser.uid] };
     await updateDoc(groupRef, updatedGroup);
 
-    setButtonTexts((prevButtonTexts) => {
-
-      //Update Text on Button
-      const newButtonTexts = [...prevButtonTexts];
-      newButtonTexts[index] = "Group Joined!";
-
-        return newButtonTexts;
-    });
+    window.location.reload();
     
   };
 
@@ -174,7 +160,7 @@ function GroupNetwork() {
                       </Col>
                       <Col className="center-col" md={2}>
                         <Button className="create_Group_Button" onClick={() => handleRequest(index)}>
-                        {buttonTexts[index] || "Join Group" }
+                        Join Group
                         </Button>
                       </Col>
                     </Row>
