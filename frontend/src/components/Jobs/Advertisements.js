@@ -19,7 +19,7 @@ function Advertisements() {
 
 	// Function to redirect to the "CreateNewPosting" page
 	const handleClick = () => {
-		window.location.href = '/CreateNewPosting';
+		window.location.href = '/CreateAdvertisement';
 	};
 
 	// Function to redirect to the "JobPostings" page
@@ -85,6 +85,7 @@ function Advertisements() {
 
     return (
         <Container className="container d-flex justify-content-center mx-auto">
+            <h1>Ad</h1>
             {/* JOB MENU BLOCK ON THE LEFT TO NAVIGATE BETWEEN JOB POSTINGS AND ADVERTS */}
             <Row className="gap-6 d-flex justify-content-center" style={{minWidth: "80%"}}>
                 <Col xs={12} sm={8}  lg={4} style={{minWidth: "30%"}}>
@@ -93,9 +94,9 @@ function Advertisements() {
                         <h2> Jobs </h2>
                         <hr></hr>
                         {/* When the user clicks the "Job Postings" text, it calls handleClickJobPostings */}
-                        <h5 onClick={handleClickJobPostings}> Job Postings </h5>
+                        <h4 style={{ color: '#888888' }} onClick={handleClickJobPostings}> Job Postings </h4>
                         {/* Advertisements */}
-                        <h5> Advertisements </h5>
+                        <h4 style={{ color: '#27746a' }}>Advertisements</h4>
                         <br></br>
                     </Card>
                 </Col>
@@ -104,7 +105,7 @@ function Advertisements() {
                     {/* This button creates a new job posting */}
                     <div>
                         <Button variant="primary" size="lg" block className="w-100" style={{backgroundColor:'#27746a', marginTop: '32px' }} onClick={handleClick} >
-                            Create a New Job Posting
+                            Create a New Advertisement
                         </Button>
                     </div>
                     {/* CARD FOR JOB POSTINGS */}
