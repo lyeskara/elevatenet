@@ -12,6 +12,7 @@ import { db } from "../../firebase"; // Importing Firebase Firestore database
 import "./Messaging.css"; // Importing styling
 import { Container, Form, Button, FormGroup } from "react-bootstrap";
 import pin from ".././../images/paperclip.png";
+import defpic from ".././../images/test.gif";
 
 const Message = () => {
   const currentUser = auth.currentUser; // Get the current authenticated user
@@ -120,6 +121,7 @@ const Message = () => {
         {/* The chat list section */}
         <div className="chat-list-m">
           <h2>Chat List</h2>
+          <div style={{ overflowY: "scroll", height: "500px" }}>
           {/* Maps through all the users in the 'users_information' array, 
               except the current user, and renders a 'user-tab' div for each */}
           {users_information.map(
@@ -141,20 +143,22 @@ const Message = () => {
                     textAlign: msg.sender === currentUser.uid ? 'right' : 'left',
                   }}
                   */
-          )}
+          )}</div>
         </div>
 
-        {/* A divider between the chat list and messages section */}
+        {/* A divider between the chat list and messages section*/} 
         <div className="divider-m"></div>
 
         {/* The messages section */}
-        <div className="messages-m">
-          <div className="text-m">
-            <h2>Messages</h2>
+        <div className="text-m">
+            <div className="containRequest">
+          <img src={defpic} className="defpic-m"></img>
+          <h2>{recipientId ? users_information.find(user => user.id === recipientId).firstName + " " + users_information.find(user => user.id === recipientId).lastName : "Message"}</h2>
+            </div>
             {/* Renders all the messages in the 'messages' array, with the sender's 
                 messages having a green background and the receiver's messages having 
                 a grey background */}
-            <div style={{ overflowY: "scroll", height: "300px" }}>
+            <div style={{ overflowY: "scroll", height: "400px" }}>
               {messages.map((msg, index) => (
                 <div
                   key={index}
@@ -174,8 +178,8 @@ const Message = () => {
 
             {/* A form for sending a message */}
             <Form onSubmit={handleSubmit}>
-             
-              <div className="textarea-message form-group">
+           
+            <div className="textarea-message form-group">  
                 <textarea
                   type="text"
                   className="textarea-message"
@@ -190,17 +194,14 @@ const Message = () => {
 
               <div>
                 <button
-                  className="button-m form-group"
+                  className="button-m form-control mt-2"
                   type="button"
                   onClick={handleSubmit}
                 >
                   Send
                 </button>
               </div>
-            </Form>
-
-            {/* An input field for uploading a file */}
-            <label for="file-upload">
+              <label for="file-upload">
               <img src={pin}></img>
               <input
                 id="file-upload"
@@ -209,9 +210,13 @@ const Message = () => {
                 ref={fileRef}
               ></input>
             </label>
+            </Form>
+
+            {/* An input field for uploading a file */}
+           
           </div>
-        </div>
-      </div></Container>
+          </div>
+      </Container>
     </>
   );
 };

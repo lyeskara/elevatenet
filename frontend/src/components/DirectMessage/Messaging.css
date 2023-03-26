@@ -2,79 +2,66 @@
   display: flex;
   flex-direction: row;
   background-color: white;
-  
-  
-  border-radius: 20px;
-  padding: 30px;
+  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+
   margin-top: 50px;
-  margin-left: 5px;
-  margin-right: -20px;
-  margin-bottom:50px;
-  padding-bottom: 60px;
-  padding-right: 30px;
+  margin-bottom: 5%;
+  padding-top: 1%;
+  padding-left: 2%;
+  padding-bottom: 2%;
   
 }
 
 .chat-list-m {
-  flex: 1;
+  width: 200px;
   background-color: white;
   font-size: 20px;
-  padding: 30px;
-  margin-right: 20px;
-  /* add any other styles you need for the chat list */
-  overflow-y: scroll; /* added this for scrolling */
-  height: calc(100vh - 260px); /* added this for scrolling */
+  
 }
 
-.text-m {
- 
- /*overflow-y: scroll; added this for scrolling */
-  /*height: calc(100vh - 310px);  added this for scrolling */
-}
 
 
 .text-m p {
   border: 1px solid rgb(255, 255, 255);
   border-radius: 20px;
   color: white;
-  background-color: #27746A; /* Green */
+  background-color: #27746a; /* Green */
   padding: 20px;
   margin: 20px;
   max-width: 40%;
-  
 }
 
 .button-m {
-  background-color: #27746A; /* Green */
-  
+  background-color: #27746a; /* Green */
+  border-radius: 6px;
 
+  color: white;
   bottom: 0px;
-  right: 3px;
 
   padding: 10px 20px;
-  border-radius: 10px;
-  
+ 
+  display: block;
+  width: 100%;
 
 }
 
+
 .divider-m {
-  margin: 1px 100px;
+  margin: -1px 10px;
   border-right: 1px solid rgb(0, 0, 0);
-  
 }
 
 .text-m input[type="text"] {
   width: 100%;
-  
- 
+
   font-size: 16px;
 
   border-radius: 5px;
   text-align: left;
   padding-left: 10px;
-  background-color: #F3F3F3;
+  background-color: #f3f3f3;
   border: 1px solid rgb(255, 255, 255);
-  
 }
 
 .text-m form {
@@ -82,27 +69,18 @@
   align-items: center;
   border-top: 1px solid #000000;
   padding-top: 10px;
-  position: relative; /* add this */
 }
-
-
-
-
 
 .button-m button[type="button"] {
   height: 50px;
   padding: 10px;
-  
+
   font-size: 16px;
-  background-color: #27746A;
+  background-color: #27746a;
   color: white;
   border: none;
   border-radius: 5px;
-
 }
-
-
-
 
 /* Added tabs to chat-list with the code below */
 
@@ -132,12 +110,14 @@
   font-size: 14px;
   color: #777;
 }
-
+/*
 .message-m {
   margin-bottom: -30px;
   border-radius: 5px;
+  width:100%;
+  flex-grow: 1;
 }
-
+*/
 .sent-m {
   display: flex;
   flex-direction: column;
@@ -153,16 +133,32 @@
   align-self: flex-start;
 }
 
-.received-m p{
-  background-color: #ACACAC;
+.received-m p {
+  background-color: #acacac;
 }
 
-.textarea-message{
+.textarea-message {
   width: 100%;
   height: 50%;
   display: flex;
+  background-color: #F3F3F3;
+  border: none;
+  display: block;
 }
 
 input[type="file"] {
   display: none;
+}
+
+.textarea-m{
+  background-color: #F3F3F3;
+  border: none;
+  width: 100%;
+}
+
+.defpic-m{
+  border-radius: 149.074px;
+  width: 5%;
+  height: 5%;
+  margin-left: 5%;
 }
