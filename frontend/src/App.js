@@ -22,6 +22,7 @@ import Event from "./components/Network/Event";
 import ApplyToJobs from "./components/Jobs/ApplyNow";
 import JobPageForSeekers from "./components/Jobs/JobPageForSeekers"
 import Advertisements from "./components/Jobs/Advertisements";
+import CreateAdvertisements from "./components/Jobs/CreateAdvertisement";
 
 import RequestsPage from "./components/connection/RequestsPage";
 import ConnectionPage from "./components/connection/ConnectionPage";
