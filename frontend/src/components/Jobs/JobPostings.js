@@ -26,6 +26,9 @@ function JobPostings() {
 	const handleClickJobPostings = () => {
 		window.location.href = '/JobPostings';
 	};
+	const handleClickAdvertisements = () => {
+		window.location.href = '/Advertisements';
+	};
 
 	// Function to delete a job posting from the database
 	const handleDelete = async (id) => {
@@ -93,9 +96,9 @@ return (
 					<h2> Jobs </h2>
 					<hr></hr>
 					{/* When the user clicks the "Job Postings" text, it calls handleClickJobPostings */}
-					<h5 onClick={handleClickJobPostings}> Job Postings </h5>
+					<h4 onClick={handleClickJobPostings} style={{ color: '#27746a' }}> Job Postings </h4>
 					{/* Advertisements */}
-					<h5> Advertisements </h5>
+					<h4 onClick={handleClickAdvertisements} style={{ color: '#888888' }}> Advertisements </h4>
 					<br></br>
 				</Card>
 			</Col>
