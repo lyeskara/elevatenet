@@ -44,18 +44,6 @@ const Message = () => {
     };
   }, [setUsers]);
   
-  // useEffect(() => { // Effect hook for fetching users' information from Firestore
-  //   const unsubscribe = onSnapshot(collection(db, 'users_information'), (snapshot) => {
-  //     const usersArray = [];
-  //     snapshot.forEach((doc) => {
-  //       usersArray.push({ id: doc.id, ...doc.data() });
-  //     });
-  //     setUsers(usersArray);
-  //   });
-  //   return unsubscribe; // Unsubscribe from the snapshot listener when the component unmounts
-  // }, []);
-
-
   useEffect(() => {
     // Effect hook for fetching messages from Firestore
     const senderId = currentUser.uid;
@@ -72,13 +60,19 @@ const Message = () => {
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const messagesArray = [];
         querySnapshot.forEach((doc) => {
-          messagesArray.push(doc.data());
+          const messageData = doc.data();
+          if (messageData.fileUrl) {
+            // If a file URL exists, add an anchor element with a download link to the message text
+            messageData.text += ` (Download ${messageData.fileUrl})`;
+          }
+          messagesArray.push(messageData);
         });
         setMessages(messagesArray);
       });
       return unsubscribe; // Unsubscribe from the snapshot listener when the component unmounts
     }
   }, [currentUser.uid, recipientId]); // Re-run the effect when either the current user ID or recipient ID changes
+  
 
   const storage = getStorage(); // Get Firebase Storage instance
 
@@ -95,10 +89,16 @@ const Message = () => {
   
     const data = {
       text: messageRef.current.value,
-      fileUrl: fileUrl, // Add the file's download URL to the message data
       createdAt: serverTimestamp(),
       sender: currentUser.uid,
     };
+    if (file) {
+      // If a file was uploaded, add the file name and URL to the message data
+      const storageRef = ref(storage, `messages/${file.name}`);
+      await uploadBytes(storageRef, file);
+      data.fileName = file.name;
+      data.fileUrl = await getDownloadURL(storageRef);
+    }
     try {
       const conversationId = [currentUser.uid, recipientId].sort().join('-');
       const conversationRef = collection(db, 'messages', conversationId, 'conversation');
@@ -109,6 +109,7 @@ const Message = () => {
     } catch (e) {
       console.log(e);
     }
+    
   };
   
 
@@ -123,12 +124,6 @@ const Message = () => {
       handleSubmit(e);
     }
   }
-
-  // const handlePersonClick = (e) => {
-  //   e.preventDefault();
-  //   const recipientId = e.target.getAttribute('data-recipient-id');
-  //   setRecipientId(recipientId);
-  // };
 
   return (
     <>
@@ -186,9 +181,9 @@ const Message = () => {
                 >
                   <p>{msg.text}</p>
                   {msg.file && (
-                    <a href={msg.file.url} target="_blank" rel="noreferrer">
-                      {msg.file.name}
-                    </a>
+                    <a href={message.fileUrl} download={message.fileName}>
+                       <img src={pin} alt="attachment" />
+                     </a>
                   )}
                 </div>
               ))}
