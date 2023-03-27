@@ -1,10 +1,10 @@
 //React imports
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 
 //Firebase imports
-import {collection, getDocs, where, query} from "firebase/firestore";
+import {collection, getDocs, where, query, getFirestore, updateDoc, arrayUnion, doc} from "firebase/firestore";
 import {db, auth} from "../../firebase";
 
 
@@ -19,6 +19,12 @@ import "../../styles/network.css";
 import "../../styles/JobPostings.css";
 import "../../styles/profile.css";
 
+
+/**
+* Renders the Group Networking page where all existing groups can be seen.
+*
+* @return { Object } The existing groups within the database are displayed and interactable.
+*/
 function GroupNetwork() {
   
   //Redirect to the Create Group page
@@ -29,8 +35,8 @@ function GroupNetwork() {
   //Returning Card of group
   const [myGroupCards, setMyGroupCards] = useState([]);
   const [otherGroupCards, setOtherGroupCards] = useState([]);
-  
-  //We then populate the arrays with the relevant group data
+
+  //We then populate the myGroups and otherGroups arrays with the relevant group data
   useEffect(() => {
     const fetchData = async () => {
 
@@ -52,26 +58,20 @@ function GroupNetwork() {
     fetchData();
   }, []);
 
+  //Here, we append the user into the group's firestore memberUIDs array.
+  const handleRequest = async (index) => {
 
-  //Send Request Button Behavior
-  const [buttonTexts, setButtonTexts] = useState(
-    myGroupCards.map(() => "Send Join Request")
-  );
+    //We target the group being joined
+    const group = otherGroupCards[index];
+    const groupRef = doc(db, "groups", group.id);
 
-  
-  const handleRequest = (index) => {
-    setButtonTexts((prevButtonTexts) => {
+    //And append the current user's ID into the memberUIDs array
+    const updatedGroup = { ...group, memberUIDs: [...group.memberUIDs, auth.currentUser.uid] };
+    await updateDoc(groupRef, updatedGroup);
 
-      //Update Text on Button
-      const newButtonTexts = [...prevButtonTexts];
-      newButtonTexts[index] = "Request Sent!";
-
-      //Could probably add another effect here
-
-      return newButtonTexts;
-    });
+    window.location.reload();
+    
   };
-
 
   return (
     <>
@@ -119,7 +119,9 @@ function GroupNetwork() {
                         <p> {groupInfos.description}</p>
                           </Col>
                           <Col className="center-col" md={2}>
-                            <Button className="create_Group_Button" >View Group</Button>
+                            <Link to={`/group/${groupInfos.id}`}>
+                              <Button className="create_Group_Button" >View Group</Button>
+                            </Link>
                           </Col>
                         </Row>
                       </Card>
@@ -149,7 +151,7 @@ function GroupNetwork() {
                       </Col>
                       <Col className="center-col" md={2}>
                         <Button className="create_Group_Button" onClick={() => handleRequest(index)}>
-                        {buttonTexts[index] || "Send Join Request" }
+                        Join Group
                         </Button>
                       </Col>
                     </Row>

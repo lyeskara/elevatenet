@@ -75,6 +75,7 @@ function NavbarFun() {
 										</Link>
 									</Nav>
 									<Nav>
+
 										<button onClick={handleLogout} className="logout_button">
 											Sign Out
 										</button>
