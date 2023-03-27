@@ -30,7 +30,7 @@ function Advertisements() {
 	// Function to delete a job posting from the database
 	const handleDelete = async (id) => {
 		try {
-			await deleteDoc(doc(db, "advertisement", id));
+			await deleteDoc(doc(db, "posting", id));
 			window.location.reload();
 		} catch (error) {
 			console.error("Error deleting document: ", error);
@@ -49,7 +49,7 @@ function Advertisements() {
 		const skills = skillsElement.value.split(',');
 
 		// Update the job posting with the new data
-		await updateDoc(doc(db, "advertisement", id), {
+		await updateDoc(doc(db, "posting", id), {
 			job_title: jobTitle,
 			company: company,
 			description: description,
@@ -70,7 +70,7 @@ function Advertisements() {
 			if (user) {
 				const email = user.email;
 				// Query the database to get job postings created by the user
-				const q = query(collection(db, "advertisement"), where("created_by", "==", email));
+				const q = query(collection(db, "posting"), where("created_by", "==", email), where("advertise", "==", "on"||true));
 				const postingData = await getDocs(q);
 				// Set posts state with the job postings data and show it
 				setPosts(postingData.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
