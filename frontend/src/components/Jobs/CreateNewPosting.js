@@ -225,7 +225,7 @@ function CreateNewPosting() {
                                             padding: '0.5rem', 
                                             border: '1px solid #ccc', 
                                             borderRadius: '0.25rem',
-                                            backgroundColor: postingData.resume_required ? '#007bff' : '#fff', // change background color when checked
+                                            backgroundColor: postingData.resume_required ? '#27746a' : '#fff', // change background color when checked
                                             color: postingData.resume_required ? '#fff' : '#333' // change text color when checked
                                         }}
                                         onClick={() => setPostingData({ ...postingData, resume_required: !postingData.resume_required })} // toggle checkbox when clicked
@@ -252,7 +252,7 @@ function CreateNewPosting() {
                                             padding: '0.5rem', 
                                             border: '1px solid #ccc', 
                                             borderRadius: '0.25rem',
-                                            backgroundColor: postingData.cover_letter_required ? '#007bff' : '#fff', // change background color when checked
+                                            backgroundColor: postingData.cover_letter_required ? '#27746a' : '#fff', // change background color when checked
                                             color: postingData.cover_letter_required ? '#fff' : '#333' // change text color when checked
                                         }}
                                         onClick={() => setPostingData({ ...postingData, cover_letter_required: !postingData.cover_letter_required })} // toggle checkbox when clicked
@@ -314,7 +314,7 @@ function CreateNewPosting() {
                                             padding: '0.5rem', 
                                             border: '1px solid #ccc', 
                                             borderRadius: '0.25rem',
-                                            backgroundColor: postingData.advertise ? '#007bff' : '#fff', // change background color when checked
+                                            backgroundColor: postingData.advertise ? '#27746a' : '#fff', // change background color when checked
                                             color: postingData.advertise ? '#fff' : '#333' // change text color when checked
                                         }}
                                         onClick={() => setPostingData({ ...postingData, advertise: !postingData.advertise })} // toggle checkbox when clicked

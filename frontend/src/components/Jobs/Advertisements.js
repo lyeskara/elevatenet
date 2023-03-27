@@ -121,17 +121,17 @@ function Advertisements() {
                                         <div className="col-sm-8">
                                             <h4>{data.job_title}</h4>
                                         </div>
-                                        {/* Edit and Delete buttons */}
-                                        <div className="col-sm-4 d-flex justify-content-end align-items-center">
+                                        {/* Edit and Delete buttons COMMENTED FOR NOW BECAUSE NOT NEEDED FOR ADVERTISEMENTS*/}
+                                        {/* <div className="col-sm-4 d-flex justify-content-end align-items-center"> */}
                                             {/* When the user clicks the "Edit" button, it sets the current job and shows the modal */}
-                                            <Button variant="primary" className="btn-sm" style={{backgroundColor:'#27746a'}} onClick={() => {setCurrentJob(data); setShowModal(true)}}>
+                                            {/* <Button variant="primary" className="btn-sm" style={{backgroundColor:'#27746a'}} onClick={() => {setCurrentJob(data); setShowModal(true)}}>
                                                 Edit
-                                            </Button>
+                                            </Button> */}
                                             {/* When the user clicks the "Delete" button, it calls handleDelete */}
-                                            <Button variant="outline-danger" className="btn-sm" style={{backgroundColor:'white', color:'#ff7a7a', border:'2px solid #ff7a7a'}} onClick={() => handleDelete(data.id)}>
+                                            {/* <Button variant="outline-danger" className="btn-sm" style={{backgroundColor:'white', color:'#ff7a7a', border:'2px solid #ff7a7a'}} onClick={() => handleDelete(data.id)}>
                                                 Delete
                                             </Button>
-                                        </div>
+                                        </div> */}
                                     </div>
                                     <hr/>
                                     {/* The company and description */}
