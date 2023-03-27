@@ -9,7 +9,6 @@ import {
 } from "firebase/firestore"; // Importing Firestore functions
 import { auth } from "../../firebase"; // Importing Firebase authentication
 import { db } from '../../firebase'; // Importing Firebase Firestore database
-import './Messaging.css'; // Importing styling
 import { getStorage, ref, getDownloadURL,uploadBytes } from "firebase/storage";
 import "../../styles/Messaging.css"; // Importing styling
 import { Container, Form, Button, FormGroup } from "react-bootstrap";
