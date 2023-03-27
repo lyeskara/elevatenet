@@ -62,12 +62,19 @@ const Message = () => {
         querySnapshot.forEach((doc) => {
           const messageData = doc.data();
           if (messageData.fileUrl) {
-            // If a file URL exists, add an anchor element with a download link to the message text
-            messageData.text += ` (Download ${messageData.fileUrl})`;
+            
+            // If a file URL exists, include the file URL and name in the message object
+            messageData.file = {
+              url: messageData.fileUrl,
+              name: messageData.fileName
+            };
+            // Update the message text to include a download link for the file
+            messageData.text += ` (Download ${messageData.name})`;
           }
           messagesArray.push(messageData);
         });
         setMessages(messagesArray);
+        
       });
       return unsubscribe; // Unsubscribe from the snapshot listener when the component unmounts
     }
@@ -179,12 +186,14 @@ const Message = () => {
                     msg.sender === currentUser.uid ? "sent-m" : "received-m"
                   }`}
                 >
-                  <p>{msg.text}</p>
+                  <p>{msg.text}
                   {msg.file && (
-                    <a href={message.fileUrl} download={message.fileName}>
+                    <a href={msg.fileUrl} download={msg.fileName} target="_blank">
                        <img src={pin} alt="attachment" />
-                     </a>
+                       <span>{msg.fileName}</span>
+                    </a>
                   )}
+                  </p>
                 </div>
               ))}
             </div>
