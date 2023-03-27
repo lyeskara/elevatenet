@@ -33,6 +33,7 @@ function CreateNewPosting() {
         deadline: '',
         resume_required: false,
         cover_letter_required: false,
+        advertise: false,
         skills: [],
     })
     //update with the handleCancel() method 
@@ -71,11 +72,12 @@ function CreateNewPosting() {
                 job_title: postingData.job_title,
                 company: postingData.company,
                 description: postingData.description,
-                apply_here: postingData.description,
+                apply_here: postingData.apply_here,
                 deadline: postingData.deadline,
                 created_by: user.email,
                 resume_required: postingData.resume_required,
                 cover_letter_required: postingData.cover_letter_required,
+                advertise:postingData.advertise,
                 skills: postingData.skills,
 
                 // full_time: postingData.full_time,                      no going to be used for this sprint
@@ -89,6 +91,7 @@ function CreateNewPosting() {
                 deadline: '',
                 resume_required: false,
                 cover_letter_required: false,
+                advertise: false,
                 skills: '',
                 // full_time: false
             });
@@ -201,7 +204,7 @@ function CreateNewPosting() {
                             {/* RESUME OR COVER LETTER REQUIRED */}
                             <div className="form-group mb-3">
                                 <label htmlFor="formFile" className="form-label">
-                                    <h6>Forms Required</h6>
+                                    <h6>Documents Required</h6>
                                 </label>
                                 <div className="form-check">
                                     <input 
@@ -211,8 +214,22 @@ function CreateNewPosting() {
                                         name="resume_required"
                                         checked={postingData.resume_required}
                                         onChange={handleInputChange}
+                                        style={{ display: 'none' }} // hide the checkbox
                                     />
-                                    <label className="form-check-label" htmlFor="resume_required">
+                                    <label 
+                                        className="form-check-label" 
+                                        htmlFor="resume_required"
+                                        style={{ 
+                                            display: 'inline-block', 
+                                            cursor: 'pointer', 
+                                            padding: '0.5rem', 
+                                            border: '1px solid #ccc', 
+                                            borderRadius: '0.25rem',
+                                            backgroundColor: postingData.resume_required ? '#27746a' : '#fff', // change background color when checked
+                                            color: postingData.resume_required ? '#fff' : '#333' // change text color when checked
+                                        }}
+                                        onClick={() => setPostingData({ ...postingData, resume_required: !postingData.resume_required })} // toggle checkbox when clicked
+                                    >
                                         Resume
                                     </label>
                                 </div>
@@ -222,11 +239,25 @@ function CreateNewPosting() {
                                         type="checkbox" 
                                         id="cover_letter_required"
                                         name="cover_letter_required"
-                                        checked={postingData.cover_letter_required}
+                                        checked={postingData.advertise}
                                         onChange={handleInputChange}
+                                        style={{ display: 'none' }} // hide the checkbox
                                     />
-                                    <label className="form-check-label" htmlFor="cover_letter_required">
-                                        Cover Letter Required
+                                    <label 
+                                        className="form-check-label" 
+                                        htmlFor="cover_letter_required"
+                                        style={{ 
+                                            display: 'inline-block', 
+                                            cursor: 'pointer', 
+                                            padding: '0.5rem', 
+                                            border: '1px solid #ccc', 
+                                            borderRadius: '0.25rem',
+                                            backgroundColor: postingData.cover_letter_required ? '#27746a' : '#fff', // change background color when checked
+                                            color: postingData.cover_letter_required ? '#fff' : '#333' // change text color when checked
+                                        }}
+                                        onClick={() => setPostingData({ ...postingData, cover_letter_required: !postingData.cover_letter_required })} // toggle checkbox when clicked
+                                    >
+                                        Cover Letter
                                     </label>
                                 </div>
                             </div>
@@ -258,7 +289,41 @@ function CreateNewPosting() {
                                 value={postingData.deadline}
                                 style={{backgroundColor: "#F3F3F3"}}
                                 />
-                            </div>  
+                            </div>
+                            {/* CHECKBOX TO KNOW IF POSTING SHOULD BE ADVERTISED   */}
+                            <div className="form-group mb-3">
+                                <label htmlFor="formFile" className="form-label">
+                                    <h6>Advertise to Job Seekers</h6>
+                                </label>
+                                <div className="form-check">
+                                    <input 
+                                        className="form-check-input" 
+                                        type="checkbox" 
+                                        id="advertise"
+                                        name="advertise"
+                                        checked={postingData.advertise}
+                                        onChange={handleInputChange}
+                                        style={{ display: 'none' }} // hide the checkbox
+                                    />
+                                    <label 
+                                        className="form-check-label" 
+                                        htmlFor="advertise"
+                                        style={{ 
+                                            display: 'inline-block', 
+                                            cursor: 'pointer', 
+                                            padding: '0.5rem', 
+                                            border: '1px solid #ccc', 
+                                            borderRadius: '0.25rem',
+                                            backgroundColor: postingData.advertise ? '#27746a' : '#fff', // change background color when checked
+                                            color: postingData.advertise ? '#fff' : '#333' // change text color when checked
+                                        }}
+                                        onClick={() => setPostingData({ ...postingData, advertise: !postingData.advertise })} // toggle checkbox when clicked
+                                    >
+                                        Advertise
+                                    </label>
+                                </div>
+                            </div>
+
 
                             {/* BUTTONS TO CANCEL OR POST THE POSITION */}
                             <Row>
