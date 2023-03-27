@@ -105,11 +105,11 @@ function Advertisements() {
                     <h2 style={{ color: '#555555', marginTop: '32px' }}>Your Advertisements</h2>
 
                     {/* This button creates a new job posting */}
-                    <div>
+                    {/* <div>
                         <Button variant="primary" size="lg" block className="w-100" style={{backgroundColor:'#27746a'}} onClick={handleClick} >
                             Create a New Advertisement
                         </Button>
-                    </div>
+                    </div> */}
                     {/* CARD FOR JOB POSTINGS */}
                     {/* If job postings data is loaded, the map method creates a card for each job posting */}
                     {isLoaded ? (
@@ -149,6 +149,8 @@ function Advertisements() {
                                     {/* RESUME AND COVER LETTER REQUIRED */}
                                     {data.cover_letter_required && <p>Cover Letter Required</p>}
                                     {data.resume_required && <p>Resume Required</p>}
+                                    {/* IF THE POSTING IS ADVERTISED */}
+								    {data.advertise && <p>Currently being Advertised</p>}
     
                                     {/* <p>{data.deadline}</p> */}
                                 </Card>
