@@ -66,8 +66,9 @@ function EditProfile({ user, setUser }) {
 					`profilepics/${auth.currentUser.uid}/profilePic`
 				);
 				const uploadPic = await uploadBytes(storageRef, selectedFile);
-				downloadPicURL = await getDownloadURL(uploadPic.ref);
-				console.log(downloadPicURL);
+				downloadPicURL = await getDownloadURL(uploadPic.ref).then(
+					console.log(downloadPicURL)
+				);
 			}
 			if (selectedResume) {
 				const storageRef = ref(
