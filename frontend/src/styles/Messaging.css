@@ -145,7 +145,7 @@
   margin-right: 1%;
 }
 
-input[type="file"] {
+.file-m {
   display: none;
 }
 

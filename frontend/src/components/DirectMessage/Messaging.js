@@ -9,7 +9,7 @@ import {
 } from "firebase/firestore"; // Importing Firestore functions
 import { auth } from "../../firebase"; // Importing Firebase authentication
 import { db } from "../../firebase"; // Importing Firebase Firestore database
-import "./Messaging.css"; // Importing styling
+import "../../styles/Messaging.css"; // Importing styling
 import { Container, Form, Button, FormGroup } from "react-bootstrap";
 import pin from ".././../images/paperclip.png";
 import defpic from ".././../images/test.gif";
@@ -195,6 +195,7 @@ const Message = () => {
               <div className="containRequest right-side"><label for="file-upload">
               <img src={pin}></img>
               <input
+                className="file-m"
                 id="file-upload"
                 type="file"
                 onChange={handleFileChange}
