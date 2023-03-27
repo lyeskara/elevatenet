@@ -5,6 +5,20 @@
  * after storing the data in Data variable, we will use functional patterns such as map to display the informations stored in the UI
 */
 
+/**
+ * FeedPage component
+ * @hook {string} input - Stores the user input for creating a new post.
+ * @hook {Array} Data - Stores the fetched data from the backend.
+ * @hook {string|null} currentId - Stores the authenticated user's ID or null if the user is not authenticated.
+ *
+ * @function getData - Asynchronous function used to fetch data from the backend.
+ *                     It checks if the user is authenticated, retrieves data from the backend,
+ *                     and stores it in the Data state variable.
+ *
+ * @effect useEffect - React effect that calls the getData function and updates the view
+ *                     accordingly when the currentId, SetData, or postRef values change.
+ */
+
 
 import { useEffect, useState } from 'react';
 import { useNavigate , Link} from 'react-router-dom';
@@ -48,28 +62,15 @@ function Feed() {
       <div className="feed-inputContainer">
         <div className="feed-input">
          
-        <button onClick={() => window.location.href = 'CreatPost'}> 
-         <img src={personicon} alt="person-icon" /> 
-      </button>
+		<img src={personicon} alt="person-icon" />
  
-
-          <form class="create-post">
-            <input value={input} onChange={e => setInput(e.target.value)} type="text" placeholder="Create a post" />
-          </form>
+		<button class="create-post"onClick={() => (window.location.href = "CreatPost")}>
+                    Create a post
+          </button>
         </div>
 
         <div className="feedinputOption">
-          <button>
-            <img src={photo} alt="photo" />
-          </button>
-          <button>
-            <img src={eventicon} alt="eventicon" />
-          </button>
-
-
-          <button>
-            <img src={video} alt="video" />
-          </button>
+          
 
           
         </div>
