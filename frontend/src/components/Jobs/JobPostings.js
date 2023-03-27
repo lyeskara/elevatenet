@@ -150,6 +150,8 @@ return (
 								{/* RESUME AND COVER LETTER REQUIRED */}
 								{data.cover_letter_required && <p>Cover Letter Required</p>}
 								{data.resume_required && <p>Resume Required</p>}
+								{/* IF THE POSTING IS ADVERTISED */}
+								{data.advertise && <p>Currently being Advertised</p>}
 
 								{/* <p>{data.deadline}</p> */}
 							</Card>
