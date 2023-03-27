@@ -10,7 +10,6 @@ import Container from "react-bootstrap/Container";
 import Button from 'react-bootstrap/Button';
 
 
-
 function ApplyNow() {
     const fileInputRef = useRef(null);
 
