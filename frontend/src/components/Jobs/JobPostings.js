@@ -142,7 +142,7 @@ return (
 								{data.skills &&
 									Array.isArray(data.skills) &&
 									data.skills.map((skill) => (
-								<div key={skill}>
+								<div key={skill} style={{ display: "flex"}}>
 									<span className="skills-btn">{skill}</span>
 								</div>
 								))}
