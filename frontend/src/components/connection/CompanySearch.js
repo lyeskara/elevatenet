@@ -1,16 +1,15 @@
 import { useState } from "react";
-import { auth, db } from "../../firebase";
+import { db } from "../../firebase";
 import Search from "./Search";
 
 function CompanySearch() {
   const [searchResults, setSearchResults] = useState([]);
-  const [companyName, setCompanyName] = useState("");
+  const [workExperience, setworkExperience] = useState("");
 
-  const getUsers = async (companyName) => {
+  const getUsers = async (workExperience) => {
     const querySnapshot = await db
-      .collection("user_information")
-      .where("workExperience", "==", "genetec")
-      .where("companyName", "==", companyName)
+      .collection("users_information")
+      .where("workExperience", "==", workExperience)
       .get();
 
     const results = [];
@@ -21,22 +20,17 @@ function CompanySearch() {
   };
 
   const handleSearch = () => {
-    getUsers(companyName);
+    getUsers(workExperience);
   };
 
   return (
     <>
-    
-      <Search companyName={setCompanyName} />
+      <Search workExperience={workExperience} setWorkExperience={setworkExperience} onSearch={handleSearch} />
 
       <div>
-      <h2>Users with Work Experience:{companyName} </h2>
-      {/* <ul>
-        {users.map((user) => (
-          <li key={user}>{user}</li>
-        ))}
-      </ul> */}
-    </div>
+        <h2>Users with Work Experience: {workExperience}</h2>
+      </div>
+
       <div>
         {searchResults.map((result) => (
           <div key={result.id}>
@@ -48,5 +42,6 @@ function CompanySearch() {
     </>
   );
 }
+
 
 export default CompanySearch;
