@@ -83,10 +83,15 @@ const Message = () => {
 
   const storage = getStorage(); // Get Firebase Storage instance
 
-  const handleSubmit = async (e) => { // Event handler for message form submission
+  const handleSubmit = async (e) => {
     e.preventDefault();
   
-    // Upload file to Firebase Storage if a file was selected
+    const message = messageRef.current.value.trim();
+    if (!file && message === '') {
+      // If the message is empty and no file was selected, return without submitting
+      return;
+    }
+  
     let fileUrl = null;
     if (file) {
       const storageRef = ref(storage, `messages/${file.name}`);
@@ -95,17 +100,18 @@ const Message = () => {
     }
   
     const data = {
-      text: messageRef.current.value,
+      text: message,
       createdAt: serverTimestamp(),
       sender: currentUser.uid,
     };
+  
     if (file) {
-      // If a file was uploaded, add the file name and URL to the message data
       const storageRef = ref(storage, `messages/${file.name}`);
       await uploadBytes(storageRef, file);
       data.fileName = file.name;
       data.fileUrl = await getDownloadURL(storageRef);
     }
+  
     try {
       const conversationId = [currentUser.uid, recipientId].sort().join('-');
       const conversationRef = collection(db, 'messages', conversationId, 'conversation');
@@ -116,8 +122,8 @@ const Message = () => {
     } catch (e) {
       console.log(e);
     }
-    
   };
+  
   
 
   // This function is called whenever the input field for the message changes
