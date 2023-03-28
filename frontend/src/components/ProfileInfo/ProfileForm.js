@@ -59,6 +59,9 @@ function ProfileForm() {
 				volunteering: profileData.volunteering,
 				projects: profileData.projects,
 				awards: profileData.awards,
+				profilePicUrl: "",
+				resumeUrl: "",
+				CLUrl: "",
 			});
 			// Clear the form fields
 			setProfileData({

@@ -28,6 +28,7 @@ import SavedJobs from "./components/Jobs/SavedJobs";
 import RequestsPage from "./components/connection/RequestsPage";
 import ConnectionPage from "./components/connection/ConnectionPage";
 import CreateGroup from "./components/Network/CreateGroup";
+import GroupPage from "./components/Network/GroupPage";
 
 import CreateEvent from "./components/Network/CreateEvent";
 
@@ -87,7 +88,14 @@ function App() {
             </Protection>
           }
         ></Route>
-        <Route path="/Messaging" element={<Protection><Messaging/></Protection>}></Route>
+        <Route
+          path="/Messaging"
+          element={
+            <Protection>
+              <Messaging />
+            </Protection>
+          }
+        ></Route>
         <Route
           path="profile/:id"
           element={
@@ -98,6 +106,14 @@ function App() {
         ></Route>
         <Route
           path="/CreatPost"
+          element={
+            <Protection>
+              <CreatPost />
+            </Protection>
+          }
+        />
+        <Route
+          path="/group/CreatPost"
           element={
             <Protection>
               <CreatPost />
@@ -126,6 +142,14 @@ function App() {
           element={
             <Protection>
               <GroupNetwork />
+            </Protection>
+          }
+        />
+        <Route
+          path="/group/:id"
+          element={
+            <Protection>
+              <GroupPage />
             </Protection>
           }
         />

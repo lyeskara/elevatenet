@@ -1,5 +1,5 @@
 /*This page is used for the connections invitation that were received. A user can view the list of network invitation and decide to ignore or accept the request
-*/
+ */
 import { auth, db } from "../../firebase";
 import {
   collection,
@@ -62,20 +62,20 @@ function RequestsPage() {
         });
     });
   }, [Users]);
-//This function will add the connection to the database whenver a user accepts the connection invitation. 
+  //This function will add the connection to the database whenver a user accepts the connection invitation.
   function handleConnect(userId) {
     const connectionRef = collection(db, "connection");
     const authdoc = doc(connectionRef, currentId);
     const acceptedoc = doc(connectionRef, userId);
-    const array = []
+    const array = [];
     getDocs(connectionRef).then((docs) => {
-      docs.docs.forEach(document=>{
-        array.push(document.id)
-      })
-      console.log(array)
+      docs.docs.forEach((document) => {
+        array.push(document.id);
+      });
+      console.log(array);
       const condition = array.includes(authdoc.id);
       const condition2 = array.includes(userId);
-      console.log(condition2)
+      console.log(condition2);
 
       if (condition) {
         const getConnection = getDoc(authdoc).then((document) => {
@@ -118,7 +118,7 @@ function RequestsPage() {
     });
     SetUserData(UserData.filter((element) => element.id !== userId));
   }
-//Function allows the cancellation of an invitation through the button ignore
+  //Function allows the cancellation of an invitation through the button ignore
   function handleCancel(userId) {
     getDoc(doc(dbRef, userId)).then((document) => {
       if (document.exists()) {
@@ -150,7 +150,6 @@ function RequestsPage() {
       });
     });
   }, []);
-
 
   return (
     <>
@@ -184,7 +183,6 @@ function RequestsPage() {
                       <div className="right_button">
                         <div>
                           <Button
-                            
                             className="ignore_button"
                             onClick={() => {
                               handleCancel(user.id);
@@ -196,13 +194,50 @@ function RequestsPage() {
                       </div>
                       <div>
                         <Button
-                          
+                          data-bs-toggle="modal"
+                          data-bs-target="#acceptModal"
                           className="connectButton"
                           onClick={() => handleConnect(user.id)}
                         >
                           Accept
                         </Button>
+
+                        {/*-- Modal --*/}
+                        <div
+                          class="modal fade"
+                          id="acceptModal"
+                          tabindex="-1"
+                          aria-labelledby="acceptModalLabel"
+                          aria-hidden="true"
+                        >
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="acceptModalLabel">
+                                  Connection Added
+                                </h5>
+                                <button
+                                  type="button"
+                                  class="btn-close"
+                                  data-bs-dismiss="modal"
+                                  aria-label="Close"
+                                ></button>
+                              </div>
+                              <div class="modal-body"> You have accepted the invitation. The connection has been added to your network.</div>
+                              <div class="modal-footer">
+                                <button
+                                  type="button"
+                                  class="btn btn-secondary"
+                                  data-bs-dismiss="modal"
+                                >
+                                  Close
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
+
                       <hr></hr>
                     </div>
                   ))}
