@@ -186,14 +186,14 @@ const Message = () => {
                     msg.sender === currentUser.uid ? "sent-m" : "received-m"
                   }`}
                 >
-                  <p>{msg.text}
-                  {msg.file && (
-                    <a href={msg.fileUrl} download={msg.fileName} target="_blank">
-                       
-                       <span>{msg.fileName}</span>
-                    </a>
-                  )}
-                  </p>
+                <p>
+                {msg.text}
+                {msg.file && (
+                  <a href={msg.fileUrl} download={msg.fileName} target="_blank">
+                    <span style={{ textDecoration: 'underline', fontSize: '0.8em', color:"white" }}>{msg.fileName}</span>
+                  </a>
+                )}
+              </p>
                 </div>
               ))}
             </div>
