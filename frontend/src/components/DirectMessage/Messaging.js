@@ -69,7 +69,7 @@ const Message = () => {
               name: messageData.fileName
             };
             // Update the message text to include a download link for the file
-            messageData.text += ` (Download ${messageData.name})`;
+            // messageData.text += `Download`;
           }
           messagesArray.push(messageData);
         });
@@ -189,7 +189,7 @@ const Message = () => {
                   <p>{msg.text}
                   {msg.file && (
                     <a href={msg.fileUrl} download={msg.fileName} target="_blank">
-                       <img src={pin} alt="attachment" />
+                       
                        <span>{msg.fileName}</span>
                     </a>
                   )}
