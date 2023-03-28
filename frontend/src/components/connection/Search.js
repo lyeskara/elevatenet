@@ -25,20 +25,44 @@
    const [url, setUrl] = useState(null);
  
    useEffect(() => {
-     async function getResult() {
-       if (search !== "") {
-         const usersRef = collection(db, "users_information");
-         const q = query(usersRef, where("firstName", "==", search));
-         const querySnapShot = await getDocs(q);
-         SetResult(
-           querySnapShot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-         );
-       } else {
-         SetResult([]);
-       }
-     }
-     getResult();
-   }, [search]);
+    async function getResult() {
+      if (search !== "") {
+        const usersRef = collection(db, "users_information");
+        const workExpQuery = query(usersRef, where("workExperience", "==", search));
+        const firstNameQuery = query(usersRef, where("firstName", "==", search));
+        const [workExpDocs, firstNameDocs] = await Promise.all([
+          getDocs(workExpQuery),
+          getDocs(firstNameQuery),
+        ]);
+        const workExpResults = workExpDocs.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+        const firstNameResults = firstNameDocs.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+        const mergedResults = [...workExpResults, ...firstNameResults];
+        SetResult(mergedResults);
+      } else {
+        SetResult([]);
+      }
+    }
+    getResult();
+  }, [search]);
+  
+  
+  
+
+  //  useEffect(() => {
+  //   async function getResult() {
+  //     if (search !== "") {
+  //       const usersRef = collection(db, "users_information");
+  //       const q = query(usersRef, where("firstName", "==", search));
+  //       const querySnapShot = await getDocs(q);
+  //       SetResult(
+  //         querySnapShot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+  //       );
+  //     } else {
+  //       SetResult([]);
+  //     }
+  //   }
+  //   getResult();
+  // }, [search]);
 
    useEffect(()=>{
     if(url){
