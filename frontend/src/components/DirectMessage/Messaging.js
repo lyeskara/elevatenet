@@ -128,6 +128,7 @@ const Message = () => {
             (user) =>
               user.id !== currentUser.uid && (
                 <div
+                tabindex="0"
                   key={user.id}
                   className="user-tab-m"
                   onClick={() => setRecipientId(user.id)}

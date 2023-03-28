@@ -21,6 +21,15 @@ import "../../styles/GroupCreation.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import grouplogo from ".././../images/group.png";
 
+
+
+
+/* A function that initializes and creates a group instance in the Firestore
+*
+* @param {none}
+* @returns {collection item in database} A new group instance is stored in the Firestore database for further use. 
+*/
+
 function CreateGroup(){
 
     const {user} = useUserAuth();
@@ -119,6 +128,12 @@ function CreateGroup(){
     }
     };
 
+    //Handles the cancel, redirects the user to the GroupNetwork page
+    // @param ()
+    const handleCancel = () => {
+        window.location.href = '/GroupNetwork';
+    };
+
 return(
 
     <Container className = "container mx-auto w-50">
@@ -192,7 +207,12 @@ return(
                         </Row>
                         <Row>
                             <Col className="d-flex justify-content-center">
-                                <Button type="submit" variant="primary" size="lg" block className="w-100" style={{backgroundColor:'#27746a', margin:'5% 25% 5% 25%'}}>
+                                <Button variant="outline-secondary" size="lg" block className="w-100" onClick={handleCancel} style={{margin:'5% 0%'}}>
+                                    Cancel
+                                </Button>
+                            </Col>
+                            <Col className="d-flex justify-content-center">
+                                <Button type="submit" variant="primary" size="lg" block className="w-100" style={{backgroundColor:'#27746a', margin:'5% 0%'}}>
                                     Create Group
                                 </Button>
                             </Col>
