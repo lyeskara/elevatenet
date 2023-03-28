@@ -151,7 +151,7 @@ function App() {
           }
         />
         <Route
-          path="/ApplyToJobs"
+          path="/ApplyToJobs/:id"
           element={
             <Protection>
               <ApplyToJobs />
