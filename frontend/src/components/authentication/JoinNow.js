@@ -13,6 +13,17 @@ function JoinNow() {
 	const { Registration } = useUserAuth();
 	const [recruiter, Setrecruiter]= useState(false)
 	console.log(recruiter)
+	const { googleSignUp} = useUserAuth();
+
+	//adding signin with google handler
+	const handleGoogleSignUp = async () => {
+		try {
+			await googleSignUp();
+			navigate("/Profile");
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 
 	const navigate = useNavigate();
@@ -103,7 +114,7 @@ function JoinNow() {
 								I'm a Job Seeker
 							</label>
 						</div>
-						<Button className="google_button sign_button mb-3 mt-4">
+						<Button className="google_button sign_button mb-3 mt-4" onClick={handleGoogleSignUp}>
 							Continue with Google
 						</Button>
 						<p className="line">
