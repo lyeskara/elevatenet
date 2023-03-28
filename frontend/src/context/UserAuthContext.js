@@ -23,6 +23,13 @@ export function UserAuthContextProvider({ children }) {
     signInWithRedirect(auth, provider);
   }
   
+  //adding google signup
+  const googleSignUp = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithRedirect(auth, provider);
+  }
+  
+
   function Registration(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
   }
@@ -51,7 +58,7 @@ export function UserAuthContextProvider({ children }) {
     return () => unsubscribe();
   }, []);
 
-  const value = { Login, Registration, logOut, googleSignIn, user};
+  const value = { Login, Registration, logOut, googleSignIn, googleSignUp, user};
   return (
     <UserAuthContext.Provider value={value}>
       {" "}
