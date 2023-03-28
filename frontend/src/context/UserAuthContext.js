@@ -20,6 +20,7 @@ export function UserAuthContextProvider({ children }) {
   //adding google signin 
   const googleSignin = () => {
     const provider = new GoogleAuthProvider();
+    signInWithRedirect(auth, provider);
 
 
   }
@@ -52,7 +53,7 @@ export function UserAuthContextProvider({ children }) {
     return () => unsubscribe();
   }, []);
 
-  const value = { Login, Registration, logOut, user };
+  const value = { Login, Registration, logOut, user, googleSignin };
   return (
     <UserAuthContext.Provider value={value}>
       {" "}
