@@ -1,7 +1,3 @@
-//In this CreateNewPosting class with the CreateNewPosting() function
-//users and enter in the fields job title,company, description and deadline
-// and with after doing so and clicking post they can create a job posting job
-
 import React, { useEffect, useState } from "react";
 import { auth, db } from "../../firebase";
 import Card from "react-bootstrap/Card";
@@ -19,8 +15,7 @@ import { useUserAuth } from '../../context/UserAuthContext';
 import { useNavigate } from 'react-router-dom';
 import { collection, setDoc ,doc, addDoc} from 'firebase/firestore';
 
-
-function CreateNewPosting() {
+function CreateAdvertisements() {
     const { user } = useUserAuth();
     const navigate =useNavigate();
     const [startDate, setStartDate] = useState(new Date());   
@@ -39,7 +34,7 @@ function CreateNewPosting() {
     // @param () 
     //handles cancel, redirects to /JobPostings page
     const handleCancel = () => {
-            window.location.href = '/JobPostings';
+            window.location.href = '/Advertisements';
         };
     //update with the handleInputChange() method 
     // @param (event) 
@@ -67,7 +62,7 @@ function CreateNewPosting() {
         event.preventDefault();
         if (user) {
             // setDoc( doc(collection(db,'posting'),auth.currentUser.uid),{
-            const docRef = await addDoc(collection(db, "posting"),{
+            const docRef = await addDoc(collection(db, "advertisement"),{
                 job_title: postingData.job_title,
                 company: postingData.company,
                 description: postingData.description,
@@ -133,6 +128,7 @@ function CreateNewPosting() {
 	return (
 		//Container for new job posting
 		<Container className="container mx-auto w-50">
+            <h1>Ad</h1>
 			<Row className="gap-6">
 				<Col >
 					<Card className="card">
@@ -288,5 +284,4 @@ function CreateNewPosting() {
 		</Container>
 	);
 }
-//....
-export default CreateNewPosting;
+export default CreateAdvertisements;
