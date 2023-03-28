@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { auth, db } from "../../firebase";
 import { collection, setDoc, doc } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
 
 const storageRef = ref(
 	"https://console.firebase.google.com/project/soen390-b027d/storage/soen390-b027d.appspot.com/images"
@@ -17,7 +16,7 @@ const storageRef = ref(
  * @param {object} user - User object containing attributes.
  * @param {object} setUser - updated user attributes.
  */
-function EditProfile({ user, setUser, profilepic }) {
+function EditProfile({ user, setUser }) {
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
 	const handleShow = () => {
@@ -29,6 +28,9 @@ function EditProfile({ user, setUser, profilepic }) {
 	const [selectedResume, setSelectedResume] = useState(null);
 	const [selectedCL, setSelectedCL] = useState(null);
 	const [updatedUser, setUpdatedUser] = useState(null); // create a copy of the user object using useState
+	let downloadPicURL = null;
+	let downloadResumeURL = null;
+	let downloadCLURL = null;
 	/**
 	 * setUser allows us to set the User to our changled values stored in setUser.
 	 * @constructor
@@ -51,7 +53,7 @@ function EditProfile({ user, setUser, profilepic }) {
 	}
 
 	/**
-	 * UpdateUSer allows us to send the new information in the form to the database.
+	 * UpdateUser allows us to send the new information in the form to the database.
 	 * @constructor
 	 * @param {object} e - Any element.
 	 */
@@ -63,24 +65,32 @@ function EditProfile({ user, setUser, profilepic }) {
 					storage,
 					`profilepics/${auth.currentUser.uid}/profilePic`
 				);
-				await uploadBytes(storageRef, selectedFile);
+				const uploadPic = await uploadBytes(storageRef, selectedFile);
+				downloadPicURL = await getDownloadURL(uploadPic.ref).then(
+					console.log(downloadPicURL)
+				);
 			}
 			if (selectedResume) {
 				const storageRef = ref(
 					storage,
 					`resume/${auth.currentUser.uid}/resume`
 				);
-				await uploadBytes(storageRef, selectedResume);
+				const uploadResume = await uploadBytes(storageRef, selectedResume);
+				downloadResumeURL = await getDownloadURL(uploadResume.ref);
 			}
 			if (selectedCL) {
 				const storageRef = ref(storage, `CL/${auth.currentUser.uid}/CL`);
-				await uploadBytes(storageRef, selectedCL);
+				const uploadCL = await uploadBytes(storageRef, selectedCL);
+				downloadCLURL = await getDownloadURL(uploadCL.ref);
 			}
 			await setDoc(
 				doc(collection(db, "users_information"), auth.currentUser.uid),
 				{
 					...user,
 					...updatedUser,
+					...(downloadPicURL && { profilePicUrl: downloadPicURL }),
+					...(downloadResumeURL && { resumeUrl: downloadResumeURL }),
+					...(downloadCLURL && { CLUrl: downloadCLURL }),
 				}
 			);
 			console.log("Sending info");
