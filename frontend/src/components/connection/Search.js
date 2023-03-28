@@ -8,72 +8,60 @@
  * we take that user id and pass it into a decorator which handles dynamic routing, later we redirect to that url which will be another component
  * that handles displaying other users info dynamically 
  */
+ 
 
-import { useEffect, useState } from "react";
-import { getDocs, query, where, collection } from "firebase/firestore";
-import { auth, db } from "../../firebase";
-import { useNavigate, Link, useParams } from "react-router-dom";
-import { async } from "@firebase/util";
-import defaultpic from ".././../images/test.gif";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
-function Search() {
-  const [search, Setsearch] = useState("");
-  const [Result, SetResult] = useState([]);
-  const navigate = useNavigate();
-  const [url, setUrl] = useState(null);
-  const [profilePicURL, setProfilePicURL] = useState("");
-  const storage = getStorage();
 
-  useEffect(() => {
-    async function getResult() {
-      if (search !== "") {
-        const usersRef = collection(db, "users_information");
-        const q = query(usersRef, where("firstName", "==", search));
-        const querySnapShot = await getDocs(q);
-  
-        // Fetch profile picture URLs for each user
-        const promises = querySnapShot.docs.map(async (doc) => {
-          const userId = doc.id;
-          const profilePicRef = ref(storage, `users/${userId}/profile-pic.jpg`);
-          try {
-            const profilePicUrl = await getDownloadURL(profilePicRef);
-            return { ...doc.data(), id: doc.id, profilePicUrl };
-          } catch (error) {
-            // If there is no profile picture for the user, use a default image
-            return { ...doc.data(), id: doc.id, profilePicUrl: defaultpic };
-          }
-        });
-  
-        // Wait for all promises to resolve
-        const users = await Promise.all(promises);
-  
-        SetResult(users);
-      } else {
-        SetResult([]);
-      }
-    }
-    getResult();
-  }, [search]);
+ import { useEffect, useState } from "react";
+ import { getDocs, query, where, collection } from "firebase/firestore";
+ import { auth, db } from "../../firebase";
+ import { useNavigate, Link, useParams } from "react-router-dom";
+ import { async } from "@firebase/util";
+ import defaultpic from ".././../images/test.gif";
+ function Search() {
+   const [search, Setsearch] = useState("");
+   const [Result, SetResult] = useState([]);
+   const navigate = useNavigate();
+   const [url, setUrl] = useState(null);
+ 
+   useEffect(() => {
+     async function getResult() {
+       if (search !== "") {
+         const usersRef = collection(db, "users_information");
+         const q = query(usersRef, where("firstName", "==", search));
+         const querySnapShot = await getDocs(q);
+         SetResult(
+           querySnapShot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+         );
+       } else {
+         SetResult([]);
+       }
+     }
+     getResult();
+   }, [search]);
 
-  useEffect(() => {
-    if (url) {
-      if (url == auth.currentUser.uid) {
+   useEffect(()=>{
+    if(url){
+      if(url == auth.currentUser.uid){
         navigate("/profile");
-      } else {
+      }else{
         navigate(`/profile/${url}`);
       }
+      
     }
-  }, [url]);
+   },[url])
+   
 
-  function handleClick(id) {
-    Setsearch("");
-    setUrl(id);
-  }
+   function handleClick(id){
+      Setsearch("");
+      setUrl(id);
+   }
+
+
 
   return (
     <>
-      <form className="search_bar">
+   <form className="search_bar">
         <input
           type="text"
           placeholder="Search..."
@@ -88,8 +76,8 @@ function Search() {
           <li className="off_point mt-2" key={user.id}>
             <div className="containRequest">
               <img
-                src={user.profilePicURL || defaultpic}
                 className="search_pic"
+                src={defaultpic}
                 alt={user.firstName}
               />
               <p
@@ -103,8 +91,9 @@ function Search() {
           </li>
         ))}
       </ul>
-    </>
-  );
+  </>
+  //show list of users, with link to route of each
+  )
 }
 
-export default Search;
+export default Search
