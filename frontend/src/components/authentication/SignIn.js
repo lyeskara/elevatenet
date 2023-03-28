@@ -2,15 +2,22 @@ import React, { useState } from "react";
 import { useUserAuth } from "../../context/UserAuthContext.js";
 import { useNavigate } from "react-router-dom";
 import { Container, Form, Button } from "react-bootstrap";
-import { GoogleAuthProvider } from "firebase/auth";
-import { signInWithGoogle } from "../../firebase.js";
 
 const SignIn = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const { Login } = useUserAuth();
 	const navigate = useNavigate();
-	const provider = new GoogleAuthProvider();
+	const { googleSignIn } = useUserAuth();
+
+	//adding signin with google handler
+	const handleGoogleSignIn = async () => {
+		try {
+			await googleSignIn()
+		} catch (error) {
+			console.log(error)
+		}
+	}
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -35,29 +42,7 @@ const SignIn = () => {
 				<div className="text-center containerForm">
 					<Form onSubmit={handleSubmit}>
 						<Form.Text className="sign center">Sign In</Form.Text>
-						{/* <div>
-							<input
-								className="input_radio mt-4"
-								type="radio"
-								id="recruiter"
-								name="age"
-								value="recruiter"
-							></input>
-							<label for="recruiter" className="label_radio">
-								I'm a Recruiter
-							</label>
-							<input
-								className="input_radio"
-								type="radio"
-								id="seeker"
-								name="age"
-								value="seeker"
-							></input>
-							<label for="seeker" className="label_radio">
-								I'm a Job Seeker
-							</label>
-						</div> */}
-						<Button className="google_button sign_button mb-3 mt-4">
+						<Button className="google_button sign_button mb-3 mt-4" onClick={handleGoogleSignIn}>
 							Continue with Google
 						</Button>
 						<p className="line">

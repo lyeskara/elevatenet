@@ -10,7 +10,7 @@ import { auth } from "../firebase";
 import { browserSessionPersistence } from "firebase/auth";
 
 //ADDING GOOGLE SIGN IN AND SIGN IN WITH REDIRECT TO GOOGLE PAGE
-import { GoogleAuthProvider,signInWithRedirect } from "firebase/auth";
+import { GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
 
 export const UserAuthContext = createContext();
 
@@ -18,11 +18,9 @@ export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState(null);
 
   //adding google signin 
-  const googleSignin = () => {
+  const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
     signInWithRedirect(auth, provider);
-
-
   }
   
   function Registration(email, password) {
@@ -53,7 +51,7 @@ export function UserAuthContextProvider({ children }) {
     return () => unsubscribe();
   }, []);
 
-  const value = { Login, Registration, logOut, user, googleSignin };
+  const value = { Login, Registration, logOut, googleSignIn, user};
   return (
     <UserAuthContext.Provider value={value}>
       {" "}
