@@ -17,6 +17,7 @@ import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 import backward from ".././../images/backward.png";
 import "../../styles/network.css";
 import { Link, useNavigate } from "react-router-dom";
+import defaultpic from ".././../images/test.gif";
 function RequestsPage() {
   const [Users, SetUsers] = useState([]);
   const [UserData, SetUserData] = useState([]);
@@ -24,6 +25,7 @@ function RequestsPage() {
   const currentId = auth.currentUser.uid;
   const dbRef = collection(db, "connection_requests");
   const profileRef = collection(db, "users_information");
+  //This fetches the information from the connection database
   useEffect(() => {
     const q = query(dbRef, where("requests", "array-contains", currentId));
     getDocs(q)
@@ -39,11 +41,12 @@ function RequestsPage() {
       });
   }, []);
 
+  //This fetches the information from the user database
   useEffect(() => {
     Users.forEach((user) => {
       getDoc(doc(profileRef, user))
         .then((e) => {
-          const { firstName, lastName } = e.data();
+          const { firstName, lastName, profilePicUrl } = e.data();
           const id = e.id;
           if (
             !UserData.find(
@@ -53,7 +56,7 @@ function RequestsPage() {
           ) {
             SetUserData((prevData) => [
               ...prevData,
-              { id, firstName, lastName },
+              { id, firstName, lastName, profilePicUrl },
             ]);
           }
         })
@@ -137,10 +140,10 @@ function RequestsPage() {
       const ReqArray = user.data().requests;
       ReqArray.forEach((id) => {
         getDoc(doc(profileRef, id)).then((other) => {
-          const { firstName, lastName } = other.data();
+          const { firstName, lastName, profilePicUrl} = other.data();
           const otherId = other.id;
           const set = new Set();
-          set.add({ id, firstName, lastName });
+          set.add({ id, firstName, lastName, profilePicUrl });
           const array = [];
           set.forEach((element) => {
             array.push(element);
@@ -177,6 +180,11 @@ function RequestsPage() {
                 <div>
                   {UserData.map((user) => (
                     <div className="containRequest mb-4" key={user.id}>
+                       <img
+                        className="connection-pic"
+                        src={user.profilePicUrl || defaultpic}
+                        alt={user.firstName}
+                      />
                       <p className="connection_name">
                         {user.firstName} {user.lastName}
                       </p>
