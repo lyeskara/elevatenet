@@ -8,14 +8,15 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Button from 'react-bootstrap/Button';
+import { useNavigate } from "react-router-dom";
 
 function JobPageForSeekers() {
     const [postings, setPostings] = useState([]);
-  
+    const navigate = useNavigate();
+
     useEffect(() => {
       const postingsCollection = collection(db, "posting");
       const q = query(postingsCollection);
-  
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const docs = [];
         querySnapshot.forEach((doc) => {
@@ -31,7 +32,9 @@ function JobPageForSeekers() {
         unsubscribe();
       };
     }, []);
-  
+  function handleRedirection(id){
+    navigate(`/ApplyToJobs/${id}`)
+  }
     return (
       <>
         <h1>Apply to Jobs</h1>
@@ -49,7 +52,7 @@ function JobPageForSeekers() {
                     <Card.Text>
                         {posting.skills}
                     </Card.Text>
-                    <Button variant="primary" style={{backgroundColor: "#27746A"}}>
+                    <Button variant="primary" style={{backgroundColor: "#27746A"}} onClick={()=>handleRedirection(posting.id)}>
                         Apply Now
                     </Button>
                   </Card.Body>
