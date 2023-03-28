@@ -8,11 +8,14 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase";
 import { browserSessionPersistence } from "firebase/auth";
+//adding google provider
+import { GoogleAuthProvider,signInWithRedirect } from "firebase/auth";
 
 export const UserAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState(null);
+  
   
   function Registration(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
