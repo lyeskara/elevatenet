@@ -3,21 +3,23 @@ import { useUserAuth } from "../../context/UserAuthContext.js";
 import { useNavigate } from "react-router-dom";
 import { Container, Form, Button } from "react-bootstrap";
 
+
 const SignIn = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const { Login } = useUserAuth();
 	const navigate = useNavigate();
-	const { googleSignIn } = useUserAuth();
+	const { googleSignIn} = useUserAuth();
 
 	//adding signin with google handler
 	const handleGoogleSignIn = async () => {
 		try {
-			await googleSignIn()
+			await googleSignIn();
+			navigate("/Profile");
 		} catch (error) {
-			console.log(error)
+			console.log(error);
 		}
-	}
+	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
