@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, Link, useParams } from "react-router-dom";
 import defaultpic from ".././../images/test.gif";
 import "../../styles/CompanySearch.css";
-import {  Button } from "react-bootstrap";
+import {Card , Button } from "react-bootstrap";
 function CompanySearch() {
   const { result } = useParams();
   const [users, setUsers] = useState([]);
@@ -23,7 +23,9 @@ function CompanySearch() {
 
   return (
     <>
-      <h1>Results for "{search}"</h1>
+      <Card className="card">
+      <h4 className="requests" >Results for "{search}"</h4>
+      </Card>
       <ul className="search-results">
         {users.map((user) => (
           <li key={user.id}>
