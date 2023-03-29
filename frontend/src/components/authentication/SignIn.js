@@ -21,6 +21,10 @@ const SignIn = () => {
 		}
 	};
 
+	/**
+	 * 
+	 * @param {handlesubmit} e used for naivation purposes to see if it logs in right away or not 
+	 */
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
