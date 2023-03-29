@@ -101,7 +101,7 @@
             <div className="containRequest">
               <img
                 className="search_pic"
-                src={defaultpic}
+                src={user.profilePicUrl ||defaultpic}
                 alt={user.firstName}
               />
               <p

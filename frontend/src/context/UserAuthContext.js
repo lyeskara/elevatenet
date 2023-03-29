@@ -9,11 +9,27 @@ import {
 import { auth } from "../firebase";
 import { browserSessionPersistence } from "firebase/auth";
 
+//ADDING GOOGLE SIGN IN AND SIGN IN WITH REDIRECT TO GOOGLE PAGE
+import { GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+
 export const UserAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState(null);
+
+  //adding google signin 
+  const googleSignIn = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithRedirect(auth, provider);
+  }
   
+  //adding google signup
+  const googleSignUp = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithRedirect(auth, provider);
+  }
+  
+
   function Registration(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
   }
@@ -42,7 +58,7 @@ export function UserAuthContextProvider({ children }) {
     return () => unsubscribe();
   }, []);
 
-  const value = { Login, Registration, logOut, user };
+  const value = { Login, Registration, logOut, googleSignIn, googleSignUp, user};
   return (
     <UserAuthContext.Provider value={value}>
       {" "}

@@ -10,6 +10,7 @@ import trash from ".././../images/trash.png";
 import arrow from ".././../images/mdi_arrow.png";
 import "../../styles/network.css";
 import { Link, useNavigate } from "react-router-dom";
+import defaultpic from ".././../images/test.gif";
 
 function ConnectionPage() {
   const [connections, Setconnections] = useState([]);
@@ -47,7 +48,7 @@ function ConnectionPage() {
         });
     });
   }, [ids]);
-//This function will display the list of connections that a user have
+  //This function will display the list of connections that a user have
   function handle(userId) {
     getDoc(doc(colRef, userId)).then((user) => {
       if (user.exists()) {
@@ -112,10 +113,15 @@ function ConnectionPage() {
               <br></br>
               <hr></hr>
               <Row className="mt-3">
-                  {/*This is the displayal of the users onto the page, fetched from the database*/}
+                {/*This is the displayal of the users onto the page, fetched from the database*/}
                 <div>
                   {connections.map((user) => (
                     <div className="containRequest mb-3" key={user.id}>
+                      <img
+                        className="connection-pic"
+                        src={user.profilePicUrl || defaultpic}
+                        alt={user.firstName}
+                      />
                       <p className="connection_name">
                         {user.firstName} {user.lastName}
                       </p>

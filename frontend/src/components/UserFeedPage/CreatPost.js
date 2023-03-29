@@ -13,6 +13,7 @@ import {
 } from "firebase/storage";
 import { storage } from "../../firebase";
 import { v4 } from "uuid";
+import { useNavigate } from "react-router-dom";
 
 function CreatPost() {
 
@@ -23,6 +24,8 @@ function CreatPost() {
 
   // reference hook
   const inputRef = useRef();
+  // Initialize useNavigate
+  const navigate = useNavigate();
 
   // creating references to database instances
   const currentId = auth.currentUser.uid
@@ -73,6 +76,8 @@ function CreatPost() {
       const Posts = documentData.data()
       Posts[index] = obj
       updateDoc(doc(postsCollectionRef, currentId), Posts)
+      // Navigate to the feed page
+      navigate("/feed");
     }
   };
 

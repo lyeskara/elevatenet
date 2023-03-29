@@ -8,7 +8,8 @@ import {
   orderBy,
 } from "firebase/firestore"; // Importing Firestore functions
 import { auth } from "../../firebase"; // Importing Firebase authentication
-import { db } from "../../firebase"; // Importing Firebase Firestore database
+import { db } from '../../firebase'; // Importing Firebase Firestore database
+import { getStorage, ref, getDownloadURL,uploadBytes } from "firebase/storage";
 import "../../styles/Messaging.css"; // Importing styling
 import { Container, Form, Button, FormGroup } from "react-bootstrap";
 import pin from ".././../images/paperclip.png";
@@ -31,20 +32,18 @@ const Message = () => {
   };
 
   useEffect(() => {
-    // Effect hook for fetching users' information from Firestore
-    const unsubscribe = onSnapshot(
-      collection(db, "users_information"),
-      (snapshot) => {
-        const usersArray = [];
-        snapshot.forEach((doc) => {
-          usersArray.push({ id: doc.id, ...doc.data() });
-        });
-        setUsers(usersArray);
-      }
-    );
-    return unsubscribe; // Unsubscribe from the snapshot listener when the component unmounts
-  }, []);
-
+    const unsubscribe = onSnapshot(collection(db, 'users_information'), (snapshot) => {
+      const usersArray = [];
+      snapshot.forEach((doc) => {
+        usersArray.push({ id: doc.id, ...doc.data() });
+      });
+      setUsers(usersArray);
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [setUsers]);
+  
   useEffect(() => {
     // Effect hook for fetching messages from Firestore
     const senderId = currentUser.uid;
@@ -61,39 +60,71 @@ const Message = () => {
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const messagesArray = [];
         querySnapshot.forEach((doc) => {
-          messagesArray.push(doc.data());
+          const messageData = doc.data();
+          if (messageData.fileUrl) {
+            
+            // If a file URL exists, include the file URL and name in the message object
+            messageData.file = {
+              url: messageData.fileUrl,
+              name: messageData.fileName
+            };
+            // Update the message text to include a download link for the file
+            // messageData.text += `Download`;
+          }
+          messagesArray.push(messageData);
         });
         setMessages(messagesArray);
+        
       });
       return unsubscribe; // Unsubscribe from the snapshot listener when the component unmounts
     }
   }, [currentUser.uid, recipientId]); // Re-run the effect when either the current user ID or recipient ID changes
+  
 
-  const handleSubmit = (e) => {
-    // Event handler for message form submission
+  const storage = getStorage(); // Get Firebase Storage instance
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    const message = messageRef.current.value.trim();
+    if (!file && message === '') {
+      // If the message is empty and no file was selected, return without submitting
+      return;
+    }
+  
+    let fileUrl = null;
+    if (file) {
+      const storageRef = ref(storage, `messages/${file.name}`);
+      await uploadBytes(storageRef, file);
+      fileUrl = await getDownloadURL(storageRef);
+    }
+  
     const data = {
-      text: messageRef.current.value,
-      file: file,
-      createdAt: serverTimestamp(), // Firestore server timestamp for message creation time
-      sender: currentUser.uid, // ID of the message sender
+      text: message,
+      createdAt: serverTimestamp(),
+      sender: currentUser.uid,
     };
+  
+    if (file) {
+      const storageRef = ref(storage, `messages/${file.name}`);
+      await uploadBytes(storageRef, file);
+      data.fileName = file.name;
+      data.fileUrl = await getDownloadURL(storageRef);
+    }
+  
     try {
-      // Generate a unique conversation ID based on the IDs of the two users
-      const conversationId = [currentUser.uid, recipientId].sort().join("-");
-      const conversationRef = collection(
-        messagesRef,
-        conversationId,
-        "conversation"
-      );
-      addDoc(conversationRef, data); // Add the message to Firestore
-      setMessages([...messages, data]); // Update the local state with the new message
-      setMessage(""); // Clear the message input
-      setFile(null); // Clear the selected file
+      const conversationId = [currentUser.uid, recipientId].sort().join('-');
+      const conversationRef = collection(db, 'messages', conversationId, 'conversation');
+      await addDoc(conversationRef, data);
+      setMessages([...messages, data]);
+      setMessage('');
+      setFile(null);
     } catch (e) {
       console.log(e);
     }
   };
+  
+  
 
   // This function is called whenever the input field for the message changes
   const handleMessageChange = (e) => {
@@ -106,12 +137,6 @@ const Message = () => {
       handleSubmit(e);
     }
   }
-
-  // const handlePersonClick = (e) => {
-  //   e.preventDefault();
-  //   const recipientId = e.target.getAttribute('data-recipient-id');
-  //   setRecipientId(recipientId);
-  // };
 
   return (
     <>
@@ -167,12 +192,14 @@ const Message = () => {
                     msg.sender === currentUser.uid ? "sent-m" : "received-m"
                   }`}
                 >
-                  <p>{msg.text}</p>
-                  {msg.file && (
-                    <a href={msg.file.url} target="_blank" rel="noreferrer">
-                      {msg.file.name}
-                    </a>
-                  )}
+                <p>
+                {msg.text}
+                {msg.file && (
+                  <a href={msg.fileUrl} download={msg.fileName} target="_blank">
+                    <span style={{ textDecoration: 'underline', fontSize: '0.8em', color:"white" }}>{msg.fileName}</span>
+                  </a>
+                )}
+              </p>
                 </div>
               ))}
             </div>

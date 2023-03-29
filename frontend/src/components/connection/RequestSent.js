@@ -16,6 +16,7 @@ import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 import backward from ".././../images/backward.png";
 import "../../styles/network.css";
 import { Link, useNavigate } from "react-router-dom";
+import defaultpic from ".././../images/test.gif";
 function RequestSent() {
   const [Users, SetUsers] = useState([]);
   const [UserData, SetUserData] = useState([]);
@@ -69,10 +70,10 @@ function RequestSent() {
       const array = [];
       ReqArray.forEach((id) => {
         getDoc(doc(profileRef, id)).then((other) => {
-          const { firstName, lastName } = other.data();
+          const { firstName, lastName, profilePicUrl } = other.data();
           const otherId = other.id;
           const set = new Set();
-          set.add({ id, firstName, lastName });
+          set.add({ id, firstName, lastName, profilePicUrl });
 
           set.forEach((element) => {
             array.push(element);
@@ -124,6 +125,11 @@ function RequestSent() {
                 <div>
                   {requests.map((user) => (
                     <div className="containRequest  mb-4" key={user.id}>
+                       <img
+                        className="connection-pic"
+                        src={user.profilePicUrl || defaultpic}
+                        alt={user.firstName}
+                      />
                       <p className="connection_name">
                         {user.firstName} {user.lastName}
                       </p>
