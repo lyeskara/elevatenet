@@ -39,7 +39,7 @@
         const mergedResults = [...workExpResults, ...firstNameResults];
         SetResult(mergedResults);
       } else {
-        SetResult([]);
+        SetResult([]); 
       }
     }
     getResult();
@@ -83,7 +83,7 @@
 
    function handleSubmit(e) {
     e.preventDefault();
-    navigate(`/CompanySearch?search=${search}`);
+    navigate(`/CompanySearch?search=${search}&result=${encodeURIComponent(JSON.stringify(Result))}`);
   }
 
   return (

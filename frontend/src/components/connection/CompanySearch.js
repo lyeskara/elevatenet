@@ -1,47 +1,41 @@
-import { useState } from "react";
-import { db } from "../../firebase";
-import Search from "./Search";
+import { useEffect, useState } from "react";
+import { useLocation, Link,useParams } from "react-router-dom";
+import defaultpic from ".././../images/test.gif";
 
 function CompanySearch() {
-  const [searchResults, setSearchResults] = useState([]);
-  const [workExperience, setworkExperience] = useState("");
+  const { search, result } = useParams();
+  const [users, setUsers] = useState([]);
+  const location = useLocation();
 
-  const getUsers = async (workExperience) => {
-    const querySnapshot = await db
-      .collection("users_information")
-      .where("workExperience", "==", workExperience)
-      .get();
-
-    const results = [];
-    querySnapshot.forEach((doc) => {
-      results.push(doc.data());
-    });
-    setSearchResults(results);
-  };
-
-  const handleSearch = () => {
-    getUsers(workExperience);
-  };
+  useEffect(() => {
+    if (location.search !== "") {
+      const searchParams = new URLSearchParams(location.search);
+      const resultParam = searchParams.get("result");
+      setUsers(JSON.parse(decodeURIComponent(resultParam)));
+    }
+  }, [location]);
 
   return (
     <>
-      <Search workExperience={workExperience} setWorkExperience={setworkExperience} onSearch={handleSearch} />
-
-      <div>
-        <h2>Users with Work Experience: {workExperience}</h2>
-      </div>
-
-      <div>
-        {searchResults.map((result) => (
-          <div key={result.id}>
-            <p>{result.firstName} {result.lastName}</p>
-            <p>{result.workExperience}</p>
-          </div>
+      <h1>Results for "{search}"</h1>
+      <ul>
+        {users.map((user) => (
+          <li className="off_point mt-2" key={user.id}>
+            <div className="containRequest">
+              <img
+                className="search_pic"
+                src={user.profilePicUrl || defaultpic}
+                alt={user.firstName}
+              />
+              <p>
+                <Link to={`/profile/${user.id}`}>{user.firstName} {user.lastName}</Link>
+              </p>
+            </div>
+            </li>
         ))}
-      </div>
+      </ul>
     </>
   );
 }
-
 
 export default CompanySearch;
