@@ -41,4 +41,22 @@
   .user-info p {
     margin: 0;
   }
-  
+
+.connect_button,
+.connect_button:hover {
+  background-color: white;
+  color: #888888;
+  border-color: #888888;
+}
+.connect_button:active,
+.connect_button:focus {
+  color: #888888;
+  background-color: #F3F3F3 !important;
+  border-color: #888888 !important;
+  box-shadow: 0 0 0 0.2rem white !important;
+}
+.connect_button{
+  margin-left: auto;
+  margin-right: 0;
+
+}

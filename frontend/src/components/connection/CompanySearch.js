@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, Link, useParams } from "react-router-dom";
 import defaultpic from ".././../images/test.gif";
 import "../../styles/CompanySearch.css";
-
+import {  Button } from "react-bootstrap";
 function CompanySearch() {
   const { result } = useParams();
   const [users, setUsers] = useState([]);
@@ -39,8 +39,13 @@ function CompanySearch() {
                 <Link to={`/profile/${user.id}`}>
                   <h3>{user.firstName} {user.lastName}</h3>
                 </Link>
-                <p>{user.email}</p>
+                <li> {user.bio}</li>
+                <li>Work experience at {user.workExperience}</li>
+                
               </div>
+              <Button className="connect_button">        
+                     Connect
+                </Button>
             </div>
           </li>
         ))}
