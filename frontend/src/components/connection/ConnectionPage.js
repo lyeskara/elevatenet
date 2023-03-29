@@ -19,12 +19,24 @@ function ConnectionPage() {
   const colRef = collection(db, "connection");
   const userRef = collection(db, "users_information");
   console.log(connections);
+
+  /** 
+   * Accepts a function that contains imperative, possibly effectful code.
+   * @param effect — Imperative function that can return a cleanup function
+   * @param deps — If present, effect will only activate if the values in the list change.
+  */
   useEffect(() => {
     getDoc(doc(colRef, authUserId)).then((connection) => {
       Setids(connection.data().connections);
       console.log(ids);
     });
   }, []);
+
+  /** 
+   * Accepts a function that contains imperative, possibly effectful code.
+   * @param effect — Imperative function that can return a cleanup function
+   * @param deps — If present, effect will only activate if the values in the list change.
+  */
   useEffect(() => {
     ids.forEach((id) => {
       getDoc(doc(userRef, id))
@@ -49,6 +61,10 @@ function ConnectionPage() {
     });
   }, [ids]);
   //This function will display the list of connections that a user have
+  /**
+   * 
+   * @param {handle} userId 
+   */
   function handle(userId) {
     getDoc(doc(colRef, userId)).then((user) => {
       if (user.exists()) {
@@ -61,6 +77,12 @@ function ConnectionPage() {
         });
       }
     });
+
+    /**
+     * getDoc() attempts to provide up-to-date data when possible by waiting for data from the server
+     * @param reference — The reference of the document to fetch.
+     * @returns A Promise resolved with a DocumentSnapshot containing the current document contents.
+     */
     getDoc(doc(colRef, authUserId)).then((user) => {
       if (user.exists()) {
         const userArray = user.data().connections;
