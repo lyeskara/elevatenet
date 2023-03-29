@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { useLocation, Link,useParams } from "react-router-dom";
+import { useLocation, Link, useParams } from "react-router-dom";
 import defaultpic from ".././../images/test.gif";
+import "../../styles/CompanySearch.css";
 
 function CompanySearch() {
   const { result } = useParams();
@@ -23,20 +24,25 @@ function CompanySearch() {
   return (
     <>
       <h1>Results for "{search}"</h1>
-      <ul>
+      <ul className="search-results">
         {users.map((user) => (
-          <li className="off_point mt-2" key={user.id}>
-            <div className="containRequest">
-              <img
-                className="search_pic"
-                src={user.profilePicUrl || defaultpic}
-                alt={user.firstName}
-              />
-              <p>
-                <Link to={`/profile/${user.id}`}>{user.firstName} {user.lastName}</Link>
-              </p>
+          <li key={user.id}>
+            <div className="search-result">
+              <div className="search-pic-container">
+                <img
+                  className="search-pic"
+                  src={user.profilePicUrl || defaultpic}
+                  alt={user.firstName}
+                />
+              </div>
+              <div className="user-info">
+                <Link to={`/profile/${user.id}`}>
+                  <h3>{user.firstName} {user.lastName}</h3>
+                </Link>
+                <p>{user.email}</p>
+              </div>
             </div>
-            </li>
+          </li>
         ))}
       </ul>
     </>
