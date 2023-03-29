@@ -39,10 +39,12 @@ function Feed() {
 
   // state variables
   const [input, setInput] = useState('');
-  const [Data,SetData] = useState([])
+  const [Data,SetData] = useState([]);
+  const [user,SetUser] = useState();
   // db references
   const currentId = auth.currentUser.uid
-  const postRef = collection(db, "user_posts")
+  const postRef = collection(db, "user_posts");
+  const infoRef = collection(db,'users_information')
  // fetching the user posts
   useEffect(() => {
        getDoc(doc(postRef, currentId)).then((posts)=>{
@@ -56,7 +58,19 @@ function Feed() {
         SetData(postArray);
        })    
   }, []);
- // the templates for markup
+
+  useEffect(()=>{
+    async function getFullName(){
+      const userinfo = await getDoc(doc(infoRef,currentId))
+      const {firstName, lastName} = userinfo.data()
+      const name= `${firstName} ${lastName}`
+      SetUser(
+       name
+      );
+    }
+  return getFullName;  
+  },[])
+  // the templates for markup
   return (
     <div className="feed">
       <div className="feed-inputContainer">
@@ -79,7 +93,7 @@ function Feed() {
       {Data.map(post => (
         <Post
           key={post.title}
-          name={post.title}
+          name={user}
           description={post.postText}
           message={post.postText}
           image={post.PicUrl} 
