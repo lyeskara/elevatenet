@@ -3,13 +3,18 @@ import { useLocation, Link,useParams } from "react-router-dom";
 import defaultpic from ".././../images/test.gif";
 
 function CompanySearch() {
-  const { search, result } = useParams();
+  const { result } = useParams();
   const [users, setUsers] = useState([]);
+  const [search, setSearch] = useState('');
   const location = useLocation();
-
+  
   useEffect(() => {
+    
     if (location.search !== "") {
       const searchParams = new URLSearchParams(location.search);
+      const search = searchParams.get("search");
+      console.log("search is: " + search);
+      setSearch(search);
       const resultParam = searchParams.get("result");
       setUsers(JSON.parse(decodeURIComponent(resultParam)));
     }
