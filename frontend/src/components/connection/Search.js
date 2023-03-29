@@ -81,11 +81,14 @@
       setUrl(id);
    }
 
-
+   function handleSubmit(e) {
+    e.preventDefault();
+    navigate(`/CompanySearch?search=${search}`);
+  }
 
   return (
     <>
-   <form className="search_bar">
+   <form className="search_bar" onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Search..."
@@ -94,6 +97,7 @@
             Setsearch(e.target.value);
           }}
         />
+        {/* <button type="submit">Search</button> */}
       </form>
       <ul>
         {Result.map((user) => (
