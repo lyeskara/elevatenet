@@ -33,9 +33,13 @@ function JobPageForSeekers() {
         unsubscribe();
       };
     }, []);
-  function handleRedirection(id){
-    navigate(`/ApplyToJobs/${id}`)
-  }
+    function handleRedirection(id, applyHereLink) {
+      if (applyHereLink) {
+        window.location.href = applyHereLink; // Redirect to applyHereLink
+      } else {
+        navigate(`/ApplyToJobs/${id}`); // Redirect to /ApplyToJobs/${id}
+      }
+    }
 
     //having the job postings advertised, 5 random advertised job postings are picked to be displayed every load of page
     const [postingsAD, setPostingsAD] = useState([]);
@@ -79,14 +83,16 @@ function JobPageForSeekers() {
                     <Card.Text>
                         {posting.skills}
                     </Card.Text>
-                    <Button variant="primary" style={{backgroundColor: "#27746A"}} onClick={()=>handleRedirection(posting.id)}>
-                        Apply Now
+                    {/* Render the button with the modified onClick handler */}
+                    <Button variant="primary" style={{ backgroundColor: "#27746A" }} onClick={() => handleRedirection(posting.id, posting.apply_here)}>
+                      Apply Now
                     </Button>
                   </Card.Body>
                 </Card>
               </Col>
             ))}
           </Row>
+          {/* SPONSORED CAROUSEL */}
           <Row>
             <h1>Sponsored</h1>
             <Carousel>
@@ -100,7 +106,7 @@ function JobPageForSeekers() {
                       </Card.Subtitle>
                       <Card.Text>{posting.description}</Card.Text>
                       <Card.Text>{posting.skills}</Card.Text>
-                      <Button variant="primary" style={{backgroundColor: "#27746A"}}>
+                      <Button variant="primary" style={{ backgroundColor: "#27746A" }} onClick={() => handleRedirection(posting.id, posting.apply_here)}>
                         Apply Now
                       </Button>
                     </Card.Body>
