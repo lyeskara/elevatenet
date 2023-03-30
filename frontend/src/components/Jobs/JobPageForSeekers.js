@@ -28,6 +28,10 @@ function JobPageForSeekers() {
 	const navigate = useNavigate();
 
 	useEffect(() => {
+		fetchJobPostings();
+	}, []);
+
+	function fetchJobPostings() {
 		const postingsCollection = collection(db, "posting");
 		const q = query(postingsCollection);
 		const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -41,10 +45,8 @@ function JobPageForSeekers() {
 			setPostings(docs);
 		});
 
-		return () => {
-			unsubscribe();
-		};
-	}, []);
+		return unsubscribe;
+	}
 
 	// Load user's skills data
 	useEffect(() => {
@@ -76,7 +78,8 @@ function JobPageForSeekers() {
 
 	function handleResetFilters() {
 		setSearchQuery("");
-		setPostings([]);
+		// Fetch job postings again
+		fetchJobPostings();
 	}
 
 	const filteredPostings = postings.filter(
