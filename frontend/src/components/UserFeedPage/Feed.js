@@ -22,7 +22,7 @@
 
 import { useEffect, useState } from 'react';
 import { useNavigate , Link} from 'react-router-dom';
-import { getDoc,doc, collection, setDoc } from 'firebase/firestore';
+import { getDoc, doc, collection, setDoc, query, onSnapshot, where  } from 'firebase/firestore';
 import { db,auth } from '../../firebase';
 import '../../styles/feed.css';
 import Post from './Post';
@@ -32,6 +32,13 @@ import profile1 from '../../images/profile1.png';
 import post1 from '../../images/post1.png';
 import eventicon from '../../images/eventicon.png';
 import personicon from '../../images/personicon.png';
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
+import Button from 'react-bootstrap/Button';
+import Card from "react-bootstrap/Card";
+import { Carousel } from 'react-bootstrap';
+
 
 
 
@@ -70,6 +77,32 @@ function Feed() {
     }
   return getFullName;  
   },[])
+
+  //having the job postings advertised
+  const [postings, setPostings] = useState([]);
+  
+  useEffect(() => {
+    const postingsCollection = collection(db, "posting");
+    const q = query(postingsCollection, where("advertise", "in", [true, "on"]));
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const docs = [];
+      querySnapshot.forEach((doc) => {
+        docs.push({
+          id: doc.id,
+          ...doc.data(),
+        });
+      });
+      const shuffledDocs = docs.sort(() => 0.5 - Math.random());
+      const selectedDocs = shuffledDocs.slice(0, 5);
+      setPostings(selectedDocs);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
   // the templates for markup
   return (
     <div className="feed">
@@ -89,6 +122,26 @@ function Feed() {
           
         </div>
       </div>
+      <h1>Sponsored</h1>
+      <Carousel>
+        {postings.map((posting) => (
+          <Carousel.Item key={posting.id}>
+            <Card className="mb-3">
+              <Card.Body>
+                <Card.Title>{posting.title}</Card.Title>
+                <Card.Subtitle className="mb-2 text-muted">
+                  {posting.company}
+                </Card.Subtitle>
+                <Card.Text>{posting.description}</Card.Text>
+                <Card.Text>{posting.skills}</Card.Text>
+                <Button variant="primary" style={{backgroundColor: "#27746A"}}>
+                  Apply Now
+                </Button>
+              </Card.Body>
+            </Card>
+          </Carousel.Item>
+        ))}
+      </Carousel>
 
       {Data.map(post => (
         <Post
