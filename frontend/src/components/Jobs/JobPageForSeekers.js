@@ -32,7 +32,7 @@ import Heart from "react-heart";
 function JobPageForSeekers() {
   const navigate = useNavigate();
   const [postings, setPostings] = useState([]);
-  const [savedPostings, setSavedPostings] = useState([]);
+ 
   const savedCollection = collection(db, "savedPostings");
   const { id } = useParams();
   const postingId = id;
@@ -49,17 +49,50 @@ function JobPageForSeekers() {
           id: doc.id,
           ...doc.data(),
           isLiked: false, // Initialize isLiked state for each posting to false
-          saved: false, // Add saved property to each post object
+          savedProperty: false, // Add saved property to each post object
         });
       });
       setPostings(docs);
     });
+    
+    // Fetch the saved posts from the database and update the `saved` state
+    getDoc(doc(savedCollection, currId))
+      .then((docSnapshot) => {
+        if (docSnapshot.exists()) {
+          const savedPosts = docSnapshot.data().saved;
+          const newSavedState = {};
+          savedPosts.forEach((postId) => {
+            newSavedState[postId] = true;
+          });
+          setSaved(newSavedState);
+          // Update the `savedProperty` property for each post object
+          setPostings((prevPostings) => {
+            return prevPostings.map((post) => {
+              return {
+                ...post,
+                savedProperty: newSavedState[post.id] ?? false,
+              };
+            });
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  
     return () => {
       unsubscribe();
     };
   }, []);
   
-  
+    function handleRedirection(id, applyHereLink) {
+      if (applyHereLink) {
+        window.location.href = applyHereLink; // Redirect to applyHereLink
+      } else {
+        navigate(`/ApplyToJobs/${id}`); // Redirect to /ApplyToJobs/${id}
+      }
+    }
+
 
   // Function to redirect to the "JobPostings" page
   const handleClickJobPostings = () => {
@@ -69,8 +102,7 @@ function JobPageForSeekers() {
     window.location.href = "/SavedJobs";
   };
 
-  //Function to handle the post being saved
-  //Function to handle the post being saved
+  //Function to handle the post being saved to store in savedPostings collection
   const handleSave = async (postingId) => {
     const authdoc = doc(savedCollection, currId);
     const arraySave = [];
@@ -104,9 +136,10 @@ function JobPageForSeekers() {
       .catch((error) => {
         console.log(error);
       });
-    setSaved((prevSaved) => ({ ...prevSaved, [postingId]: true }));
+    setSaved((prevSaved) => ({ ...prevSaved, [postingId]: true, savedProperty:true }));
   };
 
+  //Function that will delete the post that was unsaved from the savedPostings collection
   const handleUnsave = async (postingId) => {
     getDoc(doc(savedCollection, currId))
       .then((word) => {
@@ -128,7 +161,7 @@ function JobPageForSeekers() {
       .catch((error) => {
         console.log(error);
       });
-    setSaved((prevSaved) => ({ ...prevSaved, [postingId]: false }));
+    setSaved((prevSaved) => ({ ...prevSaved, [postingId]: false, savedProperty:false }));
   };
 
   function handleRedirection(id) {
@@ -158,21 +191,24 @@ function JobPageForSeekers() {
         unsubscribe();
       };
     }, []);
-  return (
-    <>
-      <h1>Apply to Jobs</h1>
-      <Container>
+
+    
+
+    return (
+      <>
+        <h1>Apply to Jobs</h1>
+        <Container>
         <Col xs={12} sm={8} lg={4} style={{ minWidth: "30%" }}>
           {/* This card displays the job menu block with Job Postings and Advertisements */}
           <Card className="jobs-menu">
             <h2> Jobs </h2>
             <hr></hr>
-            {/* When the user clicks the "Job Postings" text, it calls handleClickJobPostings */}
+            {/* When the user clicks the "Suggested jobs" text, it calls handleClickJobPostings */}
             <h4 onClick={handleClickJobPostings} style={{ color: "#27746a" }}>
               {" "}
               Suggested Jobs{" "}
             </h4>
-            {/* Advertisements */}
+            {/* Saved posts */}
             <h4 onClick={handleClickSavedJobs} style={{ color: "#888888" }}>
               {" "}
               Saved Jobs{" "}
@@ -180,27 +216,28 @@ function JobPageForSeekers() {
             <br></br>
           </Card>
         </Col>
-        <Row>
-          {postings.map((posting) => (
-            <Col md={6} key={posting.id}>
-              <Card className="mb-3">
-                <Card.Body>
-                  <Card.Title>{posting.title}</Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    {posting.company}
-                  </Card.Subtitle>
-                  <Card.Text>{posting.description}</Card.Text>
-                  <Card.Text>{posting.skills}</Card.Text>
-                  <Button
-                    variant="primary"
-                    style={{ backgroundColor: "#27746A" }}
-                    onClick={() => handleRedirection(posting.id)}
-                  >
-                    Apply Now
-                  </Button>
-                  <div style={{ width: "2rem" }}>
-                    <Button
+          <Row>
+            {postings.map((posting) => (
+              <Col md={6} key={posting.id}>
+                <Card className="mb-3">
+                  <Card.Body>
+                    <Card.Title>{posting.title}</Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted">
+                      {posting.company}
+                    </Card.Subtitle>
+                    <Card.Text>{posting.description}</Card.Text>
+                    <Card.Text>
+                        {posting.skills}
+                    </Card.Text>
+                    {/* Render the button with the modified onClick handler */}
+                    <Button variant="primary" style={{ backgroundColor: "#27746A" }} onClick={() => handleRedirection(posting.id, posting.apply_here)}>
+                      Apply Now
+                    </Button>
+                    <div style={{ width: "2rem" }}>
+                    <Heart
+                  inactiveColor = "#888888" activeColor = "#888888"
                       variant="secondary"
+                      isActive={saved[posting.id]}
                       onClick={() =>
                         saved[posting.id]
                           ? handleUnsave(posting.id)
@@ -208,14 +245,16 @@ function JobPageForSeekers() {
                       }
                     >
                       {saved[posting.id] ? "unsave" : "save"}
-                    </Button>
+                    </Heart>
                   </div>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-        <Row>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+          {/* SPONSORED CAROUSEL */}
+          <Row>
+
             <h1>Sponsored</h1>
             <Carousel>
               {postingsAD.map((posting) => (
@@ -228,7 +267,7 @@ function JobPageForSeekers() {
                       </Card.Subtitle>
                       <Card.Text>{posting.description}</Card.Text>
                       <Card.Text>{posting.skills}</Card.Text>
-                      <Button variant="primary" style={{backgroundColor: "#27746A"}}>
+                      <Button variant="primary" style={{ backgroundColor: "#27746A" }} onClick={() => handleRedirection(posting.id, posting.apply_here)}>
                         Apply Now
                       </Button>
                     </Card.Body>
