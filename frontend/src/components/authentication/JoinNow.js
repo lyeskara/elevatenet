@@ -17,14 +17,18 @@ function JoinNow() {
 
 	//adding signin with google handler
 	const handleGoogleSignUp = async () => {
-		try {
-			await googleSignUp();
-			navigate("/Profile");
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
+        try {
+            await googleSignUp();
+            await new Promise((resolve) => setTimeout(resolve, 200));
+            if(recruiter){
+                navigate("/RecruiterForm")
+            }else{
+                navigate("/ProfileForm");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
 	const navigate = useNavigate();
 	
