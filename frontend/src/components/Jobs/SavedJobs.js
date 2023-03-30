@@ -13,19 +13,22 @@ import {
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
-import { auth, db } from "../../firebase";
+import { auth, db, storage } from "../../firebase";
 import Card from "react-bootstrap/Card";
 import "../../styles/JobPostings.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
+import { useNavigate, useParams } from "react-router-dom";
+
 /**
  * The SavedJobs page displays the jobs that were saved in the JobPageForSeekers.js. It is used access the saved jobs more easily.
  *
  * @return { Object } The page as a React component with the information of the job posts saved by the current user.
  */
 function SavedJobs() {
+  const navigate = useNavigate();
   const [saved, Setsaved] = useState([]);
   const [ids, Setids] = useState([]);
   const [PostData, SetPostData] = useState([]);
@@ -89,6 +92,17 @@ function SavedJobs() {
   const handleClickSavedJobs = () => {
     window.location.href = "/SavedJobs";
   };
+
+  function handleRedirection(id, applyHereLink) {
+    if (applyHereLink) {
+      window.location.href = applyHereLink; // Redirect to applyHereLink
+    } else {
+      navigate(`/ApplyToJobs/${id}`); // Redirect to /ApplyToJobs/${id}
+    }
+  }
+  function handleRedirection(id) {
+    navigate(`/ApplyToJobs/${id}`);
+  }
   return (
     <>
       <Container className="container d-flex justify-content-center mx-auto">
@@ -114,22 +128,19 @@ function SavedJobs() {
           <h2 style={{ color: "#555555", marginTop: "32px", marginLeft: "8%" }}>
             Your Saved Jobs
           </h2>
-          {saved.map((user) => (
-            <Col md={8} key={user.id}>
+          {saved.map((posting) => (
+            <Col md={8} key={posting.id}>
               <Card className="mb-3 card-save">
                 <Card.Body>
-                  <Card.Title>{user.job_title}</Card.Title>
+                  <Card.Title>{posting.job_title}</Card.Title>
                   <Card.Subtitle className="mb-2 text-muted">
-                    {user.company}
+                    {posting.company}
                   </Card.Subtitle>
-                  <Card.Text>{user.description}</Card.Text>
-                  <Card.Text>{user.skills}</Card.Text>
-                  <Button
-                    variant="primary"
-                    style={{ backgroundColor: "#27746A" }}
-                  >
-                    Apply Now
-                  </Button>
+                  <Card.Text>{posting.description}</Card.Text>
+                  <Card.Text>{posting.skills}</Card.Text>
+                  <Button variant="primary" style={{ backgroundColor: "#27746A" }} onClick={() => handleRedirection(posting.id, posting.apply_here)}>
+                      Apply Now
+                    </Button>
                 </Card.Body>
               </Card>
             </Col>

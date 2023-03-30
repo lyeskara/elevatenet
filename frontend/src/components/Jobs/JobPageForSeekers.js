@@ -106,13 +106,13 @@ function JobPageForSeekers() {
   const handleSave = async (postingId) => {
     const authdoc = doc(savedCollection, currId);
     const arraySave = [];
-    getDocs(savedCollection)
+    getDocs(savedCollection) //retrieve all the user ID that had a post saved
       .then((word) => {
         word.docs.forEach((doc) => {
           console.log(doc.id);
           arraySave.push(doc.id);
         });
-        const condition = arraySave.includes(authdoc.id);
+        const condition = arraySave.includes(authdoc.id); //bool true if user is in the array
         console.log(condition);
         if (!condition) {
           setDoc(doc(savedCollection, currId), {
