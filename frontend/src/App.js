@@ -21,10 +21,13 @@ import GroupNetwork from "./components/Network/GroupNetwork";
 import Event from "./components/Network/Event";
 import ApplyToJobs from "./components/Jobs/ApplyNow";
 import JobPageForSeekers from "./components/Jobs/JobPageForSeekers"
+import Advertisements from "./components/Jobs/Advertisements";
+import CreateAdvertisement from "./components/Jobs/CreateAdvertisement";
 
 import RequestsPage from "./components/connection/RequestsPage";
 import ConnectionPage from "./components/connection/ConnectionPage";
 import CreateGroup from "./components/Network/CreateGroup";
+import GroupPage from "./components/Network/GroupPage";
 
 import CreateEvent from "./components/Network/CreateEvent";
 
@@ -84,7 +87,14 @@ function App() {
             </Protection>
           }
         ></Route>
-        <Route path="/Messaging" element={<Protection><Messaging/></Protection>}></Route>
+        <Route
+          path="/Messaging"
+          element={
+            <Protection>
+              <Messaging />
+            </Protection>
+          }
+        ></Route>
         <Route
           path="profile/:id"
           element={
@@ -95,6 +105,14 @@ function App() {
         ></Route>
         <Route
           path="/CreatPost"
+          element={
+            <Protection>
+              <CreatPost />
+            </Protection>
+          }
+        />
+        <Route
+          path="/group/CreatPost"
           element={
             <Protection>
               <CreatPost />
@@ -123,6 +141,14 @@ function App() {
           element={
             <Protection>
               <GroupNetwork />
+            </Protection>
+          }
+        />
+        <Route
+          path="/group/:id"
+          element={
+            <Protection>
+              <GroupPage />
             </Protection>
           }
         />
@@ -163,6 +189,22 @@ function App() {
           element={
             <Protection>
               <JobPageForSeekers />
+            </Protection>
+          }
+        />
+        <Route
+          path="/Advertisements"
+          element={
+            <Protection>
+              <Advertisements />
+            </Protection>
+          }
+        />
+        <Route
+          path="/CreateAdvertisement"
+          element={
+            <Protection>
+              <CreateAdvertisement/>
             </Protection>
           }
         />

@@ -17,7 +17,6 @@ import {
 } from "firebase/storage";
 import { v4 } from "uuid";
 
-
 function ApplyNow() {
 
     //hooks 
