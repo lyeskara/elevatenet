@@ -22,6 +22,8 @@ function RecruiterForm() {
 		e.preventDefault();
 		if (user) {
 			setDoc(doc(collection(db, "recruiters_informations"), auth.currentUser.uid), {
+				email: user.email,
+				id: user.uid,
 				firstName: profileData.firstName,
 				lastName: profileData.lastName,
 				company:profileData.company,

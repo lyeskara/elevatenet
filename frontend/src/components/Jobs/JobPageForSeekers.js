@@ -19,6 +19,7 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
+import { Carousel } from "react-bootstrap";
 
 function JobPageForSeekers() {
 	const [postings, setPostings] = useState([]);
