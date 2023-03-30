@@ -152,10 +152,13 @@ function JobPageForSeekers() {
 									</Card.Subtitle>
 									<Card.Text>{posting.description}</Card.Text>
 									<Card.Text>{posting.skills.join(", ")}</Card.Text>
+									{/* Render the button with the modified onClick handler */}
 									<Button
 										variant="primary"
 										style={{ backgroundColor: "#27746A" }}
-										onClick={() => handleRedirection(posting.id)}
+										onClick={() =>
+											handleRedirection(posting.id, posting.apply_here)
+										}
 									>
 										Apply Now
 									</Button>
