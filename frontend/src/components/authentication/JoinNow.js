@@ -27,7 +27,11 @@ function JoinNow() {
 
 
 	const navigate = useNavigate();
-
+	
+	/**
+	 * 
+	 * @param {*} e 
+	 */
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
