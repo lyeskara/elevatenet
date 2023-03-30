@@ -24,6 +24,7 @@ function CompanySearch() {
   const [search, setSearch] = useState('');
   const { id } = useParams();
   const [follow, setfollow] = useState(false);
+  const [followStatus, setFollowStatus] = useState([]);
   const location = useLocation();
   const currId = auth.currentUser.uid;
  
@@ -38,10 +39,12 @@ function CompanySearch() {
       setSearch(search);
       const resultParam = searchParams.get("result");
       setUsers(JSON.parse(decodeURIComponent(resultParam)));
+      setFollowStatus(Array(JSON.parse(decodeURIComponent(resultParam)).length).fill(false));
+      
     }
   }, [location]);
    //function that handles the following feature, checks if the user is following each other, if not, the connection is added to the database
-   const handlefollow = async (user) => {
+   const handlefollow = async (user,index) => {
     const authdoc = doc(connection_requestsReference, currId);
     const array = [];
     const followedId = user.id;
@@ -63,6 +66,10 @@ function CompanySearch() {
               return updateDoc(doc(connection_requestsReference, currId), {
                 ...document.data(),
                 requests: followedUsers,
+              }).then(() => {
+                const newStatus = [...followStatus];
+                newStatus[index] = true;
+                setFollowStatus(newStatus);
               });
             } else {
               console.log("already followed!");
@@ -82,7 +89,7 @@ function CompanySearch() {
       <h4 className="requests" >Results for "{search}"</h4>
       </Card>
       <ul className="search-results">
-        {users.map((user) => (
+        {users.map((user,index) => (
           <li key={user.id}>
             <div className="search-result">
               <div className="search-pic-container">
@@ -100,10 +107,10 @@ function CompanySearch() {
                 <li>Work experience at {user.workExperience}</li>
                 
               </div>
-                <Button className="connect_button" onClick={() => handlefollow(user)}>        
-                     Connect
+                <Button className="connect_button" onClick={() => handlefollow(user,index)}>        
+                {followStatus[index] ? "Requested" : "Connect"}
                 </Button>
-            </div>
+               </div>
           </li>
         ))}
       </ul>
