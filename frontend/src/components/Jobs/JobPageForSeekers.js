@@ -20,9 +20,11 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
 import Heart from "react-heart";
 
 function JobPageForSeekers() {
+  const navigate = useNavigate();
   const [postings, setPostings] = useState([]);
   const [savedPostings, setSavedPostings] = useState([]);
 
@@ -31,11 +33,9 @@ function JobPageForSeekers() {
   const followedId = id;
   const [follow, setfollow] = useState(false);
   const currId = auth.currentUser.uid;
-
   useEffect(() => {
     const postingsCollection = collection(db, "posting");
     const q = query(postingsCollection);
-
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const docs = [];
       querySnapshot.forEach((doc) => {
@@ -52,6 +52,7 @@ function JobPageForSeekers() {
       unsubscribe();
     };
   }, []);
+
   // Function to redirect to the "JobPostings" page
   const handleClickJobPostings = () => {
     window.location.href = "/JobPageForSeekers";
@@ -61,8 +62,6 @@ function JobPageForSeekers() {
   };
 
   const handleLike = async (postingId) => {
-    
-
     // Find the posting with the given id and update its isLiked state
     setPostings((prevPostings) =>
       prevPostings.map((posting) =>
@@ -109,8 +108,8 @@ function JobPageForSeekers() {
   };
 
   const handleUnsave = async ([postingId]) => {
-      // Find the posting with the given id and update its isLiked state
-      setPostings((prevPostings) =>
+    // Find the posting with the given id and update its isLiked state
+    setPostings((prevPostings) =>
       prevPostings.map((posting) =>
         posting.id === postingId
           ? { ...posting, isLiked: !posting.isLiked }
@@ -125,7 +124,7 @@ function JobPageForSeekers() {
           console.log(followedUsers);
           if (followedUsers.includes(postingId)) {
             const updatedFollowedUsers = followedUsers.filter(
-              (userId) => userId  !== postingId
+              (userId) => userId !== postingId
             );
             console.log(updatedFollowedUsers);
             return updateDoc(doc(connection_requestsReference, currId), {
@@ -140,7 +139,9 @@ function JobPageForSeekers() {
       });
     setfollow(false);
   };
-
+  function handleRedirection(id){
+    navigate(`/ApplyToJobs/${id}`)
+  }
   return (
     <>
       <h1>Apply to Jobs</h1>
@@ -171,25 +172,20 @@ function JobPageForSeekers() {
                   </Card.Subtitle>
                   <Card.Text>{posting.description}</Card.Text>
                   <Card.Text>{posting.skills}</Card.Text>
-                  <div className="containRequest">
-                    <Button
-                      variant="primary"
-                      style={{ backgroundColor: "#27746A" }}
-                    >
-                      Apply Now
+                  <Button variant="primary" style={{backgroundColor: "#27746A"}} onClick={()=>handleRedirection(posting.id)}>
+                        Apply Now
                     </Button>
-                    <div style={{ width: "2rem" }}>
-                      <Heart
-                        className="heart"
-                        isActive={
-                          posting.isLiked ||
-                          savedPostings.some(
-                            (savedPosting) => savedPosting.id === posting.id
-                          )
-                        }
-                        onClick={() => handleLike(posting.id)}
-                      />
-                    </div>
+                  <div style={{ width: "2rem" }}>
+                    <Heart
+                      className="heart"
+                      isActive={
+                        posting.isLiked ||
+                        savedPostings.some(
+                          (savedPosting) => savedPosting.id === posting.id
+                        )
+                      }
+                      onClick={() => handleLike(posting.id)}
+                    />
                   </div>
                 </Card.Body>
               </Card>
