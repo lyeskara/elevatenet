@@ -18,12 +18,19 @@ import "../../styles/network.css";
 import { Link, useNavigate } from "react-router-dom";
 import defaultpic from ".././../images/test.gif";
 function RequestSent() {
+  // Set up state variables
   const [Users, SetUsers] = useState([]);
   const [UserData, SetUserData] = useState([]);
   const [requests, Setrequests] = useState([]);
+  // Get current user ID
   const currentId = auth.currentUser.uid;
+   // Set up database references
   const dbRef = collection(db, "connection_requests");
   const profileRef = collection(db, "users_information");
+  /**
+   * @param effect — Imperative function that can return a cleanup function
+   * @param deps — If present, effect will only activate if the values in the list change.
+   */
   useEffect(() => {
     const q = query(dbRef, where("requests", "array-contains", currentId));
     getDocs(q)
@@ -38,7 +45,11 @@ function RequestSent() {
         console.log("Error fetching data:", error);
       });
   }, []);
-
+  /**
+   * @param getdocs to get name and id
+   * @param setuserdata to set it
+   * @param catch to catch errors
+   */
   useEffect(() => {
     Users.forEach((user) => {
       getDoc(doc(profileRef, user))
@@ -125,7 +136,7 @@ function RequestSent() {
                 <div>
                   {requests.map((user) => (
                     <div className="containRequest  mb-4" key={user.id}>
-                       <img
+                      <img
                         className="connection-pic"
                         src={user.profilePicUrl || defaultpic}
                         alt={user.firstName}
