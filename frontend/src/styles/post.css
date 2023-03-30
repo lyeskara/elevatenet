@@ -92,7 +92,7 @@
 }
 
 .post-buttons button:last-child {
-  margin-right: 0.5rem; /* Remove margin from the last button */
+  margin-right: 0.5rem; 
 }
 
 .post-buttons button p {
@@ -116,4 +116,104 @@
   margin: 0;
   font-size: 20px;
 }
+.post-commentBox {
+  display: flex;
+  align-items: center;
+  padding: 15px; 
+  background-color: #ffffff;
+  border-top: 1px solid #eaeaea;
+}
+.post-commentBox textarea {
+  flex: 1;
+  width: 320px; 
+  
+  height: auto;
+  padding: 10px 15px;
+  border: 1px solid #eaeaea;
+  background-color: #f8f9fa;
+  border-radius: 25px;
+  margin-right: 10px;
+  outline: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  resize: vertical;
+}
+.post-commentBox button {
+  padding: 8px 16px;
+  border: 1px solid #165917;
+  background-color: #1c6c18;
+  color: #ffffff;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
 
+.post-comment {
+  display: flex;
+  align-items: flex-start;
+  background-color: #ffffffbd;
+  border-radius: 5px;
+  padding: 8px 12px;
+  margin: 5px 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.post-comment strong {
+  margin-right: 5px;
+  font-weight: bold;
+  color: #333333;
+}
+
+.post-comment p {
+  margin: 0;
+  color: #666666;
+}
+@media screen and (max-width: 768px) {
+  .post-header {
+    flex-direction: column;
+    align-items: center;
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+
+  .post-header img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .post-info > h2 {
+    font-size: 18px;
+  }
+
+  .post-buttons button {
+    font-size: 16px;
+    padding: 4px;
+    width: auto;
+  }
+
+  .post-buttons {
+    font-size: 3rem !important;
+    transform: scale(0.5);
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+
+  .post-buttons button p {
+    Font-size: 2rem;
+  }
+
+  .post-commentBox textarea {
+    font-size: 14px;
+    width: 50px;
+    height: auto; 
+  }
+
+  .post-commentBox button {
+    font-size: 14px;
+  }
+
+  .post-comment p {
+    font-size: 14px;
+  }
+}
