@@ -140,7 +140,7 @@ function RequestsPage() {
       const ReqArray = user.data().requests;
       ReqArray.forEach((id) => {
         getDoc(doc(profileRef, id)).then((other) => {
-          const { firstName, lastName, profilePicUrl} = other.data();
+          const { firstName, lastName, profilePicUrl } = other.data();
           const otherId = other.id;
           const set = new Set();
           set.add({ id, firstName, lastName, profilePicUrl });
@@ -180,7 +180,7 @@ function RequestsPage() {
                 <div>
                   {UserData.map((user) => (
                     <div className="containRequest mb-4" key={user.id}>
-                       <img
+                      <img
                         className="connection-pic"
                         src={user.profilePicUrl || defaultpic}
                         alt={user.firstName}
