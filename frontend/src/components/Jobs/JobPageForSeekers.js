@@ -1,6 +1,16 @@
-// Importing necessary modules
-import React, { useEffect, useState } from "react";
-import { collection, query, getDoc, doc, onSnapshot } from "firebase/firestore";
+//importing modules
+import React, { useEffect, useState, useRef } from "react";
+import {
+	collection,
+	query,
+	where,
+	getDoc,
+	doc,
+	onSnapshot,
+	getDocs,
+	deleteDoc,
+	updateDoc,
+} from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import Card from "react-bootstrap/Card";
 import "../../styles/JobPostings.css";
@@ -46,10 +56,6 @@ function JobPageForSeekers() {
 		});
 	}, []);
 
-	function handleRedirection(id) {
-		navigate(`/ApplyToJobs/${id}`);
-	}
-
 	function handleSearchQueryChange(event) {
 		setSearchQuery(event.target.value);
 	}
@@ -78,6 +84,40 @@ function JobPageForSeekers() {
 			posting.job_title &&
 			posting.job_title.toLowerCase().includes(searchQuery.toLowerCase())
 	);
+
+	function handleRedirection(id, applyHereLink) {
+		if (applyHereLink) {
+			window.location.href = applyHereLink; // Redirect to applyHereLink
+		} else {
+			navigate(`/ApplyToJobs/${id}`); // Redirect to /ApplyToJobs/${id}
+		}
+	}
+	const [postingsAD, setPostingsAD] = useState([]);
+
+	useEffect(() => {
+		const postingsCollectionAD = collection(db, "posting");
+		const q = query(
+			postingsCollectionAD,
+			where("advertise", "in", [true, "on"])
+		);
+
+		const unsubscribe = onSnapshot(q, (querySnapshot) => {
+			const docs = [];
+			querySnapshot.forEach((doc) => {
+				docs.push({
+					id: doc.id,
+					...doc.data(),
+				});
+			});
+			const shuffledDocs = docs.sort(() => 0.5 - Math.random());
+			const selectedDocs = shuffledDocs.slice(0, 5);
+			setPostingsAD(selectedDocs);
+		});
+
+		return () => {
+			unsubscribe();
+		};
+	}, []);
 
 	return (
 		<>
@@ -120,6 +160,35 @@ function JobPageForSeekers() {
 							</Card>
 						</Col>
 					))}
+				</Row>
+				{/* SPONSORED CAROUSEL */}
+				<Row>
+					<h1>Sponsored</h1>
+					<Carousel>
+						{postingsAD.map((posting) => (
+							<Carousel.Item key={posting.id}>
+								<Card className="mb-3">
+									<Card.Body>
+										<Card.Title>{posting.title}</Card.Title>
+										<Card.Subtitle className="mb-2 text-muted">
+											{posting.company}
+										</Card.Subtitle>
+										<Card.Text>{posting.description}</Card.Text>
+										<Card.Text>{posting.skills}</Card.Text>
+										<Button
+											variant="primary"
+											style={{ backgroundColor: "#27746A" }}
+											onClick={() =>
+												handleRedirection(posting.id, posting.apply_here)
+											}
+										>
+											Apply Now
+										</Button>
+									</Card.Body>
+								</Card>
+							</Carousel.Item>
+						))}
+					</Carousel>
 				</Row>
 			</Container>
 		</>
