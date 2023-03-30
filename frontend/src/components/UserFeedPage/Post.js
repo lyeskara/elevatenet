@@ -1,10 +1,43 @@
-import React from "react";
+/**
+ * Post component
+ * @param {Object} props - Contains the properties passed to this component.
+ * @param {string} props.user - User id.
+ * @param {string} props.name - User name.
+ * @param {string} props.description - Post description.
+ * @param {string} props.message - Post message.
+ * @param {string} props.photo - User profile photo URL.
+ * @param {string} props.image - Post image URL.
+ *
+ * @returns {JSX.Element} A rendered Post component.
+ */
+import React, { useState } from "react";
 import '../../styles/post.css';
 import like from '../../images/like.png';
 import comment from '../../images/comment.png';
 
 
-function Post({ name, description, message, photo,image}) {
+function Post({ user,name, description, message, photo,image}) {
+// state variables
+const [likes, setLikes] = useState(0);
+const [comments, setComments] = useState([]);
+const [showCommentBox, setShowCommentBox] = useState(false);
+const [commentText, setCommentText] = useState("");
+
+const handleLike = () => {
+  setLikes(likes + 1);
+};
+
+const handleCommentButtonClick = () => {
+  setShowCommentBox(!showCommentBox);
+};
+
+const handleCommentSubmit = (e) => {
+  e.preventDefault();
+  setComments([...comments, commentText]);
+  setCommentText("");
+};
+
+
   return (
     <div className="post">
       <div className="post-header">
@@ -20,23 +53,48 @@ function Post({ name, description, message, photo,image}) {
       </div>
       <div className="post-body">
         <p>{message}</p>
-        {image && <img src={image} alt="post-image" />} {/* Render image if it exists */}
+        {image && <img src={image} alt="post-image" />} 
         
       </div>
 
       <div className="post-buttons">
-        <button>
+        <button onClick={handleLike}>
           <img src={like} alt="like" />
-          <p>Like</p>
+          <p> {likes} Like</p>
         </button>
-        <button>
+        <button onClick={handleCommentButtonClick}>
           <img src={comment} alt="comment" />
           <p>Comment</p>
         </button>
       </div>
+
+      {showCommentBox && (
+        <div className="post-commentBox">
+          <form onSubmit={handleCommentSubmit}style={{ display: "flex", alignItems: "center" }}>
+            <textarea
+              type="text"
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+              placeholder="Write a comment..."
+              rows="2"
+              style={{ flexGrow: 1 }} 
+            />
+            <button type="submit"style={{ marginLeft: "10px" }}>Post</button>
+          </form>
+        </div>
+      )}
+
+      {comments.map((comment, index) => (
+        <div key={index} className="post-comment">
+         <strong>{name}</strong>
+
+          <p>{comment}</p>
+        </div>
+      ))}
     </div>
   );
 }
 
 export default Post;
+
 
