@@ -23,16 +23,21 @@ import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import Heart from "react-heart";
 
+/**
+ * The JobPageForSeekers page displays the jobs that users may interesting. If they desire, they can click on the apply button to be directed to the application page. They can also save a job post for quick access.
+ *
+ * @return { Object } The page as a React component with the information of the job posts.
+ */
 function JobPageForSeekers() {
   const navigate = useNavigate();
   const [postings, setPostings] = useState([]);
   const [savedPostings, setSavedPostings] = useState([]);
-
-  const connection_requestsReference = collection(db, "savedPostings");
+  const savedCollection = collection(db, "savedPostings");
   const { id } = useParams();
-  const followedId = id;
-  const [follow, setfollow] = useState(false);
+  const postingId = id;
+  const [saved, setSaved] = useState({});
   const currId = auth.currentUser.uid;
+
   useEffect(() => {
     const postingsCollection = collection(db, "posting");
     const q = query(postingsCollection);
@@ -43,15 +48,17 @@ function JobPageForSeekers() {
           id: doc.id,
           ...doc.data(),
           isLiked: false, // Initialize isLiked state for each posting to false
+          saved: false, // Add saved property to each post object
         });
       });
       setPostings(docs);
     });
-
     return () => {
       unsubscribe();
     };
   }, []);
+  
+  
 
   // Function to redirect to the "JobPostings" page
   const handleClickJobPostings = () => {
@@ -61,38 +68,31 @@ function JobPageForSeekers() {
     window.location.href = "/SavedJobs";
   };
 
-  const handleLike = async (postingId) => {
-    // Find the posting with the given id and update its isLiked state
-    setPostings((prevPostings) =>
-      prevPostings.map((posting) =>
-        posting.id === postingId
-          ? { ...posting, isLiked: !posting.isLiked }
-          : posting
-      )
-    );
-
-    const authdoc = doc(connection_requestsReference, currId);
-    const array = [];
-    getDocs(connection_requestsReference)
+  //Function to handle the post being saved
+  //Function to handle the post being saved
+  const handleSave = async (postingId) => {
+    const authdoc = doc(savedCollection, currId);
+    const arraySave = [];
+    getDocs(savedCollection)
       .then((word) => {
         word.docs.forEach((doc) => {
           console.log(doc.id);
-          array.push(doc.id);
+          arraySave.push(doc.id);
         });
-        const condition = array.includes(authdoc.id);
+        const condition = arraySave.includes(authdoc.id);
         console.log(condition);
         if (!condition) {
-          setDoc(doc(connection_requestsReference, currId), {
+          setDoc(doc(savedCollection, currId), {
             saved: [postingId],
           });
         } else {
           getDoc(authdoc).then((document) => {
-            const followedUsers = document.data().saved;
-            if (!followedUsers.includes(postingId)) {
-              followedUsers.push(postingId);
-              return updateDoc(doc(connection_requestsReference, currId), {
+            const savedPosts = document.data().saved;
+            if (!savedPosts.includes(postingId)) {
+              savedPosts.push(postingId);
+              return updateDoc(doc(savedCollection, currId), {
                 ...document.data(),
-                saved: followedUsers,
+                saved: savedPosts,
               });
             } else {
               console.log("already saved!");
@@ -103,33 +103,23 @@ function JobPageForSeekers() {
       .catch((error) => {
         console.log(error);
       });
-
-    setfollow(true);
+    setSaved((prevSaved) => ({ ...prevSaved, [postingId]: true }));
   };
 
-  const handleUnsave = async ([postingId]) => {
-    // Find the posting with the given id and update its isLiked state
-    setPostings((prevPostings) =>
-      prevPostings.map((posting) =>
-        posting.id === postingId
-          ? { ...posting, isLiked: !posting.isLiked }
-          : posting
-      )
-    );
-
-    getDoc(doc(connection_requestsReference, currId))
+  const handleUnsave = async (postingId) => {
+    getDoc(doc(savedCollection, currId))
       .then((word) => {
         if (word.exists) {
-          const followedUsers = word.data().saved;
-          console.log(followedUsers);
-          if (followedUsers.includes(postingId)) {
-            const updatedFollowedUsers = followedUsers.filter(
+          const savedPosts = word.data().saved;
+          console.log("save post in unsave", savedPosts);
+          if (savedPosts.includes(postingId)) {
+            const updatedSavedPosts = savedPosts.filter(
               (userId) => userId !== postingId
             );
-            console.log(updatedFollowedUsers);
-            return updateDoc(doc(connection_requestsReference, currId), {
+            console.log("updated post in unsave", updatedSavedPosts);
+            return updateDoc(doc(savedCollection, currId), {
               ...word.data(),
-              requests: updatedFollowedUsers,
+              saved: updatedSavedPosts,
             });
           }
         }
@@ -137,10 +127,11 @@ function JobPageForSeekers() {
       .catch((error) => {
         console.log(error);
       });
-    setfollow(false);
+    setSaved((prevSaved) => ({ ...prevSaved, [postingId]: false }));
   };
-  function handleRedirection(id){
-    navigate(`/ApplyToJobs/${id}`)
+
+  function handleRedirection(id) {
+    navigate(`/ApplyToJobs/${id}`);
   }
   return (
     <>
@@ -152,7 +143,10 @@ function JobPageForSeekers() {
             <h2> Jobs </h2>
             <hr></hr>
             {/* When the user clicks the "Job Postings" text, it calls handleClickJobPostings */}
-            <h4 style={{ color: "#27746a" }}> Suggested Jobs </h4>
+            <h4 onClick={handleClickJobPostings} style={{ color: "#27746a" }}>
+              {" "}
+              Suggested Jobs{" "}
+            </h4>
             {/* Advertisements */}
             <h4 onClick={handleClickSavedJobs} style={{ color: "#888888" }}>
               {" "}
@@ -172,20 +166,24 @@ function JobPageForSeekers() {
                   </Card.Subtitle>
                   <Card.Text>{posting.description}</Card.Text>
                   <Card.Text>{posting.skills}</Card.Text>
-                  <Button variant="primary" style={{backgroundColor: "#27746A"}} onClick={()=>handleRedirection(posting.id)}>
-                        Apply Now
-                    </Button>
+                  <Button
+                    variant="primary"
+                    style={{ backgroundColor: "#27746A" }}
+                    onClick={() => handleRedirection(posting.id)}
+                  >
+                    Apply Now
+                  </Button>
                   <div style={{ width: "2rem" }}>
-                    <Heart
-                      className="heart"
-                      isActive={
-                        posting.isLiked ||
-                        savedPostings.some(
-                          (savedPosting) => savedPosting.id === posting.id
-                        )
+                    <Button
+                      variant="secondary"
+                      onClick={() =>
+                        saved[posting.id]
+                          ? handleUnsave(posting.id)
+                          : handleSave(posting.id)
                       }
-                      onClick={() => handleLike(posting.id)}
-                    />
+                    >
+                      {saved[posting.id] ? "unsave" : "save"}
+                    </Button>
                   </div>
                 </Card.Body>
               </Card>
