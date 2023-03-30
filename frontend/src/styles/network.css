@@ -170,7 +170,8 @@ h5.time{
   justify-content: center;
   align-items: center;
   height: 20%;
-  width: 50%;
+  width: 87%;
+  margin-left: 3%;
 }
 
 .follow_button,
@@ -192,7 +193,8 @@ h5.time{
   justify-content: center;
   align-items: center;
   height: 20%;
-  width: 50%;
+  width: 87%;
+  margin-left: 3%;
 }
 
 .unfollow_button,
@@ -208,4 +210,32 @@ h5.time{
   color: #27746a;
   border-color: #27746a;
 
+}
+
+.modal_button,
+.modal_button:hover {
+  background-color: white;
+  color: #27746a;
+  border-color: #27746a;
+
+}
+.modal_button:active,
+.modal_button:focus {
+  background-color: white;
+  color: #27746a;
+  border-color: #27746a;
+
+}
+
+.other-profile-pic{
+  width: 25%;
+  height: 25%;
+  border-radius: 25px;
+}
+
+.connection-pic{
+  width: 5%;
+  height: 5%;
+  border-radius: 10px;
+  margin-right: 2%;
 }
