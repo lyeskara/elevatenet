@@ -8,7 +8,7 @@ import Col from "react-bootstrap/Col";
 import { GrMailOption, GrPhone } from "react-icons/gr";
 import EditProfile from "./EditProfile";
 import person from "./test.gif";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, getDownloadURL, getMetadata } from "firebase/storage";
 
 /**
  * Profile loads values stored in the data base and allows us to view them in a styled page.
@@ -39,7 +39,7 @@ function Profile() {
 				);
 
 				// Check if the profile picture exists in Firebase Storage
-				const metadata = await storageRef.getMetadata();
+				const metadata = await getMetadata(storageRef);
 				const downloadURL = await getDownloadURL(storageRef);
 
 				// Set the profile picture URL state
