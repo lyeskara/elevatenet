@@ -9,7 +9,11 @@
   margin-top: 30px;
   
 }
-
+.username-forposts {
+  font-size: 1.2em; 
+  font-weight: bold;
+  margin-left: 12px
+}
 .post-header {
   margin-top: 40px;
   margin-left: 8%;
