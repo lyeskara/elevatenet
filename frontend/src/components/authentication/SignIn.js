@@ -73,7 +73,7 @@ const SignIn = () => {
             <p>{message}</p>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseModal}>
+            <Button variant="secondary" style={{ borderRadius: "20px" }} onClick={handleCloseModal}>
               Close
             </Button>
           </Modal.Footer>

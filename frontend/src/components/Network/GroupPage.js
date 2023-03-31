@@ -32,7 +32,9 @@ function GroupPage() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [group, setGroup] = useState(null);
+  const [memberNames, setMemberNames] = useState([]);
   const [showModal, setShowModal] = useState(false);
+
 
   // Here we set the group variable with the information matching the group ID.
   useEffect(() => {
@@ -161,17 +163,17 @@ function GroupPage() {
 
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Confirm Leave Group</Modal.Title>
+          <Modal.Title>Leave Confirmation</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           Are you sure you want leave this group?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
+          <Button variant="secondary" style={{ borderRadius: "20px" }} onClick={() => setShowModal(false)}>
             Cancel
           </Button>
           <Button
-            style={{ backgroundColor: "#27746a" }}
+            style={{ backgroundColor: "#27746a", borderRadius: "20px" }}
             onClick={leaveGroup}
           >
             Leave

@@ -100,6 +100,8 @@ function ConnectionPage() {
 
   const [showModal, setShowModal] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
 
   //This function will proceeed with the deletion if confirmed, or do nothing + close the modal.
@@ -121,9 +123,12 @@ function ConnectionPage() {
    * @param {handleDelete} userId
    * We store the target user's ID for further use, if we confirm the deletion.
    */
-  function handleDeleteEvent(userId) {
+  function handleDeleteEvent(user) {
+    setFirstName(user.firstName);
+    setLastName(user.lastName);
     setShowModal(true);
-    setUserToDelete(userId);
+    setUserToDelete(user.id);
+
   }
 
   return (
@@ -180,7 +185,7 @@ function ConnectionPage() {
                       <Button
                         className="trash_button"
                         onClick={() => {
-                          handleDeleteEvent(user.id);
+                          handleDeleteEvent(user);
                         }}
                       >
                         <img src={trash} alt="node" />
@@ -195,20 +200,21 @@ function ConnectionPage() {
               {/*This is the confirmation modal that will appear when a connection deletion is initiated.*/}
               <Modal show={showModal} onHide={() => setShowModal(false)}>
                 <Modal.Header closeButton>
-                  <Modal.Title>Confirm Deletion</Modal.Title>
+                  <Modal.Title>Connection Removal</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  Are you sure you want to delete this connection?
+                  You are about to remove your connection with {firstName} {lastName}, are you sure you want to proceed?
                 </Modal.Body>
                 <Modal.Footer>
                   <Button
                     variant="secondary"
+                    style={{ borderRadius: "20px" }}
                     onClick={() => setShowModal(false)}
                   >
                     Cancel
                   </Button>
-                  <Button style={{ backgroundColor: "#27746a"}} onClick={confirmDeletion}>
-                    Delete
+                  <Button style={{ backgroundColor: "#27746a", borderRadius: "20px"}} onClick={confirmDeletion}>
+                    Remove Connection
                   </Button>
                 </Modal.Footer>
               </Modal>

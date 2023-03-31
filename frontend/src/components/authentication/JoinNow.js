@@ -121,7 +121,7 @@ function JoinNow() {
             {message}
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseModal}>
+            <Button variant="secondary" style={{ borderRadius: "20px" }} onClick={handleCloseModal}>
               Close
             </Button>
           </Modal.Footer>
