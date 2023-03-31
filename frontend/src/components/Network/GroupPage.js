@@ -81,9 +81,9 @@ function GroupPage() {
               {group.memberUIDs.length}{" "}
               {group.memberUIDs.length === 1 ? "member" : "members"}
             </h5>
-            <h4>{group.industry}</h4>
-            <h5>{group.location}</h5>
-            <p>{group.description}</p>
+            <h4>{group.industry === "" ? "No industry given." : group.industry}</h4>
+            <h5>{group.location === "" ? "No location given." : group.location}</h5>
+            <p>{group.description === "" ? "No description given." : group.description}</p>
             <Button variant="primary" size="lg" block className="w-100" style={{backgroundColor:'#27746a'}} onClick={leaveGroup}>Leave Group</Button>
           </Card>
 
