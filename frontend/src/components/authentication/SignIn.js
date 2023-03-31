@@ -10,8 +10,6 @@ const SignIn = () => {
   const navigate = useNavigate();
   const { googleSignIn } = useUserAuth();
 
-  const [showModal, setShowModal] = useState(false);
-
   //adding signin with google handler
   const handleGoogleSignIn = async () => {
     try {
@@ -35,12 +33,57 @@ const SignIn = () => {
       console.log(Login(email, password));
     } catch (error) {
       console.log(error.message);
+      setErrorMessage(error.message);
       setShowModal(true);
     }
   };
 
+  const [showModal, setShowModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  //This closes the modal on the user's screen.
   const handleCloseModal = () => {
     setShowModal(false);
+  };
+
+  //This sets a custom message depending on the error that is captured upon trying to sign-in.
+  const MyModal = ({ showModal, handleCloseModal, errorMessage }) => {
+    if(errorMessage){
+
+      let message = ''; //Error message variable is instantiated.
+
+
+      //The appropriate message is assigned.
+      if(errorMessage === "Firebase: Error (auth/wrong-password)."){
+        message = "The password does not match with the email. Please try again.";
+      }
+  
+      if(errorMessage === "Firebase: Error (auth/user-not-found)."){
+        message = "The entered email does not exist.";
+      }
+
+      else{
+        message = "Default Sign-In error.";
+      };
+  
+      //Here we return the modal to the user.
+      return (
+        <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Sign-In Error</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>{message}</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseModal}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      );
+
+    };
   };
 
   return (
@@ -102,19 +145,11 @@ const SignIn = () => {
             </Form.Text>
           </Form>
         </div>
-        <Modal show={showModal} onHide={handleCloseModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>Invalid Password</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            Your username or password is incorrect. Please try again.
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseModal}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        <MyModal
+          showModal={showModal}
+          handleCloseModal={handleCloseModal}
+          errorMessage={errorMessage}
+        />
       </Container>
     </>
   );
