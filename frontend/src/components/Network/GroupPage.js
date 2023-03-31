@@ -22,6 +22,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import grouplogo from ".././../images/group.png";
 
 //Feed Import
 import Feed from "../UserFeedPage/Feed";
@@ -100,7 +101,7 @@ function GroupPage() {
         {/* Left Sidebar of the group page, where all group information is found*/}
         <Col className="col1" xs={12} md={{ span: 3, offset: 1 }}>
           <Card className="profilecard">
-            <img src={group.group_img_url} style={{ maxHeight: "500px" }} />
+            <img src={group.group_img_url ? group.group_img_url : grouplogo} style={{ maxHeight: "500px" }} />
             <h1>
               <span style={{ color: "#27746A" }}> {group.group_name} </span>
             </h1>
