@@ -15,7 +15,6 @@ import { getStorage, ref, getDownloadURL } from "firebase/storage";
  */
 function Profile() {
 	const [user, setUser] = useState({});
-	const [downloadUrl, setDownloadUrl] = useState("");
 	const [profilePicURL, setProfilePicURL] = useState("");
 	const storage = getStorage();
 
@@ -28,23 +27,33 @@ function Profile() {
 			const userDoc = await getDoc(
 				doc(collection(db, "users_information"), auth.currentUser.uid)
 			);
+
 			if (userDoc.exists) {
+				// Set the user state
 				setUser({ ...userDoc.data(), id: userDoc.id });
 
-				// Get the profile picture URL from the Firebase Storage URL
+				// Get the profile picture URL from Firebase Storage
 				const storageRef = ref(
 					storage,
 					`profilepics/${auth.currentUser.uid}/profilePic`
 				);
 
+				// Check if the profile picture exists in Firebase Storage
+				const metadata = await storageRef.getMetadata();
 				const downloadURL = await getDownloadURL(storageRef);
-				console.log(downloadURL);
-				setProfilePicURL(downloadURL); // Set the profile picture URL state
+
+				// Set the profile picture URL state
+				setProfilePicURL(downloadURL);
 			} else {
 				console.log("User not found");
 			}
 		} catch (error) {
 			console.log(error);
+
+			// Set the profile picture URL state to a default value
+			setProfilePicURL(
+				"https://firebasestorage.googleapis.com/v0/b/soen390-b027d.appspot.com/o/profilepics%2FBase%2Ftest.gif?alt=media&token=d295d8c2-493f-4c20-8fac-0ede65eaf0b6"
+			);
 		}
 	};
 
