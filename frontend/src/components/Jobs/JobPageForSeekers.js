@@ -116,7 +116,13 @@ function JobPageForSeekers() {
 			posting.job_title &&
 			posting.job_title.toLowerCase().includes(searchQuery.toLowerCase())
 	);
-
+	/**
+	 * The handleRedirection method redirects the user based on if the job posting contains a link or not.
+	 * If a third party link is provided, a pop up will show up when the user clicks on apply before being redirected to the third party link
+	 * @param id (str): The ID of the job to apply for 
+	 * @param applyHereLink (str): The URL of the third-party website where the user can apply for the job, if available. If not available, this should be None.
+	 * @return none
+	 */
 	function handleRedirection(id, applyHereLink) {
         if (!applyHereLink) {
           // If there is no applyHereLink, redirect to the ApplyToJobs page
