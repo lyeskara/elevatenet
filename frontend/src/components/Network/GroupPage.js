@@ -18,6 +18,7 @@ import { db, auth } from "../../firebase";
 import "../../styles/profile.css";
 import "../../styles/network.css";
 import "../../styles/JobPostings.css";
+import backward from ".././../images/backward.png";
 import {Row, Col, Card, Button, Modal} from "react-bootstrap";
 
 //Feed Import
@@ -92,6 +93,7 @@ function GroupPage() {
     navigate('/GroupNetwork');
   }
 
+  //This opens the confirmation modal.
   function leaveConfirmation(){
     setShowModal(true);
   };
@@ -102,6 +104,9 @@ function GroupPage() {
       <Row className="gap-5">
         {/* Left Sidebar of the group page, where all group information is found*/}
         <Col className="col1" xs={12} md={{ span: 3, offset: 1 }}>
+          <Link to="/GroupNetwork">
+            <img src={backward} alt="back" />
+          </Link>
           <Card className="profilecard">
             <img src={group.group_img_url} />
             <h1>
@@ -165,11 +170,13 @@ function GroupPage() {
         <Modal.Header closeButton>
           <Modal.Title>Leave Confirmation</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          Are you sure you want leave this group?
-        </Modal.Body>
+        <Modal.Body>Are you sure you want leave this group?</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" style={{ borderRadius: "20px" }} onClick={() => setShowModal(false)}>
+          <Button
+            variant="secondary"
+            style={{ borderRadius: "20px" }}
+            onClick={() => setShowModal(false)}
+          >
             Cancel
           </Button>
           <Button
