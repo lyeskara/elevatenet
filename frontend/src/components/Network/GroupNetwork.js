@@ -110,7 +110,7 @@ function GroupNetwork() {
                       <Card className="card">
                         <Row>
                           <Col md={2} sm={12} className="text-center">
-                            <img src={groupInfos.group_img_url ? groupInfos.group_img_url : grouplogo} style={{ maxHeight: '150px', minHeight: '150px'}} className="img-fluid my-3" alt="template_group_pic" />
+                            <img src={groupInfos.group_img_url ? groupInfos.group_img_url : grouplogo} style={{ maxHeight: '150px', minWidth: '100%', width: '150px', height: '150px', objectFit: 'contain', }} className="img-fluid my-3" alt="template_group_pic" />
                           </Col>
                           <Col md={8} sm={12}>
                             <h3> {groupInfos.group_name}</h3>
@@ -141,7 +141,7 @@ function GroupNetwork() {
                   <Card className="card">
                     <Row>
                       <Col md={2} sm={12} className="text-center">
-                      <img src={groupInfos.group_img_url ? groupInfos.group_img_url : grouplogo} style={{ maxHeight: '150px', minHeight: '150px' }} alt="template_group_pic" className="img-fluid my-3" />
+                      <img src={groupInfos.group_img_url ? groupInfos.group_img_url : grouplogo} style={{ maxHeight: '150px', minWidth: '100%', width: '150px', height: '150px', objectFit: 'contain', }} className="img-fluid my-3" alt="template_group_pic" />
                       </Col>
                       <Col md={8}>
                         <h3> {groupInfos.group_name}</h3>
