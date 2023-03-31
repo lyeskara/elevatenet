@@ -141,7 +141,8 @@ function CreateNewPosting() {
                                 name="job_title"
                                 value={postingData.job_title}
                                 onChange={handleInputChange}
-                                style={{backgroundColor: "#F3F3F3"}} 
+                                style={{backgroundColor: "#F3F3F3"}}
+                                required 
                                 />
                             </div>
                             {/* COMPANY */}
@@ -156,6 +157,7 @@ function CreateNewPosting() {
                                 value={postingData.company}
                                 onChange={handleInputChange}
                                 style={{backgroundColor: "#F3F3F3"}}
+                                required
                                 />
                             </div>
                             {/* DESCRIPTION */}
@@ -171,6 +173,7 @@ function CreateNewPosting() {
                                 value={postingData.description}
                                 onChange={handleInputChange}
                                 style={{backgroundColor: "#F3F3F3"}}
+                                required
                                 ></textarea>
                             </div>
                             {/* SKILLS */}
@@ -185,6 +188,7 @@ function CreateNewPosting() {
                                 value={postingData.skills}
                                 onChange={handleInputChange}
                                 style={{backgroundColor: "#F3F3F3"}}
+                                required
                                 />
                             </div>
                             {/* RESUME OR COVER LETTER REQUIRED */}
@@ -240,6 +244,7 @@ function CreateNewPosting() {
                                 name="deadline"
                                 value={postingData.deadline}
                                 style={{backgroundColor: "#F3F3F3"}}
+                                required
                                 />
                             </div>
                             {/* CHECKBOX TO KNOW IF POSTING SHOULD BE ADVERTISED   */}
@@ -255,7 +260,7 @@ function CreateNewPosting() {
                                         onClick={() => setPostingData({...postingData, advertise: !postingData.advertise})}
                                         style={{ backgroundColor: postingData.advertise ? '#27746a' : '' }}
                                     >
-                                        {postingData.advertise ? 'Advertise' : 'Do Not Advertised'}
+                                        {postingData.advertise ? 'Advertise' : 'Do Not Advertise'}
                                     </button>
 
                                     {/* xxxxxxxxxxxxxxxxxxx */}
