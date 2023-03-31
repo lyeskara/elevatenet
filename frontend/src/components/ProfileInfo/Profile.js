@@ -65,18 +65,29 @@ function Profile() {
 		const storageRef = ref(storage, `resume/${auth.currentUser.uid}/resume`);
 		try {
 			const url = await getDownloadURL(storageRef);
-			window.open(url);
+			if (url) {
+				window.open(url);
+			} else {
+				alert("Resume file not found!");
+			}
 		} catch (error) {
 			console.log(error);
+			alert("Error downloading resume file!");
 		}
 	};
+
 	const downloadCL = async () => {
 		const storageRef = ref(storage, `CL/${auth.currentUser.uid}/CL`);
 		try {
 			const url = await getDownloadURL(storageRef);
-			window.open(url);
+			if (url) {
+				window.open(url);
+			} else {
+				alert("Cover letter file not found!");
+			}
 		} catch (error) {
 			console.log(error);
+			alert("Cover letter file not found!");
 		}
 	};
 
