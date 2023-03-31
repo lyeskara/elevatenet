@@ -174,7 +174,14 @@ function JobPageForSeekers() {
 		};
 	}, []);
 
-   //Function to handle the post being saved to store in savedPostings collection
+
+ /**
+  * Function to handle the post being saved to store in savedPostings collection
+  * Save a post with the given postingId for the current user, or update an existing saved post.
+  * The function updates the savedCollection Firestore collection.
+  * @param  postingId (str): The ID of the post to save. 
+  * @return none
+  */
    const handleSave = async (postingId) => {
     const authdoc = doc(savedCollection, currId);
     const arraySave = [];
@@ -211,7 +218,12 @@ function JobPageForSeekers() {
     setSaved((prevSaved) => ({ ...prevSaved, [postingId]: true, savedProperty:true }));
   };
 
-  //Function that will delete the post that was unsaved from the savedPostings collection
+ /**
+  * Function that will delete the post that was unsaved from the savedPostings collection
+  * Handles un-saving a posting by updating the saved collection in Firestore and setting the saved state to false.
+  * @param postingId (str): The ID of the posting to un-save. 
+  * @return none
+  */
   const handleUnsave = async (postingId) => {
     getDoc(doc(savedCollection, currId))
       .then((word) => {
