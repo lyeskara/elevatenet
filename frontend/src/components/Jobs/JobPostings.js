@@ -42,11 +42,15 @@ function JobPostings() {
 
 	// Function to delete a job posting from the database
 	const handleDelete = async (id) => {
-		try {
-			await deleteDoc(doc(db, "posting", id));
-			window.location.reload();
-		} catch (error) {
-			console.error("Error deleting document: ", error);
+		const confirmed = window.confirm("Are you sure you want to delete this post?");
+	
+		if (confirmed) {
+			try {
+				await deleteDoc(doc(db, "posting", id));
+				window.location.reload();
+			} catch (error) {
+				console.error("Error deleting document: ", error);
+			}
 		}
 	};
 

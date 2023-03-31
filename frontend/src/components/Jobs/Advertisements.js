@@ -29,13 +29,16 @@ function Advertisements() {
 
 	// Function to delete a job posting from the database
 	const handleDelete = async (id) => {
-		try {
-			await deleteDoc(doc(db, "posting", id));
-			window.location.reload();
-		} catch (error) {
-			console.error("Error deleting document: ", error);
-		}
-	};
+        const confirmDelete = window.confirm("Are you sure you want to delete this advertisement?");
+        if (confirmDelete) {
+          try {
+            await deleteDoc(doc(db, "posting", id));
+            window.location.reload();
+          } catch (error) {
+            console.error("Error deleting document: ", error);
+          }
+        }
+      };
 
 	// Function to handle save when editing a job posting
 	const handleSave = async (id) => {
