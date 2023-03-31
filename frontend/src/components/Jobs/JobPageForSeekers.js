@@ -1,3 +1,9 @@
+/*
+This is a React component that displays job postings for seekers. It fetches job postings from the Firebase 
+Firestore database and displays them. Users can search for postings by job title and filter by their skills.
+They can also save a job post for quick access. If they click on the apply button, they will be directed 
+to the application page for that job post.
+*/
 //importing modules
 import React, { useEffect, useState, useRef } from "react";
 import {
