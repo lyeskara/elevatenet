@@ -1,9 +1,17 @@
 //React Imports
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 
 //Firebase Imports
-import { doc, getDoc, getDocs, updateDoc, where, query, collection } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+  where,
+  query,
+  collection,
+} from "firebase/firestore";
 import { db, auth } from "../../firebase";
 
 //Styling Imports
@@ -16,13 +24,13 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 
 //Feed Import
-import Feed from "../UserFeedPage/Feed"
+import Feed from "../UserFeedPage/Feed";
 
 /**
-* The GroupPage displays a view of a group. It is used to select the target group, retrieve its information from the Firestore, and display it.
-*
-* @return { Object } The page as a React component with the information of the group.
-*/
+ * The GroupPage displays a view of a group. It is used to select the target group, retrieve its information from the Firestore, and display it.
+ *
+ * @return { Object } The page as a React component with the information of the group.
+ */
 function GroupPage() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -39,22 +47,25 @@ function GroupPage() {
       if (groupDoc.exists()) {
         setGroup(groupDoc.data());
 
-       // Fetch member names from users_information collection.
-       const membersRef = collection(db, "users_information");
-       const membersQuery = query(membersRef, where("id", "in", groupDoc.data().memberUIDs));
-       const memberDocs = await getDocs(membersQuery);
-       const memberNamesArray = memberDocs.docs.map((doc) => {
-        const firstName = doc.data().firstName;
-        const lastName = doc.data().lastName;
-        return `${firstName || "Unnamed"} ${lastName || ""}`.trim();
-      });
+        // Fetch member names from users_information collection.
+        const membersRef = collection(db, "users_information");
+        const membersQuery = query(
+          membersRef,
+          where("id", "in", groupDoc.data().memberUIDs)
+        );
+        const memberDocs = await getDocs(membersQuery);
+        const memberNamesArray = memberDocs.docs.map((doc) => {
+          const firstName = doc.data().firstName;
+          const lastName = doc.data().lastName;
+          const fullName = `${firstName || "Unnamed"} ${lastName || ""}`.trim();
+          const profileLink = `/profile/${doc.id}`;
+          return { fullName, profileLink };
+        });
 
-       setMemberNames(memberNamesArray);
-
+        setMemberNames(memberNamesArray);
       } else {
         console.log("No such group exists.");
       }
-
     };
 
     fetchGroup();
@@ -112,23 +123,28 @@ function GroupPage() {
             </Button>
           </Card>
 
-          <Card className="profilecard" style={{minHeight: `${Math.max(memberNames.length * 40, 100)}px`}}>
+          {/* Section where all the users who joined the group are displayed.*/}
+          <Card
+            className="profilecard"
+            style={{ minHeight: `${Math.max(memberNames.length * 40, 100)}px` }}
+          >
             <h2> Active Members </h2>
             <hr />
             {group.memberUIDs.length > 0 ? (
-              <ul class="list-group">
-                {memberNames.map((name, index) => (
-                  <li key={index} class="list-group-item" > {name} </li>
+              <ul className="list-group">
+                {memberNames.map(({ fullName, profileLink }, index) => (
+                  <li key={index} className="list-group-item">
+                    <Link to={profileLink}>{fullName}</Link>
+                  </li>
                 ))}
               </ul>
             ) : (
               <p>No active members</p>
             )}
           </Card>
-
         </Col>
 
-        {/* Main section where the group feed will be mapped*/}
+        {/* Main section where the group feed will be mapped */}
         <Col style={{ margin: "0% -15% 0% -20%" }}>
           <Feed />
         </Col>
