@@ -1,3 +1,9 @@
+/*
+This is a React component that displays job postings for seekers. It fetches job postings from the Firebase 
+Firestore database and displays them. Users can search for postings by job title and filter by their skills.
+They can also save a job post for quick access. If they click on the apply button, they will be directed 
+to the application page for that job post.
+*/
 //importing modules
 import React, { useEffect, useState, useRef } from "react";
 import {
@@ -116,14 +122,31 @@ function JobPageForSeekers() {
 			posting.job_title &&
 			posting.job_title.toLowerCase().includes(searchQuery.toLowerCase())
 	);
-
+	/**
+	 * The handleRedirection method redirects the user based on if the job posting contains a link or not.
+	 * If a third party link is provided, a pop up will show up when the user clicks on apply before being redirected to the third party link
+	 * @param id (str): The ID of the job to apply for 
+	 * @param applyHereLink (str): The URL of the third-party website where the user can apply for the job, if available. If not available, this should be None.
+	 * @return none
+	 */
 	function handleRedirection(id, applyHereLink) {
-		if (applyHereLink) {
-			window.location.href = applyHereLink; // Redirect to applyHereLink
-		} else {
-			navigate(`/ApplyToJobs/${id}`); // Redirect to /ApplyToJobs/${id}
-		}
-	}
+        if (!applyHereLink) {
+          // If there is no applyHereLink, redirect to the ApplyToJobs page
+          navigate('/ApplyToJobs/${id}');
+        } else {
+          // If there is an applyHereLink, prompt the user with a confirmation dialog
+          const confirm = window.confirm(
+            'Are you sure you want to be navigated to a third-party site to apply for this job?'
+          );
+          if (confirm) {
+            // If the user clicks "OK", redirect to the applyHereLink
+            window.open(applyHereLink, '_blank');
+          } else {
+            // If the user clicks "Cancel", do nothing
+            return;
+          }
+        }
+      }
 	
 
 	useEffect(() => {
@@ -151,7 +174,14 @@ function JobPageForSeekers() {
 		};
 	}, []);
 
-   //Function to handle the post being saved to store in savedPostings collection
+
+ /**
+  * Function to handle the post being saved to store in savedPostings collection
+  * Save a post with the given postingId for the current user, or update an existing saved post.
+  * The function updates the savedCollection Firestore collection.
+  * @param  postingId (str): The ID of the post to save. 
+  * @return none
+  */
    const handleSave = async (postingId) => {
     const authdoc = doc(savedCollection, currId);
     const arraySave = [];
@@ -188,7 +218,12 @@ function JobPageForSeekers() {
     setSaved((prevSaved) => ({ ...prevSaved, [postingId]: true, savedProperty:true }));
   };
 
-  //Function that will delete the post that was unsaved from the savedPostings collection
+ /**
+  * Function that will delete the post that was unsaved from the savedPostings collection
+  * Handles un-saving a posting by updating the saved collection in Firestore and setting the saved state to false.
+  * @param postingId (str): The ID of the posting to un-save. 
+  * @return none
+  */
   const handleUnsave = async (postingId) => {
     getDoc(doc(savedCollection, currId))
       .then((word) => {
