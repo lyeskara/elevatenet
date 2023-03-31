@@ -44,7 +44,7 @@ function JoinNow() {
 					return setDoc(
 						doc(collection(db, "recruiters_informations"), auth.currentUser.uid),
 						{
-							firstName: "",
+						firstName: "",
 						lastName: "",
 						city: "",
 						company:""

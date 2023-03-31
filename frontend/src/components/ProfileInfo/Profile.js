@@ -8,14 +8,13 @@ import Col from "react-bootstrap/Col";
 import { GrMailOption, GrPhone } from "react-icons/gr";
 import EditProfile from "./EditProfile";
 import person from "./test.gif";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, getDownloadURL, getMetadata } from "firebase/storage";
 
 /**
  * Profile loads values stored in the data base and allows us to view them in a styled page.
  */
 function Profile() {
 	const [user, setUser] = useState({});
-	const [downloadUrl, setDownloadUrl] = useState("");
 	const [profilePicURL, setProfilePicURL] = useState("");
 	const storage = getStorage();
 
@@ -28,23 +27,33 @@ function Profile() {
 			const userDoc = await getDoc(
 				doc(collection(db, "users_information"), auth.currentUser.uid)
 			);
+
 			if (userDoc.exists) {
+				// Set the user state
 				setUser({ ...userDoc.data(), id: userDoc.id });
 
-				// Get the profile picture URL from the Firebase Storage URL
+				// Get the profile picture URL from Firebase Storage
 				const storageRef = ref(
 					storage,
 					`profilepics/${auth.currentUser.uid}/profilePic`
 				);
 
+				// Check if the profile picture exists in Firebase Storage
+				const metadata = await getMetadata(storageRef);
 				const downloadURL = await getDownloadURL(storageRef);
-				console.log(downloadURL);
-				setProfilePicURL(downloadURL); // Set the profile picture URL state
+
+				// Set the profile picture URL state
+				setProfilePicURL(downloadURL);
 			} else {
 				console.log("User not found");
 			}
 		} catch (error) {
 			console.log(error);
+
+			// Set the profile picture URL state to a default value
+			setProfilePicURL(
+				"https://firebasestorage.googleapis.com/v0/b/soen390-b027d.appspot.com/o/profilepics%2FBase%2Ftest.gif?alt=media&token=d295d8c2-493f-4c20-8fac-0ede65eaf0b6"
+			);
 		}
 	};
 
@@ -56,18 +65,29 @@ function Profile() {
 		const storageRef = ref(storage, `resume/${auth.currentUser.uid}/resume`);
 		try {
 			const url = await getDownloadURL(storageRef);
-			window.open(url);
+			if (url) {
+				window.open(url);
+			} else {
+				alert("Resume file not found!");
+			}
 		} catch (error) {
 			console.log(error);
+			alert("Error downloading resume file!");
 		}
 	};
+
 	const downloadCL = async () => {
 		const storageRef = ref(storage, `CL/${auth.currentUser.uid}/CL`);
 		try {
 			const url = await getDownloadURL(storageRef);
-			window.open(url);
+			if (url) {
+				window.open(url);
+			} else {
+				alert("Cover letter file not found!");
+			}
 		} catch (error) {
 			console.log(error);
+			alert("Cover letter file not found!");
 		}
 	};
 
