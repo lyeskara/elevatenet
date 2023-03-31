@@ -36,11 +36,17 @@ import RequestSent from "./components/connection/RequestSent";
 import RecruiterForm from './components/ProfileInfo/RecruiterFrom'
 
 import Messaging from './components/DirectMessage/Messaging';
+import CompanySearch from './components/connection/CompanySearch';
 function App() {
   return (
     <UserAuthContextProvider>
       <NavbarFun />
       <Routes>
+      <Route
+          path="/CompanySearch"
+          element={<Protection>{<CompanySearch />}</Protection>}
+        ></Route>
+
         <Route
           path="/ProfileForm"
           element={<Protection>{<ProfileForm />}</Protection>}
