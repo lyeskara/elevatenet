@@ -109,16 +109,16 @@ function GroupNetwork() {
                     <div className="post-content" key={groupInfos.id}> 
                       <Card className="card">
                         <Row>
-                          <Col md={1} className="text-center">
-                            <img src={groupInfos.group_img_url ? groupInfos.group_img_url : grouplogo} style={{ maxHeight: '150px' }} alt="template_group_pic" className="group_pic_center" />
+                          <Col md={2} sm={12} className="text-center">
+                            <img src={groupInfos.group_img_url ? groupInfos.group_img_url : grouplogo} style={{ maxHeight: '150px', minWidth: '100%', width: '150px', height: '150px', objectFit: 'contain', }} className="img-fluid my-3" alt="template_group_pic" />
                           </Col>
-                          <Col md={9} >
+                          <Col md={8} sm={12}>
                             <h3> {groupInfos.group_name}</h3>
                             <h5> {groupInfos.memberUIDs.length} {groupInfos.memberUIDs.length === 1 ? "member" : "members"}</h5>
                         <hr></hr>
                         <p> {groupInfos.description === "" ? "No description given." : groupInfos.description}</p>
                           </Col>
-                          <Col className="center-col" md={2}>
+                          <Col className="center-col" md={2} sm={12}>
                             <Link to={`/group/${groupInfos.id}`}>
                               <Button className="create_Group_Button" >View Group</Button>
                             </Link>
@@ -140,16 +140,16 @@ function GroupNetwork() {
                 <div className="post-content" key={groupInfos.id}> 
                   <Card className="card">
                     <Row>
-                      <Col md={1}>
-                      <img src={groupInfos.group_img_url ? groupInfos.group_img_url : grouplogo} style={{ maxHeight: '150px' }} alt="template_group_pic" className="group_pic_center" />
+                      <Col md={2} sm={12} className="text-center">
+                      <img src={groupInfos.group_img_url ? groupInfos.group_img_url : grouplogo} style={{ maxHeight: '150px', minWidth: '100%', width: '150px', height: '150px', objectFit: 'contain', }} className="img-fluid my-3" alt="template_group_pic" />
                       </Col>
-                      <Col md={9}>
+                      <Col md={8}>
                         <h3> {groupInfos.group_name}</h3>
                         <h5> {groupInfos.memberUIDs.length} {groupInfos.memberUIDs.length === 1 ? "member" : "members"}</h5>
                         <hr />
                         <p> {groupInfos.description === "" ? "No description given." : groupInfos.description} </p>
                       </Col>
-                      <Col className="center-col" md={2}>
+                      <Col className="center-col" md={2} sm={12}>
                         <Button className="create_Group_Button" onClick={() => handleRequest(index)}>
                         Join Group
                         </Button>

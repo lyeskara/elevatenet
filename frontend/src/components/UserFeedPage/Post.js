@@ -57,12 +57,12 @@ const handleImageError = (e) => {
     <div className="post">
       <div className="post-header">
         <div>
-          <img src={photo} alt={name} />
-          <span>{name}</span>
+          <img src={photo} />
+          <span className="username-forposts">{name}</span>
         </div>
 
         <div className="post-info">
-          <h2>{name}</h2>
+
           <p>{description}</p>
         </div>
       </div>
