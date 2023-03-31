@@ -118,12 +118,23 @@ function JobPageForSeekers() {
 	);
 
 	function handleRedirection(id, applyHereLink) {
-		if (applyHereLink) {
-			window.location.href = applyHereLink; // Redirect to applyHereLink
-		} else {
-			navigate(`/ApplyToJobs/${id}`); // Redirect to /ApplyToJobs/${id}
-		}
-	}
+        if (!applyHereLink) {
+          // If there is no applyHereLink, redirect to the ApplyToJobs page
+          navigate('/ApplyToJobs/${id}');
+        } else {
+          // If there is an applyHereLink, prompt the user with a confirmation dialog
+          const confirm = window.confirm(
+            'Are you sure you want to be navigated to a third-party site to apply for this job?'
+          );
+          if (confirm) {
+            // If the user clicks "OK", redirect to the applyHereLink
+            window.open(applyHereLink, '_blank');
+          } else {
+            // If the user clicks "Cancel", do nothing
+            return;
+          }
+        }
+      }
 	
 
 	useEffect(() => {
