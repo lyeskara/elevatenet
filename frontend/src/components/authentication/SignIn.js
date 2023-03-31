@@ -16,7 +16,8 @@ const SignIn = () => {
       await googleSignIn();
       navigate("/Profile");
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
+      setErrorMessage(error.message);
       setShowModal(true);
     }
   };
@@ -52,18 +53,14 @@ const SignIn = () => {
 
       let message = ''; //Error message variable is instantiated.
 
-
       //The appropriate message is assigned.
-      if(errorMessage === "Firebase: Error (auth/wrong-password)."){
-        message = "The password does not match with the email. Please try again.";
-      }
   
-      if(errorMessage === "Firebase: Error (auth/user-not-found)."){
+      if(errorMessage == "Firebase: Error (auth/user-not-found)."){
         message = "The entered email is not registered.";
       }
 
       else{
-        message = "Default Sign-In error.";
+        message = "The password does not match with the email. Please try again.";
       };
   
       //Here we return the modal to the user.
