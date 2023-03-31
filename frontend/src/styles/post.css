@@ -71,7 +71,7 @@
   border: none;
   margin: 0 1px;
   background-color: transparent;
-  color: #006400;
+  color: #27746A;
 }
 
 .post-buttons .comment {
@@ -139,8 +139,8 @@
 }
 .post-commentBox button {
   padding: 8px 16px;
-  border: 1px solid #165917;
-  background-color: #1c6c18;
+  border: 1px solid #27746A;
+  background-color: #27746A;
   color: #ffffff;
   border-radius: 25px;
   cursor: pointer;
