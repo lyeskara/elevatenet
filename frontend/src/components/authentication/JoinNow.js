@@ -90,10 +90,12 @@ function JoinNow() {
     }
   };
 
+  //This closes the modal on the user's screen.
   const handleCloseModal = () => {
     setShowModal(false);
   };
 
+  //This sets a custom message depending on the error that is captured upon trying to sign-up.
   const MyModal = ({ showModal, handleCloseModal, errorMessage }) => {
     if(errorMessage){
 

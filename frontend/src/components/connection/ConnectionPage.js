@@ -107,7 +107,7 @@ function ConnectionPage() {
    * 
    * @param {handleDeleteConfirmation}
    */
-  function handleDeleteConfirmation() {
+  function confirmDeletion() {
     if (userToDelete) {
       handle(userToDelete);
       setUserToDelete(null);
@@ -121,7 +121,7 @@ function ConnectionPage() {
    * @param {handleDelete} userId
    * We store the target user's ID for further use, if we confirm the deletion.
    */
-  function handleDelete(userId) {
+  function handleDeleteEvent(userId) {
     setShowModal(true);
     setUserToDelete(userId);
   }
@@ -180,7 +180,7 @@ function ConnectionPage() {
                       <Button
                         className="trash_button"
                         onClick={() => {
-                          handleDelete(user.id);
+                          handleDeleteEvent(user.id);
                         }}
                       >
                         <img src={trash} alt="node" />
@@ -207,7 +207,7 @@ function ConnectionPage() {
                   >
                     Cancel
                   </Button>
-                  <Button style={{ backgroundColor: "#27746a"}} onClick={handleDeleteConfirmation}>
+                  <Button style={{ backgroundColor: "#27746a"}} onClick={confirmDeletion}>
                     Delete
                   </Button>
                 </Modal.Footer>
