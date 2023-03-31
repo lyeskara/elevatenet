@@ -17,7 +17,7 @@ import DatePicker from "react-datepicker";
 import 'firebase/firestore';
 import { useUserAuth } from '../../context/UserAuthContext';
 import { useNavigate } from 'react-router-dom';
-import { collection, setDoc ,doc, addDoc} from 'firebase/firestore';
+import { collection, setDoc,doc, addDoc} from 'firebase/firestore';
 
 
 function CreateNewPosting() {
@@ -113,20 +113,6 @@ function CreateNewPosting() {
      }; 
     
      useEffect(() => {
-        async function getCurrentUserEmail() {
-          if (user) {
-            const docRef = doc(db, "users_information", user.uid);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-              const email = docSnap.get("email");
-              setPostingData((prevState) => ({
-                ...prevState,
-                created_by: email,
-              }));
-            }
-          }
-        }
-        getCurrentUserEmail();
       }, [user]);
     // return of the CreateNewPosting() function
     // lets users cancel the form 
@@ -206,61 +192,27 @@ function CreateNewPosting() {
                                 <label htmlFor="formFile" className="form-label">
                                     <h6>Documents Required</h6>
                                 </label>
-                                <div className="form-check">
-                                    <input 
-                                        className="form-check-input" 
-                                        type="checkbox" 
-                                        id="resume_required"
-                                        name="resume_required"
-                                        checked={postingData.resume_required}
-                                        onChange={handleInputChange}
-                                        style={{ display: 'none' }} // hide the checkbox
-                                    />
-                                    <label 
-                                        className="form-check-label" 
-                                        htmlFor="resume_required"
-                                        style={{ 
-                                            display: 'inline-block', 
-                                            cursor: 'pointer', 
-                                            padding: '0.5rem', 
-                                            border: '1px solid #ccc', 
-                                            borderRadius: '0.25rem',
-                                            backgroundColor: postingData.resume_required ? '#27746a' : '#fff', // change background color when checked
-                                            color: postingData.resume_required ? '#fff' : '#333' // change text color when checked
-                                        }}
-                                        onClick={() => setPostingData({ ...postingData, resume_required: !postingData.resume_required })} // toggle checkbox when clicked
+                                <div className="form-check" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                    <button
+                                        type="button"
+                                        className={`btn ${postingData.resume_required ? 'btn-success' : 'btn-outline-secondary'}`}
+                                        onClick={() => setPostingData({ ...postingData, resume_required: !postingData.resume_required })}
+                                        style={{ backgroundColor: postingData.resume_required ? '#27746a' : '' }}
                                     >
-                                        Resume
-                                    </label>
-                                </div>
-                                <div className="form-check">
-                                    <input 
-                                        className="form-check-input" 
-                                        type="checkbox" 
-                                        id="cover_letter_required"
-                                        name="cover_letter_required"
-                                        checked={postingData.advertise}
-                                        onChange={handleInputChange}
-                                        style={{ display: 'none' }} // hide the checkbox
-                                    />
-                                    <label 
-                                        className="form-check-label" 
-                                        htmlFor="cover_letter_required"
-                                        style={{ 
-                                            display: 'inline-block', 
-                                            cursor: 'pointer', 
-                                            padding: '0.5rem', 
-                                            border: '1px solid #ccc', 
-                                            borderRadius: '0.25rem',
-                                            backgroundColor: postingData.cover_letter_required ? '#27746a' : '#fff', // change background color when checked
-                                            color: postingData.cover_letter_required ? '#fff' : '#333' // change text color when checked
-                                        }}
-                                        onClick={() => setPostingData({ ...postingData, cover_letter_required: !postingData.cover_letter_required })} // toggle checkbox when clicked
+                                        {postingData.resume_required ? 'Resume Required' : 'Resume Optional'}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={`btn ${postingData.cover_letter_required ? 'btn-success' : 'btn-outline-secondary'}`}
+                                        onClick={() => setPostingData({ ...postingData, cover_letter_required: !postingData.cover_letter_required })}
+                                        style={{ marginLeft: '10px', backgroundColor: postingData.cover_letter_required ? '#27746a' : '' }}
+                                        
                                     >
-                                        Cover Letter
-                                    </label>
+                                        {postingData.cover_letter_required ? 'Cover Letter Required' : 'Cover Letter Optional'}
+                                    </button>
                                 </div>
                             </div>
+
 
                             {/* APPLY HERE (OPTIONAL) */}
                             <div className="form-group mb-3">
@@ -296,31 +248,17 @@ function CreateNewPosting() {
                                     <h6>Advertise to Job Seekers</h6>
                                 </label>
                                 <div className="form-check">
-                                    <input 
-                                        className="form-check-input" 
-                                        type="checkbox" 
-                                        id="advertise"
-                                        name="advertise"
-                                        checked={postingData.advertise}
-                                        onChange={handleInputChange}
-                                        style={{ display: 'none' }} // hide the checkbox
-                                    />
-                                    <label 
-                                        className="form-check-label" 
-                                        htmlFor="advertise"
-                                        style={{ 
-                                            display: 'inline-block', 
-                                            cursor: 'pointer', 
-                                            padding: '0.5rem', 
-                                            border: '1px solid #ccc', 
-                                            borderRadius: '0.25rem',
-                                            backgroundColor: postingData.advertise ? '#27746a' : '#fff', // change background color when checked
-                                            color: postingData.advertise ? '#fff' : '#333' // change text color when checked
-                                        }}
-                                        onClick={() => setPostingData({ ...postingData, advertise: !postingData.advertise })} // toggle checkbox when clicked
+                                    {/* xxxxxxxxxxxxxxxxxxx */}
+                                    <button
+                                        type="button"
+                                        className={`btn ${postingData.advertise ? 'btn-success' : 'btn-outline-secondary'}`}
+                                        onClick={() => setPostingData({...postingData, advertise: !postingData.advertise})}
+                                        style={{ backgroundColor: postingData.advertise ? '#27746a' : '' }}
                                     >
-                                        Advertise
-                                    </label>
+                                        {postingData.advertise ? 'Advertise' : 'Do Not Advertised'}
+                                    </button>
+
+                                    {/* xxxxxxxxxxxxxxxxxxx */}
                                 </div>
                             </div>
 
