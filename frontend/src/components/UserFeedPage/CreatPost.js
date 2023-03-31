@@ -110,14 +110,10 @@ function CreatPost() {
               />
             </label>
           </button>
-          <button>
+          <button onClick={() => navigate("/Event")}>
             <img src={eventicon} alt="eventicon" />
           </button>
-          <button class="transparent-button">
-            <img src={video} alt="video" />
-          </button>
-
-          <button className="create-post-submit-button" onClick={PostCreation}>Post</button>
+        <button className="create-post-submit-button" onClick={PostCreation}>Post</button>
         </div>
 
       </form>

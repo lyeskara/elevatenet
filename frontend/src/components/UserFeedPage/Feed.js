@@ -147,7 +147,7 @@ function Feed() {
         <Post
           key={post.title}
           name={user}
-          description={post.postText}
+          // description={post.postText}
           message={post.postText}
           image={post.PicUrl} 
         />
