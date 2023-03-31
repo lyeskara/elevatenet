@@ -29,6 +29,7 @@ function JoinNow() {
       }
     } catch (error) {
       console.log(error);
+	  setShowModal(true);
     }
   };
 
