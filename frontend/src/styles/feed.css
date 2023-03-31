@@ -95,8 +95,21 @@ color: rgba(106, 104, 104, 0.507);
 }
 
 @media screen and (max-width: 750px) {
+  .feed {
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+  
+  .feed-input > button.create-post {
+    font-size: 14px;
+  }
+  
+  .feedinputOption {
+    margin: 0 20px;
+  }
+  
   .feedinputOption > button {
-      font-size: 11px;
+    font-size: 10px;
   }
 }
 
