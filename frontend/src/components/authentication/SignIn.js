@@ -107,7 +107,7 @@ const SignIn = () => {
             <Modal.Title>Invalid Password</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            Your username or password is in incorrect. Please try again.
+            Your username or password is incorrect. Please try again.
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleCloseModal}>
