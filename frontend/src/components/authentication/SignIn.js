@@ -59,7 +59,7 @@ const SignIn = () => {
       }
   
       if(errorMessage === "Firebase: Error (auth/user-not-found)."){
-        message = "The entered email does not exist.";
+        message = "The entered email is not registered.";
       }
 
       else{

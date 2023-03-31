@@ -16,6 +16,7 @@ function JoinNow() {
   const { googleSignUp } = useUserAuth();
 
   const [showModal, setShowModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   //adding signin with google handler
   const handleGoogleSignUp = async () => {
@@ -28,7 +29,8 @@ function JoinNow() {
         navigate("/ProfileForm");
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
+	  setErrorMessage(error.message);
 	  setShowModal(true);
     }
   };
@@ -83,12 +85,48 @@ function JoinNow() {
       }
     } catch (error) {
       console.log(error.message);
+	  setErrorMessage(error.message);
       setShowModal(true);
     }
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
+  };
+
+  const MyModal = ({ showModal, handleCloseModal, errorMessage }) => {
+    if(errorMessage){
+
+      let message = ''; //Error message variable is instantiated.
+
+      //The appropriate message is assigned.
+
+	  if(errorMessage === "Firebase: Password should be at least 6 characters (auth/weak-password)."){
+        message = "Your password should be at least 6 characters. Please try again.";
+      }
+
+      else{
+        message = "This email is already in use. Please enter a different one.";
+      };
+  
+      //Here we return the modal to the user.
+      return (
+        <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Sign-Up Error</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {message}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseModal}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      );
+
+    };
   };
 
   return (
@@ -169,19 +207,11 @@ function JoinNow() {
             </Form.Text>
           </Form>
         </div>
-        <Modal show={showModal} onHide={handleCloseModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>Password Error</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            Your password should be at least 6 characters. Please try again.
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseModal}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        <MyModal
+          showModal={showModal}
+          handleCloseModal={handleCloseModal}
+          errorMessage={errorMessage}
+        />
       </Container>
     </>
   );
