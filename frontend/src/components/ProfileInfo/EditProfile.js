@@ -326,12 +326,12 @@ function EditProfile({ user, setUser }) {
       </Modal>
 
 
-	  {/* Modal Notification to ensure that first and last names are not empty fields. */}
+	  {/* Modal Notification to ensure that first and last names are required when edited. */}
       <Modal show={showNameModal} onHide={() => setShowNameModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Name cannot be empty</Modal.Title>
+          <Modal.Title>Name cannot be empty.</Modal.Title>
         </Modal.Header>
-        <Modal.Body>First name and last name are required.</Modal.Body>
+        <Modal.Body>First and Last name fields are required.</Modal.Body>
         <Modal.Footer>
           <Button
             variant="secondary"
