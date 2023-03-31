@@ -129,7 +129,7 @@ function ApplyNow() {
             const applications_data = recruiter_document.data().applications
             let condition = false
             for(let i=0;i<applications_data.length;i++){
-                if(applications_data[i].applicant_id = application.applicant_id){
+                if((applications_data[i].applicant_id == application.applicant_id) && (applications_data[i].job_offer_id == application.job_offer_id)){
                      condition = true;
                 }
             }
