@@ -18,14 +18,26 @@ import comment from '../../images/comment.png';
 
 function Post({ user,name, description, message, photo,image}) {
 // state variables
-const [likes, setLikes] = useState(0);
+const [likes, setLikes] = useState({});
+
 const [comments, setComments] = useState([]);
 const [showCommentBox, setShowCommentBox] = useState(false);
 const [commentText, setCommentText] = useState("");
 
 const handleLike = () => {
-  setLikes(likes + 1);
+  setLikes((prevLikes) => {
+    if (prevLikes[user]) {
+      // If the user has already liked the post, remove their like
+      const updatedLikes = { ...prevLikes };
+      delete updatedLikes[user];
+      return updatedLikes;
+    } else {
+      // If the user hasn't liked the post, add their like
+      return { ...prevLikes, [user]: true };
+    }
+  });
 };
+
 
 const handleCommentButtonClick = () => {
   setShowCommentBox(!showCommentBox);
@@ -60,7 +72,7 @@ const handleCommentSubmit = (e) => {
       <div className="post-buttons">
         <button onClick={handleLike}>
           <img src={like} alt="like" />
-          <p> {likes} Like</p>
+          <p> {Object.keys(likes).length} Like</p>
         </button>
         <button onClick={handleCommentButtonClick}>
           <img src={comment} alt="comment" />
