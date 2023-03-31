@@ -49,6 +49,9 @@ const handleCommentSubmit = (e) => {
   setCommentText("");
 };
 
+const handleImageError = (e) => {
+  e.target.classList.add("hidden");
+};
 
   return (
     <div className="post">
@@ -65,7 +68,7 @@ const handleCommentSubmit = (e) => {
       </div>
       <div className="post-body">
         <p>{message}</p>
-        {image && <img src={image} alt="post-image" />} 
+        {image && <img src={image} onError={handleImageError} />}
         
       </div>
 

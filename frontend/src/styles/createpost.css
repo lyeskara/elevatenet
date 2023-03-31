@@ -85,7 +85,7 @@
     
     border: none;
     cursor: pointer;
-    margin-right: 2px;
+    margin-right: 4px;
   }
   
   .create-post-submit-button {
@@ -98,7 +98,7 @@
   }
   
   .create-post-options button {
-    margin-right: -2px;
+    margin-right: -10px;
   }
 
   .create-post-submit-button {
@@ -109,7 +109,7 @@
     align-items: center;
     justify-content: center;
     padding: 8px;
-    width: 200%;
+    width: 400%;
     color: #fff;
     border: none;
     outline: none;
