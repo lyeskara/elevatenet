@@ -126,27 +126,6 @@ function Feed() {
 
         </div>
       </div>
-      <h1>Sponsored</h1>
-      <Carousel>
-        {postings.map((posting) => (
-          <Carousel.Item key={posting.id}>
-            <Card className="mb-3">
-              <Card.Body>
-                <Card.Title>{posting.title}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">
-                  {posting.company}
-                </Card.Subtitle>
-                <Card.Text>{posting.description}</Card.Text>
-                <Card.Text>{posting.skills}</Card.Text>
-                <Button variant="primary" style={{ backgroundColor: "#27746A" }}>
-                  Apply Now
-                </Button>
-              </Card.Body>
-            </Card>
-          </Carousel.Item>
-        ))}
-      </Carousel>
-
 
       {Data.map(post => (
         <Post
