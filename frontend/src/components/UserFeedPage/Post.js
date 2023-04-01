@@ -37,32 +37,32 @@ function Post({ user, name, description, message, photo, image, post_id }) {
     post_text: ""
   });
 
-function Post({ user,name, description, message, photo,image}) {
-// state variables
-const [likes, setLikes] = useState({});
+// function Post({ user,name, description, message, photo,image}) {
+// // state variables
+// const [likes, setLikes] = useState({});
 
-const [comments, setComments] = useState([]);
-const [showCommentBox, setShowCommentBox] = useState(false);
-const [commentText, setCommentText] = useState("");
+// const [comments, setComments] = useState([]);
+// const [showCommentBox, setShowCommentBox] = useState(false);
+// const [commentText, setCommentText] = useState("");
 
-const handleLike = () => {
-  setLikes((prevLikes) => {
-    if (prevLikes[user]) {
-      // If the user has already liked the post, remove their like
-      const updatedLikes = { ...prevLikes };
-      delete updatedLikes[user];
-      return updatedLikes;
-    } else {
-      // If the user hasn't liked the post, add their like
-      return { ...prevLikes, [user]: true };
-    }
-  });
-};
+// const handleLike = () => {
+//   setLikes((prevLikes) => {
+//     if (prevLikes[user]) {
+//       // If the user has already liked the post, remove their like
+//       const updatedLikes = { ...prevLikes };
+//       delete updatedLikes[user];
+//       return updatedLikes;
+//     } else {
+//       // If the user hasn't liked the post, add their like
+//       return { ...prevLikes, [user]: true };
+//     }
+//   });
+// };
 
 
-const handleCommentButtonClick = () => {
-  setShowCommentBox(!showCommentBox);
-};
+// const handleCommentButtonClick = () => {
+//   setShowCommentBox(!showCommentBox);
+// };
 
   useEffect(()=>{
     getDoc(doc(postsRef, auth_id)).then((responce)=>{
@@ -118,9 +118,9 @@ const handleCommentButtonClick = () => {
     }
   };
 
-const handleImageError = (e) => {
-  e.target.classList.add("hidden");
-};
+// const handleImageError = (e) => {
+//   e.target.classList.add("hidden");
+// };
 
   const handleCommentButtonClick = () => {
     setShowCommentBox(!showCommentBox);
@@ -152,35 +152,35 @@ const handleImageError = (e) => {
     };
    
 
-  return (
-    <div className="post">
-      <div className="post-header">
-        <div>
-          <img src={photo} />
-          <span className="username-forposts">{name}</span>
-        </div>
+  // return (
+  //   <div className="post">
+  //     <div className="post-header">
+  //       <div>
+  //         <img src={photo} />
+  //         <span className="username-forposts">{name}</span>
+  //       </div>
 
-        <div className="post-info">
+  //       <div className="post-info">
 
-          <p>{description}</p>
-        </div>
-      </div>
-      <div className="post-body">
-        <p>{message}</p>
-        {image && <img src={image} onError={handleImageError} />}
+  //         <p>{description}</p>
+  //       </div>
+  //     </div>
+  //     <div className="post-body">
+  //       <p>{message}</p>
+  //       {image && <img src={image} onError={handleImageError} />}
         
-      </div>
+  //     </div>
 
-      <div className="post-buttons">
-        <button onClick={handleLike}>
-          <img src={like} alt="like" />
-          <p> {Object.keys(likes).length} Like</p>
-        </button>
-        <button onClick={handleCommentButtonClick}>
-          <img src={comment} alt="comment" />
-          <p>Comment</p>
-        </button>
-      </div>
+  //     <div className="post-buttons">
+  //       <button onClick={handleLike}>
+  //         <img src={like} alt="like" />
+  //         <p> {Object.keys(likes).length} Like</p>
+  //       </button>
+  //       <button onClick={handleCommentButtonClick}>
+  //         <img src={comment} alt="comment" />
+  //         <p>Comment</p>
+  //       </button>
+  //     </div>
 
     return (
       <div className="post">
@@ -240,5 +240,3 @@ const handleImageError = (e) => {
   }
 
   export default Post;
-
-
