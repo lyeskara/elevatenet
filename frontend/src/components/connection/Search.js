@@ -23,6 +23,7 @@
    const [Result, SetResult] = useState([]);
    const navigate = useNavigate();
    const [url, setUrl] = useState(null);
+   const [searchSubmitted, setSearchSubmitted] = useState(false);
  
    useEffect(() => {
     async function getResult() {
@@ -84,6 +85,8 @@
    function handleSubmit(e) {
     e.preventDefault();
     navigate(`/CompanySearch?search=${search}&result=${encodeURIComponent(JSON.stringify(Result))}`);
+  
+    setSearchSubmitted(true);
   }
 
   return (
@@ -95,10 +98,12 @@
           value={search}
           onChange={(e) => {
             Setsearch(e.target.value);
+            setSearchSubmitted(false); // reset searchSubmitted state when user types a new search query
           }}
         />
         {/* <button type="submit">Search</button> */}
       </form>
+      {!searchSubmitted && (
       <ul>
         {Result.map((user) => (
           <li className="off_point mt-2" key={user.id}>
@@ -119,6 +124,7 @@
           </li>
         ))}
       </ul>
+      )}
   </>
   //show list of users, with link to route of each
   )
