@@ -297,25 +297,15 @@ function JobPageForSeekers() {
   
 
 	return (
-		<>
-			<h1>Apply to Jobs</h1>
-			<div className="d-flex mb-3">
-				<input
-					type="text"
-					className="form-control me-2"
-					placeholder="Search job postings"
-					value={searchQuery}
-					onChange={handleSearchQueryChange}
-				/>
-				<button className="btn btn-primary me-2" onClick={handleFilterBySkills}>
-					Filter by Skills
-				</button>
-				<button className="btn btn-secondary" onClick={handleResetFilters}>
-					Reset Filters
-				</button>
-			</div>
-			<Container>
-      <Col xs={12} sm={8} lg={4} style={{ minWidth: "30%" }}>
+		<>		
+			<Container >
+       <div className="d-flex justify-content-center mx-auto">
+        <Row
+				className="gap-6 d-flex justify-content-center"
+				style={{ minWidth: "80%" }}
+			>
+       
+      <Col xs={12} sm={8} lg={2} style={{ minWidth: "30%" }}>
           {/* This card displays the job menu block with Job Postings and Advertisements */}
           <Card className="jobs-menu">
             <h2> Jobs </h2>
@@ -333,54 +323,30 @@ function JobPageForSeekers() {
             <br></br>
           </Card>
         </Col>
-				<Row>
-					{filteredPostings.map((posting) => (
-						<Col md={6} key={posting.id}>
-							<Card className="mb-3">
-								<Card.Body>
-									<Card.Title>{posting.job_title}</Card.Title>
-									<Card.Subtitle className="mb-2 text-muted">
-										{posting.company}
-									</Card.Subtitle>
-									<Card.Text>{posting.description}</Card.Text>
-									<Card.Text>{posting.skills.join(", ")}</Card.Text>
-									{/* Render the button with the modified onClick handler */}
-                  <div className="containRequest"><Button
-										variant="primary"
-										style={{ backgroundColor: "#27746A" }}
-										onClick={() =>
-											handleRedirection(posting.id, posting.apply_here)
-										}
-									>
-										Apply Now
-									</Button>
-                  <div style={{ width: "2rem" }}>
-                    <Heart
-                  inactiveColor = "#888888" activeColor = "#888888"
-                      variant="secondary"
-                      isActive={saved[posting.id]}
-                      onClick={() =>
-                        saved[posting.id]
-                          ? handleUnsave(posting.id)
-                          : handleSave(posting.id)
-                      }
-                    >
-                      {saved[posting.id] ? "unsave" : "save"}
-                    </Heart>
-                  </div></div>
-									
-								</Card.Body>
-							</Card>
-						</Col>
-					))}
-				</Row>
-				{/* SPONSORED CAROUSEL */}
-				<Row>
-					<h1>Sponsored</h1>
+        
+        <Col xs={12} sm={12} lg={8}>
+          <div className="d-flex mb-3 mt-4">
+				<input
+					type="text"
+					className="form-control me-2 search-job"
+					placeholder="Search job postings"
+					value={searchQuery}
+					onChange={handleSearchQueryChange}
+				/>
+				<button className="btn btn-primary me-2 skill-button" onClick={handleFilterBySkills}>
+					Filter by Skills
+				</button>
+				<button className="btn btn-secondary" onClick={handleResetFilters}>
+					Reset Filters
+				</button>
+			</div>
+      {/* SPONSORED CAROUSEL */}
+      <Col xs={12} sm={12} lg={10}>
+					<h5 className="sponsor-title">Sponsored</h5>
 					<Carousel>
 						{postingsAD.map((posting) => (
 							<Carousel.Item key={posting.id}>
-								<Card className="mb-3">
+								<Card className="mb-3 sponsor">
 									<Card.Body>
 										<Card.Title>{posting.title}</Card.Title>
 										<Card.Subtitle className="mb-2 text-muted">
@@ -402,7 +368,51 @@ function JobPageForSeekers() {
 							</Carousel.Item>
 						))}
 					</Carousel>
-				</Row>
+				</Col>
+					{filteredPostings.map((posting) => (
+						<Col md={10} key={posting.id}>
+							<Card className="mb-3">
+								<Card.Body>
+                  <div >
+                    <div className="containRequest"  style={{display: "flex", justifyContent: "space-between"}}><Card.Title>{posting.job_title}</Card.Title>{/* Render the button with the modified onClick handler */}
+                  <div className="containRequest"><Button
+										variant="primary"
+										style={{ backgroundColor: "#27746A" , width:"100%"}}
+										onClick={() =>
+											handleRedirection(posting.id, posting.apply_here)
+										}
+									>
+										Apply Now
+									</Button>
+                  <div style={{ width: "3rem" , marginLeft:"5%"}}>
+                    <Heart
+                  inactiveColor = "#888888" activeColor = "#888888"
+                      variant="secondary"
+                      isActive={saved[posting.id]}
+                      onClick={() =>
+                        saved[posting.id]
+                          ? handleUnsave(posting.id)
+                          : handleSave(posting.id)
+                      }
+                    >
+                      {saved[posting.id] ? "unsave" : "save"}
+                    </Heart>
+                  </div></div></div>
+									<Card.Subtitle className="mb-2 text-muted">
+										{posting.company}
+									</Card.Subtitle>
+									<Card.Text>{posting.description}</Card.Text>
+									<Card.Text>{posting.skills.join(", ")}</Card.Text>
+									</div>
+									
+									
+								</Card.Body>
+							</Card>
+						</Col>
+					))}
+          </Col>
+           </Row></div>
+				
 			</Container>
 		</>
 	);

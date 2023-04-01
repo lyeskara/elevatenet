@@ -9,3 +9,30 @@
   .card-save{
     margin-left: 10%;
   }
+
+  .search-job{
+    max-width: 55%;
+  }
+  
+  .skill-button,
+.skill-button:hover {
+  color: #fff;
+  background-color: #27746a;
+  border-color: #27746a;
+}
+.skill-button:active,
+.skill-button:focus {
+  color: #fff;
+  background-color: #27746a !important;
+  border-color: #27746a !important;
+  box-shadow: 0 0 0 0.2rem #27746a !important;
+}
+
+.sponsor{
+  border-color: #27746a !important;
+  border-width: 10px;
+}
+.sponsor-title{
+  color: #27746a;
+  margin-bottom: -20px;
+}
