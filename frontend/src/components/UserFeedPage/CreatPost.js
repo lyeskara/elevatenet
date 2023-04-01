@@ -14,6 +14,7 @@ import {
 import { storage } from "../../firebase";
 import { v4 } from "uuid";
 import { useNavigate } from "react-router-dom";
+import generateKey from "../../generateKey";
 
 function CreatPost() {
 
@@ -21,15 +22,15 @@ function CreatPost() {
   const [postText, setPostText] = useState("");
   const [Picture, setPicture] = useState(null);
   const [PicUrl, SetPicUrl] = useState(null);
-
+  const [userInfo,SetUserInfo] = useState(null);
   // reference hook
   const inputRef = useRef();
   // Initialize useNavigate
   const navigate = useNavigate();
-
   // creating references to database instances
   const currentId = auth.currentUser.uid
   const postsCollectionRef = collection(db, "user_posts");
+  const usersRef = collection(db,'users_information')
   // useEffect which handles storing picture in google storage bucket and converting it to browser url when the Picture state is mutated
   useEffect(() => {
     const imageRef = ref(storage, `images/${v4() + Picture}`);
@@ -40,53 +41,64 @@ function CreatPost() {
       })
     })
   }, [Picture])
+  let user_info = {
+    profile_picture:"",
+    first_name:"",
+    last_name:""
+  }
+  useEffect(()=>{
+    getDoc(doc(usersRef,currentId)).then((informations)=>{
+           const {profilePicUrl, firstName,lastName} = informations.data()
+           const obj = { profile_picture:profilePicUrl,
+                         first_name:firstName,
+                         last_name:lastName
+           } 
+            SetUserInfo(obj)
+          })
+  }
+  ,[])
+  user_info = {...user_info,...userInfo};
+
+  const post = {
+    post_text:postText,
+    image:PicUrl,
+    id:generateKey(28),
+    likes:[],
+    comments:[]
+  }
+
   //function which pushes the data inputed in the form into the collection user-posts under the user id
   async function PostCreation(event) {
     event.preventDefault(); // prevent the form from being submitted
-
-    const AllDocs = (await getDocs(postsCollectionRef)).docs 
-
-    const documentData = (await getDoc(doc(postsCollectionRef, currentId)))
-    const array = []
-    AllDocs.forEach((doc) => {
-      array.push(doc.id);
-    })
-    const condition = array.includes(currentId)
-    console.log(condition)
-
-    let objectsSize = 0;
-    if (documentData.data() === undefined) {
-      objectsSize = 0;
-    } else {
-      objectsSize = Object.keys(documentData.data()).length
-    }
-    const index = objectsSize + 1;
-    if (!condition) {
-      await setDoc(doc(postsCollectionRef, currentId), {
-        [index]: {
-          postText,
-          PicUrl
+        const posts = await getDocs(postsCollectionRef)
+        const auth_doc = await getDoc(doc(postsCollectionRef, currentId));
+      
+        if (posts.docs.length === 0) {
+            setDoc(doc(postsCollectionRef, currentId), { "posts": [post] })
+        } else {
+               const posts_data = auth_doc.data().posts
+               let condition = false
+               for(let i=0;i<posts_data.length;i++){
+                 if(posts_data[i].id === post.id){
+                      condition = true;
+                    }
+               }
+              if(condition){
+                console.log("you have already made a post.")
+              }else{
+                  posts_data.push(post)
+                  updateDoc(doc(postsCollectionRef, currentId), { "posts": posts_data })
+               }            
         }
-      });
-    } else {
-      const obj = {
-        postText,
-        PicUrl
-      }
-      const Posts = documentData.data()
-      Posts[index] = obj
-      updateDoc(doc(postsCollectionRef, currentId), Posts)
-      // Navigate to the feed page
-      navigate("/feed");
-    }
+  
   };
 
   // the template for post creation
   return (
     <div className="create-post-container">
       <div className="create-post-header">
-        <img src={profilephoto} alt="profilephoto-icon" className="create-post-profile-photo" />
-        <span className="create-post-profile-name">John Cane</span>
+        <img src={user_info.profile_picture} alt="profilephoto-icon" className="create-post-profile-photo" />
+        <span className="create-post-profile-name">{user_info.first_name} {user_info.last_name}</span>
       </div>
       <form className="create-post-form">
         <textarea
@@ -127,3 +139,43 @@ function CreatPost() {
 }
 
 export default CreatPost;
+
+
+/**
+ * 
+ *   const AllDocs = (await getDocs(postsCollectionRef)).docs 
+
+    const documentData = (await getDoc(doc(postsCollectionRef, currentId)))
+    const array = []
+    AllDocs.forEach((doc) => {
+      array.push(doc.id);
+    })
+    const condition = array.includes(currentId)
+    console.log(condition)
+
+    let objectsSize = 0;
+    if (documentData.data() === undefined) {
+      objectsSize = 0;
+    } else {
+      objectsSize = Object.keys(documentData.data()).length
+    }
+    const index = objectsSize + 1;
+    if (!condition) {
+      await setDoc(doc(postsCollectionRef, currentId), {
+        [index]: {
+          postText,
+          PicUrl
+        }
+      });
+    } else {
+      const obj = {
+        postText,
+        PicUrl
+      }
+      const Posts = documentData.data()
+      Posts[index] = obj
+      updateDoc(doc(postsCollectionRef, currentId), Posts)
+      // Navigate to the feed page
+      navigate("/feed");
+    }
+ */
