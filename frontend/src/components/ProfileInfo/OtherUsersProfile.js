@@ -136,24 +136,22 @@ function OtherUsersProfile() {
 
 	return (
 		<div className="contain">
-			<center>
-				{currId !== id ? (
-					!follow ? (
-						<>
-							<Button className="follow_button" onClick={handlefollow}>
-								Connect
-							</Button>
-						</>
-					) : (
-						<>
-							<Button className="unfollow_button" onClick={handleunfollow}>
-								Unfollow
-							</Button>
-						</>
-					)
-				) : null}
-				{informations(user, downloadResume, downloadCL)}
-			</center>
+			{currId !== id ? (
+				!follow ? (
+					<div style={{ textAlign: "right" }}>
+						<Button className="follow_button" onClick={handlefollow}>
+							Connect
+						</Button>
+					</div>
+				) : (
+					<div style={{ textAlign: "right" }}>
+						<Button className="unfollow_button" onClick={handleunfollow}>
+							Unfollow
+						</Button>
+					</div>
+				)
+			) : null}
+			{informations(user, downloadResume, downloadCL)}
 		</div>
 	);
 }
