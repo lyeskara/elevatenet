@@ -187,7 +187,7 @@ function Post({ user, name, description, message, photo, image, post_id }) {
         <div className="post-header">
           <div>
             <img src={photo} alt={name} />
-            <span>{name}</span>
+            <span className="username-forposts">{name}</span>
           </div>
 
           <div className="post-info">
