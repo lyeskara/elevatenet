@@ -158,7 +158,7 @@ const Message = () => {
                   className="user-tab-m"
                   onClick={() => setRecipientId(user.id)}
                 >
-                  <img src={user.avatarUrl} style={{ marginRight: "20px" }} />
+                  <img src={user.profilePicUrl || defpic} style={{ marginRight: "20px" }} />
                   <h3>
                     {user.firstName} {user.lastName}
                   </h3>
@@ -178,7 +178,7 @@ const Message = () => {
         {/* The messages section */}
         <div className="text-m">
             <div className="containRequest">
-          <img src={defpic} className="defpic-m"></img>
+          <img src={ users_information.find(user => user.id === recipientId).profilePicUrl || defpic} className="defpic-m"></img>
           <h2>{recipientId ? users_information.find(user => user.id === recipientId).firstName + " " + users_information.find(user => user.id === recipientId).lastName : "Message"}</h2>
             </div>
             {/* Renders all the messages in the 'messages' array, with the sender's 
