@@ -21,7 +21,7 @@ function ApplyNow() {
 
     //hooks 
     const [user, Setuser] = useState(null);
-    const [Recruiter_id, Setid] = useState("")
+    const [Recruiter_id, Setid] = useState(null)
     const ResumefileInputRef = useRef();
     const CoverfileInputRef = useRef();
     const [Resume, SetResume] = useState(null)
@@ -63,8 +63,8 @@ function ApplyNow() {
         getDoc(doc(postingsRef, job_id.id)).then((job) => {
             const job_data = job.data();
             const email = job_data.created_by;
+            console.log(email)
             const snap = query(RecruitersRef, where("email", "==", email))
-
             getDocs(snap).then(users => {
                 users.docs.forEach((user) => {
                     Setid(user.id)
@@ -118,18 +118,22 @@ function ApplyNow() {
         applicant_id: auth_id,
         job_offer_id: job_id.id
     }
+        
     async function ApplicationSend(event) {
         event.preventDefault();
         const applications = await getDocs(applicationsRef)
-        console.log(applications)
         const recruiter_document = await getDoc(doc(applicationsRef, Recruiter_id));
-        if (applications.docs.length === 0) {
+        const array =[]
+         applications.forEach((doc)=>{
+          array.push(doc.id)
+        })
+        if (!array.includes(Recruiter_id)) {
             setDoc(doc(applicationsRef, Recruiter_id), { "applications": [application] })
         } else {
             const applications_data = recruiter_document.data().applications
             let condition = false
             for(let i=0;i<applications_data.length;i++){
-                if(applications_data[i].applicant_id = application.applicant_id){
+                if((applications_data[i].applicant_id == application.applicant_id) && (applications_data[i].job_offer_id == application.job_offer_id)){
                      condition = true;
                 }
             }
