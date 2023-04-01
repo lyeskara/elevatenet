@@ -18,11 +18,9 @@ import { db, auth } from "../../firebase";
 import "../../styles/profile.css";
 import "../../styles/network.css";
 import "../../styles/JobPostings.css";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
 import grouplogo from ".././../images/group.png";
+import backward from ".././../images/backward.png";
+import {Row, Col, Card, Button, Modal} from "react-bootstrap";
 
 //Feed Import
 import Feed from "../UserFeedPage/Feed";
@@ -37,6 +35,8 @@ function GroupPage() {
   const { id } = useParams();
   const [group, setGroup] = useState(null);
   const [memberNames, setMemberNames] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+
 
   // Here we set the group variable with the information matching the group ID.
   useEffect(() => {
@@ -91,7 +91,12 @@ function GroupPage() {
 
     await updateDoc(groupRef, updatedGroup);
 
-    navigate("/GroupNetwork");
+    navigate('/GroupNetwork');
+  }
+
+  //This opens the confirmation modal.
+  function leaveConfirmation(){
+    setShowModal(true);
   };
 
   //Here we display the information relevant to the group
@@ -100,8 +105,11 @@ function GroupPage() {
       <Row className="gap-5">
         {/* Left Sidebar of the group page, where all group information is found*/}
         <Col className="col1" xs={12} md={{ span: 3, offset: 1 }}>
+          <Link to="/GroupNetwork">
+            <img src={backward} alt="back" />
+          </Link>
           <Card className="profilecard">
-            <img src={group.group_img_url ? group.group_img_url : grouplogo} style={{ maxHeight: "500px" }} />
+            <img src={group.group_img_url ? group.group_img_url : grouplogo} />
             <h1>
               <span style={{ color: "#27746A" }}> {group.group_name} </span>
             </h1>
@@ -109,16 +117,24 @@ function GroupPage() {
               {group.memberUIDs.length}{" "}
               {group.memberUIDs.length === 1 ? "member" : "members"}
             </h5>
-            <h4>{group.industry}</h4>
-            <h5>{group.location}</h5>
-            <p>{group.description}</p>
+            <h4>
+              {group.industry === "" ? "No industry given." : group.industry}
+            </h4>
+            <h5>
+              {group.location === "" ? "No location given." : group.location}
+            </h5>
+            <p>
+              {group.description === ""
+                ? "No description given."
+                : group.description}
+            </p>
             <Button
               variant="primary"
               size="lg"
               block
               className="w-100"
               style={{ backgroundColor: "#27746a" }}
-              onClick={leaveGroup}
+              onClick={leaveConfirmation}
             >
               Leave Group
             </Button>
@@ -145,11 +161,33 @@ function GroupPage() {
           </Card>
         </Col>
 
-        {/* Main section where the group feed will be mapped */}
+        {/* Main section where the group feed will be mapped*/}
         <Col style={{ margin: "0% -15% 0% -20%" }}>
           <Feed />
         </Col>
       </Row>
+
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Leave Confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want leave this group?</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            style={{ borderRadius: "20px" }}
+            onClick={() => setShowModal(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            style={{ backgroundColor: "#27746a", borderRadius: "20px" }}
+            onClick={leaveGroup}
+          >
+            Leave
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

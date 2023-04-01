@@ -116,7 +116,7 @@ function GroupNetwork() {
                             <h3> {groupInfos.group_name}</h3>
                             <h5> {groupInfos.memberUIDs.length} {groupInfos.memberUIDs.length === 1 ? "member" : "members"}</h5>
                         <hr></hr>
-                        <p> {groupInfos.description}</p>
+                        <p> {groupInfos.description === "" ? "No description given." : groupInfos.description}</p>
                           </Col>
                           <Col className="center-col" md={2} sm={12}>
                             <Link to={`/group/${groupInfos.id}`}>
@@ -147,7 +147,7 @@ function GroupNetwork() {
                         <h3> {groupInfos.group_name}</h3>
                         <h5> {groupInfos.memberUIDs.length} {groupInfos.memberUIDs.length === 1 ? "member" : "members"}</h5>
                         <hr />
-                        <p> {groupInfos.description}</p>
+                        <p> {groupInfos.description === "" ? "No description given." : groupInfos.description} </p>
                       </Col>
                       <Col className="center-col" md={2} sm={12}>
                         <Button className="create_Group_Button" onClick={() => handleRequest(index)}>
