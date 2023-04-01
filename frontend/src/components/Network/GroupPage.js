@@ -18,6 +18,7 @@ import { db, auth } from "../../firebase";
 import "../../styles/profile.css";
 import "../../styles/network.css";
 import "../../styles/JobPostings.css";
+import grouplogo from ".././../images/group.png";
 import backward from ".././../images/backward.png";
 import {Row, Col, Card, Button, Modal} from "react-bootstrap";
 
@@ -108,7 +109,7 @@ function GroupPage() {
             <img src={backward} alt="back" />
           </Link>
           <Card className="profilecard">
-            <img src={group.group_img_url} />
+            <img src={group.group_img_url ? group.group_img_url : grouplogo} />
             <h1>
               <span style={{ color: "#27746A" }}> {group.group_name} </span>
             </h1>
