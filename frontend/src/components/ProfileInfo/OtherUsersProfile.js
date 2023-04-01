@@ -59,7 +59,9 @@ function OtherUsersProfile() {
     setfollow(true);
   };
 //this function handles the unfollow feature, updates the database of the unfollow connection
-  const handleunfollow = async () => {
+const handleunfollow = async () => {
+  const confirmed = window.confirm("Are you sure you want to unfollow this user?");
+  if (confirmed) {
     getDoc(doc(connection_requestsReference, currId))
       .then((word) => {
         if (word.exists) {
@@ -81,7 +83,8 @@ function OtherUsersProfile() {
         console.log(error);
       });
     setfollow(false);
-  };
+  }
+};
 
   useEffect(() => {
     getDoc(doc(collection(db, "users_information"), id))

@@ -145,6 +145,7 @@ function Feed() {
         ))}
       </Carousel>
 
+
       {Data.map(post => (
         <Post
           post_id={post.id}
@@ -153,6 +154,10 @@ function Feed() {
           name={user_info.first_name + user_info.last_name}
           message={post.post_text}
           image={post.image}
+          name={user}
+          // description={post.postText}
+          message={post.postText}
+          image={post.PicUrl} 
         />
       ))}
     </div>

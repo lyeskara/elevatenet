@@ -23,6 +23,7 @@ import ApplyToJobs from "./components/Jobs/ApplyNow";
 import JobPageForSeekers from "./components/Jobs/JobPageForSeekers"
 import Advertisements from "./components/Jobs/Advertisements";
 import CreateAdvertisement from "./components/Jobs/CreateAdvertisement";
+import SavedJobs from "./components/Jobs/SavedJobs";
 
 import RequestsPage from "./components/connection/RequestsPage";
 import ConnectionPage from "./components/connection/ConnectionPage";
@@ -35,11 +36,17 @@ import RequestSent from "./components/connection/RequestSent";
 import RecruiterForm from './components/ProfileInfo/RecruiterFrom'
 
 import Messaging from './components/DirectMessage/Messaging';
+import CompanySearch from './components/connection/CompanySearch';
 function App() {
   return (
     <UserAuthContextProvider>
       <NavbarFun />
       <Routes>
+      <Route
+          path="/CompanySearch"
+          element={<Protection>{<CompanySearch />}</Protection>}
+        ></Route>
+
         <Route
           path="/ProfileForm"
           element={<Protection>{<ProfileForm />}</Protection>}
@@ -189,6 +196,14 @@ function App() {
           element={
             <Protection>
               <JobPageForSeekers />
+            </Protection>
+          }
+        />
+        <Route
+          path="/SavedJobs"
+          element={
+            <Protection>
+              <SavedJobs />
             </Protection>
           }
         />
