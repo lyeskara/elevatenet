@@ -118,9 +118,9 @@ function Post({ user, name, description, message, photo, image, post_id }) {
     }
   };
 
-// const handleImageError = (e) => {
-//   e.target.classList.add("hidden");
-// };
+const handleImageError = (e) => {
+  e.target.classList.add("hidden");
+};
 
   const handleCommentButtonClick = () => {
     setShowCommentBox(!showCommentBox);
@@ -197,7 +197,7 @@ function Post({ user, name, description, message, photo, image, post_id }) {
         </div>
         <div className="post-body">
           <p>{message}</p>
-          {image && <img src={image} alt="post-image" />}
+          {image && <img src={image} onError={handleImageError}  /> }
 
         </div>
 
