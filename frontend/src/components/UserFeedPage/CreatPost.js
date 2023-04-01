@@ -68,12 +68,12 @@ function CreatPost() {
   }
 
   //function which pushes the data inputed in the form into the collection user-posts under the user id
-  async function PostCreation(event) {
+ async function PostCreation(event) {
     event.preventDefault(); // prevent the form from being submitted
         const posts = await getDocs(postsCollectionRef)
         const auth_doc = await getDoc(doc(postsCollectionRef, currentId));
-      
-        if (posts.docs.length === 0) {
+        console.log(auth_doc.data())
+        if (auth_doc.data() ===undefined) {
             setDoc(doc(postsCollectionRef, currentId), { "posts": [post] })
         } else {
                const posts_data = auth_doc.data().posts
