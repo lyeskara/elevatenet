@@ -93,6 +93,9 @@ function Post({ name, description, message, photo, image, post_id, id }) {
     setLikes(prev=>prev-1);
     seton(false)
   };
+const handleImageError = (e) => {
+  e.target.classList.add("hidden");
+};
 
   const handleCommentButtonClick = () => {
     setShowCommentBox(!showCommentBox);
@@ -123,25 +126,59 @@ function Post({ name, description, message, photo, image, post_id, id }) {
 
   };
 
+  // return (
+  //   <div className="post">
+  //     <div className="post-header">
+  //       <div>
+  //         <img src={photo} />
+  //         <span className="username-forposts">{name}</span>
+  //       </div>
 
-  return (
-    <div className="post">
-      <div className="post-header">
-        <div>
-          <img src={photo} alt={name} />
-          <span>{name}</span>
+  //       <div className="post-info">
+
+  //         <p>{description}</p>
+  //       </div>
+  //     </div>
+  //     <div className="post-body">
+  //       <p>{message}</p>
+  //       {image && <img src={image} onError={handleImageError} />}
+        
+  //     </div>
+
+  //     <div className="post-buttons">
+  //       <button onClick={handleLike}>
+  //         <img src={like} alt="like" />
+  //         <p> {Object.keys(likes).length} Like</p>
+  //       </button>
+  //       <button onClick={handleCommentButtonClick}>
+  //         <img src={comment} alt="comment" />
+  //         <p>Comment</p>
+  //       </button>
+  //     </div>
+
+    return (
+      <div className="post">
+        <div className="post-header">
+          <div>
+            <img src={photo} alt={name} />
+            <span className="username-forposts">{name}</span>
+          </div>
+
+          <div className="post-info">
+            <h2>{description}</h2>
+            <p>{description}</p>
+          </div>
         </div>
+        <div className="post-body">
+          <p>{message}</p>
+          {image && <img src={image} onError={handleImageError}  /> }
 
         <div className="post-info">
           <h2>{description}</h2>
           <p>{description}</p>
         </div>
       </div>
-      <div className="post-body">
-        <p>{message}</p>
-        {image && <img src={image} alt="post-image" />}
-
-      </div>
+    
 
       <div className="post-buttons">
         {(on) ? (
