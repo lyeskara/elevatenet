@@ -61,24 +61,30 @@ function Feed() {
   useEffect(() => {
     const set = new Set([currentId]);
     getDoc(doc(connectionsRef, currentId)).then((data) => {
-      const con_ids = data.data().connections;
-      con_ids.forEach((id) => {
-        set.add(id);
-      })
-      const post_ids = [...set]
-      Setid(post_ids)
+      console.log(data.data())
+      if(!(data.data()== undefined)){
+        const con_ids = data.data().connections;
+        con_ids.forEach((id) => {
+          set.add(id);
+        })
+        const post_ids = [...set]
+        Setid(post_ids)
+      }else{
+        Setid(currentId)
+      }
     })
   }, []);
+  
   useEffect(() => {
     const posts_set = new Set()
     getDocs(postRef).then((posters) => {
       posters.docs.forEach((poster) => {
         if ((ids.includes(poster.id))) {
-          const posts = poster.data().posts
-          posts.forEach((post) => {
+          poster.data().posts.forEach((post) => {
             posts_set.add({post:post,poster_id:poster.id})
           })
         }
+        console.log(posts_set)
         const array = [...posts_set]
         SetData(array)
       })
