@@ -61,8 +61,7 @@ function ApplyNow() {
 
     useEffect(() => {
         getDoc(doc(postingsRef, job_id.id)).then((job) => {
-            const job_data = job.data();
-            const email = job_data.created_by;
+            const email = job.data().created_by;
             console.log(email)
             const snap = query(RecruitersRef, where("email", "==", email))
             getDocs(snap).then(users => {

@@ -22,7 +22,7 @@ function CreatPost() {
   const [postText, setPostText] = useState("");
   const [Picture, setPicture] = useState(null);
   const [PicUrl, SetPicUrl] = useState(null);
-  const [userInfo,SetUserInfo] = useState(null);
+  const [userInfo, SetUserInfo] = useState(null);
   // reference hook
   const inputRef = useRef();
   // Initialize useNavigate
@@ -30,7 +30,7 @@ function CreatPost() {
   // creating references to database instances
   const currentId = auth.currentUser.uid
   const postsCollectionRef = collection(db, "user_posts");
-  const usersRef = collection(db,'users_information')
+  const usersRef = collection(db, 'users_information')
   // useEffect which handles storing picture in google storage bucket and converting it to browser url when the Picture state is mutated
   useEffect(() => {
     const imageRef = ref(storage, `images/${v4() + Picture}`);
@@ -42,55 +42,56 @@ function CreatPost() {
     })
   }, [Picture])
   let user_info = {
-    profile_picture:"",
-    first_name:"",
-    last_name:""
+    profile_picture: "",
+    first_name: "",
+    last_name: ""
   }
-  useEffect(()=>{
-    getDoc(doc(usersRef,currentId)).then((informations)=>{
-           const {profilePicUrl, firstName,lastName} = informations.data()
-           const obj = { profile_picture:profilePicUrl,
-                         first_name:firstName,
-                         last_name:lastName
-           } 
-            SetUserInfo(obj)
-          })
+  useEffect(() => {
+    getDoc(doc(usersRef, currentId)).then((informations) => {
+      const { profilePicUrl, firstName, lastName } = informations.data()
+      const obj = {
+        profile_picture: profilePicUrl,
+        first_name: firstName,
+        last_name: lastName
+      }
+      SetUserInfo(obj)
+    })
   }
-  ,[])
-  user_info = {...user_info,...userInfo};
+    , [])
+  user_info = { ...user_info, ...userInfo };
 
   const post = {
-    post_text:postText,
-    image:PicUrl,
-    id:generateKey(28),
-    likes:[],
-    comments:[]
+    post_text: postText,
+    image: PicUrl,
+    id: generateKey(28),
+    likes: [],
+    comments: []
   }
 
   //function which pushes the data inputed in the form into the collection user-posts under the user id
- async function PostCreation(event) {
+  async function PostCreation(event) {
     event.preventDefault(); // prevent the form from being submitted
-        const posts = await getDocs(postsCollectionRef)
-        const auth_doc = await getDoc(doc(postsCollectionRef, currentId));
-        console.log(auth_doc.data())
-        if (auth_doc.data() ===undefined) {
-            setDoc(doc(postsCollectionRef, currentId), { "posts": [post] })
-        } else {
-               const posts_data = auth_doc.data().posts
-               let condition = false
-               for(let i=0;i<posts_data.length;i++){
-                 if(posts_data[i].id === post.id){
-                      condition = true;
-                    }
-               }
-              if(condition){
-                console.log("you have already made a post.")
-              }else{
-                  posts_data.push(post)
-                  updateDoc(doc(postsCollectionRef, currentId), { "posts": posts_data })
-               }            
+    const posts = await getDocs(postsCollectionRef)
+    const auth_doc = await getDoc(doc(postsCollectionRef, currentId));
+    console.log(auth_doc.data())
+    if (auth_doc.data() === undefined) {
+      setDoc(doc(postsCollectionRef, currentId), { "posts": [post] })
+    } else {
+      const posts_data = auth_doc.data().posts
+      let condition = false
+      for (let i = 0; i < posts_data.length; i++) {
+        if (posts_data[i].id === post.id) {
+          condition = true;
         }
-  
+      }
+      if (condition) {
+        console.log("you have already made a post.")
+      } else {
+        posts_data.push(post)
+        updateDoc(doc(postsCollectionRef, currentId), { "posts": posts_data })
+      }
+    }
+
   };
 
   // the template for post creation
@@ -125,13 +126,13 @@ function CreatPost() {
           <button onClick={() => navigate("/Event")}>
             <img src={eventicon} alt="eventicon" />
           </button>
-        <button 
-            className="btn btn-primary create-post-submit-button" 
+          <button
+            className="btn btn-primary create-post-submit-button"
             style={{ backgroundColor: "#27746a" }}
             onClick={PostCreation}
-        >
+          >
             Post
-        </button>
+          </button>
         </div>
 
       </form>
