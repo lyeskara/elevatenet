@@ -10,13 +10,19 @@
  *
  * @returns {JSX.Element} A rendered Post component.
  */
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import '../../styles/post.css';
 import like from '../../images/like.png';
 import comment from '../../images/comment.png';
 import { collection, doc, getDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
-
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
+import { storage } from "../../firebase";
+import { v4 } from "uuid";
 
 function Post({ name, description, message, photo, image, post_id, id }) {
   // state variables
@@ -28,9 +34,17 @@ function Post({ name, description, message, photo, image, post_id, id }) {
   const [comments1, setComments1] = useState([]);
   const [user, Setuser] = useState([])
   const [extended_comments, Setextend] = useState([]);
+  const [isUpdated, setUpdate] = useState(false);
+  const [UImage, SetUImage] = useState(null)
+  const [Umessage, SetUmessage] = useState(message);
+  const inputRef = useRef();
+  const [PicUrl, SetPicUrl] = useState(image);
+  const [del, Setdel] = useState(false);
   const poster_id = useMemo(() => {
     return id
   }, [id])
+
+
   const auth_id = auth.currentUser.uid
   const postsRef = collection(db, 'user_posts');
   const usersRef = collection(db, "users_information")
@@ -73,7 +87,6 @@ function Post({ name, description, message, photo, image, post_id, id }) {
       })
     })
   }, [comments])
-  console.log(extended_comments)
 
   async function handleLike() {
     const posts_data = (await getDoc(doc(postsRef, poster_id))).data().posts;
@@ -97,7 +110,7 @@ function Post({ name, description, message, photo, image, post_id, id }) {
     const posts_data = (await getDoc(doc(postsRef, poster_id))).data().posts;
     const post_index = posts_data.findIndex(post => post.id === post_id);
     const post = posts_data[post_index];
-
+    console.log(post)
     if (post.likes.includes(auth_id)) {
       post.likes = post.likes.filter((item) => item !== auth_id);
       console.log(post.likes);
@@ -144,104 +157,152 @@ function Post({ name, description, message, photo, image, post_id, id }) {
 
   };
 
-  // return (
-  //   <div className="post">
-  //     <div className="post-header">
-  //       <div>
-  //         <img src={photo} />
-  //         <span className="username-forposts">{name}</span>
-  //       </div>
+  useEffect(() => {
+    if (!(UImage === null)) {
+      const imageRef = ref(storage, `Uimages/${v4() + UImage}`);
+      uploadBytes(imageRef, UImage).then((word) => {
+        getDownloadURL(word.ref).then((url) => {
+          SetPicUrl(url)
+        })
+      })
+    }
+  }, [UImage])
 
-  //       <div className="post-info">
-
-  //         <p>{description}</p>
-  //       </div>
-  //     </div>
-  //     <div className="post-body">
-  //       <p>{message}</p>
-  //       {image && <img src={image} onError={handleImageError} />}
-
-  //     </div>
-
-  //     <div className="post-buttons">
-  //       <button onClick={handleLike}>
-  //         <img src={like} alt="like" />
-  //         <p> {Object.keys(likes).length} Like</p>
-  //       </button>
-  //       <button onClick={handleCommentButtonClick}>
-  //         <img src={comment} alt="comment" />
-  //         <p>Comment</p>
-  //       </button>
-  //     </div>
-
+  function handleCancel() {
+    setUpdate(false)
+    SetUImage(null)
+    SetUmessage(message)
+  }
+  async function submitForm(e) {
+    e.preventDefault();
+    const posts_data = (await getDoc(doc(postsRef, poster_id))).data().posts;
+    const post_index = posts_data.findIndex(post => post.id === post_id);
+    const post = posts_data[post_index];
+    post.post_text = Umessage
+    post.image = PicUrl
+    posts_data[post_index] = post;
+    updateDoc(doc(postsRef, poster_id), { "posts": posts_data })
+    setUpdate(false);
+  }
+  async function handleDelete() {
+    const posts_data = (await getDoc(doc(postsRef, poster_id))).data().posts;
+    const post_index = posts_data.findIndex(post => post.id === post_id);
+    const post = posts_data[post_index];
+    const posts = posts_data.filter((todelete_post) => todelete_post !== post)
+    updateDoc(doc(postsRef, poster_id), { "posts": posts })
+    Setdel(true)
+  }
   return (
-    <div className="post">
-      <div className="post-header">
-        <div>
-          <img src={photo} alt={name} />
-          <span className="username-forposts">{name}</span>
+
+    (del) ?
+      (<>
+      </>)
+      :
+      (
+        <div className="post">
+          {(poster_id === auth_id) ?
+            ((isUpdated) ? (
+              <>
+                <button onClick={handleCancel} >cancel</button>
+              </>
+            ) :
+              (
+                <>
+                  <button onClick={handleDelete}>delete</button>
+                  <button onClick={() => setUpdate(true)}>update</button>
+                </>
+              )) : (<></>)}
+
+          <div className="post-header">
+            <div>
+              <img src={photo} alt={name} />
+              <span className="username-forposts">{name}</span>
+            </div>
+          </div>
+
+          {(isUpdated) ?
+            (
+              <>
+                <h2>Edit post</h2>
+
+                <form onSubmit={submitForm}>
+                  <textarea
+                    onChange={(e) => SetUmessage(e.target.value)}
+                    placeholder="Write your post message..."
+                    rows="5"
+                  />
+                  <label htmlFor="file" className="create-post-option" >
+                    <img src={image} alt="photo" />
+                    <input
+                      type="file"
+                      id="file"
+                      ref={inputRef}
+                      onChange={(e) => {
+                        const selectedImage = e.target.files[0];
+                        SetUImage(selectedImage);
+                      }}
+                    />
+                  </label>
+                  <button type="submit">Update</button>
+                </form>
+              </>
+            ) :
+            (
+              <>
+                <div className="post-body">
+                  <p>{Umessage} </p>
+                  {PicUrl && <img src={PicUrl} onError={handleImageError} />}
+                </div>
+              </>)}
+
+          <div className="post-buttons">
+            {(on) ? (
+              <button onClick={handleUnlike}>
+                <img src={like} alt="like" />
+                <p> {likes} Unlike</p>
+              </button>
+            ) : (
+              <button onClick={handleLike}>
+                <img src={like} alt="like" />
+                <p> {likes} Like</p>
+              </button>
+            )}
+            <button onClick={handleCommentButtonClick}>
+              <img src={comment} alt="comment" />
+              <p>Comment</p>
+            </button>
+          </div>
+
+          {showCommentBox && (
+            <div className="post-commentBox">
+              <form onSubmit={handleCommentSubmit} style={{ display: "flex", alignItems: "center" }}>
+                <textarea
+                  type="text"
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                  placeholder="Write a comment..."
+                  rows="2"
+                  style={{ flexGrow: 1 }}
+                />
+                <button type="submit" style={{ marginLeft: "10px" }}>Post</button>
+              </form>
+            </div>
+          )}
+
+          {extended_comments.map((comment) => (
+            <div key={comment.commenter_id} className="post-comment">
+              <img src={comment.profile_Picture} alt="like" style={{ width: '30px', height: '30px', borderRadius: '50%' }} />
+              <strong>{comment.full_name}</strong>
+
+              <p>{comment.comment}</p>
+            </div>
+          ))}
         </div>
+      )
 
-        <div className="post-info">
-          <h2>{description}</h2>
-          <p>{description}</p>
-        </div>
-      </div>
-      <div className="post-body">
-        <p>{message}</p>
-        {image && <img src={image} onError={handleImageError} />}
-
-        <div className="post-info">
-          <h2>{description}</h2>
-          <p>{description}</p>
-        </div>
-      </div>
-
-
-      <div className="post-buttons">
-        {(on) ? (
-          <button onClick={handleUnlike}>
-            <img src={like} alt="like" />
-            <p> {likes} Unlike</p>
-          </button>
-        ) : (
-          <button onClick={handleLike}>
-            <img src={like} alt="like" />
-            <p> {likes} Like</p>
-          </button>
-        )}
-        <button onClick={handleCommentButtonClick}>
-          <img src={comment} alt="comment" />
-          <p>Comment</p>
-        </button>
-      </div>
-
-      {showCommentBox && (
-        <div className="post-commentBox">
-          <form onSubmit={handleCommentSubmit} style={{ display: "flex", alignItems: "center" }}>
-            <textarea
-              type="text"
-              value={commentText}
-              onChange={(e) => setCommentText(e.target.value)}
-              placeholder="Write a comment..."
-              rows="2"
-              style={{ flexGrow: 1 }}
-            />
-            <button type="submit" style={{ marginLeft: "10px" }}>Post</button>
-          </form>
-        </div>
-      )}
-
-      {extended_comments.map((comment) => (
-        <div key={comment.commenter_id} className="post-comment">
-          <img src={comment.profile_Picture} alt="like" style={{ width: '30px', height: '30px', borderRadius: '50%' }} />
-          <strong>{comment.full_name}</strong>
-
-          <p>{comment.comment}</p>
-        </div>
-      ))}
-    </div>
   );
+
 }
 
 export default Post;
+//reh
