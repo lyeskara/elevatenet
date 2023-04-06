@@ -21,12 +21,13 @@ import { auth, db } from "../../firebase";
 function Post({ name, description, message, photo, image, post_id, id }) {
   // state variables
   const [likes, setLikes] = useState(0);
-  const[on,seton]=useState(false)
+  const [on, seton] = useState(false)
   const [showCommentBox, setShowCommentBox] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
   const [comments1, setComments1] = useState([]);
-  const [user,Setuser] = useState([])
+  const [user, Setuser] = useState([])
+  const [extended_comments, Setextend] = useState([]);
   const poster_id = useMemo(() => {
     return id
   }, [id])
@@ -40,7 +41,7 @@ function Post({ name, description, message, photo, image, post_id, id }) {
     image: "",
     post_text: ""
   });
-   
+
   useEffect(() => {
     getDoc(doc(postsRef, poster_id)).then((responce) => {
       const data = responce.data().posts
@@ -48,14 +49,31 @@ function Post({ name, description, message, photo, image, post_id, id }) {
         if (post.id == post_id) {
           setComments(post.comments)
           setLikes(post.likes.length)
-          if(post.likes.includes(auth_id)){
+          if (post.likes.includes(auth_id)) {
             seton(true)
           }
         }
       });
     })
   }, [])
-  
+
+  useEffect(() => {
+    let set = new Set()
+    comments.forEach((comment) => {
+      getDoc(doc(usersRef, comment.commenter_id)).then((commenter) => {
+        const { firstName, lastName, profilePicUrl } = commenter.data();
+        let commenter_data = {
+          full_name: `${firstName} ${lastName}`,
+          profile_Picture: profilePicUrl
+        }
+        const extend = Object.assign({}, comment, commenter_data)
+        set.add(extend)
+        const array = [...set]
+        Setextend(array)
+      })
+    })
+  }, [comments])
+  console.log(extended_comments)
 
   async function handleLike() {
     const posts_data = (await getDoc(doc(postsRef, poster_id))).data().posts;
@@ -71,7 +89,7 @@ function Post({ name, description, message, photo, image, post_id, id }) {
     posts_data[post_index] = post;
 
     updateDoc(doc(postsRef, poster_id), { "posts": posts_data });
-    setLikes((prev)=>prev+1);
+    setLikes((prev) => prev + 1);
     seton(true)
   };
 
@@ -90,12 +108,12 @@ function Post({ name, description, message, photo, image, post_id, id }) {
     posts_data[post_index] = post;
 
     updateDoc(doc(postsRef, poster_id), { "posts": posts_data });
-    setLikes(prev=>prev-1);
+    setLikes(prev => prev - 1);
     seton(false)
   };
-const handleImageError = (e) => {
-  e.target.classList.add("hidden");
-};
+  const handleImageError = (e) => {
+    e.target.classList.add("hidden");
+  };
 
   const handleCommentButtonClick = () => {
     setShowCommentBox(!showCommentBox);
@@ -142,7 +160,7 @@ const handleImageError = (e) => {
   //     <div className="post-body">
   //       <p>{message}</p>
   //       {image && <img src={image} onError={handleImageError} />}
-        
+
   //     </div>
 
   //     <div className="post-buttons">
@@ -156,29 +174,29 @@ const handleImageError = (e) => {
   //       </button>
   //     </div>
 
-    return (
-      <div className="post">
-        <div className="post-header">
-          <div>
-            <img src={photo} alt={name} />
-            <span className="username-forposts">{name}</span>
-          </div>
-
-          <div className="post-info">
-            <h2>{description}</h2>
-            <p>{description}</p>
-          </div>
+  return (
+    <div className="post">
+      <div className="post-header">
+        <div>
+          <img src={photo} alt={name} />
+          <span className="username-forposts">{name}</span>
         </div>
-        <div className="post-body">
-          <p>{message}</p>
-          {image && <img src={image} onError={handleImageError}  /> }
 
         <div className="post-info">
           <h2>{description}</h2>
           <p>{description}</p>
         </div>
       </div>
-    
+      <div className="post-body">
+        <p>{message}</p>
+        {image && <img src={image} onError={handleImageError} />}
+
+        <div className="post-info">
+          <h2>{description}</h2>
+          <p>{description}</p>
+        </div>
+      </div>
+
 
       <div className="post-buttons">
         {(on) ? (
@@ -214,9 +232,10 @@ const handleImageError = (e) => {
         </div>
       )}
 
-      {comments.map((comment, commenter_id) => (
-        <div key={commenter_id} className="post-comment">
-          <strong>{name}</strong>
+      {extended_comments.map((comment) => (
+        <div key={comment.commenter_id} className="post-comment">
+          <img src={comment.profile_Picture} alt="like" style={{ width: '30px', height: '30px', borderRadius: '50%' }} />
+          <strong>{comment.full_name}</strong>
 
           <p>{comment.comment}</p>
         </div>
