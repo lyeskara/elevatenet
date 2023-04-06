@@ -21,11 +21,12 @@ function OtherUsersProfile() {
 	const [follow, setfollow] = useState(false);
 	const { id } = useParams();
 	const [user, setUser] = useState({});
+	const [connect,Setconnect]= useState(false);
 	const storage = getStorage();
 	const currId = auth.currentUser.uid;
 	const followedId = id;
 	const connection_requestsReference = collection(db, "connection_requests");
-
+    const connectionsRef = collection(db, "connection")
 	//function that handles the following feature, checks if the user is following each other, if not, the connection is added to the database
 	const handlefollow = async () => {
 		const authdoc = doc(connection_requestsReference, currId);
@@ -133,24 +134,71 @@ function OtherUsersProfile() {
 			alert("Cover letter file not found!");
 		}
 	};
-
+    useEffect(()=>{
+    getDoc(doc(connection_requestsReference,currId)).then((requests_ids)=>{
+		 const request_array = requests_ids.data().requests
+		 if(request_array.includes(followedId)){
+			setfollow(true)
+		 }
+	}) 
+	getDoc(doc(connectionsRef,currId)).then((connections_ids)=>{
+		const connections_array = connections_ids.data().connections
+		if(connections_array.includes(followedId)){
+		   Setconnect(true)
+		}
+   })
+	},[id])
+	function handleUnconnect(){
+		const confirmed = window.confirm(
+			"Are you sure you want to unconnect this user?"
+		);
+		if (confirmed) {
+			getDoc(doc(connectionsRef, currId))
+				.then((word) => {
+					if (word.exists) {
+						const ConnectedUsers = word.data().connections;
+						if (ConnectedUsers.includes(followedId)) {
+							const updatedConnectedUsers = ConnectedUsers.filter(
+								(userId) => userId !== followedId
+							);
+							return updateDoc(doc(connectionsRef, currId), {
+								...word.data(),
+								connections: updatedConnectedUsers
+							});
+						}
+					}
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+			Setconnect(false);
+		}
+	}
 	return (
 		<div className="contain">
 			{currId !== id ? (
-				!follow ? (
-					<div style={{ textAlign: "right" }}>
-						<Button className="follow_button" onClick={handlefollow}>
-							Connect
-						</Button>
-					</div>
-				) : (
-					<div style={{ textAlign: "right" }}>
-						<Button className="unfollow_button" onClick={handleunfollow}>
-							Unfollow
-						</Button>
-					</div>
-				)
-			) : null}
+  connect ? (
+    <div style={{ textAlign: "right" }}>
+        <Button className="unfollow_button" onClick={handleUnconnect}>
+          Unconnect
+        </Button>
+      </div>
+  ) : (
+    !follow ? (
+      <div style={{ textAlign: "right" }}>
+        <Button className="follow_button" onClick={handlefollow}>
+          Connect
+        </Button>
+      </div>
+    ) : (
+      <div style={{ textAlign: "right" }}>
+        <Button className="unfollow_button" onClick={handleunfollow}>
+          Pending
+        </Button>
+      </div>
+    )
+  )
+) : null}
 			{informations(user, downloadResume, downloadCL)}
 		</div>
 	);
