@@ -128,7 +128,7 @@ function JobPageForSeekers() {
   function handleRedirection(id, applyHereLink) {
     if (!applyHereLink) {
       // If there is no applyHereLink, redirect to the ApplyToJobs page
-      navigate("/ApplyToJobs/${id}");
+      navigate(`/ApplyToJobs/${id}`); 
     } else {
       // If there is an applyHereLink, prompt the user with a confirmation dialog
       const confirm = window.confirm(
