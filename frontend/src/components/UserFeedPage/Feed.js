@@ -61,30 +61,30 @@ function Feed() {
   useEffect(() => {
     const set = new Set([currentId]);
     getDoc(doc(connectionsRef, currentId)).then((data) => {
-      console.log(data.data())
-      if(!(data.data()== undefined)){
+      if (!(data.data() == undefined)) {
         const con_ids = data.data().connections;
         con_ids.forEach((id) => {
           set.add(id);
         })
         const post_ids = [...set]
         Setid(post_ids)
-      }else{
+      } else {
         Setid(currentId)
       }
     })
   }, []);
-  
+
   useEffect(() => {
     const posts_set = new Set()
     getDocs(postRef).then((posters) => {
       posters.docs.forEach((poster) => {
         if ((ids.includes(poster.id))) {
           poster.data().posts.forEach((post) => {
-            posts_set.add({post:post,poster_id:poster.id})
+            if(!posts_set.has(post)){
+              posts_set.add({post:post,poster_id:poster.id})
+            }
           })
         }
-        console.log(posts_set)
         const array = [...posts_set]
         SetData(array)
       })
@@ -96,31 +96,31 @@ function Feed() {
     profile_picture: "",
     first_name: "",
     last_name: "",
-    id:""
+    id: ""
   }
   useEffect(() => {
     const set = new Set()
-    getDocs(infoRef).then((posters)=>{
-     posters.docs.forEach((poster)=>{
-      if(ids.includes(poster.id)){
-        const { profilePicUrl, firstName, lastName } = poster.data()
-        obj = {
-          profile_picture: profilePicUrl,
-          first_name: firstName,
-          last_name: lastName,
-          id:poster.id
+    getDocs(infoRef).then((posters) => {
+      posters.docs.forEach((poster) => {
+        if (ids.includes(poster.id)) {
+          const { profilePicUrl, firstName, lastName } = poster.data()
+          obj = {
+            profile_picture: profilePicUrl,
+            first_name: firstName,
+            last_name: lastName,
+            id: poster.id
+          }
+          set.add(obj);
         }
-        set.add(obj);
-      }
-      const array = [...set]
-      SetUserInfo(array)
-     })
+        const array = [...set]
+        SetUserInfo(array)
+      })
     })
   }
     , [ids])
 
-  for(let i = 0; i < Data.length; i++){
-    for(let j = 0; j< user_info.length;j++){
+  for (let i = 0; i < Data.length; i++) {
+    for (let j = 0; j < user_info.length; j++) {
       if (Data[i].poster_id === user_info[j].id) {
         Data[i].user_info = user_info[j];
       }
