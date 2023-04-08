@@ -89,6 +89,8 @@ function CreatPost() {
       } else {
         posts_data.push(post)
         updateDoc(doc(postsCollectionRef, currentId), { "posts": posts_data })
+        // Navigate to the feed page
+        navigate("/feed");        
       }
     }
 
