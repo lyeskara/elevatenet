@@ -55,7 +55,7 @@ function GroupPage() {
           where("id", "in", groupDoc.data().memberUIDs)
         );
         const memberDocs = await getDocs(membersQuery);
-        const memberNamesArray = memberDocs.docs.map((doc) => {
+        const jobSeekerNamesArray = memberDocs.docs.map((doc) => {
           const firstName = doc.data().firstName;
           const lastName = doc.data().lastName;
           const fullName = `${firstName || "Unnamed"} ${lastName || ""}`.trim();
@@ -63,7 +63,25 @@ function GroupPage() {
           return { fullName, profileLink };
         });
 
-        setMemberNames(memberNamesArray);
+        // Fetch member names from recruiters_information collection.
+        const recruitersRef = collection(db, "recruiters_informations");
+        const recruitersQuery = query(
+          recruitersRef,
+          where("id", "in", groupDoc.data().memberUIDs)
+        );
+        const recruiterDocs = await getDocs(recruitersQuery);
+        const recruiterNamesArray = recruiterDocs.docs.map((doc) => {
+          const firstName = doc.data().firstName;
+          const lastName = doc.data().lastName;
+          const fullName = `${firstName || "Unnamed"} ${lastName || ""}`.trim();
+          const profileLink = `/profile/${doc.id}`;
+          return { fullName, profileLink };
+        });
+
+        // Merge both arrays into a single array and set the state.
+        const memberNames = [...jobSeekerNamesArray, ...recruiterNamesArray];
+        setMemberNames(memberNames);
+
       } else {
         console.log("No such group exists.");
       }
