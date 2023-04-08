@@ -87,10 +87,21 @@ function CreatPost() {
       if (condition) {
         console.log("you have already made a post.")
       } else {
-        posts_data.push(post)
-        updateDoc(doc(postsCollectionRef, currentId), { "posts": posts_data })
+        if ((postText == "") && (Picture == null)) {
+          alert("empty fields please write something or put an image")
+        } else {
+          posts_data.push(post)
+          updateDoc(doc(postsCollectionRef, currentId), { "posts": posts_data })
+          navigate('/feed')
+        }
+
       }
     }
+    // else{
+    //  // navigate('/feed')  
+    //  console.log("feed")
+    // }
+
 
   };
 
