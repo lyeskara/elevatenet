@@ -96,6 +96,8 @@ function CreatPost() {
         }
 
       }
+      // Navigate to the feed page
+      navigate("/feed");
     }
     // else{
     //  // navigate('/feed')  
