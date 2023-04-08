@@ -21,7 +21,7 @@ function ApplyNow() {
 
     //hooks 
     const [user, Setuser] = useState(null);
-    const [Recruiter_id, Setid] = useState("")
+    const [Recruiter_id, Setid] = useState(null)
     const ResumefileInputRef = useRef();
     const CoverfileInputRef = useRef();
     const [Resume, SetResume] = useState(null)
@@ -32,6 +32,7 @@ function ApplyNow() {
     const navigate = useNavigate()
     //db references
     const usersRef = collection(db, "users_information")
+    const RecruitersRef = collection(db, "recruiters_informations")
     const applicationsRef = collection(db, "job_applications")
     const postingsRef = collection(db, 'posting')
     const auth_id = auth.currentUser.uid
@@ -47,7 +48,6 @@ function ApplyNow() {
             console.log(error)
         })
     }, [Resume]);
-
     useEffect(() => {
         const coverRef = ref(storage, `ApplicationsCovers/${v4() + { cover }}`);
         uploadBytes(coverRef, cover).then((word) => {
@@ -61,9 +61,9 @@ function ApplyNow() {
 
     useEffect(() => {
         getDoc(doc(postingsRef, job_id.id)).then((job) => {
-            const job_data = job.data();
-            const email = job_data.created_by;
-            const snap = query(usersRef, where("email", "==", email))
+            const email = job.data().created_by;
+            console.log(email)
+            const snap = query(RecruitersRef, where("email", "==", email))
             getDocs(snap).then(users => {
                 users.docs.forEach((user) => {
                     Setid(user.id)
@@ -117,16 +117,31 @@ function ApplyNow() {
         applicant_id: auth_id,
         job_offer_id: job_id.id
     }
+        
     async function ApplicationSend(event) {
         event.preventDefault();
         const applications = await getDocs(applicationsRef)
         const recruiter_document = await getDoc(doc(applicationsRef, Recruiter_id));
-        if (applications.docs.length === 0) {
+        const array =[]
+         applications.forEach((doc)=>{
+          array.push(doc.id)
+        })
+        if (!array.includes(Recruiter_id)) {
             setDoc(doc(applicationsRef, Recruiter_id), { "applications": [application] })
         } else {
-            const applicantions_data = recruiter_document.data().applications
-            applicantions_data.push(application)
-            updateDoc(doc(applicationsRef, Recruiter_id), { "applications": applicantions_data })
+            const applications_data = recruiter_document.data().applications
+            let condition = false
+            for(let i=0;i<applications_data.length;i++){
+                if((applications_data[i].applicant_id == application.applicant_id) && (applications_data[i].job_offer_id == application.job_offer_id)){
+                     condition = true;
+                }
+            }
+            if(condition){
+                console.log("you have already made a job application.")
+            }else{
+                applications_data.push(application)
+                updateDoc(doc(applicationsRef, Recruiter_id), { "applications": applications_data })
+            }            
         }
     }
     return (

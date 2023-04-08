@@ -2,7 +2,7 @@
 import { collection, doc, getDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { auth, db } from "../../firebase";
-import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Card, Form, Button, Modal } from "react-bootstrap";
 import node from ".././../images/clarity_node.png";
 import group from ".././../images/group.png";
 import event from ".././../images/event.png";
@@ -96,6 +96,41 @@ function ConnectionPage() {
     });
     Setconnections(connections.filter((element) => element.id !== userId));
   }
+
+
+  const [showModal, setShowModal] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
+
+  //This function will proceeed with the deletion if confirmed, or do nothing + close the modal.
+  /**
+   * 
+   * @param {handleDeleteConfirmation}
+   */
+  function confirmDeletion() {
+    if (userToDelete) {
+      handle(userToDelete);
+      setUserToDelete(null);
+      setShowModal(false);
+    }
+  }
+
+  //This function will display the confirmation modal for deleting a connection.
+  /**
+   * 
+   * @param {handleDelete} userId
+   * We store the target user's ID for further use, if we confirm the deletion.
+   */
+  function handleDeleteEvent(user) {
+    setFirstName(user.firstName);
+    setLastName(user.lastName);
+    setShowModal(true);
+    setUserToDelete(user.id);
+
+  }
+
   return (
     <>
       <div className="contain">
@@ -150,7 +185,7 @@ function ConnectionPage() {
                       <Button
                         className="trash_button"
                         onClick={() => {
-                          handle(user.id);
+                          handleDeleteEvent(user);
                         }}
                       >
                         <img src={trash} alt="node" />
@@ -161,6 +196,28 @@ function ConnectionPage() {
                   ))}
                 </div>
               </Row>
+
+              {/*This is the confirmation modal that will appear when a connection deletion is initiated.*/}
+              <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Connection Removal</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  You are about to remove your connection with {firstName} {lastName}, are you sure you want to proceed?
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button
+                    variant="secondary"
+                    style={{ borderRadius: "20px" }}
+                    onClick={() => setShowModal(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button style={{ backgroundColor: "#27746a", borderRadius: "20px"}} onClick={confirmDeletion}>
+                    Remove Connection
+                  </Button>
+                </Modal.Footer>
+              </Modal>
             </Card>
 
             {/*If we add the Suggested Connection Feature */}
