@@ -238,3 +238,12 @@ margin-bottom: -8px;
     font-size: 30px;
   }
 }
+@media screen and (max-width:393px) {
+  .trash_button{
+    width: 50%;
+    font-size: 11px;
+  }
+  .trash_button img{
+    width: 30px;
+  }
+}
