@@ -228,8 +228,13 @@ margin-bottom: -8px;
 }
 
 .connection-pic{
-  width: 5%;
-  height: 5%;
+  width: 30px;
+  height:30px;
   border-radius: 10px;
   margin-right: 2%;
+}
+@media screen and (max-width: 768px) {
+  .NetworkTitle{
+    font-size: 30px;
+  }
 }
