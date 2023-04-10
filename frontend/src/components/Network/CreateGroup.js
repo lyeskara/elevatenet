@@ -122,7 +122,7 @@ function CreateGroup() {
   };
 
   return (
-    <Container className="container mx-auto w-50">
+    <Container className="groupContainer container mx-auto ">
       <h2 className="title-spacing">
         Create a <span style={{ color: "#27746a" }}> Group </span>
       </h2>
