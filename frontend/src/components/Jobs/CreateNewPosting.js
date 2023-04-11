@@ -121,7 +121,7 @@ function CreateNewPosting() {
     // return users to JobPosting page with updates from database created with form submission
 	return (
 		//Container for new job posting
-		<Container className="container mx-auto w-50">
+		<Container className="container mx-auto container-job">
 			<Row className="gap-6">
 				<Col >
 					<Card className="card">
