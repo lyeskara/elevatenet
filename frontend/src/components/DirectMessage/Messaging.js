@@ -158,7 +158,7 @@ const Message = () => {
                   className="user-tab-m"
                   onClick={() => setRecipientId(user.id)}
                 >
-                  <img src={user.profilePicUrl || defpic} style={{ marginRight: "20px" }} />
+                  <img className="chat-pic" src={user.profilePicUrl || defpic} style={{ marginRight: "20px" }} />
                   <h3>
                     {user.firstName} {user.lastName}
                   </h3>
