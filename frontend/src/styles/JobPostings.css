@@ -60,11 +60,17 @@
   .container-apply{
     width: 50%;
   }
+  .container-job{
+    width: 50%
+  }
 }
 
 @media screen and (min-width: 820px) {
  
   .container-apply{
     width: 90%;
+  }
+  .container-job{
+    width: 60%
   }
 }
