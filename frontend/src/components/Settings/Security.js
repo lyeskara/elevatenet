@@ -27,7 +27,7 @@ function Security() {
 
 	// Function to redirect to the "Account Preferences" page
 	const handleClickAccount = () => {
-		window.location.href = "/ProfileInfoSettings";
+		window.location.href = "/GeneralSettings";
 	};
 
 	// Function to redirect to the "JobPostings" page

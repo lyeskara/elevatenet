@@ -22,12 +22,12 @@ import Button from "react-bootstrap/Button";
 import arrow from ".././../images/mdi_arrow.png";
 
 import { Link, useNavigate } from "react-router-dom";
-function ProfileInfoSettings() {
+function GeneralSettings() {
 
 
 	// Function to redirect to the "Account Preferences" page
 	const handleClickAccount = () => {
-		window.location.href = "/ProfileInfoSettings";
+		window.location.href = "/GeneralSettings";
 	};
 
 	// Function to redirect to the "JobPostings" page
@@ -81,7 +81,7 @@ function ProfileInfoSettings() {
 				<Col xs={12} sm={12} lg={8}>
                 <Card className="card">
               <h2 style={{ color: "#555555" }}>
-						Profile Information
+			  			General Settings
 					</h2>
                     <hr></hr>
                     <div className="containRequest">
@@ -96,7 +96,7 @@ function ProfileInfoSettings() {
               <div className="containRequest">
                 <h5 className="requests">Language</h5>
                 <div className="arrow">
-                  <Link to="/">
+                  <Link to="/ChangeLanguage">
                     <img src={arrow} alt="node" />
                   </Link>
                 </div>
@@ -115,4 +115,4 @@ function ProfileInfoSettings() {
 	);
 }
 
-export default ProfileInfoSettings;
+export default GeneralSettings;

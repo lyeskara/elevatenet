@@ -38,8 +38,9 @@ import RecruiterForm from './components/ProfileInfo/RecruiterFrom'
 import Messaging from './components/DirectMessage/Messaging';
 import CompanySearch from './components/connection/CompanySearch';
 
-import ProfileInfoSettings from "./components/Settings/ProfileInfoSetting";
+import GeneralSettings from "./components/Settings/GeneralSettings";
 import Security from "./components/Settings/Security";
+import ChangeLanguage from "./components/Settings/ChangeLanguage";
 function App() {
   return (
     <UserAuthContextProvider>
@@ -69,6 +70,10 @@ function App() {
         <Route
           path="/JobPostings"
           element={<Protection>{<JobPostings />}</Protection>}
+        />
+        <Route
+          path="/ChangeLanguage"
+          element={<Protection>{<ChangeLanguage />}</Protection>}
         />
         <Route path="/" element={<Linkedin />} />
         <Route path="/SignIn" element={<SignIn />} />
@@ -211,10 +216,10 @@ function App() {
           }
         />
          <Route
-          path="/ProfileInfoSettings"
+          path="/GeneralSettings"
           element={
             <Protection>
-              <ProfileInfoSettings />
+              <GeneralSettings />
             </Protection>
           }
         />
