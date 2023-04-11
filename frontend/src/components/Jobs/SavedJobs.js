@@ -131,7 +131,7 @@ function SavedJobs() {
           </Col>
           <Col xs={12} sm={12} lg={8}>
             <h2
-              style={{ color: "#555555", marginTop: "32px", marginLeft: "8%" }}
+              style={{ color: "#555555", marginTop: "32px" }}
             >
               Your Saved Jobs
             </h2>
@@ -144,6 +144,8 @@ function SavedJobs() {
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
+                        alignItems: "center",
+                        
                       }}
                     >
                       <Card.Title>{posting.job_title}</Card.Title>
