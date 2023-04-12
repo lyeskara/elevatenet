@@ -40,6 +40,8 @@ import CompanySearch from './components/connection/CompanySearch';
 
 import ProfileInfoSettings from "./components/Settings/ProfileInfoSetting";
 import Security from "./components/Settings/Security";
+import Admin from "./components/Admin/Admin";
+
 function App() {
   return (
     <UserAuthContextProvider>
@@ -53,6 +55,10 @@ function App() {
         <Route
           path="/ProfileForm"
           element={<Protection>{<ProfileForm />}</Protection>}
+        ></Route>
+        <Route
+          path="/Admin"
+          element={<Protection>{<Admin />}</Protection>}
         ></Route>
         <Route
           path="/RecruiterForm"
