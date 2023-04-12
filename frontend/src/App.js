@@ -37,6 +37,9 @@ import RecruiterForm from './components/ProfileInfo/RecruiterFrom'
 
 import Messaging from './components/DirectMessage/Messaging';
 import CompanySearch from './components/connection/CompanySearch';
+
+import ProfileInfoSettings from "./components/Settings/ProfileInfoSetting";
+import Security from "./components/Settings/Security";
 function App() {
   return (
     <UserAuthContextProvider>
@@ -204,6 +207,22 @@ function App() {
           element={
             <Protection>
               <SavedJobs />
+            </Protection>
+          }
+        />
+         <Route
+          path="/ProfileInfoSettings"
+          element={
+            <Protection>
+              <ProfileInfoSettings />
+            </Protection>
+          }
+        />
+          <Route
+          path="/Security"
+          element={
+            <Protection>
+              <Security />
             </Protection>
           }
         />

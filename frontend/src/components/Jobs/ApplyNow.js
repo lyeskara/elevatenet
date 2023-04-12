@@ -145,7 +145,7 @@ function ApplyNow() {
         }
     }
     return (
-        <Container className="container mx-auto w-50">
+        <Container className="container mx-auto container-apply">
             <Row className="gap-6">
                 <Col >
                     <Card className="card">

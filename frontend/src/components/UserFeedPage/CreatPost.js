@@ -97,9 +97,9 @@ function CreatPost() {
         }
 
       }
-     
+
     }
-   
+
 
 
   };

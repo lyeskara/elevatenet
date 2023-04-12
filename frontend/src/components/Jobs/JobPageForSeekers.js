@@ -379,7 +379,7 @@ function JobPageForSeekers() {
                 </Carousel>
               </Col>
               {filteredPostings.map((posting) => (
-                <Col md={10} key={posting.id}>
+                <Col xs={12} sm={12} lg={10} key={posting.id}>
                   <Card className="mb-3">
                     <Card.Body>
                       <div>
@@ -388,16 +388,18 @@ function JobPageForSeekers() {
                           style={{
                             display: "flex",
                             justifyContent: "space-between",
+                            alignItems: "center",
+                            height: "50px" // set a fixed height for the containing element
                           }}
                         >
                           <Card.Title>{posting.job_title}</Card.Title>
                           {/* Render the button with the modified onClick handler */}
                           <div className="containRequest">
                             <Button
+                            className="apply-button"
                               variant="primary"
                               style={{
-                                backgroundColor: "#27746A",
-                                width: "100%",
+                                backgroundColor: "#27746A"
                               }}
                               onClick={() =>
                                 handleRedirection(
@@ -408,7 +410,7 @@ function JobPageForSeekers() {
                             >
                               Apply Now
                             </Button>
-                            <div style={{ width: "3rem", marginLeft: "5%" }}>
+                            <div style={{  marginLeft: "5%" }} className="heart-button">
                               <Heart
                                 inactiveColor="#888888"
                                 activeColor="#888888"
@@ -425,7 +427,7 @@ function JobPageForSeekers() {
                             </div>
                           </div>
                         </div>
-                        <Card.Subtitle className="mb-2 text-muted">
+                        <Card.Subtitle className="mb-2 text-muted card-company">
                           {posting.company}
                         </Card.Subtitle>
                         <Card.Text>{posting.description}</Card.Text>
