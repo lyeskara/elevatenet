@@ -40,6 +40,7 @@ import CompanySearch from './components/connection/CompanySearch';
 
 import ProfileInfoSettings from "./components/Settings/ProfileInfoSetting";
 import Security from "./components/Settings/Security";
+import ChangePassword from "./components/Settings/ChangePassword";
 function App() {
   return (
     <UserAuthContextProvider>
@@ -225,7 +226,14 @@ function App() {
               <Security />
             </Protection>
           }
-        />
+        /> <Route
+        path="/ChangePassword"
+        element={
+          <Protection>
+            <ChangePassword />
+          </Protection>
+        }
+      />
         <Route
           path="/Advertisements"
           element={

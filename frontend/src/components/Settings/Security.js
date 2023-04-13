@@ -87,7 +87,7 @@ function Security() {
                     <div className="containRequest">
                 <h5 className="requests">Change Password</h5>
                 <div className="arrow">
-                  <Link to="/">
+                  <Link to="/ChangePassword">
                     <img src={arrow} alt="node" />
                   </Link>
                 </div>
