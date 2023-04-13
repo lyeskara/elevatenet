@@ -15,6 +15,7 @@ import { getStorage, ref, getDownloadURL, getMetadata } from "firebase/storage";
  */
 function Profile() {
 	const [user, setUser] = useState({});
+	const [numConnections, setNumConnections] = useState(0);
 	const [profilePicURL, setProfilePicURL] = useState("");
 	const storage = getStorage();
 
@@ -44,6 +45,9 @@ function Profile() {
 
 				// Set the profile picture URL state
 				setProfilePicURL(downloadURL);
+
+				// Get the education data
+				await getEducationData();
 			} else {
 				console.log("User not found");
 			}
@@ -57,8 +61,50 @@ function Profile() {
 		}
 	};
 
+	const getEducationData = async () => {
+		try {
+			const educationRef = doc(
+				collection(db, "users_information", auth.currentUser.uid, "Education"),
+				auth.currentUser.uid
+			);
+			const educationDoc = await getDoc(educationRef);
+
+			if (educationDoc.exists()) {
+				// Set the education state
+				setEducation(educationDoc.data());
+			} else {
+				console.log("Education not found for user");
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	// Fix this code segment
+
+	// const getConnectionData = async () => {
+	// 	try {
+	// 		const connectionDoc = await getDoc(
+	// 			doc(collection(db, "connection", auth.currentUser.uid, "connections"))
+	// 		);
+
+	// 		if (connectionDoc.exists) {
+	// 			console.log("Connection document does exist");
+	// 			const connections = connectionDoc.connections;
+	// 			console.log(connections);
+	// 			const numConnections = connections ? connections.length : 0;
+	// 			setNumConnections(numConnections);
+	// 		} else {
+	// 			console.log("Connection document does not exist");
+	// 		}
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// };
+
 	useEffect(() => {
 		getUserData();
+		//	getConnectionData();
 	}, [auth]);
 
 	const downloadResume = async () => {
@@ -142,7 +188,7 @@ function Profile() {
 									color: "#626262",
 								}}
 							>
-								{user.connections} <u>Connections</u>
+								<u>0 Connections</u>
 							</h5>
 						</div>
 					</Card>
@@ -242,17 +288,17 @@ function Profile() {
 					<Card className="educationcard">
 						<h5>Education</h5>
 						<hr></hr>
-						<div className="profile-desc-row">
-							<img src={person}></img>
-							<div>
-								<h3>{user.education}</h3>
-								<p style={{ color: "#272727" }}>
-									Bachelor's degree, software engineering
-								</p>
-								<p> Aug 2020 - May 2024</p>
-							</div>
-						</div>
-						<hr></hr>
+						{user.education.map((school, index) => (
+							<React.Fragment key={index}>
+								<div className="profile-desc-row">
+									<img src={person}></img>
+									<div>
+										<h3>{school}</h3>
+									</div>
+								</div>
+								{index !== user.education.length - 1 && <hr />}
+							</React.Fragment>
+						))}
 					</Card>
 
 					<Card className="skillscard">

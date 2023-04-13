@@ -31,7 +31,9 @@ function ProfileForm() {
 			name === "courses" ||
 			name === "projects" ||
 			name === "volunteering" ||
-			name === "awards"
+			name === "awards" ||
+			name === "education" ||
+			name === "workExperience"
 		) {
 			// split the input string into an array of strings
 			const arrayValue = value.split(",");
