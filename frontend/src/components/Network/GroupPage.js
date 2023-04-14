@@ -157,14 +157,33 @@ function GroupPage() {
               Leave Group
             </Button>
           </Card>
+          
 
-          {/* Section where all the users who joined the group are displayed.*/}
+          {/* Section where all group admins are displayed.*/}
+          <Card
+            className="profilecard"
+            style={{ minHeight: `${Math.max(memberNames.length * 40, 100)}px` }}
+          >
+            <h2> Group Admins </h2>
+            {group.memberUIDs.length > 0 ? (
+              <ul className="list-group">
+                {memberNames.map(({ fullName, profileLink }, index) => (
+                  <li key={index} className="list-group-item">
+                    <Link to={profileLink}>{fullName}</Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No active members</p>
+            )}
+          </Card>
+
+          {/* Section where all the regular members who joined the group are displayed.*/}
           <Card
             className="profilecard"
             style={{ minHeight: `${Math.max(memberNames.length * 40, 100)}px` }}
           >
             <h2> Active Members </h2>
-            <hr />
             {group.memberUIDs.length > 0 ? (
               <ul className="list-group">
                 {memberNames.map(({ fullName, profileLink }, index) => (
