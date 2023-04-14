@@ -230,7 +230,7 @@ function GroupPage() {
         <Modal.Body>
           {group.adminUIDs.includes(auth.currentUser.uid) ? (
             <>
-              <h4>You are an admin of this group.</h4>
+              <h4 style={{ color: '#800000' }}>You are an admin of this group.</h4>
               <p>Are you sure you want to leave?</p>
             </>
           ) : (
