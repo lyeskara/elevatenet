@@ -35,6 +35,7 @@ function GroupPage() {
   const { id } = useParams();
   const [group, setGroup] = useState(null);
   const [memberNames, setMemberNames] = useState([]);
+  const [adminNames, setAdminNames] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
 
@@ -58,9 +59,10 @@ function GroupPage() {
         const jobSeekerNamesArray = memberDocs.docs.map((doc) => {
           const firstName = doc.data().firstName;
           const lastName = doc.data().lastName;
+          const user_id = doc.data().id;
           const fullName = `${firstName || "Unnamed"} ${lastName || ""}`.trim();
           const profileLink = `/profile/${doc.id}`;
-          return { fullName, profileLink };
+          return { fullName, profileLink, id: user_id };
         });
 
         // Fetch member names from recruiters_information collection.
@@ -73,14 +75,25 @@ function GroupPage() {
         const recruiterNamesArray = recruiterDocs.docs.map((doc) => {
           const firstName = doc.data().firstName;
           const lastName = doc.data().lastName;
+          const user_id = doc.data().id;
           const fullName = `${firstName || "Unnamed"} ${lastName || ""}`.trim();
           const profileLink = `/profile/${doc.id}`;
-          return { fullName, profileLink };
+          return { fullName, profileLink, id: user_id };
         });
 
-        // Merge both arrays into a single array and set the state.
-        const memberNames = [...jobSeekerNamesArray, ...recruiterNamesArray];
-        setMemberNames(memberNames);
+        // Merge both arrays into a single array
+        const allMemberNames = [...jobSeekerNamesArray, ...recruiterNamesArray];
+
+        // Split the array into two, one for admins, and another for regular members
+        const adminNamesArray = allMemberNames.filter(member => groupDoc.data().adminUIDs.includes(member.id));
+        const regularMemberNamesArray = allMemberNames.filter(member => !groupDoc.data().adminUIDs.includes(member.id));
+
+
+        // Set the array for the both category of users
+        setMemberNames(regularMemberNamesArray);
+        setAdminNames(adminNamesArray);
+        console.log(adminNamesArray);
+        console.log(regularMemberNamesArray);
 
       } else {
         console.log("No such group exists.");
@@ -96,6 +109,7 @@ function GroupPage() {
   }
 
   //This removes the user from the memberUIDs array of the group, essentially leaving the group.
+  // ************* Check if user is in adminUIDs first
   const leaveGroup = async () => {
     const groupRef = doc(db, "groups", id);
     const groupDoc = await getDoc(groupRef);
@@ -162,19 +176,19 @@ function GroupPage() {
           {/* Section where all group admins are displayed.*/}
           <Card
             className="profilecard"
-            style={{ minHeight: `${Math.max(memberNames.length * 40, 100)}px` }}
+            style={{ minHeight: `${Math.max(adminNames.length * 40, 100)}px` }}
           >
             <h2> Group Admins </h2>
-            {group.memberUIDs.length > 0 ? (
+            {group.adminUIDs.length > 0 ? (
               <ul className="list-group">
-                {memberNames.map(({ fullName, profileLink }, index) => (
+                {adminNames.map(({ fullName, profileLink }, index) => (
                   <li key={index} className="list-group-item">
                     <Link to={profileLink}>{fullName}</Link>
                   </li>
                 ))}
               </ul>
             ) : (
-              <p>No active members</p>
+              <p>No active admins</p>
             )}
           </Card>
 
