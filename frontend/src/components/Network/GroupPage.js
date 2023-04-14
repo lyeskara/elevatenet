@@ -92,8 +92,6 @@ function GroupPage() {
         // Set the array for the both category of users
         setMemberNames(regularMemberNamesArray);
         setAdminNames(adminNamesArray);
-        console.log(adminNamesArray);
-        console.log(regularMemberNamesArray);
 
       } else {
         console.log("No such group exists.");
@@ -113,18 +111,26 @@ function GroupPage() {
   const leaveGroup = async () => {
     const groupRef = doc(db, "groups", id);
     const groupDoc = await getDoc(groupRef);
-
-    const updatedGroup = {
+  
+    const isAdmin = groupDoc.data().adminUIDs.includes(auth.currentUser.uid);
+  
+    const updatedGroupData = {
       ...groupDoc.data(),
+      adminUIDs: isAdmin
+        ? groupDoc.data().adminUIDs.filter(uid => uid !== auth.currentUser.uid)
+        : groupDoc.data().adminUIDs,
       memberUIDs: groupDoc
         .data()
-        .memberUIDs.filter((uid) => uid !== auth.currentUser.uid),
+        .memberUIDs.filter(uid => uid !== auth.currentUser.uid),
     };
-
-    await updateDoc(groupRef, updatedGroup);
-
+  
+    await updateDoc(groupRef, updatedGroupData);
+  
     navigate('/GroupNetwork');
-  }
+  };
+  
+  
+  
 
   //This opens the confirmation modal.
   function leaveConfirmation(){
@@ -171,7 +177,6 @@ function GroupPage() {
               Leave Group
             </Button>
           </Card>
-          
 
           {/* Section where all group admins are displayed.*/}
           <Card
@@ -222,7 +227,16 @@ function GroupPage() {
         <Modal.Header closeButton>
           <Modal.Title>Leave Confirmation</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Are you sure you want leave this group?</Modal.Body>
+        <Modal.Body>
+          {group.adminUIDs.includes(auth.currentUser.uid) ? (
+            <>
+              <h4>You are an admin of this group.</h4>
+              <p>Are you sure you want to leave?</p>
+            </>
+          ) : (
+            <p>Are you sure you want to leave this group?</p>
+          )}
+        </Modal.Body>
         <Modal.Footer>
           <Button
             variant="secondary"
