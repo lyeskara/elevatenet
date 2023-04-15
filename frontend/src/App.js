@@ -40,6 +40,12 @@ import CompanySearch from './components/connection/CompanySearch';
 
 import ProfileInfoSettings from "./components/Settings/ProfileInfoSetting";
 import Security from "./components/Settings/Security";
+import NotificationSettings from "./components/Settings/Notificationsettings";
+
+
+
+
+
 function App() {
   return (
     <UserAuthContextProvider>
@@ -215,6 +221,15 @@ function App() {
           element={
             <Protection>
               <ProfileInfoSettings />
+            </Protection>
+          }
+        />
+
+        <Route
+          path="/NotificationSettings"
+          element={
+            <Protection>
+              <NotificationSettings />
             </Protection>
           }
         />
