@@ -103,7 +103,7 @@ function Admin(){
 			}
 		};
 		getData();
-	}, [posts]); // pass an posts dependency array
+	}, []); // pass an posts dependency array
 
 	// This component displays a page for job postings
 	// and advertisements with a menu block on the left to navigate between them.

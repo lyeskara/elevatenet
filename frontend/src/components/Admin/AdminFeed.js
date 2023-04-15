@@ -58,7 +58,7 @@ function AdminFeed() {
     }
 
     fetchUserNames();
-  }, [posts]);
+  }, []);
 
   const handleDelete = async (postId, mapId) => {
     try {
