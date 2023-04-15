@@ -37,7 +37,7 @@ import RecruiterForm from './components/ProfileInfo/RecruiterFrom'
 
 import Messaging from './components/DirectMessage/Messaging';
 import CompanySearch from './components/connection/CompanySearch';
-
+import Notification from "./components/Notification";
 import ProfileInfoSettings from "./components/Settings/ProfileInfoSetting";
 import Security from "./components/Settings/Security";
 import NotificationSettings from "./components/Settings/Notificationsettings";
@@ -92,6 +92,14 @@ function App() {
           element={
             <Protection>
               <ConnectionPage />
+            </Protection>
+          }
+        ></Route>
+          <Route
+          path="/Notification"
+          element={
+            <Protection>
+              <Notification/>
             </Protection>
           }
         ></Route>

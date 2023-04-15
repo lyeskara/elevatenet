@@ -21,13 +21,31 @@ function OtherUsersProfile() {
 	const [follow, setfollow] = useState(false);
 	const { id } = useParams();
 	const [user, setUser] = useState({});
-	const [connect,Setconnect]= useState(false);
+	const [userInfo, SetUserInfo] = useState({
+		profile_picture: "",
+		first_name: "",
+		last_name: ""
+	});
+	const [connect, Setconnect] = useState(false);
 	const storage = getStorage();
 	const currId = auth.currentUser.uid;
 	const followedId = id;
 	const connection_requestsReference = collection(db, "connection_requests");
-    const connectionsRef = collection(db, "connection")
+	const connectionsRef = collection(db, "connection")
 	//function that handles the following feature, checks if the user is following each other, if not, the connection is added to the database
+
+	useEffect(() => {
+		getDoc((doc(collection(db, "users_information"), currId))
+		).then((informations) => {
+			const { profilePicUrl, firstName, lastName } = informations.data()
+			const obj = {
+				profile_picture: profilePicUrl,
+				first_name: firstName,
+				last_name: lastName
+			}
+			SetUserInfo(obj)
+		})
+	}, [])
 	const handlefollow = async () => {
 		const authdoc = doc(connection_requestsReference, currId);
 		const array = [];
@@ -54,6 +72,31 @@ function OtherUsersProfile() {
 							console.log("already followed!");
 						}
 					});
+					getDoc(doc(collection(db, 'Notifications'), followedId)).then((followed_doc) => {
+						const note = {
+							message: `${userInfo.first_name} ${userInfo.last_name} has sent a connection request!`,
+							profilePicUrl: userInfo.profile_picture
+						}
+						if ((followed_doc.data() === undefined) || (followed_doc.data().notifications.length === 0)) {
+							setDoc(doc(collection(db, 'Notifications'), followedId), { notifications: [note] })
+						} else {
+							const notifications_array = followed_doc.data().notifications;
+							let condition = false
+							notifications_array.forEach((notif)=>{
+                               if(!(notif.message === note.message)){
+                                condition = true;
+							   }
+							})
+							if(condition){
+								notifications_array.push(note)
+							}	
+							console.log(notifications_array)						
+							updateDoc(doc(collection(db, 'Notifications'), followedId),{
+								 notifications: notifications_array 
+							})
+
+						}
+					})
 				}
 			})
 			.catch((error) => {
@@ -71,12 +114,10 @@ function OtherUsersProfile() {
 				.then((word) => {
 					if (word.exists) {
 						const followedUsers = word.data().requests;
-						console.log(followedUsers);
 						if (followedUsers.includes(followedId)) {
 							const updatedFollowedUsers = followedUsers.filter(
 								(userId) => userId !== followedId
 							);
-							console.log(updatedFollowedUsers);
 							return updateDoc(doc(connection_requestsReference, currId), {
 								...word.data(),
 								requests: updatedFollowedUsers,
@@ -134,21 +175,21 @@ function OtherUsersProfile() {
 			alert("Cover letter file not found!");
 		}
 	};
-    useEffect(()=>{
-    getDoc(doc(connection_requestsReference,currId)).then((requests_ids)=>{
-		 const request_array = requests_ids.data().requests
-		 if(request_array.includes(followedId)){
-			setfollow(true)
-		 }
-	}) 
-	getDoc(doc(connectionsRef,currId)).then((connections_ids)=>{
-		const connections_array = connections_ids.data().connections
-		if(connections_array.includes(followedId)){
-		   Setconnect(true)
-		}
-   })
-	},[id])
-	function handleUnconnect(){
+	useEffect(() => {
+		getDoc(doc(connection_requestsReference, currId)).then((requests_ids) => {
+			const request_array = requests_ids.data().requests
+			if (request_array.includes(followedId)) {
+				setfollow(true)
+			}
+		})
+		getDoc(doc(connectionsRef, currId)).then((connections_ids) => {
+			const connections_array = connections_ids.data().connections
+			if (connections_array.includes(followedId)) {
+				Setconnect(true)
+			}
+		})
+	}, [id])
+	function handleUnconnect() {
 		const confirmed = window.confirm(
 			"Are you sure you want to unconnect this user?"
 		);
@@ -177,28 +218,28 @@ function OtherUsersProfile() {
 	return (
 		<div className="contain">
 			{currId !== id ? (
-  connect ? (
-    <div style={{ textAlign: "right" }}>
-        <Button className="unfollow_button" onClick={handleUnconnect}>
-          Unconnect
-        </Button>
-      </div>
-  ) : (
-    !follow ? (
-      <div style={{ textAlign: "right" }}>
-        <Button className="follow_button" onClick={handlefollow}>
-          Connect
-        </Button>
-      </div>
-    ) : (
-      <div style={{ textAlign: "right" }}>
-        <Button className="unfollow_button" onClick={handleunfollow}>
-          Pending
-        </Button>
-      </div>
-    )
-  )
-) : null}
+				connect ? (
+					<div style={{ textAlign: "right" }}>
+						<Button className="unfollow_button" onClick={handleUnconnect}>
+							Unconnect
+						</Button>
+					</div>
+				) : (
+					!follow ? (
+						<div style={{ textAlign: "right" }}>
+							<Button className="follow_button" onClick={handlefollow}>
+								Connect
+							</Button>
+						</div>
+					) : (
+						<div style={{ textAlign: "right" }}>
+							<Button className="unfollow_button" onClick={handleunfollow}>
+								Pending
+							</Button>
+						</div>
+					)
+				)
+			) : null}
 			{informations(user, downloadResume, downloadCL)}
 		</div>
 	);

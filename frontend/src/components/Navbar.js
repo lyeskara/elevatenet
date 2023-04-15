@@ -67,7 +67,7 @@ function NavbarFun() {
 										<Link to="/connections">
 											<img src={connection} alt="connection" />
 										</Link>
-										<Link to="/">
+										<Link to="/Notification">
 											<img src={bell} alt="bell" />
 										</Link>
 										<Link to="/ProfileInfoSettings">
