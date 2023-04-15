@@ -2,33 +2,33 @@
 import React, { useEffect, useState } from "react";
 import {
   collection,
-  query,
-  where,
   getDoc,
   doc,
-  onSnapshot,
-  getDocs,
-  deleteDoc,
-  updateDoc,
 } from "firebase/firestore";
 import { auth, db, getAuth } from "../../firebase";
-import Card from "react-bootstrap/Card";
+
 import "../../styles/JobPostings.css";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button";
+import { Container, Row, Col, Button, Modal, Card } from "react-bootstrap";
 import backward from ".././../images/backward.png";
-import { updatePassword,  signOut } from "firebase/auth";
+import { updatePassword, signOut } from "firebase/auth";
 import "../../styles/setting.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserAuth } from "../../context/UserAuthContext";
+
+/**
+ * Function that will change the connected user password
+ *
+ * @return none
+ */
 function ChangePassword() {
   const [user, setUser] = useState({});
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const { logOut } = useUserAuth();
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [titleMessage, setTitleMessage] = useState("");
   const getUserData = async () => {
     try {
       const userDoc = await getDoc(
@@ -50,15 +50,23 @@ function ChangePassword() {
     getUserData();
   }, [auth]);
 
-
+  /**
+   * Function that will update the password and display error or success messages when needed
+   * @param event: on click
+   * @return none
+   */
   const onChangePasswordClick = async (event) => {
     event.preventDefault();
     if (newPassword == "" || confirmPassword == "") {
-      alert("Missing input.");
+      setShowModal(true);
+      setErrorMessage("Missing input");
+      setTitleMessage("Error");
       return;
     }
     if (newPassword !== confirmPassword) {
-      alert("Passwords do not match.");
+      setShowModal(true);
+      setErrorMessage("Passwords do not match");
+      setTitleMessage("Error");
       return;
     }
 
@@ -66,15 +74,25 @@ function ChangePassword() {
       // Update the user's password
       await updatePassword(auth.currentUser, newPassword);
 
-      await signOut(auth);
-      navigate("/");
-     // Display a success message to the user
-      alert("Your password has been updated successfully. Please log in again.");
+      // Display a success message to the user
+      setShowModal(true);
+      setTitleMessage("Success");
+      setErrorMessage("Your password has been updated successfully.");
     } catch (error) {
       console.log(error);
-      alert("There was an error updating your password.");
+      setShowModal(true);
+      setTitleMessage("Error");
+      if (
+        error ==
+        "FirebaseError: Firebase: Password should be at least 6 characters (auth/weak-password)."
+      )
+        setErrorMessage("Password should be at least 6 characters");
+      else {
+        setErrorMessage("There was an error updating your password.");
+      }
     }
   };
+  const handleClose = () => setShowModal(false); // Add handleClose function
 
   // This component displays a page for job postings
   // and advertisements with a menu block on the left to navigate between them.
@@ -150,6 +168,18 @@ function ChangePassword() {
           </Card>
         </Col>
       </Row>
+      {/*Modal to display error message */}
+      <Modal show={showModal} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>{titleMessage}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{errorMessage}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 }
