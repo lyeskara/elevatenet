@@ -1,0 +1,12 @@
+.notif-title{
+    margin-top: 3%;
+    margin-bottom: 1%;
+}
+.notif-pic{
+    width: 60px;
+    height: 60px;
+}
+.notif-card{
+    width: 50%;
+    margin-bottom: -1%;
+}
