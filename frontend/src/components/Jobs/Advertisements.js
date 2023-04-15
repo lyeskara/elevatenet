@@ -29,13 +29,16 @@ function Advertisements() {
 
 	// Function to delete a job posting from the database
 	const handleDelete = async (id) => {
-		try {
-			await deleteDoc(doc(db, "advertisement", id));
-			window.location.reload();
-		} catch (error) {
-			console.error("Error deleting document: ", error);
-		}
-	};
+        const confirmDelete = window.confirm("Are you sure you want to delete this advertisement?");
+        if (confirmDelete) {
+          try {
+            await deleteDoc(doc(db, "posting", id));
+            window.location.reload();
+          } catch (error) {
+            console.error("Error deleting document: ", error);
+          }
+        }
+      };
 
 	// Function to handle save when editing a job posting
 	const handleSave = async (id) => {
@@ -49,7 +52,7 @@ function Advertisements() {
 		const skills = skillsElement.value.split(',');
 
 		// Update the job posting with the new data
-		await updateDoc(doc(db, "advertisement", id), {
+		await updateDoc(doc(db, "posting", id), {
 			job_title: jobTitle,
 			company: company,
 			description: description,
@@ -70,7 +73,7 @@ function Advertisements() {
 			if (user) {
 				const email = user.email;
 				// Query the database to get job postings created by the user
-				const q = query(collection(db, "advertisement"), where("created_by", "==", email));
+				const q = query(collection(db, "posting"), where("created_by", "==", email), where("advertise", "==", "on"||true));
 				const postingData = await getDocs(q);
 				// Set posts state with the job postings data and show it
 				setPosts(postingData.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
@@ -85,7 +88,7 @@ function Advertisements() {
 
     return (
         <Container className="container d-flex justify-content-center mx-auto">
-            <h1>Ad</h1>
+            <h1></h1>
             {/* JOB MENU BLOCK ON THE LEFT TO NAVIGATE BETWEEN JOB POSTINGS AND ADVERTS */}
             <Row className="gap-6 d-flex justify-content-center" style={{minWidth: "80%"}}>
                 <Col xs={12} sm={8}  lg={4} style={{minWidth: "30%"}}>
@@ -105,11 +108,11 @@ function Advertisements() {
                     <h2 style={{ color: '#555555', marginTop: '32px' }}>Your Advertisements</h2>
 
                     {/* This button creates a new job posting */}
-                    <div>
+                    {/* <div>
                         <Button variant="primary" size="lg" block className="w-100" style={{backgroundColor:'#27746a'}} onClick={handleClick} >
                             Create a New Advertisement
                         </Button>
-                    </div>
+                    </div> */}
                     {/* CARD FOR JOB POSTINGS */}
                     {/* If job postings data is loaded, the map method creates a card for each job posting */}
                     {isLoaded ? (
@@ -121,17 +124,17 @@ function Advertisements() {
                                         <div className="col-sm-8">
                                             <h4>{data.job_title}</h4>
                                         </div>
-                                        {/* Edit and Delete buttons */}
-                                        <div className="col-sm-4 d-flex justify-content-end align-items-center">
+                                        {/* Edit and Delete buttons COMMENTED FOR NOW BECAUSE NOT NEEDED FOR ADVERTISEMENTS*/}
+                                        {/* <div className="col-sm-4 d-flex justify-content-end align-items-center"> */}
                                             {/* When the user clicks the "Edit" button, it sets the current job and shows the modal */}
-                                            <Button variant="primary" className="btn-sm" style={{backgroundColor:'#27746a'}} onClick={() => {setCurrentJob(data); setShowModal(true)}}>
+                                            {/* <Button variant="primary" className="btn-sm" style={{backgroundColor:'#27746a'}} onClick={() => {setCurrentJob(data); setShowModal(true)}}>
                                                 Edit
-                                            </Button>
+                                            </Button> */}
                                             {/* When the user clicks the "Delete" button, it calls handleDelete */}
-                                            <Button variant="outline-danger" className="btn-sm" style={{backgroundColor:'white', color:'#ff7a7a', border:'2px solid #ff7a7a'}} onClick={() => handleDelete(data.id)}>
+                                            {/* <Button variant="outline-danger" className="btn-sm" style={{backgroundColor:'white', color:'#ff7a7a', border:'2px solid #ff7a7a'}} onClick={() => handleDelete(data.id)}>
                                                 Delete
                                             </Button>
-                                        </div>
+                                        </div> */}
                                     </div>
                                     <hr/>
                                     {/* The company and description */}
@@ -149,6 +152,8 @@ function Advertisements() {
                                     {/* RESUME AND COVER LETTER REQUIRED */}
                                     {data.cover_letter_required && <p>Cover Letter Required</p>}
                                     {data.resume_required && <p>Resume Required</p>}
+                                    {/* IF THE POSTING IS ADVERTISED */}
+								    {data.advertise && <p>Currently being Advertised</p>}
     
                                     {/* <p>{data.deadline}</p> */}
                                 </Card>

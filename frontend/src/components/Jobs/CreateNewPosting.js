@@ -17,7 +17,7 @@ import DatePicker from "react-datepicker";
 import 'firebase/firestore';
 import { useUserAuth } from '../../context/UserAuthContext';
 import { useNavigate } from 'react-router-dom';
-import { collection, setDoc ,doc, addDoc} from 'firebase/firestore';
+import { collection, setDoc,doc, addDoc} from 'firebase/firestore';
 
 
 function CreateNewPosting() {
@@ -33,6 +33,7 @@ function CreateNewPosting() {
         deadline: '',
         resume_required: false,
         cover_letter_required: false,
+        advertise: false,
         skills: [],
     })
     //update with the handleCancel() method 
@@ -71,11 +72,12 @@ function CreateNewPosting() {
                 job_title: postingData.job_title,
                 company: postingData.company,
                 description: postingData.description,
-                apply_here: postingData.description,
+                apply_here: postingData.apply_here,
                 deadline: postingData.deadline,
                 created_by: user.email,
                 resume_required: postingData.resume_required,
                 cover_letter_required: postingData.cover_letter_required,
+                advertise:postingData.advertise,
                 skills: postingData.skills,
 
                 // full_time: postingData.full_time,                      no going to be used for this sprint
@@ -89,6 +91,7 @@ function CreateNewPosting() {
                 deadline: '',
                 resume_required: false,
                 cover_letter_required: false,
+                advertise: false,
                 skills: '',
                 // full_time: false
             });
@@ -110,20 +113,6 @@ function CreateNewPosting() {
      }; 
     
      useEffect(() => {
-        async function getCurrentUserEmail() {
-          if (user) {
-            const docRef = doc(db, "users_information", user.uid);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-              const email = docSnap.get("email");
-              setPostingData((prevState) => ({
-                ...prevState,
-                created_by: email,
-              }));
-            }
-          }
-        }
-        getCurrentUserEmail();
       }, [user]);
     // return of the CreateNewPosting() function
     // lets users cancel the form 
@@ -132,7 +121,7 @@ function CreateNewPosting() {
     // return users to JobPosting page with updates from database created with form submission
 	return (
 		//Container for new job posting
-		<Container className="container mx-auto w-50">
+		<Container className="container mx-auto container-job">
 			<Row className="gap-6">
 				<Col >
 					<Card className="card">
@@ -152,7 +141,8 @@ function CreateNewPosting() {
                                 name="job_title"
                                 value={postingData.job_title}
                                 onChange={handleInputChange}
-                                style={{backgroundColor: "#F3F3F3"}} 
+                                style={{backgroundColor: "#F3F3F3"}}
+                                required 
                                 />
                             </div>
                             {/* COMPANY */}
@@ -167,6 +157,7 @@ function CreateNewPosting() {
                                 value={postingData.company}
                                 onChange={handleInputChange}
                                 style={{backgroundColor: "#F3F3F3"}}
+                                required
                                 />
                             </div>
                             {/* DESCRIPTION */}
@@ -182,6 +173,7 @@ function CreateNewPosting() {
                                 value={postingData.description}
                                 onChange={handleInputChange}
                                 style={{backgroundColor: "#F3F3F3"}}
+                                required
                                 ></textarea>
                             </div>
                             {/* SKILLS */}
@@ -196,40 +188,35 @@ function CreateNewPosting() {
                                 value={postingData.skills}
                                 onChange={handleInputChange}
                                 style={{backgroundColor: "#F3F3F3"}}
+                                required
                                 />
                             </div>
                             {/* RESUME OR COVER LETTER REQUIRED */}
                             <div className="form-group mb-3">
                                 <label htmlFor="formFile" className="form-label">
-                                    <h6>Forms Required</h6>
+                                    <h6>Documents Required</h6>
                                 </label>
-                                <div className="form-check">
-                                    <input 
-                                        className="form-check-input" 
-                                        type="checkbox" 
-                                        id="resume_required"
-                                        name="resume_required"
-                                        checked={postingData.resume_required}
-                                        onChange={handleInputChange}
-                                    />
-                                    <label className="form-check-label" htmlFor="resume_required">
-                                        Resume
-                                    </label>
-                                </div>
-                                <div className="form-check">
-                                    <input 
-                                        className="form-check-input" 
-                                        type="checkbox" 
-                                        id="cover_letter_required"
-                                        name="cover_letter_required"
-                                        checked={postingData.cover_letter_required}
-                                        onChange={handleInputChange}
-                                    />
-                                    <label className="form-check-label" htmlFor="cover_letter_required">
-                                        Cover Letter Required
-                                    </label>
+                                <div className="form-check" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                    <button
+                                        type="button"
+                                        className={`btn ${postingData.resume_required ? 'btn-success' : 'btn-outline-secondary'}`}
+                                        onClick={() => setPostingData({ ...postingData, resume_required: !postingData.resume_required })}
+                                        style={{ backgroundColor: postingData.resume_required ? '#27746a' : '' }}
+                                    >
+                                        {postingData.resume_required ? 'Resume Required' : 'Resume Optional'}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={`btn ${postingData.cover_letter_required ? 'btn-success' : 'btn-outline-secondary'}`}
+                                        onClick={() => setPostingData({ ...postingData, cover_letter_required: !postingData.cover_letter_required })}
+                                        style={{ marginLeft: '10px', backgroundColor: postingData.cover_letter_required ? '#27746a' : '' }}
+                                        
+                                    >
+                                        {postingData.cover_letter_required ? 'Cover Letter Required' : 'Cover Letter Optional'}
+                                    </button>
                                 </div>
                             </div>
+
 
                             {/* APPLY HERE (OPTIONAL) */}
                             <div className="form-group mb-3">
@@ -257,8 +244,29 @@ function CreateNewPosting() {
                                 name="deadline"
                                 value={postingData.deadline}
                                 style={{backgroundColor: "#F3F3F3"}}
+                                required
                                 />
-                            </div>  
+                            </div>
+                            {/* CHECKBOX TO KNOW IF POSTING SHOULD BE ADVERTISED   */}
+                            <div className="form-group mb-3">
+                                <label htmlFor="formFile" className="form-label">
+                                    <h6>Advertise to Job Seekers</h6>
+                                </label>
+                                <div className="form-check">
+                                    {/* xxxxxxxxxxxxxxxxxxx */}
+                                    <button
+                                        type="button"
+                                        className={`btn ${postingData.advertise ? 'btn-success' : 'btn-outline-secondary'}`}
+                                        onClick={() => setPostingData({...postingData, advertise: !postingData.advertise})}
+                                        style={{ backgroundColor: postingData.advertise ? '#27746a' : '' }}
+                                    >
+                                        {postingData.advertise ? 'Advertise' : 'Do Not Advertise'}
+                                    </button>
+
+                                    {/* xxxxxxxxxxxxxxxxxxx */}
+                                </div>
+                            </div>
+
 
                             {/* BUTTONS TO CANCEL OR POST THE POSITION */}
                             <Row>

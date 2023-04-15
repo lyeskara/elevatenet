@@ -167,10 +167,9 @@ h5.time{
 }
 
 .follow_button {
-  justify-content: center;
-  align-items: center;
-  height: 20%;
-  width: 50%;
+margin-right: 7%;
+margin-top: 20px;
+margin-bottom: -8px;
 }
 
 .follow_button,
@@ -189,10 +188,7 @@ h5.time{
 }
 
 .unfollow_button {
-  justify-content: center;
-  align-items: center;
-  height: 20%;
-  width: 50%;
+
 }
 
 .unfollow_button,
@@ -208,4 +204,46 @@ h5.time{
   color: #27746a;
   border-color: #27746a;
 
+}
+
+.modal_button,
+.modal_button:hover {
+  background-color: white;
+  color: #27746a;
+  border-color: #27746a;
+
+}
+.modal_button:active,
+.modal_button:focus {
+  background-color: white;
+  color: #27746a;
+  border-color: #27746a;
+
+}
+
+.other-profile-pic{
+  width: 25%;
+  height: 25%;
+  border-radius: 25px;
+}
+
+.connection-pic{
+  width: 30px;
+  height:30px;
+  border-radius: 10px;
+  margin-right: 2%;
+}
+@media screen and (max-width: 768px) {
+  .NetworkTitle{
+    font-size: 30px;
+  }
+}
+@media screen and (max-width:393px) {
+  .trash_button{
+    width: 50%;
+    font-size: 11px;
+  }
+  .trash_button img{
+    width: 30px;
+  }
 }

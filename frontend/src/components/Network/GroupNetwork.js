@@ -1,10 +1,10 @@
 //React imports
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 
 //Firebase imports
-import {collection, getDocs, where, query} from "firebase/firestore";
+import {collection, getDocs, where, query, getFirestore, updateDoc, arrayUnion, doc} from "firebase/firestore";
 import {db, auth} from "../../firebase";
 
 
@@ -19,6 +19,12 @@ import "../../styles/network.css";
 import "../../styles/JobPostings.css";
 import "../../styles/profile.css";
 
+
+/**
+* Renders the Group Networking page where all existing groups can be seen.
+*
+* @return { Object } The existing groups within the database are displayed and interactable.
+*/
 function GroupNetwork() {
   
   //Redirect to the Create Group page
@@ -29,8 +35,8 @@ function GroupNetwork() {
   //Returning Card of group
   const [myGroupCards, setMyGroupCards] = useState([]);
   const [otherGroupCards, setOtherGroupCards] = useState([]);
-  
-  //We then populate the arrays with the relevant group data
+
+  //We then populate the myGroups and otherGroups arrays with the relevant group data
   useEffect(() => {
     const fetchData = async () => {
 
@@ -52,26 +58,20 @@ function GroupNetwork() {
     fetchData();
   }, []);
 
+  //Here, we append the user into the group's firestore memberUIDs array.
+  const handleRequest = async (index) => {
 
-  //Send Request Button Behavior
-  const [buttonTexts, setButtonTexts] = useState(
-    myGroupCards.map(() => "Send Join Request")
-  );
+    //We target the group being joined
+    const group = otherGroupCards[index];
+    const groupRef = doc(db, "groups", group.id);
 
-  
-  const handleRequest = (index) => {
-    setButtonTexts((prevButtonTexts) => {
+    //And append the current user's ID into the memberUIDs array
+    const updatedGroup = { ...group, memberUIDs: [...group.memberUIDs, auth.currentUser.uid] };
+    await updateDoc(groupRef, updatedGroup);
 
-      //Update Text on Button
-      const newButtonTexts = [...prevButtonTexts];
-      newButtonTexts[index] = "Request Sent!";
-
-      //Could probably add another effect here
-
-      return newButtonTexts;
-    });
+    window.location.reload();
+    
   };
-
 
   return (
     <>
@@ -109,17 +109,19 @@ function GroupNetwork() {
                     <div className="post-content" key={groupInfos.id}> 
                       <Card className="card">
                         <Row>
-                          <Col md={1} className="text-center">
-                            <img src={groupInfos.group_img_url ? groupInfos.group_img_url : grouplogo} style={{ maxHeight: '150px' }} alt="template_group_pic" className="group_pic_center" />
+                          <Col md={2} sm={12} className="text-center">
+                            <img src={groupInfos.group_img_url ? groupInfos.group_img_url : grouplogo} style={{ maxHeight: '150px', minWidth: '100%', width: '150px', height: '150px', objectFit: 'contain', }} className="img-fluid my-3" alt="template_group_pic" />
                           </Col>
-                          <Col md={9} >
+                          <Col md={8} sm={12}>
                             <h3> {groupInfos.group_name}</h3>
                             <h5> {groupInfos.memberUIDs.length} {groupInfos.memberUIDs.length === 1 ? "member" : "members"}</h5>
                         <hr></hr>
-                        <p> {groupInfos.description}</p>
+                        <p> {groupInfos.description === "" ? "No description given." : groupInfos.description}</p>
                           </Col>
-                          <Col className="center-col" md={2}>
-                            <Button className="create_Group_Button" >View Group</Button>
+                          <Col className="center-col" md={2} sm={12}>
+                            <Link to={`/group/${groupInfos.id}`}>
+                              <Button className="create_Group_Button" >View Group</Button>
+                            </Link>
                           </Col>
                         </Row>
                       </Card>
@@ -138,18 +140,18 @@ function GroupNetwork() {
                 <div className="post-content" key={groupInfos.id}> 
                   <Card className="card">
                     <Row>
-                      <Col md={1}>
-                      <img src={groupInfos.group_img_url ? groupInfos.group_img_url : grouplogo} style={{ maxHeight: '150px' }} alt="template_group_pic" className="group_pic_center" />
+                      <Col md={2} sm={12} className="text-center">
+                      <img src={groupInfos.group_img_url ? groupInfos.group_img_url : grouplogo} style={{ maxHeight: '150px', minWidth: '100%', width: '150px', height: '150px', objectFit: 'contain', }} className="img-fluid my-3" alt="template_group_pic" />
                       </Col>
-                      <Col md={9}>
+                      <Col md={8}>
                         <h3> {groupInfos.group_name}</h3>
                         <h5> {groupInfos.memberUIDs.length} {groupInfos.memberUIDs.length === 1 ? "member" : "members"}</h5>
                         <hr />
-                        <p> {groupInfos.description}</p>
+                        <p> {groupInfos.description === "" ? "No description given." : groupInfos.description} </p>
                       </Col>
-                      <Col className="center-col" md={2}>
+                      <Col className="center-col" md={2} sm={12}>
                         <Button className="create_Group_Button" onClick={() => handleRequest(index)}>
-                        {buttonTexts[index] || "Send Join Request" }
+                        Join Group
                         </Button>
                       </Col>
                     </Row>

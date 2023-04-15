@@ -70,7 +70,7 @@ function NavbarFun() {
 										<Link to="/">
 											<img src={bell} alt="bell" />
 										</Link>
-										<Link to="/">
+										<Link to="/ProfileInfoSettings">
 											<img src={ellipses} alt="ellipses" />
 										</Link>
 									</Nav>

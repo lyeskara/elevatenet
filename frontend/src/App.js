@@ -23,10 +23,12 @@ import ApplyToJobs from "./components/Jobs/ApplyNow";
 import JobPageForSeekers from "./components/Jobs/JobPageForSeekers"
 import Advertisements from "./components/Jobs/Advertisements";
 import CreateAdvertisement from "./components/Jobs/CreateAdvertisement";
+import SavedJobs from "./components/Jobs/SavedJobs";
 
 import RequestsPage from "./components/connection/RequestsPage";
 import ConnectionPage from "./components/connection/ConnectionPage";
 import CreateGroup from "./components/Network/CreateGroup";
+import GroupPage from "./components/Network/GroupPage";
 
 import CreateEvent from "./components/Network/CreateEvent";
 
@@ -34,11 +36,20 @@ import RequestSent from "./components/connection/RequestSent";
 import RecruiterForm from './components/ProfileInfo/RecruiterFrom'
 
 import Messaging from './components/DirectMessage/Messaging';
+import CompanySearch from './components/connection/CompanySearch';
+
+import ProfileInfoSettings from "./components/Settings/ProfileInfoSetting";
+import Security from "./components/Settings/Security";
 function App() {
   return (
     <UserAuthContextProvider>
       <NavbarFun />
       <Routes>
+      <Route
+          path="/CompanySearch"
+          element={<Protection>{<CompanySearch />}</Protection>}
+        ></Route>
+
         <Route
           path="/ProfileForm"
           element={<Protection>{<ProfileForm />}</Protection>}
@@ -86,7 +97,14 @@ function App() {
             </Protection>
           }
         ></Route>
-        <Route path="/Messaging" element={<Protection><Messaging/></Protection>}></Route>
+        <Route
+          path="/Messaging"
+          element={
+            <Protection>
+              <Messaging />
+            </Protection>
+          }
+        ></Route>
         <Route
           path="profile/:id"
           element={
@@ -97,6 +115,14 @@ function App() {
         ></Route>
         <Route
           path="/CreatPost"
+          element={
+            <Protection>
+              <CreatPost />
+            </Protection>
+          }
+        />
+        <Route
+          path="/group/CreatPost"
           element={
             <Protection>
               <CreatPost />
@@ -129,6 +155,14 @@ function App() {
           }
         />
         <Route
+          path="/group/:id"
+          element={
+            <Protection>
+              <GroupPage />
+            </Protection>
+          }
+        />
+        <Route
           path="/Event"
           element={
             <Protection>
@@ -153,7 +187,7 @@ function App() {
           }
         />
         <Route
-          path="/ApplyToJobs"
+          path="/ApplyToJobs/:id"
           element={
             <Protection>
               <ApplyToJobs />
@@ -165,6 +199,30 @@ function App() {
           element={
             <Protection>
               <JobPageForSeekers />
+            </Protection>
+          }
+        />
+        <Route
+          path="/SavedJobs"
+          element={
+            <Protection>
+              <SavedJobs />
+            </Protection>
+          }
+        />
+         <Route
+          path="/ProfileInfoSettings"
+          element={
+            <Protection>
+              <ProfileInfoSettings />
+            </Protection>
+          }
+        />
+          <Route
+          path="/Security"
+          element={
+            <Protection>
+              <Security />
             </Protection>
           }
         />

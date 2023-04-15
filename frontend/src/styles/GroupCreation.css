@@ -41,3 +41,9 @@
 
 /* border: 2px solid red; */
 /* border: 2px solid blue; */
+
+@media screen and (min-width: 820px) and (max-width: 1800px){
+  .groupContainer{
+    width: 50%;
+  }
+}

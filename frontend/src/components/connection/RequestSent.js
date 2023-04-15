@@ -16,13 +16,21 @@ import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 import backward from ".././../images/backward.png";
 import "../../styles/network.css";
 import { Link, useNavigate } from "react-router-dom";
+import defaultpic from ".././../images/test.gif";
 function RequestSent() {
+  // Set up state variables
   const [Users, SetUsers] = useState([]);
   const [UserData, SetUserData] = useState([]);
   const [requests, Setrequests] = useState([]);
+  // Get current user ID
   const currentId = auth.currentUser.uid;
+   // Set up database references
   const dbRef = collection(db, "connection_requests");
   const profileRef = collection(db, "users_information");
+  /**
+   * @param effect — Imperative function that can return a cleanup function
+   * @param deps — If present, effect will only activate if the values in the list change.
+   */
   useEffect(() => {
     const q = query(dbRef, where("requests", "array-contains", currentId));
     getDocs(q)
@@ -37,7 +45,11 @@ function RequestSent() {
         console.log("Error fetching data:", error);
       });
   }, []);
-
+  /**
+   * @param getdocs to get name and id
+   * @param setuserdata to set it
+   * @param catch to catch errors
+   */
   useEffect(() => {
     Users.forEach((user) => {
       getDoc(doc(profileRef, user))
@@ -69,10 +81,10 @@ function RequestSent() {
       const array = [];
       ReqArray.forEach((id) => {
         getDoc(doc(profileRef, id)).then((other) => {
-          const { firstName, lastName } = other.data();
+          const { firstName, lastName, profilePicUrl } = other.data();
           const otherId = other.id;
           const set = new Set();
-          set.add({ id, firstName, lastName });
+          set.add({ id, firstName, lastName, profilePicUrl });
 
           set.forEach((element) => {
             array.push(element);
@@ -104,7 +116,7 @@ function RequestSent() {
         <Row className="gap-5">
           <center>
             {" "}
-            <Col xs={6} md={6}>
+            <Col xs={10} md={6}>
               <Card className="card">
                 <div className="containRequest">
                   <Link to="/connections">
@@ -124,6 +136,11 @@ function RequestSent() {
                 <div>
                   {requests.map((user) => (
                     <div className="containRequest  mb-4" key={user.id}>
+                      <img
+                        className="connection-pic"
+                        src={user.profilePicUrl || defaultpic}
+                        alt={user.firstName}
+                      />
                       <p className="connection_name">
                         {user.firstName} {user.lastName}
                       </p>
