@@ -35,10 +35,10 @@ function Admin(){
 
 	// Function to redirect to the "JobPostings" page
 	const handleClickJobPostings = () => {
-		window.location.href = "/admin";
+		window.location.href = "/Admin";
 	};
 	const handleClickAdvertisements = () => {
-		window.location.href = "/admin";
+		window.location.href = "/AdminFeed";
 	};
 
 	// Function to delete a job posting from the database
