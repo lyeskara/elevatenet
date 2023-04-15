@@ -66,9 +66,9 @@ function NavbarFun() {
                     <Link to="/connections">
                       <img className="nav-icon" src={connection} alt="connection" />
                     </Link>
-                    <Link to="/">
-                      <img className="nav-icon" src={bell} alt="bell" />
-                    </Link>
+                    <Link to="/Notification">
+											<img src={bell} alt="bell" />
+										</Link>
                     <div class="dropdown">
                       <button class="dropbtn">
                         <img className="nav-ellipse" src={ellipses} alt="ellipses" />
@@ -81,6 +81,7 @@ function NavbarFun() {
                   </Nav>
                 </>
               )}
+
               {!userr && (
                 <>
                   <Nav>
@@ -95,6 +96,7 @@ function NavbarFun() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+
 
       <Outlet />
     </>
