@@ -60,9 +60,10 @@ function GroupPage() {
           const firstName = doc.data().firstName;
           const lastName = doc.data().lastName;
           const user_id = doc.data().id;
+          const profilePic = doc.data().profilePicUrl;
           const fullName = `${firstName || "Unnamed"} ${lastName || ""}`.trim();
           const profileLink = `/profile/${doc.id}`;
-          return { fullName, profileLink, id: user_id };
+          return { fullName, profileLink, id: user_id, profilePic };
         });
 
         // Fetch member names from recruiters_information collection.
@@ -76,9 +77,10 @@ function GroupPage() {
           const firstName = doc.data().firstName;
           const lastName = doc.data().lastName;
           const user_id = doc.data().id;
+          const profilePic = doc.data().profilePicUrl;
           const fullName = `${firstName || "Unnamed"} ${lastName || ""}`.trim();
           const profileLink = `/profile/${doc.id}`;
-          return { fullName, profileLink, id: user_id };
+          return { fullName, profileLink, id: user_id, profilePic };
         });
 
         // Merge both arrays into a single array
@@ -112,8 +114,10 @@ function GroupPage() {
     const groupRef = doc(db, "groups", id);
     const groupDoc = await getDoc(groupRef);
   
+    // Checks whether or not the current user exists in the database as an admin
     const isAdmin = groupDoc.data().adminUIDs.includes(auth.currentUser.uid);
-  
+
+    // The adminUIDs and memberUIDs arrays are simultaneously modified accordingly
     const updatedGroupData = {
       ...groupDoc.data(),
       adminUIDs: isAdmin
@@ -124,12 +128,11 @@ function GroupPage() {
         .memberUIDs.filter(uid => uid !== auth.currentUser.uid),
     };
   
+    // The changes are updated 
     await updateDoc(groupRef, updatedGroupData);
   
     navigate('/GroupNetwork');
   };
-  
-  
   
 
   //This opens the confirmation modal.
@@ -186,11 +189,37 @@ function GroupPage() {
             <h2> Group Admins </h2>
             {group.adminUIDs.length > 0 ? (
               <ul className="list-group">
-                {adminNames.map(({ fullName, profileLink }, index) => (
-                  <li key={index} className="list-group-item">
-                    <Link to={profileLink}>{fullName}</Link>
-                  </li>
-                ))}
+                {adminNames.map(
+                  ({ fullName, profileLink, profilePic }, index) => (
+                    <li key={index} className="list-group-item">
+                      <Link to={profileLink}>
+                        <img
+                          src={profilePic ? profilePic : grouplogo}
+                          style={{
+                            width: "90px",
+                            height: "90px",
+                            objectFit: "cover",
+                            marginRight: "10px",
+                            float: "left",
+                          }}
+                          className="img-fluid my-3"
+                          alt="template_group_pic"
+                        />
+                      </Link>
+                      <Link
+                        to={profileLink}
+                        style={{
+                          lineHeight: "2em",
+                          display: "flex",
+                          alignItems: "center",
+                          width: "50%",
+                        }}
+                      >
+                        {fullName}
+                      </Link>
+                    </li>
+                  )
+                )}
               </ul>
             ) : (
               <p>No active admins</p>
@@ -205,11 +234,37 @@ function GroupPage() {
             <h2> Active Members </h2>
             {group.memberUIDs.length > 0 ? (
               <ul className="list-group">
-                {memberNames.map(({ fullName, profileLink }, index) => (
-                  <li key={index} className="list-group-item">
-                    <Link to={profileLink}>{fullName}</Link>
-                  </li>
-                ))}
+                {memberNames.map(
+                  ({ fullName, profileLink, profilePic }, index) => (
+                    <li key={index} className="list-group-item">
+                      <Link to={profileLink}>
+                        <img
+                          src={profilePic ? profilePic : grouplogo}
+                          style={{
+                            width: "90px",
+                            height: "90px",
+                            objectFit: "cover",
+                            marginRight: "10px",
+                            float: "left",
+                          }}
+                          className="img-fluid my-3"
+                          alt="template_group_pic"
+                        />
+                      </Link>
+                      <Link
+                        to={profileLink}
+                        style={{
+                          lineHeight: "2em",
+                          display: "flex",
+                          alignItems: "center",
+                          width: "50%",
+                        }}
+                      >
+                        {fullName}
+                      </Link>
+                    </li>
+                  )
+                )}
               </ul>
             ) : (
               <p>No active members</p>
@@ -230,7 +285,9 @@ function GroupPage() {
         <Modal.Body>
           {group.adminUIDs.includes(auth.currentUser.uid) ? (
             <>
-              <h4 style={{ color: '#800000' }}>You are an admin of this group.</h4>
+              <h4 style={{ color: "#800000" }}>
+                You are an admin of this group.
+              </h4>
               <p>Are you sure you want to leave?</p>
             </>
           ) : (
