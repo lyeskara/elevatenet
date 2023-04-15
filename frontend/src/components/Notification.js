@@ -16,17 +16,19 @@ function Notification() {
             }
         })
     }, [])
-   
+    console.log(Notifications)
     return (
         <>
-            {Notifications.slice(-5).map((Notification) => {
-                return (
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <img src={Notification.profilePicUrl} alt="profilephoto-icon" className="create-post-profile-photo" />
-                        <h1 style={{ marginRight: '10px' }}>{Notification.message}</h1>
-                    </div>
-                );
-            })}
+            {Notifications ?
+                (Notifications.slice(-5).map((Notification) => {
+                    return (
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <img src={Notification.profilePicUrl} alt="profilephoto-icon" className="create-post-profile-photo" />
+                            <h1 style={{ marginRight: '10px' }}>{Notification.message}</h1>
+                        </div>
+                    );
+                })) : (<h1>No notification recieved</h1>)
+            }
         </>
     )
 }
