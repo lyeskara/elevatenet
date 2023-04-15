@@ -33,26 +33,27 @@ function AdminFeed() {
   const handleDelete = async (postId, mapId) => {
     try {
       const postRef = doc(db, "user_posts", postId);
-      await updateDoc(postRef, {
-        posts: {
-          [mapId]: deleteDoc(),
-        },
-      });
+      const postSnap = await getDoc(postRef);
+      const post = postSnap.data();
+      const updatedPosts = post.posts.filter((p) => p.id !== mapId);
+      await updateDoc(postRef, { posts: updatedPosts });
       setPosts((prevPosts) =>
-        prevPosts.map((post) => {
-          if (post.id === postId) {
-            return {
-              ...post,
-              postTexts: post.postTexts.filter((text) => text.id !== mapId),
-            };
+        prevPosts.map((prevPost) => {
+          if (prevPost.id === postId) {
+            const updatedPostTexts = prevPost.postTexts.filter(
+              (text) => text.id !== mapId
+            );
+            return { ...prevPost, postTexts: updatedPostTexts };
+          } else {
+            return prevPost;
           }
-          return post;
         })
       );
     } catch (error) {
       console.error(error);
     }
   };
+  
 
   return (
     <Container>
