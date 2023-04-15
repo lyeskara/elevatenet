@@ -41,6 +41,7 @@ import CompanySearch from './components/connection/CompanySearch';
 import ProfileInfoSettings from "./components/Settings/ProfileInfoSetting";
 import Security from "./components/Settings/Security";
 import Admin from "./components/Admin/Admin";
+import AdminFeed from "./components/Admin/AdminFeed";
 
 function App() {
   return (
@@ -59,6 +60,10 @@ function App() {
         <Route
           path="/Admin"
           element={<Protection>{<Admin />}</Protection>}
+        ></Route>
+        <Route
+          path="/AdminFeed"
+          element={<Protection>{<AdminFeed />}</Protection>}
         ></Route>
         <Route
           path="/RecruiterForm"
