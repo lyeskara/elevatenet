@@ -30,6 +30,36 @@ function AdminFeed() {
     fetchPosts();
   }, []);
 
+  useEffect(() => {
+    async function fetchUserNames() {
+      const userIds = new Set();
+      posts.forEach((post) => {
+        post.postTexts.forEach((text) => {
+          userIds.add(text.id);
+        });
+      });
+      const userDocs = await Promise.all(Array.from(userIds).map((id) => getDoc(doc(db, "users", id))));
+      const userNames = userDocs.reduce((acc, doc) => {
+        if (doc.exists()) {
+          acc[doc.id] = doc.data().name;
+        }
+        return acc;
+      }, {});
+      setPosts((prevPosts) =>
+        prevPosts.map((prevPost) => {
+          const updatedPostTexts = prevPost.postTexts.map((text) => ({
+            id: text.id,
+            text: text.text,
+            userName: userNames[text.id],
+          }));
+          return { ...prevPost, postTexts: updatedPostTexts };
+        })
+      );
+    }
+
+    fetchUserNames();
+  }, [posts]);
+
   const handleDelete = async (postId, mapId) => {
     try {
       const postRef = doc(db, "user_posts", postId);
@@ -66,7 +96,7 @@ function AdminFeed() {
                   <div key={text.id} className="d-flex justify-content-between">
                     <Card.Text>{text.text}</Card.Text>
                     <Button
-                      variant="danger"
+                      variant="outline-danger"
                       size="sm"
                       onClick={() => handleDelete(post.id, text.id)}
                     >
