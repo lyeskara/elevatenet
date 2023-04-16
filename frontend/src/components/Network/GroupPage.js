@@ -20,6 +20,7 @@ import "../../styles/network.css";
 import "../../styles/JobPostings.css";
 import grouplogo from ".././../images/group.png";
 import backward from ".././../images/backward.png";
+import shield from ".././../images/shield_icon.png";
 import {Row, Col, Card, Button, Modal} from "react-bootstrap";
 
 //Feed Import
@@ -199,7 +200,7 @@ function GroupPage() {
                             width: "90px",
                             height: "90px",
                             objectFit: "cover",
-                            marginRight: "10px",
+                            marginRight: "40px",
                             float: "left",
                           }}
                           className="img-fluid my-3"
@@ -235,8 +236,8 @@ function GroupPage() {
             {group.memberUIDs.length > 0 ? (
               <ul className="list-group">
                 {memberNames.map(
-                  ({ fullName, profileLink, profilePic }, index) => (
-                    <li key={index} className="list-group-item">
+                  ({ fullName, profileLink, profilePic, id }, index) => (
+                    <li key={index} className="list-group-item" style={{ display: "flex", flexWrap: "wrap", alignItems: "center" }}>
                       <Link to={profileLink}>
                         <img
                           src={profilePic ? profilePic : grouplogo}
@@ -244,7 +245,7 @@ function GroupPage() {
                             width: "90px",
                             height: "90px",
                             objectFit: "cover",
-                            marginRight: "10px",
+                            marginRight: "0px",
                             float: "left",
                           }}
                           className="img-fluid my-3"
@@ -254,7 +255,7 @@ function GroupPage() {
                       <Link
                         to={profileLink}
                         style={{
-                          lineHeight: "2em",
+                          lineHeight: "1em",
                           display: "flex",
                           alignItems: "center",
                           width: "50%",
@@ -262,6 +263,51 @@ function GroupPage() {
                       >
                         {fullName}
                       </Link>
+                      <div className="dropdown">
+                        <button
+                          className="btn btn-secondary dropdown-toggle"
+                          type="button"
+                          id={`dropdown-${id}`}
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                          style={{ backgroundColor: "#27746a" }}
+                        >
+                          <img
+                            src={shield}
+                            alt="shield icon"
+                            style={{
+                              height: "25px",
+                              width: "25px",
+                              marginRight: "8px",
+                            }}
+                          />
+                        </button>
+                        <ul
+                          className="dropdown-menu"
+                          aria-labelledby={`dropdown-${id}`}
+                        >
+                          <li>
+                            <button
+                              className="dropdown-item"
+                              type="button"
+                              style={{ backgroundColor: "#F3F3F3" }}
+                              onClick={() => handleKickUser(id)}
+                            >
+                              Kick
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              className="dropdown-item"
+                              type="button"
+                              style={{ backgroundColor: "#F3F3F3" }}
+                              onClick={() => handleBanUser(id)}
+                            >
+                              Ban
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
                     </li>
                   )
                 )}
