@@ -44,7 +44,7 @@ import Security from "./components/Settings/Security";
 import ChangePassword from "./components/Settings/ChangePassword";
 
 import NotificationSettings from "./components/Settings/Notificationsettings";
-
+import NameSetting from "./components/Settings/NameSetting";
 
 
 
@@ -242,6 +242,14 @@ function App() {
           element={
             <Protection>
               <NotificationSettings />
+            </Protection>
+          }
+        />
+         <Route
+          path="/NameSetting"
+          element={
+            <Protection>
+              <NameSetting />
             </Protection>
           }
         />
