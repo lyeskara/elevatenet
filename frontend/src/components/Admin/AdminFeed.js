@@ -10,6 +10,8 @@ import Button from "react-bootstrap/Button";
 
 function AdminFeed() {
   const [posts, setPosts] = useState([]);
+  const [userEmails, setUserEmails] = useState({});
+
 
   useEffect(() => {
     async function fetchPosts() {
@@ -42,6 +44,12 @@ function AdminFeed() {
       const userNames = userDocs.reduce((acc, doc) => {
         if (doc.exists()) {
           acc[doc.id] = doc.data().name;
+          firebase.auth().getUser(doc.id).then((user) => {
+            acc[doc.id] = user.email;
+            setUserEmails(acc);
+          }).catch((error) => {
+            console.error(error);
+          });
         }
         return acc;
       }, {});
@@ -51,15 +59,36 @@ function AdminFeed() {
             id: text.id,
             text: text.text,
             userName: userNames[text.id],
+            userEmail: userEmails[text.id],
           }));
           return { ...prevPost, postTexts: updatedPostTexts };
         })
       );
     }
-
+  
     fetchUserNames();
   }, []);
-
+  
+  const getEmail = async (postId) => {
+    try {
+      const userRef = doc(db, "users_information", postId);
+      const userSnap = await getDoc(userRef);
+      console.log(postId);
+      if (userSnap.exists()) {
+        const email = userSnap.data().email;
+        console.log(email);
+        return email;
+      } else {
+        console.log("No such document!");
+        return null;
+      }
+    } catch (error) {
+      console.error(error);
+      console.log("ERROR");
+      return null;
+    }
+  }
+  
   const handleDelete = async (postId, mapId) => {
     try {
       const postRef = doc(db, "user_posts", postId);
@@ -91,6 +120,7 @@ function AdminFeed() {
         {posts.map((post) => (
           <Col key={post.id} sm={12} md={6} lg={4} className="mb-4">
             <Card>
+              <h5>{post.id}</h5>
               <Card.Body>
                 {post.postTexts.map((text) => (
                   <div key={text.id} className="d-flex justify-content-between">
