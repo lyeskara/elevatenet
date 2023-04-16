@@ -40,16 +40,13 @@ import CompanySearch from './components/connection/CompanySearch';
 import Notification from "./components/Notification";
 import ProfileInfoSettings from "./components/Settings/ProfileInfoSetting";
 import Security from "./components/Settings/Security";
+import Admin from "./components/Admin/Admin";
+import AdminFeed from "./components/Admin/AdminFeed";
+import AdminUsers from "./components/Admin/AdminUsers";
 
 import ChangePassword from "./components/Settings/ChangePassword";
 
 import NotificationSettings from "./components/Settings/Notificationsettings";
-
-
-
-
-
-
 function App() {
   return (
     <UserAuthContextProvider>
@@ -63,6 +60,18 @@ function App() {
         <Route
           path="/ProfileForm"
           element={<Protection>{<ProfileForm />}</Protection>}
+        ></Route>
+        <Route
+          path="/Admin"
+          element={<Protection>{<Admin />}</Protection>}
+        ></Route>
+        <Route
+          path="/AdminFeed"
+          element={<Protection>{<AdminFeed />}</Protection>}
+        ></Route>
+        <Route
+          path="/AdminUsers"
+          element={<Protection>{<AdminUsers />}</Protection>}
         ></Route>
         <Route
           path="/RecruiterForm"
