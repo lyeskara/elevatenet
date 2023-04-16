@@ -58,9 +58,46 @@ function AdminUsers() {
     }
   };
 
+  function goToAdmin(){
+    window.location.href = "/Admin";
+  }
+  function goToFeedPosts(){
+    window.location.href = "/AdminFeed";
+  }
+  function goToUser(){
+    window.location.href = "/AdminUsers";
+  }
   return (
     <Container>
       <h1>Admin Users</h1>
+      <Row>
+        {/* This card displays the job menu block with Job Postings and Advertisements */}
+				<Card className="jobs-menu">
+					<h2> Jobs </h2>
+					<hr></hr>
+					{/* When the user clicks the "Job Postings" text, it calls handleClickJobPostings */}
+					<h4 onClick={goToAdmin} style={{ color: "#888888" }}>
+						{" "}
+						Job Postings{" "}
+					</h4>
+					{/* Feed Posts */}
+					<h4
+						onClick={goToFeedPosts}
+						style={{ color: "#888888" }}
+					>
+						{" "}
+						Feed Posts{" "}
+					</h4>
+                    <h4
+						onClick={goToUser}
+						style={{ color: "#27746a" }}
+					>
+						{" "}
+						Users{" "}
+					</h4>
+					<br></br>
+				</Card>
+      </Row>
       <Row>
         {users.map((user) => (
           <Col key={user.id} md={4} className="mb-4">
