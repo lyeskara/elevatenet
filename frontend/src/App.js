@@ -45,6 +45,7 @@ import ChangePassword from "./components/Settings/ChangePassword";
 
 import NotificationSettings from "./components/Settings/Notificationsettings";
 
+import Language from "./components/Settings/Language";
 
 
 
@@ -193,6 +194,14 @@ function App() {
           element={
             <Protection>
               <CreateEvent />
+            </Protection>
+          }
+        />
+        <Route
+          path="/Language"
+          element={
+            <Protection>
+              <Language />
             </Protection>
           }
         />

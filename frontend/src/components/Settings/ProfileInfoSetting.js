@@ -96,7 +96,7 @@ function ProfileInfoSettings() {
               <div className="containRequest">
                 <h5 className="requests">Language</h5>
                 <div className="arrow">
-                  <Link to="/">
+                  <Link to="/Language">
                     <img src={arrow} alt="node" />
                   </Link>
                 </div>
