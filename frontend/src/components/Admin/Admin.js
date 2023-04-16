@@ -34,10 +34,10 @@ function Admin(){
 	};
 
 	// Function to redirect to the "JobPostings" page
-	const handleClickJobPostings = () => {
+	const goToAdmin = () => {
 		window.location.href = "/Admin";
 	};
-	const handleClickAdvertisements = () => {
+	const goToFeedPosts = () => {
 		window.location.href = "/AdminFeed";
 	};
 
@@ -108,6 +108,9 @@ function Admin(){
 	// This component displays a page for job postings
 	// and advertisements with a menu block on the left to navigate between them.
 
+	function goToUser(){
+		window.location.href = "/AdminUsers";
+	}
 	return (
 		<Container className="container d-flex justify-content-center mx-auto">
 			{/* JOB MENU BLOCK ON THE LEFT TO NAVIGATE BETWEEN JOB POSTINGS AND ADVERTS */}
@@ -121,17 +124,24 @@ function Admin(){
 						<h2> Jobs </h2>
 						<hr></hr>
 						{/* When the user clicks the "Job Postings" text, it calls handleClickJobPostings */}
-						<h4 onClick={handleClickJobPostings} style={{ color: "#27746a" }}>
+						<h4 onClick={goToAdmin} style={{ color: "#27746a" }}>
 							{" "}
 							Job Postings{" "}
 						</h4>
 						{/* Advertisements */}
 						<h4
-							onClick={handleClickAdvertisements}
+							onClick={goToFeedPosts}
 							style={{ color: "#888888" }}
 						>
 							{" "}
 							Feed Posts{" "}
+						</h4>
+						<h4
+						onClick={goToUser}
+						style={{ color: "#888888" }}
+					>
+						{" "}
+						Users{" "}
 						</h4>
 						<br></br>
 					</Card>
