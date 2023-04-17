@@ -74,7 +74,7 @@ function NavbarFun() {
                         <img className="nav-ellipse" src={ellipses} alt="ellipses" />
                       </button>
                       <div class="dropdown-content">
-                        <Link to="/ProfileInfoSettings">Settings</Link>
+                        <Link to="/GeneralSettings">Settings</Link>
                         <a onClick={handleLogout}>Sign Out</a>
                       </div>
                     </div>
