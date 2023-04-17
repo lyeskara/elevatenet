@@ -41,6 +41,16 @@ import CompanySearch from './components/connection/CompanySearch';
 import GeneralSettings from "./components/Settings/GeneralSettings";
 import Security from "./components/Settings/Security";
 import ChangeLanguage from "./components/Settings/ChangeLanguage";
+import Notification from "./components/Notification";
+import ProfileInfoSettings from "./components/Settings/ProfileInfoSetting";
+import Security from "./components/Settings/Security";
+import Admin from "./components/Admin/Admin";
+import AdminFeed from "./components/Admin/AdminFeed";
+import AdminUsers from "./components/Admin/AdminUsers";
+
+import ChangePassword from "./components/Settings/ChangePassword";
+
+import NotificationSettings from "./components/Settings/Notificationsettings";
 function App() {
   return (
     <UserAuthContextProvider>
@@ -54,6 +64,18 @@ function App() {
         <Route
           path="/ProfileForm"
           element={<Protection>{<ProfileForm />}</Protection>}
+        ></Route>
+        <Route
+          path="/Admin"
+          element={<Protection>{<Admin />}</Protection>}
+        ></Route>
+        <Route
+          path="/AdminFeed"
+          element={<Protection>{<AdminFeed />}</Protection>}
+        ></Route>
+        <Route
+          path="/AdminUsers"
+          element={<Protection>{<AdminUsers />}</Protection>}
         ></Route>
         <Route
           path="/RecruiterForm"
@@ -91,6 +113,14 @@ function App() {
           element={
             <Protection>
               <ConnectionPage />
+            </Protection>
+          }
+        ></Route>
+          <Route
+          path="/Notification"
+          element={
+            <Protection>
+              <Notification/>
             </Protection>
           }
         ></Route>
@@ -223,6 +253,15 @@ function App() {
             </Protection>
           }
         />
+
+        <Route
+          path="/NotificationSettings"
+          element={
+            <Protection>
+              <NotificationSettings />
+            </Protection>
+          }
+        />
           <Route
           path="/Security"
           element={
@@ -230,7 +269,14 @@ function App() {
               <Security />
             </Protection>
           }
-        />
+        /> <Route
+        path="/ChangePassword"
+        element={
+          <Protection>
+            <ChangePassword />
+          </Protection>
+        }
+      />
         <Route
           path="/Advertisements"
           element={

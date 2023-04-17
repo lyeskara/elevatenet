@@ -35,7 +35,7 @@ function GeneralSettings() {
 		window.location.href = "/Security";
 	};
 	const handleClickNotifications = () => {
-		window.location.href = "/";
+		window.location.href = "/NotificationSettings";
 	};
 
 	
