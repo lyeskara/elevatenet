@@ -160,11 +160,35 @@ function GroupNetwork() {
                           </p>
                         </Col>
                         <Col className="center-col" md={2} sm={12}>
-                          <Link to={`/group/${groupInfos.id}`}>
-                            <Button className="create_Group_Button">
-                              View Group
+                          {groupInfos.banList &&
+                          groupInfos.banList.some(
+                            (ban) => ban.user_id === auth.currentUser.uid
+                          ) ? (
+                            <Button
+                              style={{
+                                backgroundColor: "#B22222",
+                                borderRadius: "5px",
+                              }}
+                              onClick={() => {
+                                const ban = groupInfos.banList.find(
+                                  (ban) => ban.user_id === auth.currentUser.uid
+                                );
+                                setBanReason({
+                                  reason: ban.reason,
+                                  bannedBy: ban.bannedBy,
+                                });
+                                setShowBanReason(true);
+                              }}
+                            >
+                              BANNED
                             </Button>
-                          </Link>
+                          ) : (
+                            <Link to={`/group/${groupInfos.id}`}>
+                              <Button className="create_Group_Button">
+                                View Group
+                              </Button>
+                            </Link>
+                          )}
                         </Col>
                       </Row>
                     </Card>
@@ -217,36 +241,12 @@ function GroupNetwork() {
                           </p>
                         </Col>
                         <Col className="center-col" md={2} sm={12}>
-                          {groupInfos.banList &&
-                          groupInfos.banList.some(
-                            (ban) => ban.user_id === auth.currentUser.uid
-                          ) ? (
-                            <Button
-                              style={{
-                                backgroundColor: "#B22222",
-                                borderRadius: "5px",
-                              }}
-                              onClick={() => {
-                                const ban = groupInfos.banList.find(
-                                  (ban) => ban.user_id === auth.currentUser.uid
-                                );
-                                setBanReason({
-                                  reason: ban.reason,
-                                  bannedBy: ban.bannedBy,
-                                });
-                                setShowBanReason(true);
-                              }}
-                            >
-                              BANNED
-                            </Button>
-                          ) : (
-                            <Button
-                              className="create_Group_Button"
-                              onClick={() => handleRequest(index)}
-                            >
-                              Join Group
-                            </Button>
-                          )}
+                          <Button
+                            className="create_Group_Button"
+                            onClick={() => handleRequest(index)}
+                          >
+                            Join Group
+                          </Button>
                         </Col>
                       </Row>
                     </Card>
@@ -263,7 +263,7 @@ function GroupNetwork() {
           </Modal.Header>
           <Modal.Body>
             <h5>"{banReason.reason}"</h5>
-            <h6 className="text-end" >Issued by: {banReason.bannedBy}</h6>
+            <h6 className="text-end">Issued by: {banReason.bannedBy}</h6>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => setShowBanReason(false)}>

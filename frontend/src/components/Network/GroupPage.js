@@ -40,9 +40,11 @@ function GroupPage() {
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const [showKickModal, setShowKickModal] = useState(false);
   const [showBanModal, setShowBanModal] = useState(false);
+  const [showUnbanModal, setShowUnbanModal] = useState(false);
   const [showAdminModal, setShowAdminModal] = useState(false);
   const [selectedKickUserId, setSelectedKickUserId] = useState(null);
   const [selectedBanUserId, setSelectedBanUserId] = useState(null);
+  const [selectedUnbanUserId, setSelectedUnbanUserId] = useState(null);
   const [selectedAdminUserId, setSelectedAdminUserId] = useState(null);
   const [reason, setReason] = useState('');
 
@@ -169,6 +171,13 @@ function GroupPage() {
     setShowAdminModal(true);
   };
 
+  //This opens the unban confirmation modal.
+  function unbanConfirmation(user_id){
+    setSelectedUnbanUserId(user_id);
+    console.log(selectedUnbanUserId);
+    setShowUnbanModal(true);
+  };
+
 
   //This kicks the selected user by removing the user's ID from the memberUIDs
   async function handleKickUser(user_id) {
@@ -209,9 +218,6 @@ function GroupPage() {
   
       // Check if the group document exists
       if (groupDoc.exists()) {
-  
-        // Call handleKickUser to remove the user from the memberUIDs array
-        await handleKickUser(user_id);
 
         // Get the full name of the admin who banned the user
         const userDoc = await getDoc(doc(db, "users_information", auth.currentUser.uid));
@@ -232,6 +238,35 @@ function GroupPage() {
       console.error("Error banning user:", error);
     }
   }
+
+  async function handleUnbanUser(user_id) {
+    try {
+      // Get a reference to the group document in Firestore
+      const groupRef = doc(db, "groups", id);
+  
+      // Retrieve the current data of the group document
+      const groupDoc = await getDoc(groupRef);
+  
+      // Check if the group document exists
+      if (groupDoc.exists()) {
+        // Remove the user from the banList array
+        const updatedBanList = groupDoc.data().banList.filter(
+          (ban) => ban.user_id !== user_id
+        );
+  
+        // Update the group document in Firestore with the new banList array
+        await updateDoc(groupRef, { banList: updatedBanList });
+  
+        console.log("User unbanned successfully.");
+        window.location.reload();
+      } else {
+        console.log("Group does not exist.");
+      }
+    } catch (error) {
+      console.error("Error unbanning user:", error);
+    }
+  }
+  
 
   const handleReasonChange = (event) => {
     setReason(event.target.value);
@@ -355,8 +390,12 @@ function GroupPage() {
             <h2> Active Members </h2>
             {group.memberUIDs.length > 0 ? (
               <ul className="list-group">
-                {memberNames.map(
-                  ({ fullName, profileLink, profilePic, id }, index) => (
+                {memberNames
+                  .filter(
+                    ({ id }) =>
+                      !group.banList.some((banned) => banned.user_id === id)
+                  )
+                  .map(({ fullName, profileLink, profilePic, id }, index) => (
                     <li
                       key={index}
                       className="list-group-item"
@@ -447,11 +486,100 @@ function GroupPage() {
                         </ul>
                       </div>
                     </li>
-                  )
-                )}
+                  ))}
               </ul>
             ) : (
               <p>No active members</p>
+            )}
+          </Card>
+
+          {/* Section where all the banned members are displayed.*/}
+          <Card
+            className="profilecard"
+            style={{ minHeight: `${Math.max(memberNames.length * 40, 100)}px` }}
+          >
+            <h2> Banned Members </h2>
+            {group.memberUIDs.length > 0 ? (
+              <ul className="list-group">
+                {memberNames
+                  .filter(({ id }) =>
+                    group.banList.some((banned) => banned.user_id === id)
+                  )
+                  .map(({ fullName, profileLink, profilePic, id }, index) => (
+                    <li
+                      key={index}
+                      className="list-group-item"
+                      style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Link to={profileLink}>
+                        <img
+                          src={profilePic ? profilePic : grouplogo}
+                          style={{
+                            width: "90px",
+                            height: "90px",
+                            objectFit: "cover",
+                            marginRight: "0px",
+                            float: "left",
+                          }}
+                          className="img-fluid my-3"
+                          alt="template_group_pic"
+                        />
+                      </Link>
+                      <Link
+                        to={profileLink}
+                        style={{
+                          lineHeight: "1em",
+                          display: "flex",
+                          alignItems: "center",
+                          width: "50%",
+                        }}
+                      >
+                        {fullName}
+                      </Link>
+                      <div className="dropdown">
+                        <button
+                          className="btn btn-secondary dropdown-toggle"
+                          type="button"
+                          id={`dropdown-${id}`}
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                          style={{ backgroundColor: "#FFA500" }}
+                        >
+                          <img
+                            src={shield}
+                            alt="shield icon"
+                            style={{
+                              height: "25px",
+                              width: "25px",
+                              marginRight: "8px",
+                            }}
+                          />
+                        </button>
+                        <ul
+                          className="dropdown-menu"
+                          aria-labelledby={`dropdown-${id}`}
+                        >
+                          <li>
+                            <button
+                              className="dropdown-item"
+                              type="button"
+                              style={{ backgroundColor: "#F3F3F3" }}
+                              onClick={() => unbanConfirmation(id)}
+                            >
+                              Unban
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                    </li>
+                  ))}
+              </ul>
+            ) : (
+              <p>No banned members</p>
             )}
           </Card>
         </Col>
@@ -566,7 +694,16 @@ function GroupPage() {
         </Modal.Header>
         <Modal.Body>
           <h5>Are you sure you want to give admin permissions this user?</h5>
-          <h6 style={{ color: "#A52A2A", fontWeight: "bold", textAlign: "center", marginTop: "30px" }} >This will be irreversible.</h6>
+          <h6
+            style={{
+              color: "#800000",
+              fontWeight: "bold",
+              textAlign: "center",
+              marginTop: "30px",
+            }}
+          >
+            This will be irreversible.
+          </h6>
         </Modal.Body>
         <Modal.Footer>
           <Button
@@ -581,6 +718,56 @@ function GroupPage() {
             onClick={() => handlePromoteAdmin(selectedAdminUserId)}
           >
             Promote
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* UNBAN MODAL */}
+      <Modal show={showUnbanModal} onHide={() => setShowUnbanModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Unban Confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h4>Are you sure you want to unban this user?</h4>
+          <p>These are the logs behind the decision:</p>
+          <hr></hr>
+          {group.banList.map((ban) => {
+            if (ban.user_id === selectedUnbanUserId) {
+              return (
+                <div key={ban.user_id}>
+                  <p
+                    style={{
+                      color: "#800000",
+                      fontWeight: "bold",
+                      marginTop: "10px",
+                    }}
+                  >
+                    Ban reason:
+                  </p>
+                  <h5 style={{textAlign: "center"}}>"{ban.reason}"</h5>
+                  <p style={{
+                      textAlign: "right",
+                      marginTop: "40px"
+                    }}>Banned by: {ban.bannedBy}</p>
+                </div>
+              );
+            }
+            return null;
+          })}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            style={{ borderRadius: "20px" }}
+            onClick={() => setShowUnbanModal(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            style={{ backgroundColor: "#27746a", borderRadius: "20px" }}
+            onClick={() => handleUnbanUser(selectedUnbanUserId)}
+          >
+            Unban
           </Button>
         </Modal.Footer>
       </Modal>
