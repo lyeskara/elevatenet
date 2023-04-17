@@ -206,10 +206,15 @@ function GroupPage() {
   
         // Call handleKickUser to remove the user from the memberUIDs array
         await handleKickUser(user_id);
-  
+
+        // Get the full name of the admin who banned the user
+        const userDoc = await getDoc(doc(db, "users_information", auth.currentUser.uid));
+        const fullName =
+          userDoc.data().firstName + " " + userDoc.data().lastName;
+
         // Create or update the banList attribute in the group document
         const banList = groupDoc.data().banList || [];
-        banList.push({ user_id, reason });
+        banList.push({ user_id, reason, bannedBy: fullName });
         await updateDoc(groupRef, { banList });
   
         console.log("User banned successfully.");

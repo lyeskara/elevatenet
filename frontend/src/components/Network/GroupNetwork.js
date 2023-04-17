@@ -1,7 +1,7 @@
 //React imports
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate} from "react-router-dom";
-import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Card, Form, Button, Modal } from "react-bootstrap";
 
 //Firebase imports
 import {collection, getDocs, where, query, getFirestore, updateDoc, arrayUnion, doc} from "firebase/firestore";
@@ -35,6 +35,8 @@ function GroupNetwork() {
   //Returning Card of group
   const [myGroupCards, setMyGroupCards] = useState([]);
   const [otherGroupCards, setOtherGroupCards] = useState([]);
+  const [showBanReason, setShowBanReason] = useState(false);
+  const [banReason, setBanReason] = useState("");
 
   //We then populate the myGroups and otherGroups arrays with the relevant group data
   useEffect(() => {
@@ -60,17 +62,29 @@ function GroupNetwork() {
 
   //Here, we append the user into the group's firestore memberUIDs array.
   const handleRequest = async (index) => {
-
     //We target the group being joined
     const group = otherGroupCards[index];
     const groupRef = doc(db, "groups", group.id);
 
-    //And append the current user's ID into the memberUIDs array
-    const updatedGroup = { ...group, memberUIDs: [...group.memberUIDs, auth.currentUser.uid] };
-    await updateDoc(groupRef, updatedGroup);
+    if (
+      group.banList &&
+      group.banList.some((ban) => ban.user_id === auth.currentUser.uid)
+    ) {
+      const ban = group.banList.find(
+        (ban) => ban.user_id === auth.currentUser.uid
+      );
+      setBanReason(ban.reason);
+      setSelectedGroupIndex(index);
+    } else {
+      //And append the current user's ID into the memberUIDs array
+      const updatedGroup = {
+        ...group,
+        memberUIDs: [...group.memberUIDs, auth.currentUser.uid],
+      };
+      await updateDoc(groupRef, updatedGroup);
+    }
 
     window.location.reload();
-    
   };
 
   return (
@@ -96,73 +110,167 @@ function GroupNetwork() {
             <Card className="card">
               <div className="containRequest">
                 <h5 className="requests">Groups</h5>
-                <Button className="create_Group_Button" onClick={handleClick}>Create New Group</Button>
+                <Button className="create_Group_Button" onClick={handleClick}>
+                  Create New Group
+                </Button>
               </div>
             </Card>
             <Card>
               <h5>My Groups</h5>
               <Row className="mt-3">
-
-              {/* Here, we post the Cards of the groups that the current user belongs in*/}
+                {/* Here, we post the Cards of the groups that the current user belongs in*/}
 
                 {myGroupCards.map((groupInfos) => (
-                    <div className="post-content" key={groupInfos.id}> 
-                      <Card className="card">
-                        <Row>
-                          <Col md={2} sm={12} className="text-center">
-                            <img src={groupInfos.group_img_url ? groupInfos.group_img_url : grouplogo} style={{ maxHeight: '150px', minWidth: '100%', width: '150px', height: '150px', objectFit: 'contain', }} className="img-fluid my-3" alt="template_group_pic" />
-                          </Col>
-                          <Col md={8} sm={12}>
-                            <h3> {groupInfos.group_name}</h3>
-                            <h5> {groupInfos.memberUIDs.length} {groupInfos.memberUIDs.length === 1 ? "member" : "members"}</h5>
-                        <hr></hr>
-                        <p> {groupInfos.description === "" ? "No description given." : groupInfos.description}</p>
-                          </Col>
-                          <Col className="center-col" md={2} sm={12}>
-                            <Link to={`/group/${groupInfos.id}`}>
-                              <Button className="create_Group_Button" >View Group</Button>
-                            </Link>
-                          </Col>
-                        </Row>
-                      </Card>
-                    </div>
-                    ))}
-
+                  <div className="post-content" key={groupInfos.id}>
+                    <Card className="card">
+                      <Row>
+                        <Col md={2} sm={12} className="text-center">
+                          <img
+                            src={
+                              groupInfos.group_img_url
+                                ? groupInfos.group_img_url
+                                : grouplogo
+                            }
+                            style={{
+                              maxHeight: "150px",
+                              minWidth: "100%",
+                              width: "150px",
+                              height: "150px",
+                              objectFit: "contain",
+                            }}
+                            className="img-fluid my-3"
+                            alt="template_group_pic"
+                          />
+                        </Col>
+                        <Col md={8} sm={12}>
+                          <h3> {groupInfos.group_name}</h3>
+                          <h5>
+                            {" "}
+                            {groupInfos.memberUIDs.length}{" "}
+                            {groupInfos.memberUIDs.length === 1
+                              ? "member"
+                              : "members"}
+                          </h5>
+                          <hr></hr>
+                          <p>
+                            {" "}
+                            {groupInfos.description === ""
+                              ? "No description given."
+                              : groupInfos.description}
+                          </p>
+                        </Col>
+                        <Col className="center-col" md={2} sm={12}>
+                          <Link to={`/group/${groupInfos.id}`}>
+                            <Button className="create_Group_Button">
+                              View Group
+                            </Button>
+                          </Link>
+                        </Col>
+                      </Row>
+                    </Card>
+                  </div>
+                ))}
               </Row>
             </Card>
             <Card>
               <h5>Groups You May Like</h5>
               <Row className="mt-3">
+                {/* Here, we post the Cards of the groups that the current user doesn't belongs in*/}
 
-              {/* Here, we post the Cards of the groups that the current user doesn't belongs in*/}  
-
-              {otherGroupCards.map((groupInfos, index) => (
-                <div className="post-content" key={groupInfos.id}> 
-                  <Card className="card">
-                    <Row>
-                      <Col md={2} sm={12} className="text-center">
-                      <img src={groupInfos.group_img_url ? groupInfos.group_img_url : grouplogo} style={{ maxHeight: '150px', minWidth: '100%', width: '150px', height: '150px', objectFit: 'contain', }} className="img-fluid my-3" alt="template_group_pic" />
-                      </Col>
-                      <Col md={8}>
-                        <h3> {groupInfos.group_name}</h3>
-                        <h5> {groupInfos.memberUIDs.length} {groupInfos.memberUIDs.length === 1 ? "member" : "members"}</h5>
-                        <hr />
-                        <p> {groupInfos.description === "" ? "No description given." : groupInfos.description} </p>
-                      </Col>
-                      <Col className="center-col" md={2} sm={12}>
-                        <Button className="create_Group_Button" onClick={() => handleRequest(index)}>
-                        Join Group
-                        </Button>
-                      </Col>
-                    </Row>
-                  </Card>
-                </div>
-              ))}
-
+                {otherGroupCards.map((groupInfos, index) => (
+                  <div className="post-content" key={groupInfos.id}>
+                    <Card className="card">
+                      <Row>
+                        <Col md={2} sm={12} className="text-center">
+                          <img
+                            src={
+                              groupInfos.group_img_url
+                                ? groupInfos.group_img_url
+                                : grouplogo
+                            }
+                            style={{
+                              maxHeight: "150px",
+                              minWidth: "100%",
+                              width: "150px",
+                              height: "150px",
+                              objectFit: "contain",
+                            }}
+                            className="img-fluid my-3"
+                            alt="template_group_pic"
+                          />
+                        </Col>
+                        <Col md={8}>
+                          <h3> {groupInfos.group_name}</h3>
+                          <h5>
+                            {" "}
+                            {groupInfos.memberUIDs.length}{" "}
+                            {groupInfos.memberUIDs.length === 1
+                              ? "member"
+                              : "members"}
+                          </h5>
+                          <hr />
+                          <p>
+                            {" "}
+                            {groupInfos.description === ""
+                              ? "No description given."
+                              : groupInfos.description}{" "}
+                          </p>
+                        </Col>
+                        <Col className="center-col" md={2} sm={12}>
+                          {groupInfos.banList &&
+                          groupInfos.banList.some(
+                            (ban) => ban.user_id === auth.currentUser.uid
+                          ) ? (
+                            <Button
+                              style={{
+                                backgroundColor: "#B22222",
+                                borderRadius: "5px",
+                              }}
+                              onClick={() => {
+                                const ban = groupInfos.banList.find(
+                                  (ban) => ban.user_id === auth.currentUser.uid
+                                );
+                                setBanReason({
+                                  reason: ban.reason,
+                                  bannedBy: ban.bannedBy,
+                                });
+                                setShowBanReason(true);
+                              }}
+                            >
+                              BANNED
+                            </Button>
+                          ) : (
+                            <Button
+                              className="create_Group_Button"
+                              onClick={() => handleRequest(index)}
+                            >
+                              Join Group
+                            </Button>
+                          )}
+                        </Col>
+                      </Row>
+                    </Card>
+                  </div>
+                ))}
               </Row>
             </Card>
           </Col>
         </Row>
+
+        <Modal show={showBanReason} onHide={() => setShowBanReason(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Ban Reason</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h5>"{banReason.reason}"</h5>
+            <h6 className="text-end" >Issued by: {banReason.bannedBy}</h6>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowBanReason(false)}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </>
   );
