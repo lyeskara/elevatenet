@@ -21,7 +21,7 @@ import "../../styles/JobPostings.css";
 import grouplogo from ".././../images/group.png";
 import backward from ".././../images/backward.png";
 import shield from ".././../images/shield_icon.png";
-import {Row, Col, Card, Button, Modal} from "react-bootstrap";
+import {Row, Col, Card, Button, Modal, Form} from "react-bootstrap";
 
 //Feed Import
 import Feed from "../UserFeedPage/Feed";
@@ -37,8 +37,14 @@ function GroupPage() {
   const [group, setGroup] = useState(null);
   const [memberNames, setMemberNames] = useState([]);
   const [adminNames, setAdminNames] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const [showKickModal, setShowKickModal] = useState(false);
+  const [showBanModal, setShowBanModal] = useState(false);
+  const [selectedKickUserId, setSelectedKickUserId] = useState(null);
+  const [selectedBanUserId, setSelectedBanUserId] = useState(null);
+  const [reason, setReason] = useState('');
 
+  
 
   // Here we set the group variable with the information matching the group ID.
   useEffect(() => {
@@ -110,7 +116,6 @@ function GroupPage() {
   }
 
   //This removes the user from the memberUIDs array of the group, essentially leaving the group.
-  // ************* Check if user is in adminUIDs first
   const leaveGroup = async () => {
     const groupRef = doc(db, "groups", id);
     const groupDoc = await getDoc(groupRef);
@@ -136,10 +141,89 @@ function GroupPage() {
   };
   
 
-  //This opens the confirmation modal.
+  //This opens the leave confirmation modal.
   function leaveConfirmation(){
-    setShowModal(true);
+    setShowLeaveModal(true);
   };
+
+   //This opens the kick confirmation modal.
+   function kickConfirmation(user_id){
+    setSelectedKickUserId(user_id);
+    console.log(selectedKickUserId);
+    setShowKickModal(true);
+  };
+
+  //This opens the kick confirmation modal.
+  function banConfirmation(user_id){
+    setSelectedBanUserId(user_id);
+    console.log(selectedBanUserId);
+    setShowBanModal(true);
+  };
+
+
+  //This kicks the selected user by removing the user's ID from the memberUIDs
+  async function handleKickUser(user_id) {
+    try {
+      // Get a reference to the group document in Firestore
+      const groupRef = doc(db, "groups", id);
+  
+      // Retrieve the current data of the group document
+      const groupDoc = await getDoc(groupRef);
+  
+      // Check if the group document exists
+      if (groupDoc.exists()) {
+
+        // Remove the selected ID from the memberUIDs array
+        const updatedMemberUIDs = groupDoc.data().memberUIDs.filter(uid => uid !== user_id);
+  
+        // Update the group document in Firestore with the new memberUIDs array
+        await updateDoc(groupRef, { memberUIDs: updatedMemberUIDs });
+  
+        console.log("User kicked successfully.");
+        window.location.reload();
+      } else {
+        console.log("Group does not exist.");
+      }
+    } catch (error) {
+      console.error("Error kicking user:", error);
+    }
+  }
+  
+  const handleReasonChange = (event) => {
+    setReason(event.target.value);
+  };
+
+  async function handleBanUser(user_id, reason) {
+    try {
+      // Get a reference to the group document in Firestore
+      const groupRef = doc(db, "groups", id);
+  
+      // Retrieve the current data of the group document
+      const groupDoc = await getDoc(groupRef);
+  
+      // Check if the group document exists
+      if (groupDoc.exists()) {
+  
+        // Call handleKickUser to remove the user from the memberUIDs array
+        await handleKickUser(user_id);
+  
+        // Create or update the banList attribute in the group document
+        const banList = groupDoc.data().banList || [];
+        banList.push({ user_id, reason });
+        await updateDoc(groupRef, { banList });
+  
+        console.log("User banned successfully.");
+        window.location.reload();
+      } else {
+        console.log("Group does not exist.");
+      }
+    } catch (error) {
+      console.error("Error banning user:", error);
+    }
+  }
+  
+
+  
 
   //Here we display the information relevant to the group
   return (
@@ -237,7 +321,15 @@ function GroupPage() {
               <ul className="list-group">
                 {memberNames.map(
                   ({ fullName, profileLink, profilePic, id }, index) => (
-                    <li key={index} className="list-group-item" style={{ display: "flex", flexWrap: "wrap", alignItems: "center" }}>
+                    <li
+                      key={index}
+                      className="list-group-item"
+                      style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        alignItems: "center",
+                      }}
+                    >
                       <Link to={profileLink}>
                         <img
                           src={profilePic ? profilePic : grouplogo}
@@ -291,7 +383,7 @@ function GroupPage() {
                               className="dropdown-item"
                               type="button"
                               style={{ backgroundColor: "#F3F3F3" }}
-                              onClick={() => handleKickUser(id)}
+                              onClick={() => kickConfirmation(id)}
                             >
                               Kick
                             </button>
@@ -301,7 +393,7 @@ function GroupPage() {
                               className="dropdown-item"
                               type="button"
                               style={{ backgroundColor: "#F3F3F3" }}
-                              onClick={() => handleBanUser(id)}
+                              onClick={() => banConfirmation(id)}
                             >
                               Ban
                             </button>
@@ -324,7 +416,8 @@ function GroupPage() {
         </Col>
       </Row>
 
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
+      {/* LEAVE MODAL */}
+      <Modal show={showLeaveModal} onHide={() => setShowLeaveModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Leave Confirmation</Modal.Title>
         </Modal.Header>
@@ -344,7 +437,7 @@ function GroupPage() {
           <Button
             variant="secondary"
             style={{ borderRadius: "20px" }}
-            onClick={() => setShowModal(false)}
+            onClick={() => setShowLeaveModal(false)}
           >
             Cancel
           </Button>
@@ -353,6 +446,67 @@ function GroupPage() {
             onClick={leaveGroup}
           >
             Leave
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* KICK MODAL */}
+      <Modal show={showKickModal} onHide={() => setShowKickModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Kick Confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Are you sure you want to kick this user?</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            style={{ borderRadius: "20px" }}
+            onClick={() => setShowKickModal(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            style={{ backgroundColor: "#27746a", borderRadius: "20px" }}
+            onClick={() => handleKickUser(selectedKickUserId)}
+          >
+            Kick
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* BAN MODAL */}
+      <Modal show={showBanModal} onHide={() => setShowBanModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Ban Confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h4>Are you sure you want to ban this user?</h4>
+          <p>If so, you may include a reason behind the decision.</p>
+          <hr></hr>
+          <Form.Group controlId="reason">
+          <Form.Label><h5>Reason for ban</h5></Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Type here"
+            value={reason}
+            onChange={handleReasonChange}
+          />
+        </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            style={{ borderRadius: "20px" }}
+            onClick={() => setShowBanModal(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            style={{ backgroundColor: "#27746a", borderRadius: "20px" }}
+            onClick={() => handleBanUser(selectedBanUserId, reason)}
+          >
+            Ban
           </Button>
         </Modal.Footer>
       </Modal>
