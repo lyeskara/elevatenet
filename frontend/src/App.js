@@ -42,8 +42,6 @@ import GeneralSettings from "./components/Settings/GeneralSettings";
 import Security from "./components/Settings/Security";
 import ChangeLanguage from "./components/Settings/ChangeLanguage";
 import Notification from "./components/Notification";
-import ProfileInfoSettings from "./components/Settings/ProfileInfoSetting";
-import Security from "./components/Settings/Security";
 import Admin from "./components/Admin/Admin";
 import AdminFeed from "./components/Admin/AdminFeed";
 import AdminUsers from "./components/Admin/AdminUsers";
