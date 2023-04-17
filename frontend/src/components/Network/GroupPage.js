@@ -47,7 +47,7 @@ function GroupPage() {
   const [selectedUnbanUserId, setSelectedUnbanUserId] = useState(null);
   const [selectedAdminUserId, setSelectedAdminUserId] = useState(null);
   const [reason, setReason] = useState('');
-
+  const [isAdmin, setIsAdmin] = useState(false);
   
 
   // Here we set the group variable with the information matching the group ID.
@@ -58,6 +58,12 @@ function GroupPage() {
 
       // Set the group to the groupDoc.
       if (groupDoc.exists()) {
+
+        // Add a check to see if the banList field exists in the group, if not, we create one.
+        if (!groupDoc.data().banList) {
+          await updateDoc(groupRef, { banList: [] });
+          groupDoc.data().banList = [];
+        }
         setGroup(groupDoc.data());
 
         // Fetch member names from users_information collection.
@@ -98,14 +104,18 @@ function GroupPage() {
         const allMemberNames = [...jobSeekerNamesArray, ...recruiterNamesArray];
 
         // Split the array into two, one for admins, and another for regular members
-        const adminNamesArray = allMemberNames.filter(member => groupDoc.data().adminUIDs.includes(member.id));
-        const regularMemberNamesArray = allMemberNames.filter(member => !groupDoc.data().adminUIDs.includes(member.id));
-
+        const adminNamesArray = allMemberNames.filter((member) =>
+          groupDoc.data().adminUIDs.includes(member.id)
+        );
+        const regularMemberNamesArray = allMemberNames.filter(
+          (member) => !groupDoc.data().adminUIDs.includes(member.id)
+        );
 
         // Set the array for the both category of users
         setMemberNames(regularMemberNamesArray);
         setAdminNames(adminNamesArray);
-
+        setIsAdmin(groupDoc.data().adminUIDs.includes(auth.currentUser?.uid ?? ''));
+        console.log("Admin Status" + isAdmin);
       } else {
         console.log("No such group exists.");
       }
@@ -124,9 +134,6 @@ function GroupPage() {
     const groupRef = doc(db, "groups", id);
     const groupDoc = await getDoc(groupRef);
   
-    // Checks whether or not the current user exists in the database as an admin
-    const isAdmin = groupDoc.data().adminUIDs.includes(auth.currentUser.uid);
-
     // The adminUIDs and memberUIDs arrays are simultaneously modified accordingly
     const updatedGroupData = {
       ...groupDoc.data(),
@@ -430,61 +437,63 @@ function GroupPage() {
                       >
                         {fullName}
                       </Link>
-                      <div className="dropdown">
-                        <button
-                          className="btn btn-secondary dropdown-toggle"
-                          type="button"
-                          id={`dropdown-${id}`}
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                          style={{ backgroundColor: "#27746a" }}
-                        >
-                          <img
-                            src={shield}
-                            alt="shield icon"
-                            style={{
-                              height: "25px",
-                              width: "25px",
-                              marginRight: "8px",
-                            }}
-                          />
-                        </button>
-                        <ul
-                          className="dropdown-menu"
-                          aria-labelledby={`dropdown-${id}`}
-                        >
-                          <li>
-                            <button
-                              className="dropdown-item"
-                              type="button"
-                              style={{ backgroundColor: "#F3F3F3" }}
-                              onClick={() => kickConfirmation(id)}
-                            >
-                              Kick
-                            </button>
-                          </li>
-                          <li>
-                            <button
-                              className="dropdown-item"
-                              type="button"
-                              style={{ backgroundColor: "#F3F3F3" }}
-                              onClick={() => banConfirmation(id)}
-                            >
-                              Ban
-                            </button>
-                          </li>
-                          <li>
-                            <button
-                              className="dropdown-item"
-                              type="button"
-                              style={{ backgroundColor: "#F3F3F3" }}
-                              onClick={() => adminConfirmation(id)}
-                            >
-                              Promote to Admin
-                            </button>
-                          </li>
-                        </ul>
-                      </div>
+                      {isAdmin && (
+                        <div className="dropdown">
+                          <button
+                            className="btn btn-secondary dropdown-toggle"
+                            type="button"
+                            id={`dropdown-${id}`}
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            style={{ backgroundColor: "#27746a" }}
+                          >
+                            <img
+                              src={shield}
+                              alt="shield icon"
+                              style={{
+                                height: "25px",
+                                width: "25px",
+                                marginRight: "8px",
+                              }}
+                            />
+                          </button>
+                          <ul
+                            className="dropdown-menu"
+                            aria-labelledby={`dropdown-${id}`}
+                          >
+                            <li>
+                              <button
+                                className="dropdown-item"
+                                type="button"
+                                style={{ backgroundColor: "#F3F3F3" }}
+                                onClick={() => kickConfirmation(id)}
+                              >
+                                Kick
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                className="dropdown-item"
+                                type="button"
+                                style={{ backgroundColor: "#F3F3F3" }}
+                                onClick={() => banConfirmation(id)}
+                              >
+                                Ban
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                className="dropdown-item"
+                                type="button"
+                                style={{ backgroundColor: "#F3F3F3" }}
+                                onClick={() => adminConfirmation(id)}
+                              >
+                                Promote to Admin
+                              </button>
+                            </li>
+                          </ul>
+                        </div>
+                      )}
                     </li>
                   ))}
               </ul>
@@ -494,94 +503,98 @@ function GroupPage() {
           </Card>
 
           {/* Section where all the banned members are displayed.*/}
-          <Card
-            className="profilecard"
-            style={{ minHeight: `${Math.max(memberNames.length * 40, 100)}px` }}
-          >
-            <h2> Banned Members </h2>
-            {group.memberUIDs.length > 0 ? (
-              <ul className="list-group">
-                {memberNames
-                  .filter(({ id }) =>
-                    group.banList.some((banned) => banned.user_id === id)
-                  )
-                  .map(({ fullName, profileLink, profilePic, id }, index) => (
-                    <li
-                      key={index}
-                      className="list-group-item"
-                      style={{
-                        display: "flex",
-                        flexWrap: "wrap",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Link to={profileLink}>
-                        <img
-                          src={profilePic ? profilePic : grouplogo}
-                          style={{
-                            width: "90px",
-                            height: "90px",
-                            objectFit: "cover",
-                            marginRight: "0px",
-                            float: "left",
-                          }}
-                          className="img-fluid my-3"
-                          alt="template_group_pic"
-                        />
-                      </Link>
-                      <Link
-                        to={profileLink}
+          {isAdmin && (
+            <Card
+              className="profilecard"
+              style={{
+                minHeight: `${Math.max(memberNames.length * 40, 100)}px`,
+              }}
+            >
+              <h2> Banned Members </h2>
+              {group.memberUIDs.length > 0 ? (
+                <ul className="list-group">
+                  {memberNames
+                    .filter(({ id }) =>
+                      group.banList.some((banned) => banned.user_id === id)
+                    )
+                    .map(({ fullName, profileLink, profilePic, id }, index) => (
+                      <li
+                        key={index}
+                        className="list-group-item"
                         style={{
-                          lineHeight: "1em",
                           display: "flex",
+                          flexWrap: "wrap",
                           alignItems: "center",
-                          width: "50%",
                         }}
                       >
-                        {fullName}
-                      </Link>
-                      <div className="dropdown">
-                        <button
-                          className="btn btn-secondary dropdown-toggle"
-                          type="button"
-                          id={`dropdown-${id}`}
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                          style={{ backgroundColor: "#FFA500" }}
-                        >
+                        <Link to={profileLink}>
                           <img
-                            src={shield}
-                            alt="shield icon"
+                            src={profilePic ? profilePic : grouplogo}
                             style={{
-                              height: "25px",
-                              width: "25px",
-                              marginRight: "8px",
+                              width: "90px",
+                              height: "90px",
+                              objectFit: "cover",
+                              marginRight: "0px",
+                              float: "left",
                             }}
+                            className="img-fluid my-3"
+                            alt="template_group_pic"
                           />
-                        </button>
-                        <ul
-                          className="dropdown-menu"
-                          aria-labelledby={`dropdown-${id}`}
+                        </Link>
+                        <Link
+                          to={profileLink}
+                          style={{
+                            lineHeight: "1em",
+                            display: "flex",
+                            alignItems: "center",
+                            width: "50%",
+                          }}
                         >
-                          <li>
-                            <button
-                              className="dropdown-item"
-                              type="button"
-                              style={{ backgroundColor: "#F3F3F3" }}
-                              onClick={() => unbanConfirmation(id)}
-                            >
-                              Unban
-                            </button>
-                          </li>
-                        </ul>
-                      </div>
-                    </li>
-                  ))}
-              </ul>
-            ) : (
-              <p>No banned members</p>
-            )}
-          </Card>
+                          {fullName}
+                        </Link>
+                        <div className="dropdown">
+                          <button
+                            className="btn btn-secondary dropdown-toggle"
+                            type="button"
+                            id={`dropdown-${id}`}
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            style={{ backgroundColor: "#FFA500" }}
+                          >
+                            <img
+                              src={shield}
+                              alt="shield icon"
+                              style={{
+                                height: "25px",
+                                width: "25px",
+                                marginRight: "8px",
+                              }}
+                            />
+                          </button>
+                          <ul
+                            className="dropdown-menu"
+                            aria-labelledby={`dropdown-${id}`}
+                          >
+                            <li>
+                              <button
+                                className="dropdown-item"
+                                type="button"
+                                style={{ backgroundColor: "#F3F3F3" }}
+                                onClick={() => unbanConfirmation(id)}
+                              >
+                                Unban
+                              </button>
+                            </li>
+                          </ul>
+                        </div>
+                      </li>
+                    ))}
+                </ul>
+              ) : (
+                <p>No banned members</p>
+              )}
+            </Card>
+          )}
         </Col>
 
         {/* Main section where the group feed will be mapped*/}
@@ -731,29 +744,37 @@ function GroupPage() {
           <h4>Are you sure you want to unban this user?</h4>
           <p>These are the logs behind the decision:</p>
           <hr></hr>
-          {group.banList.map((ban) => {
-            if (ban.user_id === selectedUnbanUserId) {
-              return (
-                <div key={ban.user_id}>
-                  <p
-                    style={{
-                      color: "#800000",
-                      fontWeight: "bold",
-                      marginTop: "10px",
-                    }}
-                  >
-                    Ban reason:
-                  </p>
-                  <h5 style={{textAlign: "center"}}>"{ban.reason}"</h5>
-                  <p style={{
-                      textAlign: "right",
-                      marginTop: "40px"
-                    }}>Banned by: {ban.bannedBy}</p>
-                </div>
-              );
-            }
-            return null;
-          })}
+          {group.banList ? (
+            group.banList.map((ban) => {
+              if (ban.user_id === selectedUnbanUserId) {
+                return (
+                  <div key={ban.user_id}>
+                    <p
+                      style={{
+                        color: "#800000",
+                        fontWeight: "bold",
+                        marginTop: "10px",
+                      }}
+                    >
+                      Ban reason:
+                    </p>
+                    <h5 style={{ textAlign: "center" }}>"{ban.reason}"</h5>
+                    <p
+                      style={{
+                        textAlign: "right",
+                        marginTop: "40px",
+                      }}
+                    >
+                      Banned by: {ban.bannedBy}
+                    </p>
+                  </div>
+                );
+              }
+              return null;
+            })
+          ) : (
+            <p>hi</p>
+          )}
         </Modal.Body>
         <Modal.Footer>
           <Button
