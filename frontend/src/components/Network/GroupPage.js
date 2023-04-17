@@ -40,8 +40,10 @@ function GroupPage() {
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const [showKickModal, setShowKickModal] = useState(false);
   const [showBanModal, setShowBanModal] = useState(false);
+  const [showAdminModal, setShowAdminModal] = useState(false);
   const [selectedKickUserId, setSelectedKickUserId] = useState(null);
   const [selectedBanUserId, setSelectedBanUserId] = useState(null);
+  const [selectedAdminUserId, setSelectedAdminUserId] = useState(null);
   const [reason, setReason] = useState('');
 
   
@@ -160,6 +162,13 @@ function GroupPage() {
     setShowBanModal(true);
   };
 
+  //This opens the kick confirmation modal.
+  function adminConfirmation(user_id){
+    setSelectedAdminUserId(user_id);
+    console.log(selectedAdminUserId);
+    setShowAdminModal(true);
+  };
+
 
   //This kicks the selected user by removing the user's ID from the memberUIDs
   async function handleKickUser(user_id) {
@@ -188,11 +197,8 @@ function GroupPage() {
       console.error("Error kicking user:", error);
     }
   }
-  
-  const handleReasonChange = (event) => {
-    setReason(event.target.value);
-  };
 
+  // This handles adding the user to be banned into the banList, and therefore be banned from access
   async function handleBanUser(user_id, reason) {
     try {
       // Get a reference to the group document in Firestore
@@ -226,8 +232,33 @@ function GroupPage() {
       console.error("Error banning user:", error);
     }
   }
-  
 
+  const handleReasonChange = (event) => {
+    setReason(event.target.value);
+  };
+
+  // This appends the selected member into the adminUIDs
+  async function handlePromoteAdmin(user_id) {
+    try {
+      // Get a reference to the group document in Firestore
+      const groupRef = doc(db, "groups", id);
+  
+      // Update the adminUIDs array in the group document
+      const groupDoc = await getDoc(groupRef);
+      const adminUIDs = groupDoc.data().adminUIDs || [];
+      if (!adminUIDs.includes(user_id)) {
+        adminUIDs.push(user_id);
+        await updateDoc(groupRef, { adminUIDs });
+        console.log("User promoted to admin successfully.");
+        window.location.reload();
+      } else {
+        console.log("User is already an admin.");
+      }
+    } catch (error) {
+      console.error("Error promoting user to admin:", error);
+    }
+  }
+  
   
 
   //Here we display the information relevant to the group
@@ -403,6 +434,16 @@ function GroupPage() {
                               Ban
                             </button>
                           </li>
+                          <li>
+                            <button
+                              className="dropdown-item"
+                              type="button"
+                              style={{ backgroundColor: "#F3F3F3" }}
+                              onClick={() => adminConfirmation(id)}
+                            >
+                              Promote to Admin
+                            </button>
+                          </li>
                         </ul>
                       </div>
                     </li>
@@ -490,14 +531,16 @@ function GroupPage() {
           <p>If so, you may include a reason behind the decision.</p>
           <hr></hr>
           <Form.Group controlId="reason">
-          <Form.Label><h5>Reason for ban</h5></Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Type here"
-            value={reason}
-            onChange={handleReasonChange}
-          />
-        </Form.Group>
+            <Form.Label>
+              <h5>Reason for ban</h5>
+            </Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Type here"
+              value={reason}
+              onChange={handleReasonChange}
+            />
+          </Form.Group>
         </Modal.Body>
         <Modal.Footer>
           <Button
@@ -512,6 +555,32 @@ function GroupPage() {
             onClick={() => handleBanUser(selectedBanUserId, reason)}
           >
             Ban
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* ADMIN PROMOTION MODAL */}
+      <Modal show={showAdminModal} onHide={() => setShowAdminModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Admin Promotion Confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h5>Are you sure you want to give admin permissions this user?</h5>
+          <h6 style={{ color: "#A52A2A", fontWeight: "bold", textAlign: "center", marginTop: "30px" }} >This will be irreversible.</h6>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            style={{ borderRadius: "20px" }}
+            onClick={() => setShowAdminModal(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            style={{ backgroundColor: "#27746a", borderRadius: "20px" }}
+            onClick={() => handlePromoteAdmin(selectedAdminUserId)}
+          >
+            Promote
           </Button>
         </Modal.Footer>
       </Modal>
