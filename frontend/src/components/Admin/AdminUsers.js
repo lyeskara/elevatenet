@@ -73,7 +73,7 @@ function AdminUsers() {
       <Row>
         {/* This card displays the job menu block with Job Postings and Advertisements */}
 				<Card className="jobs-menu">
-					<h2> Jobs </h2>
+					<h2> Manage </h2>
 					<hr></hr>
 					{/* When the user clicks the "Job Postings" text, it calls handleClickJobPostings */}
 					<h4 onClick={goToAdmin} style={{ color: "#888888" }}>

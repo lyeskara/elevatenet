@@ -15,9 +15,11 @@ import { storage } from "../../firebase";
 import { v4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import generateKey from "../../generateKey";
+import { useUserAuth } from '../../context/UserAuthContext';
 
 function CreatPost() {
-
+  // const on info of the connected user
+  const { user } = useUserAuth();
   // initializing state for inputs
   const [postText, setPostText] = useState("");
   const [Picture, setPicture] = useState(null);
@@ -65,7 +67,8 @@ function CreatPost() {
     image: PicUrl,
     id: generateKey(28),
     likes: [],
-    comments: []
+    comments: [],
+    created_by: user.email
   }
 
   //function which pushes the data inputed in the form into the collection user-posts under the user id
