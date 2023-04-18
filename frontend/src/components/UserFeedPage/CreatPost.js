@@ -23,6 +23,7 @@ function CreatPost() {
   const [Picture, setPicture] = useState(null);
   const [PicUrl, SetPicUrl] = useState(null);
   const [userInfo, SetUserInfo] = useState(null);
+  const [condition, setcondition] = useState(false);
   // reference hook
   const inputRef = useRef();
   // Initialize useNavigate
@@ -37,7 +38,6 @@ function CreatPost() {
     uploadBytes(imageRef, Picture).then((word) => {
       getDownloadURL(word.ref).then((url) => {
         SetPicUrl(url)
-        console.log(PicUrl)
       })
     })
   }, [Picture])
@@ -87,12 +87,54 @@ function CreatPost() {
       if (condition) {
         console.log("you have already made a post.")
       } else {
-        posts_data.push(post)
-        updateDoc(doc(postsCollectionRef, currentId), { "posts": posts_data })
+        if ((postText == "") && (Picture == null)) {
+          alert("empty fields please write something or put an image")
+        } else {
+          const connections = (await getDoc(doc(collection(db, "connection"), currentId))).data().connections
+          connections.forEach(id => {
+            getDoc(doc(collection(db, "notification_settings"), id)).then((note_data) => {
+              if (note_data.data() !== undefined) {
+                if (note_data.data().feed) {
+                  getDoc(doc(collection(db, 'Notifications'), id)).then((followed_doc) => {
+                    const note = {
+                      message: `${user_info.first_name} ${user_info.last_name} has created a new post, go check it out!`,
+                      profilePicUrl: user_info.profile_picture,
+                      id: generateKey(8),
+                      post_id: post.id
+                    }
+                    if ((followed_doc.data() === undefined) || (followed_doc.data().notifications.length === 0)) {
+                      setDoc(doc(collection(db, 'Notifications'), id), { notifications: [note] })
+                    } else {
+                      const notifications_array = followed_doc.data().notifications;
+                      let condition = false
+                      notifications_array.forEach((notif) => {
+                        if (!(notif.id === note.id)) {
+                          condition = true;
+                        }
+                      })
+                      if (condition) {
+                        notifications_array.push(note)
+                      }
+                      console.log(notifications_array)
+                      updateDoc(doc(collection(db, 'Notifications'), id), {
+                        notifications: notifications_array
+                      })
+                    }
+                  })
+                }
+              }
+            })
+          });
+
+          posts_data.push(post)
+          updateDoc(doc(postsCollectionRef, currentId), { "posts": posts_data })
+          // Navigate to the feed page
+          navigate('/feed')
+        }
       }
-      // Navigate to the feed page
-      navigate("/feed"); 
     }
+
+
 
   };
 
@@ -107,8 +149,10 @@ function CreatPost() {
         <textarea
           value={postText}
           onChange={(e) => setPostText(e.target.value)}
-          placeholder="Say something here..."
+          placeholder="Say something here... "
         />
+        {PicUrl && <img src={PicUrl} />}
+
         <div className="create-post-preview-box" id="preview-box"></div>
         <div className="create-post-options">
           <button >
@@ -121,6 +165,7 @@ function CreatPost() {
                 onChange={(e) => {
                   const selectedImage = e.target.files[0];
                   setPicture(selectedImage);
+
                 }}
               />
             </label>
