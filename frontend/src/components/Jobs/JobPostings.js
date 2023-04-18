@@ -164,7 +164,7 @@ function JobPostings() {
 									{/* The job title */}
 									<div className="row">
 										<div className="col-sm-8">
-											<h4>{data.job_title}</h4>
+											<h3>{data.job_title}</h3>
 										</div>
 										{/* Edit and Delete buttons */}
 										<div className="col-sm-4 d-flex justify-content-end align-items-center">
@@ -195,11 +195,12 @@ function JobPostings() {
 											</Button>
 										</div>
 									</div>
+									<h4>{data.company}</h4>
 									<hr />
 									{/* The company and description */}
-									<h6>{data.company}</h6>
+									
 									{console.log(data.deadline)}
-									<h6>{data.deadline}</h6>
+									
 									<p>{data.description}</p>
 									{/* SKILLS */}
 									{data.skills && Array.isArray(data.skills) && (
@@ -211,14 +212,15 @@ function JobPostings() {
 											))}
 										</div>
 									)}
+									
 									<hr />
+									<h6>Apply before: <b>{data.deadline}</b></h6>
+									{(data.cover_letter_required||data.resume_required||data.advertise)&& <hr />}
 									{/* RESUME AND COVER LETTER REQUIRED */}
-									{data.cover_letter_required && <p>Cover Letter Required</p>}
-									{data.resume_required && <p>Resume Required</p>}
+									{data.cover_letter_required && <b>Cover Letter Required</b>}
+									{data.resume_required && <b>Resume Required</b>}
 									{/* IF THE POSTING IS ADVERTISED */}
-									{data.advertise && <p>Currently being Advertised</p>}
-
-									{/* <p>{data.deadline}</p> */}
+									{data.advertise && <b>Currently being Advertised</b>}
 								</Card>
 							</div>
 						))
