@@ -66,6 +66,7 @@ function JobPostings() {
 		).checked;
 		const skillsElement = document.getElementById("skills");
 		const skills = skillsElement.value.split(",");
+		const deadline = document.getElementById("deadline").value;
 
 		// Update the job posting with the new data
 		await updateDoc(doc(db, "posting", id), {
@@ -75,6 +76,7 @@ function JobPostings() {
 			resume_required: resume_required,
 			cover_letter_required: cover_letter_required,
 			skills: skills,
+			deadline: deadline,
 		});
 		// Hide the modal
 		setShowModal(false);
@@ -196,6 +198,8 @@ function JobPostings() {
 									<hr />
 									{/* The company and description */}
 									<h6>{data.company}</h6>
+									{console.log(data.deadline)}
+									<h6>{data.deadline}</h6>
 									<p>{data.description}</p>
 									{/* SKILLS */}
 									{data.skills && Array.isArray(data.skills) && (
