@@ -49,13 +49,13 @@ function Advertisements() {
             <Card className="jobs-menu">
             <h2> Jobs </h2>
             <hr></hr>
-            <h4 style={{ color: '#888888' }} onClick={handleClickJobPostings}> Job Postings </h4>
-            <h4 style={{ color: '#27746a' }}>Advertisements</h4>
+            <h4 style={{ color: '#888888' }} onClick={handleClickJobPostings}>My Job Postings </h4>
+            <h4 style={{ color: '#27746a' }}>My Advertisements</h4>
             <br></br>
             </Card>
         </Col>
         <Col xs={12} sm={12}  lg={8} >
-            <h2 style={{ color: '#555555', marginTop: '32px' }}>Your Advertisements</h2>
+            <h2 style={{ color: '#555555', marginTop: '32px' }}></h2>
             {isLoaded ? (
             posts.map((data) => (
                 <div className="post-content" key={data.id}>
