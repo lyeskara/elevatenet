@@ -199,20 +199,7 @@ function Post({ name, description, message, photo, image, post_id, id }) {
       </>)
       :
       (
-        <div className="post">
-          {(poster_id === auth_id) ?
-            ((isUpdated) ? (
-              <>
-                <button onClick={handleCancel} >cancel</button>
-              </>
-            ) :
-              (
-                <>
-                  <button onClick={handleDelete}>delete</button>
-                  <button onClick={() => setUpdate(true)}>update</button>
-                </>
-              )) : (<></>)}
-
+        <div className="post"  style={{ position: 'relative' }}>
           <div className="post-header">
             <div>
               <img src={photo} alt={name} />
@@ -272,7 +259,18 @@ function Post({ name, description, message, photo, image, post_id, id }) {
               <p>Comment</p>
             </button>
           </div>
-
+          {(poster_id === auth_id) ?
+            ((isUpdated) ? (
+              <>
+                <button className="post-update-cancel" onClick={handleCancel} >cancel</button>
+              </>
+            ) :
+              (
+                <>
+                  <button className="post-delete"  onClick={handleDelete}>delete</button>
+                  <button className="post-update" onClick={() => setUpdate(true)}>update</button>
+                </>
+              )) : (<></>)}
           {showCommentBox && (
             <div className="post-commentBox">
               <form onSubmit={handleCommentSubmit} style={{ display: "flex", alignItems: "center" }}>
@@ -305,4 +303,3 @@ function Post({ name, description, message, photo, image, post_id, id }) {
 }
 
 export default Post;
-//reh

@@ -12,6 +12,7 @@ import bell from "./../images/icon_bell.png";
 import ellipses from "./../images/icon_ellipses.png";
 import messaging from "./../images/messaging_icon.png";
 import { Navbar, Nav, Container } from "react-bootstrap";
+import { useState } from 'react';
 
 import Search from "./connection/Search";
 
@@ -19,6 +20,11 @@ function NavbarFun() {
   const userr = auth.currentUser;
   const { logOut } = useUserAuth();
   const navigate = useNavigate();
+  const [expanded, setExpanded] = useState(false);
+
+  const handleLinkClick = () => {
+    setExpanded(false);
+  };
   const handleLogout = async () => {
     try {
       await logOut();
@@ -30,7 +36,7 @@ function NavbarFun() {
 
   return (
     <>
-      <Navbar bg="white" expand="lg">
+      <Navbar bg="white" expand="lg" expanded={expanded}>
         <Container fluid>
           <Navbar.Brand href="/">
             <img src={logo} alt="ElevateNet" />
@@ -44,37 +50,37 @@ function NavbarFun() {
               </Nav>
             </>
           )}
-          <Navbar.Toggle aria-controls="navbarScroll" />
+          <Navbar.Toggle aria-controls="navbarScroll" onClick={() => setExpanded(!expanded)}/>
           <Navbar.Collapse id="navbarScroll">
             <Nav className="ms-auto"></Nav>
             <Nav>
               {userr && (
                 <>
                   <Nav>
-                    <Link to="/Feed">
+                    <Link to="/Feed" onClick={handleLinkClick}> 
                       <img className="nav-icon" src={home} alt="home" />
                     </Link>
-                    <Link to="/Profile">
+                    <Link to="/Profile" onClick={handleLinkClick}>
                       <img className="nav-icon" src={person} alt="profile" />
                     </Link>
-                    <Link to="/Messaging">
+                    <Link to="/Messaging" onClick={handleLinkClick}>
                       <img className="nav-icon" src={messaging} alt="messaging" />
                     </Link>
-                    <Link to="/JobPostings">
+                    <Link to="/JobPostings" onClick={handleLinkClick}>
                       <img className="nav-icon" src={briefcase} alt="briefcase" />
                     </Link>
-                    <Link to="/connections">
+                    <Link to="/connections" onClick={handleLinkClick}>
                       <img className="nav-icon" src={connection} alt="connection" />
                     </Link>
-                    <Link to="/Notification">
-											<img src={bell} alt="bell" />
+                    <Link to="/Notification" onClick={handleLinkClick}>
+											<img className="nav-icon" src={bell} alt="bell" />
 										</Link>
-                    <div class="dropdown">
-                      <button class="dropbtn">
+                    <div class="dropdown" >
+                      <button class="dropbtn" onClick={handleLinkClick}>
                         <img className="nav-ellipse" src={ellipses} alt="ellipses" />
                       </button>
                       <div class="dropdown-content">
-                        <Link to="/ProfileInfoSettings">Settings</Link>
+                        <Link to="/ProfileInfoSettings" onClick={handleLinkClick}>Settings</Link>
                         <a onClick={handleLogout}>Sign Out</a>
                       </div>
                     </div>
@@ -85,10 +91,10 @@ function NavbarFun() {
               {!userr && (
                 <>
                   <Nav>
-                    <Link to="/SignIn">Sign In</Link>
+                    <Link to="/SignIn" onClick={handleLinkClick}>Sign In</Link>
                   </Nav>
                   <Nav>
-                    <Link to="/JoinNow">Sign Up</Link>
+                    <Link to="/JoinNow" onClick={handleLinkClick}>Sign Up</Link>
                   </Nav>
                 </>
               )}
