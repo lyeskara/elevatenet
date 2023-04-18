@@ -65,7 +65,7 @@ function NotificationSettings() {
             <h2>Settings</h2>
             <hr></hr>
 
-            <h4 onClick={handleClickAccount} style={{ color: "#27746a" }}>
+            <h4 onClick={handleClickAccount} style={{ color: "#888888" }}>
               {" "}
               Account Preferences{" "}
             </h4>
@@ -75,7 +75,7 @@ function NotificationSettings() {
               Security{" "}
             </h4>
             {/* Notifications */}
-            <h4 style={{ color: "#888888" }}>Notifications</h4>
+            <h4 style={{ color: "#27746a" }}>Notifications</h4>
           </Card>
         </Col>
 
