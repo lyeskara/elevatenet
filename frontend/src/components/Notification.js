@@ -25,7 +25,7 @@ function Notification() {
         <h1 className="notif-title">Notification Center</h1>
       </center>
       {Notifications ? (
-        Notifications.slice(-5).map((Notification) => {
+        Notifications.slice(0,5).map((Notification) => {
           return (
             <Container>
                 <center>
