@@ -7,11 +7,9 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 
-
 function AdminFeed() {
   const [posts, setPosts] = useState([]);
   const [userEmails, setUserEmails] = useState({});
-
 
   useEffect(() => {
     async function fetchPosts() {
@@ -65,10 +63,10 @@ function AdminFeed() {
         })
       );
     }
-  
+
     fetchUserNames();
   }, []);
-  
+
   const getEmail = async (postId) => {
     try {
       const userRef = doc(db, "users_information", postId);
@@ -80,15 +78,15 @@ function AdminFeed() {
         return email;
       } else {
         console.log("No such document!");
-        return null;
+        return "null";
       }
     } catch (error) {
       console.error(error);
       console.log("ERROR");
       return null;
     }
-  }
-  
+  };
+
   const handleDelete = async (postId, mapId) => {
     try {
       const postRef = doc(db, "user_posts", postId);
@@ -117,30 +115,42 @@ function AdminFeed() {
   return (
     <Container>
       <Row>
-        {posts.map((post) => (
-          <Col key={post.id} sm={12} md={6} lg={4} className="mb-4">
-            <Card>
-              <h5>{post.id}</h5>
-              <Card.Body>
-                {post.postTexts.map((text) => (
-                  <div key={text.id} className="d-flex justify-content-between">
-                    <Card.Text>{text.text}</Card.Text>
-                    <Button
-                      variant="outline-danger"
-                      size="sm"
-                      onClick={() => handleDelete(post.id, text.id)}
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                ))}
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
+        {posts.map(async (post) => {
+          try {
+            const email = await getEmail(post.id);
+            console.log("post:", post);
+            console.log("email:", email);
+            return (
+              <Col key={post.id} sm={12} md={6} lg={4} className="mb-4">
+                <Card>
+                  <h5>{post.id}</h5>
+                  <h5>{email}</h5>
+                  <Card.Body>
+                    {post.postTexts.map((text) => (
+                      <div key={text.id} className="d-flex justify-content-between">
+                        <Card.Text>{text.text}</Card.Text>
+                        <Button
+                          variant="outline-danger"
+                          size="sm"
+                          onClick={() => handleDelete(post.id, text.id)}
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    ))}
+                  </Card.Body>
+                </Card>
+              </Col>
+            );
+          } catch (error) {
+            console.error(error);
+            return null;
+          }
+        })}
       </Row>
     </Container>
   );
+   
 }
 
 export default AdminFeed;
