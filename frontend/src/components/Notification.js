@@ -12,15 +12,14 @@ function Notification() {
                 setUnNotified(true);
             } else {
                 const data = promise.data().notifications
-                SetNotifications(data)
+                SetNotifications(data.reverse())
             }
         })
     }, [])
-    console.log(Notifications)
     return (
         <>
             {Notifications ?
-                (Notifications.slice(-5).map((Notification) => {
+                (Notifications.slice(0,5).map((Notification) => {
                     return (
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <img src={Notification.profilePicUrl} alt="profilephoto-icon" className="create-post-profile-photo" />
