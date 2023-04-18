@@ -294,6 +294,15 @@ function JobPostings() {
 								defaultChecked={currentJob.resume_required} // Sets the default value of the checkbox to the current value of the resume_required field
 							/>
 						</div>
+
+						<div className="form-group">
+							<label htmlFor="deadline">Deadline:</label>
+							<input
+								type="date"
+								id="deadline"
+								defaultChecked={currentJob.deadline} // Sets the default value of the checkbox to the current value of the resume_required field
+							/>
+						</div>
 					</form>
 				</Modal.Body>
 				<Modal.Footer>
