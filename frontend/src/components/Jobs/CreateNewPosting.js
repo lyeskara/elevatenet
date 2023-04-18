@@ -279,7 +279,7 @@ function CreateNewPosting() {
                                         onClick={() => setPostingData({...postingData, advertise: !postingData.advertise})}
                                         style={{ backgroundColor: postingData.advertise ? '#27746a' : '' }}
                                     >
-                                        {postingData.advertise ? 'Advertise' : 'Do Not Advertise'}
+                                        {postingData.advertise ? 'Advertised' : 'Do Not Advertise'}
                                     </button>
 
                                     {/* xxxxxxxxxxxxxxxxxxx */}
