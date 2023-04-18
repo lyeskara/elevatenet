@@ -7,10 +7,9 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 
+
 function AdminFeed() {
   const [posts, setPosts] = useState([]);
-  const [userEmails, setUserEmails] = useState({});
-
   useEffect(() => {
     async function fetchPosts() {
       try {
@@ -18,7 +17,11 @@ function AdminFeed() {
         const snapshot = await getDocs(postsRef);
         const postData = snapshot.docs.map((doc) => {
           const posts = doc.data().posts;
-          const postTexts = posts ? posts.map((post) => ({ id: post.id, text: post.post_text })) : [];
+          const postTexts = posts ? posts.map((post) => ({ 
+            id: post.id, 
+            text: post.post_text,
+            created_by: post.created_by
+           })) : [];
           return { id: doc.id, postTexts };
         });
         setPosts(postData);
@@ -29,64 +32,6 @@ function AdminFeed() {
 
     fetchPosts();
   }, []);
-
-  useEffect(() => {
-    async function fetchUserNames() {
-      const userIds = new Set();
-      posts.forEach((post) => {
-        post.postTexts.forEach((text) => {
-          userIds.add(text.id);
-        });
-      });
-      const userDocs = await Promise.all(Array.from(userIds).map((id) => getDoc(doc(db, "users", id))));
-      const userNames = userDocs.reduce((acc, doc) => {
-        if (doc.exists()) {
-          acc[doc.id] = doc.data().name;
-          firebase.auth().getUser(doc.id).then((user) => {
-            acc[doc.id] = user.email;
-            setUserEmails(acc);
-          }).catch((error) => {
-            console.error(error);
-          });
-        }
-        return acc;
-      }, {});
-      setPosts((prevPosts) =>
-        prevPosts.map((prevPost) => {
-          const updatedPostTexts = prevPost.postTexts.map((text) => ({
-            id: text.id,
-            text: text.text,
-            userName: userNames[text.id],
-            userEmail: userEmails[text.id],
-          }));
-          return { ...prevPost, postTexts: updatedPostTexts };
-        })
-      );
-    }
-
-    fetchUserNames();
-  }, []);
-
-  const getEmail = async (postId) => {
-    try {
-      const userRef = doc(db, "users_information", postId);
-      const userSnap = await getDoc(userRef);
-      console.log(postId);
-      if (userSnap.exists()) {
-        const email = userSnap.data().email;
-        console.log(email);
-        return email;
-      } else {
-        console.log("No such document!");
-        return "null";
-      }
-    } catch (error) {
-      console.error(error);
-      console.log("ERROR");
-      return null;
-    }
-  };
-
   const handleDelete = async (postId, mapId) => {
     try {
       const postRef = doc(db, "user_posts", postId);
@@ -106,51 +51,45 @@ function AdminFeed() {
           }
         })
       );
+      // Check if posts array is empty and delete document if it is
+      if (updatedPosts.length === 0) {
+        await deleteDoc(postRef);
+        setPosts((prevPosts) => prevPosts.filter((prevPost) => prevPost.id !== postId));
+      }
     } catch (error) {
       console.error(error);
     }
   };
   
-
   return (
     <Container>
       <Row>
-        {posts.map(async (post) => {
-          try {
-            const email = await getEmail(post.id);
-            console.log("post:", post);
-            console.log("email:", email);
-            return (
-              <Col key={post.id} sm={12} md={6} lg={4} className="mb-4">
-                <Card>
-                  <h5>{post.id}</h5>
-                  <h5>{email}</h5>
-                  <Card.Body>
-                    {post.postTexts.map((text) => (
-                      <div key={text.id} className="d-flex justify-content-between">
-                        <Card.Text>{text.text}</Card.Text>
-                        <Button
-                          variant="outline-danger"
-                          size="sm"
-                          onClick={() => handleDelete(post.id, text.id)}
-                        >
-                          Delete
-                        </Button>
-                      </div>
-                    ))}
-                  </Card.Body>
-                </Card>
-              </Col>
-            );
-          } catch (error) {
-            console.error(error);
-            return null;
-          }
-        })}
+        {posts.map((post) => (
+          <Col key={post.id} sm={12} md={6} lg={4} className="mb-4">
+            <Card>
+              <h5>{post.id}</h5>
+              <h6>Created by: {post.postTexts[0]?.created_by ?? 'N/A'}</h6>
+              {console.log(post.postTexts[0])}
+              <Card.Body>
+                {post.postTexts.map((text) => (
+                  <div key={text.id} className="d-flex justify-content-between">
+                    <Card.Text>{text.text}</Card.Text>
+                    <Button
+                      variant="outline-danger"
+                      size="sm"
+                      onClick={() => handleDelete(post.id, text.id)}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                ))}
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
       </Row>
     </Container>
   );
-   
+  
 }
-
 export default AdminFeed;
