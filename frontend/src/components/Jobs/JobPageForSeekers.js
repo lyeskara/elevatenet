@@ -357,7 +357,7 @@ function JobPageForSeekers() {
                     <Carousel.Item key={posting.id}>
                       <Card className="mb-3 sponsor">
                         <Card.Body >
-                          <Card.Title>{posting.title}</Card.Title>
+                          <Card.Title>{posting.job_title}</Card.Title>
                           <Card.Subtitle className="mb-2 text-muted">
                             {posting.company}
                           </Card.Subtitle>
