@@ -19,6 +19,7 @@ function Profile() {
 	const [profilePicURL, setProfilePicURL] = useState("");
 	const storage = getStorage();
 	const [education, setEducation] = useState([]);
+	const [work, setWork] = useState([]);
 
 	/**
 	 * getUserData gets all values pertaining to the logged in user.
@@ -48,13 +49,11 @@ function Profile() {
 				setProfilePicURL(downloadURL);
 
 				// Get the education data
-				const educationData = userDoc.data().Education;
-				console.log(JSON.stringify(educationData));
-
+				const educationData = userDoc.data().education;
 				setEducation(educationData);
-				console.log("educationData: ", educationData);
-			} else {
-				console.log("User not found");
+
+				const workData = userDoc.data().workExperience;
+				setWork(workData);
 			}
 		} catch (error) {
 			console.log(error);
@@ -247,36 +246,34 @@ function Profile() {
 						</div>
 					</Card>
 				</Col>
-
 				<Col xs={12} md={7}>
 					<Card className="card">
 						<h5>Work Experience</h5>
 						<hr></hr>
-						<div className="profile-desc-row">
-							<img src={person}></img>
-							<div>
-								<h3>Business Intelligence Analyst</h3>
-								<p>DODO Inc.</p>
-								<p> Feb 2022 - Present</p>
-							</div>
-						</div>
-						<hr></hr>
-						<div className="profile-desc-row">
-							<img src={person}></img>
-							<div>
-								<h3>Junior Analyst</h3>
-								<p>FOFO Inc.</p>
-								<p> Feb 2021 - Feb 2022</p>
-							</div>
-						</div>
+						{work &&
+							work.map((work, index) => (
+								<React.Fragment key={index}>
+									<div className="profile-desc-row">
+										<img src={person} alt="person"></img>
+										<div>
+											<h3>{work.position}</h3>
+											<p>{work.company}</p>
+											<p>
+												{work.startDate} - {work.endDate}
+											</p>
+										</div>
+									</div>
+									{/* Add a horizontal rule between schools */}
+									{index !== work.length - 1 && <hr />}
+								</React.Fragment>
+							))}
 					</Card>
-
 					<Card className="educationcard">
 						<h5>Education</h5>
 						<hr></hr>
 						{education &&
-							Object.entries(education).map(([key, school]) => (
-								<React.Fragment key={key}>
+							education.map((school, index) => (
+								<React.Fragment key={index}>
 									<div className="profile-desc-row">
 										<img src={person} alt="person"></img>
 										<div>
@@ -285,16 +282,13 @@ function Profile() {
 												{school.startDate} - {school.endDate}
 											</p>
 											<p>{school.major}</p>
-											{/* Here you can access the other properties of the school object */}
 										</div>
 									</div>
 									{/* Add a horizontal rule between schools */}
-									{Object.keys(education).indexOf(key) !==
-										Object.keys(education).length - 1 && <hr />}
+									{index !== education.length - 1 && <hr />}
 								</React.Fragment>
 							))}
 					</Card>
-
 					<Card className="skillscard">
 						<h5>Skills</h5>
 						<hr></hr>

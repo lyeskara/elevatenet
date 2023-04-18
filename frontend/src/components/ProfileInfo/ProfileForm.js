@@ -19,10 +19,9 @@ function ProfileForm() {
 				position: "",
 				startDate: "",
 				endDate: "",
-				description: "",
 			},
 		],
-		education: {},
+		education: [{ name: "", major: "", startDate: "", endDate: "" }],
 		skills: [],
 		languages: "",
 		contact: "",
@@ -31,30 +30,6 @@ function ProfileForm() {
 		projects: [],
 		volunteering: [],
 	});
-
-	// Initialize the schools array with some sample data
-	const schools = [
-		{ name: "", major: "", startDate: "", endDate: "" },
-		{ name: "", major: "", startDate: "", endDate: "" },
-		{ name: "", major: "", startDate: "", endDate: "" },
-	];
-
-	// Initialize the education object with an empty object
-	const education = {};
-
-	// Loop through each school and assign a unique submap name
-	schools.forEach((school, index) => {
-		const submapName = `School${index + 1}`;
-		education[submapName] = school;
-	});
-
-	// Set the profile data with the education object
-	useEffect(() => {
-		setProfileData((prevProfileData) => ({
-			...prevProfileData,
-			education,
-		}));
-	}, []);
 
 	function update(e) {
 		const { name, value } = e.target;
@@ -70,21 +45,19 @@ function ProfileForm() {
 			setProfileData({ ...profileData, [name]: arrayValue });
 		} else if (name.startsWith("workExperience")) {
 			const [index, field] = name.split(".").slice(1);
-			const newWorkExperience = [
+			const newWork = [
 				...profileData.workExperience.slice(0, index),
 				{ ...profileData.workExperience[index], [field]: value },
 				...profileData.workExperience.slice(index + 1),
 			];
-			setProfileData({ ...profileData, workExperience: newWorkExperience });
+			setProfileData({ ...profileData, workExperience: newWork });
 		} else if (name.startsWith("education")) {
-			const [_, submapName, field] = name.split(".");
-			const newEducation = {
-				...profileData.education,
-				[submapName]: {
-					...profileData.education[submapName],
-					[field]: value,
-				},
-			};
+			const [index, field] = name.split(".").slice(1);
+			const newEducation = [
+				...profileData.education.slice(0, index),
+				{ ...profileData.education[index], [field]: value },
+				...profileData.education.slice(index + 1),
+			];
 			setProfileData({ ...profileData, education: newEducation });
 		} else {
 			setProfileData({ ...profileData, [name]: value });
@@ -121,21 +94,16 @@ function ProfileForm() {
 				city: "",
 				bio: "",
 				workExperience: {
-					Company1: {
-						position: "",
-						company: "",
-						startDate: "",
-						endDate: "",
-						description: "",
-					},
+					position: "",
+					company: "",
+					startDate: "",
+					endDate: "",
 				},
 				education: {
-					School1: {
-						name: "",
-						startDate: "",
-						endDate: "",
-						major: "",
-					},
+					name: "",
+					startDate: "",
+					endDate: "",
+					major: "",
 				},
 				skills: [],
 				languages: "",
@@ -165,24 +133,20 @@ function ProfileForm() {
 		newEducation.splice(index, 1);
 		setProfileData({ ...profileData, education: newEducation });
 	}
-	function handleAddWorkExperience() {
-		const newWorkExperience = [
-			...profileData.workExperience,
-			{
-				company: "",
-				position: "",
-				startDate: "",
-				endDate: "",
-				description: "",
-			},
-		];
-		setProfileData({ ...profileData, workExperience: newWorkExperience });
+	function addWork() {
+		setProfileData({
+			...profileData,
+			workExperience: [
+				...profileData.workExperience,
+				{ position: "", company: "", startDate: "", endDate: "" },
+			],
+		});
 	}
 
-	function handleRemoveWorkExperience(index) {
-		const newWorkExperience = [...profileData.workExperience];
-		newWorkExperience.splice(index, 1);
-		setProfileData({ ...profileData, workExperience: newWorkExperience });
+	function removeWork(index) {
+		const newWork = [...profileData.workExperience];
+		newWork.splice(index, 1);
+		setProfileData({ ...profileData, workExperience: newWork });
 	}
 
 	return (
@@ -239,15 +203,11 @@ function ProfileForm() {
 							/>
 						</Form.Group>
 
-						<Form.Group
-							className="mb-3"
-							controlId="formEducation"
-							style={{ marginTop: "10px", marginBottom: "10px" }}
-						>
+						<Form.Group className="mb-3" controlId="formEducation">
 							{profileData.education.map((edu, index) => (
 								<div key={index}>
 									<Form.Control
-										style={{ marginTop: "10px", marginBottom: "10px" }}
+										style={{ marginBottom: "1rem", marginTop: "1rem" }}
 										className="input_box"
 										type="text"
 										name={`education.${index}.name`}
@@ -256,7 +216,7 @@ function ProfileForm() {
 										placeholder="School Name"
 									/>
 									<Form.Control
-										style={{ marginTop: "10px", marginBottom: "10px" }}
+										style={{ marginBottom: "1rem", marginTop: "1rem" }}
 										className="input_box"
 										type="text"
 										name={`education.${index}.major`}
@@ -265,7 +225,7 @@ function ProfileForm() {
 										placeholder="Major"
 									/>
 									<Form.Control
-										style={{ marginTop: "10px", marginBottom: "10px" }}
+										style={{ marginBottom: "1rem", marginTop: "1rem" }}
 										className="input_box"
 										type="text"
 										name={`education.${index}.startDate`}
@@ -274,7 +234,7 @@ function ProfileForm() {
 										placeholder="Start Date"
 									/>
 									<Form.Control
-										style={{ marginTop: "1 rem", marginBottom: "1 rem" }}
+										style={{ marginBottom: "1rem", marginTop: "1rem" }}
 										className="input_box"
 										type="text"
 										name={`education.${index}.endDate`}
@@ -287,7 +247,7 @@ function ProfileForm() {
 										variant="outline-primary"
 										onClick={() => removeEducation(index)}
 									>
-										Remove
+										Remove Education
 									</Button>
 								</div>
 							))}
@@ -300,60 +260,62 @@ function ProfileForm() {
 							</Button>
 						</Form.Group>
 
-						{Object.keys(profileData.education).map((submapName) => (
-							<div key={submapName}>
-								<Form.Control
-									style={{ marginTop: "10px", marginBottom: "10px" }}
-									className="input_box"
-									type="text"
-									name={`education.${submapName}.name`}
-									onChange={update}
-									value={profileData.education[submapName].name}
-									placeholder="School Name"
-								/>
-								<Form.Control
-									style={{ marginTop: "10px", marginBottom: "10px" }}
-									className="input_box"
-									type="text"
-									name={`education.${submapName}.major`}
-									onChange={update}
-									value={profileData.education[submapName].major}
-									placeholder="Major"
-								/>
-								<Form.Control
-									style={{ marginTop: "10px", marginBottom: "10px" }}
-									className="input_box"
-									type="text"
-									name={`education.${submapName}.startDate`}
-									onChange={update}
-									value={profileData.education[submapName].startDate}
-									placeholder="Start Date"
-								/>
-								<Form.Control
-									style={{ marginTop: "1 rem", marginBottom: "1 rem" }}
-									className="input_box"
-									type="text"
-									name={`education.${submapName}.endDate`}
-									onChange={update}
-									value={profileData.education[submapName].endDate}
-									placeholder="End Date"
-								/>
-								<Button
-									className="sign_button mb-3 mt-3"
-									variant="outline-primary"
-									onClick={() => removeEducation(submapName)}
-								>
-									Remove
-								</Button>
-							</div>
-						))}
-						<Button
-							className="sign_button mb-3 mt-3"
-							variant="outline-primary"
-							onClick={addEducation}
-						>
-							Add Education
-						</Button>
+						<Form.Group className="mb-3" controlId="formWorkExperience">
+							{profileData.workExperience.map((exp, index) => (
+								<div key={index}>
+									<Form.Control
+										className="input_box"
+										style={{ marginBottom: "1rem", marginTop: "1rem" }}
+										type="text"
+										name={`workExperience.${index}.position`}
+										onChange={update}
+										value={exp.position}
+										placeholder="Position"
+									/>
+									<Form.Control
+										className="input_box"
+										style={{ marginBottom: "1rem", marginTop: "1rem" }}
+										type="text"
+										name={`workExperience.${index}.company`}
+										onChange={update}
+										value={exp.company}
+										placeholder="Company"
+									/>
+									<Form.Control
+										className="input_box"
+										style={{ marginBottom: "1rem", marginTop: "1rem" }}
+										type="text"
+										name={`workExperience.${index}.startDate`}
+										onChange={update}
+										value={exp.startDate}
+										placeholder="Start Date"
+									/>
+									<Form.Control
+										className="input_box"
+										style={{ marginBottom: "1rem", marginTop: "1rem" }}
+										type="text"
+										name={`workExperience.${index}.endDate`}
+										onChange={update}
+										value={exp.endDate}
+										placeholder="End Date"
+									/>
+								</div>
+							))}
+							<Button
+								className="sign_button mb-3 mt-3"
+								variant="outline-primary"
+								onClick={addWork}
+							>
+								Add Work Experience
+							</Button>
+							<Button
+								className="sign_button mb-3 mt-3"
+								variant="outline-primary"
+								onClick={removeWork}
+							>
+								Remove Work Experience
+							</Button>
+						</Form.Group>
 
 						<Form.Group className="mb-3" controlId="formSkills">
 							<Form.Control
