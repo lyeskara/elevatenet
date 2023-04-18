@@ -30,7 +30,7 @@ function CreateNewPosting() {
         company: '',
         description: '',
         apply_here:'',
-        deadline: '',
+        deadline: "",
         resume_required: false,
         cover_letter_required: false,
         advertise: false,
@@ -104,13 +104,14 @@ function CreateNewPosting() {
     //function handleDateInputChange() to handle both functions for date picker field
     // @param {Date} 
     // handles changes to date chosen and updates the field to current choice
-    const handleDateInputChange = (date) => {
-        setStartDate(date);
-        setPostingData((prevState) => ({
-           ...prevState,
-           deadline: date,
-        }));
-     }; 
+    // const handleDateInputChange = (date) => {
+    //     setStartDate(date);
+    //     setPostingData((prevState) => ({
+    //       ...prevState,
+    //       deadline: date.toISOString(),
+    //     }));
+    //   };
+      
     
      useEffect(() => {
       }, [user]);
@@ -234,18 +235,36 @@ function CreateNewPosting() {
                                 />
                             </div>
                             {/* DATE PICKER FOR DEADLINE */}
-                            <div className="form-group mb-3">
+                            {/* <div className="form-group mb-3">
                                 <label htmlFor="formFile" className="form-label">
                                     <h6>Deadline</h6>
                                 </label>
-                                <DatePicker 
-                                selected={startDate} onChange={(startDate) => handleDateInputChange(startDate)} 
-                                id="deadline"
-                                name="deadline"
-                                value={postingData.deadline}
-                                style={{backgroundColor: "#F3F3F3"}}
-                                required
-                                />
+                                <div className="date-picker">
+                                    <DatePicker
+                                    selected={startDate}
+                                    onChange={handleDateInputChange}
+                                    minDate={new Date()}
+                                    dateFormat="dd/MM/yyyy"
+                                    className="form-control"
+                                    name="deadline"
+                                    required
+                                    />
+                                </div>
+                            </div> */}
+                            {/*Start Date */}
+                            <div className="form-group mb-3">
+                            <label htmlFor="formFile" className="form-label">
+                                <h6>Deadline</h6>
+                            </label>
+                                <div>
+                                    <input
+                                    type="date"
+                                    onChange={handleInputChange}
+                                    id="deadline"
+                                    name="deadline"
+                                    required
+                                    ></input>
+                                </div>
                             </div>
                             {/* CHECKBOX TO KNOW IF POSTING SHOULD BE ADVERTISED   */}
                             <div className="form-group mb-3">
