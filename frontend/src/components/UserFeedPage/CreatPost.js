@@ -76,7 +76,6 @@ function CreatPost() {
     event.preventDefault(); // prevent the form from being submitted
     const posts = await getDocs(postsCollectionRef)
     const auth_doc = await getDoc(doc(postsCollectionRef, currentId));
-    console.log(auth_doc.data())
     if (auth_doc.data() === undefined) {
       setDoc(doc(postsCollectionRef, currentId), { "posts": [post] })
     } else {
@@ -93,41 +92,47 @@ function CreatPost() {
         if ((postText == "") && (Picture == null)) {
           alert("empty fields please write something or put an image")
         } else {
-          const connections = (await getDoc(doc(collection(db, "connection"), currentId))).data().connections
-          connections.forEach(id => {
-            getDoc(doc(collection(db, "notification_settings"), id)).then((note_data) => {
-              if (note_data.data() !== undefined) {
-                if (note_data.data().feed) {
-                  getDoc(doc(collection(db, 'Notifications'), id)).then((followed_doc) => {
-                    const note = {
-                      message: `${user_info.first_name} ${user_info.last_name} has created a new post, go check it out!`,
-                      profilePicUrl: user_info.profile_picture,
-                      id: generateKey(8),
-                      post_id: post.id
-                    }
-                    if ((followed_doc.data() === undefined) || (followed_doc.data().notifications.length === 0)) {
-                      setDoc(doc(collection(db, 'Notifications'), id), { notifications: [note] })
-                    } else {
-                      const notifications_array = followed_doc.data().notifications;
-                      let condition = false
-                      notifications_array.forEach((notif) => {
-                        if (!(notif.id === note.id)) {
-                          condition = true;
-                        }
-                      })
-                      if (condition) {
-                        notifications_array.push(note)
+          if (((await getDoc(doc(collection(db, "connection"), currentId))).data()) !== undefined) {
+            const connections = (await getDoc(doc(collection(db, "connection"), currentId))).data().connections;
+            connections.forEach(id => {
+              getDoc(doc(collection(db, "notification_settings"), id)).then((note_data) => {
+                if (note_data.data() !== undefined) {
+                  if (note_data.data().feed) {
+                    getDoc(doc(collection(db, 'Notifications'), id)).then((followed_doc) => {
+                      const note = {
+                        message: `${user_info.first_name} ${user_info.last_name} has created a new post, go check it out!`,
+                        profilePicUrl: user_info.profile_picture,
+                        id: generateKey(8),
+                        post_id: post.id
                       }
-                      console.log(notifications_array)
-                      updateDoc(doc(collection(db, 'Notifications'), id), {
-                        notifications: notifications_array
-                      })
-                    }
-                  })
+                      if ((followed_doc.data() === undefined) || (followed_doc.data())) {
+                        console.log
+                        setDoc(doc(collection(db, 'Notifications'), id), { notifications: [note] })
+                      } else {
+                        const notifications_array = followed_doc.data().notifications;
+                        let condition = false
+                        notifications_array.forEach((notif) => {
+                          if (!(notif.id === note.id)) {
+                            condition = true;
+                          }
+                        })
+                        if (condition) {
+                          notifications_array.push(note)
+                        }
+                        console.log(notifications_array)
+                        updateDoc(doc(collection(db, 'Notifications'), id), {
+                          notifications: notifications_array
+                        })
+                      }
+                    })
+                  }
                 }
-              }
-            })
-          });
+              })
+            });
+          } else {
+            console.log("you have no connections.")
+          }
+
 
           posts_data.push(post)
           updateDoc(doc(postsCollectionRef, currentId), { "posts": posts_data })
