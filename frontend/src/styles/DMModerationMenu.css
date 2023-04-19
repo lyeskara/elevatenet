@@ -1,0 +1,25 @@
+/* Example CSS for DMModerationMenu component */
+.dm-moderation-menu {
+    position: relative;
+  }
+  
+  .ellipsis-icon {
+    /* Style the ellipsis icon as needed */
+  }
+  
+  .dm-moderation-menu-items {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: none;
+  }
+  
+  .dm-moderation-menu:hover .dm-moderation-menu-items {
+    display: block;
+  }
+  

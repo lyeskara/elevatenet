@@ -19,6 +19,7 @@ import { Container, Form, Button, FormGroup } from "react-bootstrap";
 import pin from ".././../images/paperclip.png";
 import defpic from ".././../images/test.gif";
 import generateKey from "../../generateKey";
+import DMModerationMenu from './DMModerationMenu';
 const Message = () => {
   const currentUser = auth.currentUser; // Get the current authenticated user
   const [message, setMessage] = useState(""); // State for message input
@@ -227,6 +228,12 @@ const Message = () => {
               )}
 
               <h2>{recipientId ? users_information.find(user => user.id === recipientId).firstName + " " + users_information.find(user => user.id === recipientId).lastName : "Message"}</h2>
+               <div className="dm-component">
+                {/* Render DM content */}
+               <p>This is a DM</p>
+                {/* Render DMModerationMenu component */}
+               <DMModerationMenu />
+              </div>
             </div>
             {/* Renders all the messages in the 'messages' array, with the sender's 
                 messages having a green background and the receiver's messages having 
