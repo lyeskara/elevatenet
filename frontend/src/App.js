@@ -49,7 +49,7 @@ import ChangePassword from "./components/Settings/ChangePassword";
 import NotificationSettings from "./components/Settings/Notificationsettings";
 
 import Language from "./components/Settings/Language";
-import Footer from "./components/Footer";
+
 
 
 
@@ -302,7 +302,7 @@ function App() {
           }
         />
       </Routes>
-      <Footer />
+      
     </UserAuthContextProvider>
   );
 }
