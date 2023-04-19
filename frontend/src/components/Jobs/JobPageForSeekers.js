@@ -115,9 +115,10 @@ function JobPageForSeekers() {
 
   const filteredPostings = postings.filter(
     (posting) =>
-      posting.job_title &&
-      posting.job_title.toLowerCase().includes(searchQuery.toLowerCase())
+      (posting.job_title && posting.job_title.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (posting.company && posting.company.toLowerCase().includes(searchQuery.toLowerCase()))
   );
+  
   /**
    * The handleRedirection method redirects the user based on if the job posting contains a link or not.
    * If a third party link is provided, a pop up will show up when the user clicks on apply before being redirected to the third party link
