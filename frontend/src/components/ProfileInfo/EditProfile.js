@@ -27,7 +27,7 @@ function EditProfile({ user, setUser }) {
 	const [selectedFile, setSelectedFile] = useState(null);
 	const [selectedResume, setSelectedResume] = useState(null);
 	const [selectedCL, setSelectedCL] = useState(null);
-	const [updatedUser, setUpdatedUser] = useState(null); // create a copy of the user object using useState
+	const [updatedUser, setUpdatedUser] = useState({}); // create a copy of the user object using useState
 	let downloadPicURL = null;
 	let downloadResumeURL = null;
 	let downloadCLURL = null;
@@ -38,18 +38,36 @@ function EditProfile({ user, setUser }) {
 	 * @param {object} e - Any element.
 	 */
 	function update(e) {
-		const name = e.target.name;
-		const value = e.target.value;
-
-		setUpdatedUser((prevState) => {
-			// Handle array fields
-			if (Array.isArray(prevState[name])) {
-				const values = value.split(","); // split input by comma
-				return { ...prevState, [name]: values };
-			}
-			// Handle non-array fields
-			return { ...prevState, [name]: value };
-		});
+		const { name, value } = e.target;
+		if (
+			name === "skills" ||
+			name === "courses" ||
+			name === "projects" ||
+			name === "volunteering" ||
+			name === "awards"
+		) {
+			// split the input string into an array of strings
+			const arrayValue = value.split(",");
+			setUpdatedUser((prevUser) => ({ ...prevUser, [name]: arrayValue }));
+		} else if (name.startsWith("workExperience")) {
+			const [index, field] = name.split(".").slice(1);
+			const newWork = [
+				...updatedUser.workExperience.slice(0, index),
+				{ ...updatedUser.workExperience[index], [field]: value },
+				...updatedUser.workExperience.slice(index + 1),
+			];
+			setUpdatedUser((prevUser) => ({ ...prevUser, workExperience: newWork }));
+		} else if (name.startsWith("education")) {
+			const [index, field] = name.split(".").slice(1);
+			const newEducation = [
+				...updatedUser.education.slice(0, index),
+				{ ...updatedUser.education[index], [field]: value },
+				...updatedUser.education.slice(index + 1),
+			];
+			setUpdatedUser((prevUser) => ({ ...prevUser, education: newEducation }));
+		} else {
+			setUpdatedUser((prevUser) => ({ ...prevUser, [name]: value }));
+		}
 	}
 
 	const [showNameModal, setShowNameModal] = useState(false);
@@ -68,7 +86,7 @@ function EditProfile({ user, setUser }) {
 			return;
 		}
 
-		if (user) {
+		if (auth.currentUser) {
 			if (selectedFile) {
 				const storageRef = ref(
 					storage,
@@ -95,23 +113,65 @@ function EditProfile({ user, setUser }) {
 			await setDoc(
 				doc(collection(db, "users_information"), auth.currentUser.uid),
 				{
-					...user,
 					...updatedUser,
 					...(downloadPicURL && { profilePicUrl: downloadPicURL }),
 					...(downloadResumeURL && { resumeUrl: downloadResumeURL }),
 					...(downloadCLURL && { CLUrl: downloadCLURL }),
+					education: updatedUser.education.map((edu) => ({
+						name: edu.name,
+						major: edu.major,
+						startDate: edu.startDate,
+						endDate: edu.endDate,
+					})),
+					workExperience: updatedUser.workExperience.map((work) => ({
+						position: work.position,
+						company: work.company,
+						startDate: work.startDate,
+						endDate: work.endDate,
+					})),
 				}
 			);
-			console.log("Sending info");
-			console.log(user);
-			console.log("SPACED");
-			console.log(updatedUser);
-			setUser({ ...user, ...updatedUser });
+			setUser(updatedUser);
 			setShow(false);
 			handleClose();
 		}
 	}
 
+	function addEducation() {
+		setUpdatedUser({
+			...updatedUser,
+			education: [
+				...updatedUser.education,
+				{ name: "", major: "", startDate: "", endDate: "" },
+			],
+		});
+		console.log("education proc");
+		console.log(updatedUser);
+	}
+
+	function removeEducation(index) {
+		const newEducation = [...updatedUser.education];
+		newEducation.splice(index, 1);
+		setUpdatedUser({ ...updatedUser, education: newEducation });
+		console.log(updatedUser);
+		console.log("education removed");
+	}
+
+	function addWork() {
+		setUpdatedUser({
+			...updateUser,
+			workExperience: [
+				...updateUser.workExperience,
+				{ position: "", company: "", startDate: "", endDate: "" },
+			],
+		});
+	}
+
+	function removeWork(index) {
+		const newWork = [...updateUser.workExperience];
+		newWork.splice(index, 1);
+		setUpdatedUser({ ...updateUser, workExperience: newWork });
+	}
 	return (
 		<>
 			<Button
@@ -159,26 +219,121 @@ function EditProfile({ user, setUser }) {
 								autoFocus
 							/>
 						</Form.Group>
-						<Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-							<Form.Label>Experience</Form.Label>
-							<Form.Control
-								name="workExperience"
-								type="text"
-								defaultValue={user.workExperience}
-								onChange={update}
-								autoFocus
-							/>
+						<Form.Group className="mb-3" controlId="formWorkExperience">
+							{user.workExperience &&
+								user.workExperience.map((exp, index) => (
+									<div key={index}>
+										<Form.Control
+											className="input_box"
+											style={{ marginBottom: "1rem", marginTop: "1rem" }}
+											type="text"
+											name={`workExperience.${index}.position`}
+											onChange={update}
+											value={exp.position}
+											placeholder="Position"
+										/>
+										<Form.Control
+											className="input_box"
+											style={{ marginBottom: "1rem", marginTop: "1rem" }}
+											type="text"
+											name={`workExperience.${index}.company`}
+											onChange={update}
+											value={exp.company}
+											placeholder="Company"
+										/>
+										<Form.Control
+											className="input_box"
+											style={{ marginBottom: "1rem", marginTop: "1rem" }}
+											type="text"
+											name={`workExperience.${index}.startDate`}
+											onChange={update}
+											value={exp.startDate}
+											placeholder="Start Date"
+										/>
+										<Form.Control
+											className="input_box"
+											style={{ marginBottom: "1rem", marginTop: "1rem" }}
+											type="text"
+											name={`workExperience.${index}.endDate`}
+											onChange={update}
+											value={exp.endDate}
+											placeholder="End Date"
+										/>
+									</div>
+								))}
+							<Button
+								className="sign_button mb-3 mt-3"
+								variant="outline-primary"
+								onClick={addWork}
+							>
+								Add Work Experience
+							</Button>
+							<Button
+								className="sign_button mb-3 mt-3"
+								variant="outline-primary"
+								onClick={removeWork}
+							>
+								Remove Work Experience
+							</Button>
 						</Form.Group>
 						<Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-							<Form.Label>Education</Form.Label>
-							<Form.Control
-								name="education"
-								type="text"
-								defaultValue={user.education}
-								onChange={update}
-								autoFocus
-							/>
+							{user.education &&
+								user.education.map((edu, index) => (
+									<div key={index}>
+										<Form.Control
+											style={{ marginBottom: "1rem", marginTop: "1rem" }}
+											className="input_box"
+											type="text"
+											name={`education.${index}.name`}
+											onChange={update}
+											defaultValue={edu.name}
+											placeholder="School Name"
+										/>
+										<Form.Control
+											style={{ marginBottom: "1rem", marginTop: "1rem" }}
+											className="input_box"
+											type="text"
+											name={`education.${index}.major`}
+											onChange={update}
+											defaultValue={edu.major}
+											placeholder="Major"
+										/>
+										<Form.Control
+											style={{ marginBottom: "1rem", marginTop: "1rem" }}
+											className="input_box"
+											type="text"
+											name={`education.${index}.startDate`}
+											onChange={update}
+											defaultValue={edu.startDate}
+											placeholder="Start Date"
+										/>
+										<Form.Control
+											style={{ marginBottom: "1rem", marginTop: "1rem" }}
+											className="input_box"
+											type="text"
+											name={`education.${index}.endDate`}
+											onChange={update}
+											defaultValue={edu.endDate}
+											placeholder="End Date"
+										/>
+										<Button
+											className="sign_button mb-3 mt-3"
+											variant="outline-primary"
+											onClick={() => removeEducation(index)}
+										>
+											Remove Education
+										</Button>
+									</div>
+								))}
+							<Button
+								className="sign_button mb-3 mt-3"
+								variant="outline-primary"
+								onClick={() => addEducation()}
+							>
+								Add Education
+							</Button>
 						</Form.Group>
+
 						<Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
 							<Form.Label>Skills</Form.Label>
 							<Form.Control
