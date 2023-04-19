@@ -228,11 +228,18 @@ function JobPostings() {
 									<hr />
 									<h6>Apply before: <b>{data.deadline}</b></h6>
 									{(data.cover_letter_required||data.resume_required||data.advertise)&& <hr />}
-									{/* RESUME AND COVER LETTER REQUIRED */}
-									{data.cover_letter_required && <b>Cover Letter Required</b>}
-									{data.resume_required && <b>Resume Required</b>}
-									{/* IF THE POSTING IS ADVERTISED */}
-									{data.advertise && <b>Currently being Advertised</b>}
+{/* RESUME AND COVER LETTER REQUIRED */}
+<div>
+  {data.cover_letter_required && <b>Cover Letter Required</b>}
+</div>
+<div>
+  {data.resume_required && <b>Resume Required</b>}
+</div>
+{/* IF THE POSTING IS ADVERTISED */}
+<div>
+  {data.advertise && <b>Currently being Advertised</b>}
+</div>
+
 								</Card>
 							</div>
 						))
