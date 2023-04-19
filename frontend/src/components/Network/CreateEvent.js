@@ -29,7 +29,6 @@ function CreateEvent() {
     start_date: "",
     start_time: "",
     duration: "",
-    adminUIDs: [],
   });
 
   //update with the handleChange() method
@@ -52,7 +51,6 @@ function CreateEvent() {
         start_date: eventData.start_date,
         duration: eventData.duration,
         start_time: eventData.start_time,
-        adminUIDs: auth.currentUser.uid,
       });
 
       // Clear the form fields
