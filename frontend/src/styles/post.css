@@ -15,9 +15,9 @@
   margin-left: 12px
 }
 .post-header {
-  margin-top: 40px;
+  margin-top: 4px;
   margin-left: 8%;
-    margin-right: 25%;
+    margin-right: 2%;
   display: flex;
   margin-bottom: 8px;
 }
@@ -178,32 +178,36 @@
 }
 /* Add styles for the edit and delete post buttons */
 .post-update,
-.post-delete {
-  background-color: #27746A;
-  color: #fff;
-  border-radius: 4px;
-  border: none;
-  padding: 4px 10px;
-  font-size: 14px;
-  margin-right: 30px;
-  cursor: pointer;
+.post-delete,
+.post-update-cancel {
+font-size: 12px;
+border: none;
+background-color: transparent;
+cursor: pointer;
+text-decoration: underline;
+margin: 0 3px;
+padding: 2px;
+width: auto;
 }
 
 .post-update {
-  background-color: #6e706e;
+color: #27746A;
+}
+
+.post-delete {
+color: #676565;
 }
 
 .post-update-cancel {
-  background-color: #6e706e;
-  color: #fff;
-  border-radius: 4px;
-  border: none;
-  padding: 6px 12px;
-  font-size: 14px;
-  margin-right: 5px;
-  cursor: pointer;
+color: #0000FF;
+position: absolute;
+top: 10px;
+right: 10px;
 }
 
+.post-header {
+position: relative;
+}
 @media screen and (max-width: 768px) {
   .post-header {
     flex-direction: column;
