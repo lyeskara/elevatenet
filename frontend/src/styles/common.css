@@ -1,6 +1,21 @@
 body {
   background-color: #e2e2e2;
+  min-height:100vh!important;
 }
+
+footer{
+
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: right;
+  align-items: right;
+  background-color: #e2e2e2;
+  height: 50px;
+  padding: 10px;
+}
+
 
 /*Front page*/
 p.slogan {
