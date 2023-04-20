@@ -87,7 +87,7 @@ function ProfileInfoSettings() {
                     <div className="containRequest">
                 <h5 className="requests">Name & location</h5>
                 <div className="arrow">
-                  <Link to="/">
+                  <Link to="/NameSetting">
                     <img src={arrow} alt="node" />
                   </Link>
                 </div>
