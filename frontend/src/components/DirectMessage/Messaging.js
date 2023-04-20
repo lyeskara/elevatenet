@@ -19,7 +19,8 @@ import { Container, Form, Button, FormGroup } from "react-bootstrap";
 import pin from ".././../images/paperclip.png";
 import defpic from ".././../images/test.gif";
 import generateKey from "../../generateKey";
-import DMModerationMenu from './DMModerationMenu';
+import "../../styles/DMModerationMenu.css"; // Importing styling
+
 const Message = () => {
   const currentUser = auth.currentUser; // Get the current authenticated user
   const [message, setMessage] = useState(""); // State for message input
@@ -228,12 +229,20 @@ const Message = () => {
               )}
 
               <h2>{recipientId ? users_information.find(user => user.id === recipientId).firstName + " " + users_information.find(user => user.id === recipientId).lastName : "Message"}</h2>
-               <div className="dm-component">
-                {/* Render DM content */}
-
-                {/* Render DMModerationMenu component */}
-               <DMModerationMenu />
+              <div className="dm-moderation-menu">
+              {/* Render the three-dot (ellipsis) icon */}
+              <div className="ellipsis-icon">
+                {/* Add your ellipsis icon SVG or use a library like Material-UI icons */}
+                ...
               </div>
+              {/* Render the DM moderation menu items */}
+              <ul className="dm-moderation-menu-items">
+                {/* Add your DM moderation menu items as needed */}
+                <li>Block User</li>
+                <li>Report Message</li>
+                <li>Delete Message</li>
+              </ul>
+            </div>
             </div>
             {/* Renders all the messages in the 'messages' array, with the sender's 
                 messages having a green background and the receiver's messages having 
