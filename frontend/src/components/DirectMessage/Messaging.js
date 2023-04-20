@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import {collection,addDoc,onSnapshot,serverTimestamp,query,orderBy,getDoc,updateDoc,doc,setDoc
+import {collection,addDoc,onSnapshot,serverTimestamp,query,orderBy,getDoc,updateDoc,doc,setDoc,deleteDoc,getDocs
 } from "firebase/firestore"; // Importing Firestore functions
 import { auth } from "../../firebase"; // Importing Firebase authentication
 import { db } from '../../firebase'; // Importing Firebase Firestore database
@@ -30,6 +30,20 @@ const Message = () => {
     // Event handler for file input change
     setFile(e.target.files[0]);
   };
+
+  const handleDeleteMessages = async () => {
+    if (recipientId !== null) {
+      const senderId = currentUser.uid;
+      const conversationId = [senderId, recipientId].sort().join("-");
+      const conversationRef = collection(messagesRef, conversationId, "conversation");
+      const querySnapshot = await getDocs(conversationRef);
+      querySnapshot.forEach((doc) => {
+        deleteDoc(doc.ref);
+      });
+      setMessages([]); // clear the messages state after deleting all messages
+    }
+  };
+  
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'users_information'), (snapshot) => {
@@ -230,7 +244,8 @@ const Message = () => {
                 {/* Add your DM moderation menu items as needed */}
                 <li>Block User</li>
                 <li>Report Message</li>
-                <li>Delete Message</li>
+                <li onClick={handleDeleteMessages}>Delete Message</li>
+
               </ul>
             </div>
             </div>
