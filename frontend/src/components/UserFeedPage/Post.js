@@ -200,12 +200,29 @@ function Post({ name, description, message, photo, image, post_id, id }) {
       :
       (
         <div className="post"  style={{ position: 'relative' }}>
-          <div className="post-header">
-            <div>
-              <img src={photo} alt={name} />
-              <span className="username-forposts">{name}</span>
+          <div className="post"  style={{ position: 'relative' }}>
+            <div className="post-header row">
+              <div className="col text-left">
+                <img src={photo} alt={name} />
+                <span className="username-forposts">{name}</span>
+              </div>
+              {/* DELETE AND UPDATE BUTTONS */}
+              <div className="col-4 d-flex justify-content-end">
+                {(poster_id === auth_id) ?
+                  ((isUpdated) ? (
+                    <button className="btn btn-outline-secondary" onClick={handleCancel}>Cancel</button>
+                  ) :
+                    (
+                      <>
+                        <button className="btn btn-outline-danger me-2" onClick={handleDelete}>Delete</button>
+                        <button className="btn btn-outline" style={{ borderColor: '#27764A', color: '#27764A' }} onClick={() => setUpdate(true)}>Update</button>
+                      </>
+                    )) : (<></>)}
+              </div>
+
             </div>
           </div>
+
 
           
           {(isUpdated) ?
@@ -231,7 +248,7 @@ function Post({ name, description, message, photo, image, post_id, id }) {
                       }}
                     />
                   </label>
-                  <button type="submit">Update</button>
+                  <button type="submit" className="btn btn-outline" style={{ borderColor: '#27764A', color: '#27764A' }}>Update</button>
                 </form>
               </>
             ) :
