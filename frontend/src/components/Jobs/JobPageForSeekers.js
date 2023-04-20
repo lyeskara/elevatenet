@@ -115,9 +115,10 @@ function JobPageForSeekers() {
 
   const filteredPostings = postings.filter(
     (posting) =>
-      posting.job_title &&
-      posting.job_title.toLowerCase().includes(searchQuery.toLowerCase())
+      (posting.job_title && posting.job_title.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (posting.company && posting.company.toLowerCase().includes(searchQuery.toLowerCase()))
   );
+  
   /**
    * The handleRedirection method redirects the user based on if the job posting contains a link or not.
    * If a third party link is provided, a pop up will show up when the user clicks on apply before being redirected to the third party link
@@ -357,7 +358,7 @@ function JobPageForSeekers() {
                     <Carousel.Item key={posting.id}>
                       <Card className="mb-3 sponsor">
                         <Card.Body >
-                          <Card.Title>{posting.job_title}</Card.Title>
+                          <Card.Title><h3 style={{ color: "#27764A" }}>{posting.job_title}</h3></Card.Title>
                           <Card.Subtitle className="mb-2 text-muted">
                             {posting.company}
                           </Card.Subtitle>
@@ -392,24 +393,26 @@ function JobPageForSeekers() {
                             height: "50px" // set a fixed height for the containing element
                           }}
                         >
-                          <Card.Title>{posting.job_title}</Card.Title>
+                          <h3 style={{ color: "#27764A" }}>{posting.job_title}</h3>
                           {/* Render the button with the modified onClick handler */}
                           <div className="containRequest">
                             <Button
-                            className="apply-button"
+                              className="apply-button"
                               variant="primary"
                               style={{
-                                backgroundColor: "#27746A"
+                                backgroundColor: "#27746A",
+                                opacity: new Date(posting.deadline) < new Date() ? 0.5 : 1 // Set opacity based on deadline
                               }}
+                              disabled={new Date(posting.deadline) < new Date()} // Disable button based on deadline
                               onClick={() =>
-                                handleRedirection(
-                                  posting.id,
-                                  posting.apply_here
-                                )
+                                handleRedirection(posting.id, posting.apply_here)
                               }
                             >
+                              {console.log("Posting deadline:", posting.deadline, "Current date:", new Date())}
+                              
                               Apply Now
                             </Button>
+
                             <div style={{  marginLeft: "5%" }} className="heart-button">
                               <Heart
                                 inactiveColor="#888888"
@@ -427,11 +430,28 @@ function JobPageForSeekers() {
                             </div>
                           </div>
                         </div>
-                        <Card.Subtitle className="mb-2 text-muted card-company">
-                          {posting.company}
-                        </Card.Subtitle>
+                        <h5>{posting.company}</h5>
+                        <hr/>
                         <Card.Text>{posting.description}</Card.Text>
-                        <Card.Text>{posting.skills.join(", ")}</Card.Text>
+                        {posting.skills && Array.isArray(posting.skills) && (
+                          <div style={{ display: "flex", flexDirection: "row" }}>
+                            {posting.skills.map((skill) => (
+                              <span key={skill} className="skills-btn">
+                                {skill}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        <hr/>
+                        <Card.Text>Apply Before: <b>{new Date(posting.deadline).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</b></Card.Text>
+
+
+                        {(posting.cover_letter_required||posting.resume_required||posting.advertise)&& <hr />}
+                        {/* RESUME AND COVER LETTER REQUIRED */}
+                        {posting.cover_letter_required && <div><b>Cover Letter Required</b><br/></div>}
+                        {posting.resume_required && <div><b>Resume Required</b><br/></div>}
+                        {/* IF THE POSTING IS ADVERTISED */}
+                        {posting.advertise && <div><b>Currently being Advertised</b><br/></div>}
                       </div>
                     </Card.Body>
                   </Card>
