@@ -133,6 +133,7 @@ function ProfileForm() {
 		newEducation.splice(index, 1);
 		setProfileData({ ...profileData, education: newEducation });
 	}
+
 	function addWork() {
 		setProfileData({
 			...profileData,

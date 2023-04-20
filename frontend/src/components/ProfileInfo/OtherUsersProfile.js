@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, Fragment } from "react";
 import { useParams } from "react-router-dom";
 import {
 	getDoc,
@@ -24,28 +24,31 @@ function OtherUsersProfile() {
 	const [userInfo, SetUserInfo] = useState({
 		profile_picture: "",
 		first_name: "",
-		last_name: ""
+		last_name: "",
 	});
+	const [education, setEducation] = useState([]);
+	const [work, setWork] = useState([]);
 	const [connect, Setconnect] = useState(false);
 	const storage = getStorage();
 	const currId = auth.currentUser.uid;
 	const followedId = id;
 	const connection_requestsReference = collection(db, "connection_requests");
-	const connectionsRef = collection(db, "connection")
+	const connectionsRef = collection(db, "connection");
 	//function that handles the following feature, checks if the user is following each other, if not, the connection is added to the database
 
 	useEffect(() => {
-		getDoc((doc(collection(db, "users_information"), currId))
-		).then((informations) => {
-			const { profilePicUrl, firstName, lastName } = informations.data()
-			const obj = {
-				profile_picture: profilePicUrl,
-				first_name: firstName,
-				last_name: lastName
+		getDoc(doc(collection(db, "users_information"), currId)).then(
+			(informations) => {
+				const { profilePicUrl, firstName, lastName } = informations.data();
+				const obj = {
+					profile_picture: profilePicUrl,
+					first_name: firstName,
+					last_name: lastName,
+				};
+				SetUserInfo(obj);
 			}
-			SetUserInfo(obj)
-		})
-	}, [])
+		);
+	}, []);
 	const handlefollow = async () => {
 		const authdoc = doc(connection_requestsReference, currId);
 		const array = [];
@@ -72,31 +75,37 @@ function OtherUsersProfile() {
 							console.log("already followed!");
 						}
 					});
-					getDoc(doc(collection(db, 'Notifications'), followedId)).then((followed_doc) => {
-						const note = {
-							message: `${userInfo.first_name} ${userInfo.last_name} has sent a connection request!`,
-							profilePicUrl: userInfo.profile_picture
+					getDoc(doc(collection(db, "Notifications"), followedId)).then(
+						(followed_doc) => {
+							const note = {
+								message: `${userInfo.first_name} ${userInfo.last_name} has sent a connection request!`,
+								profilePicUrl: userInfo.profile_picture,
+							};
+							if (
+								followed_doc.data() === undefined ||
+								followed_doc.data().notifications.length === 0
+							) {
+								setDoc(doc(collection(db, "Notifications"), followedId), {
+									notifications: [note],
+								});
+							} else {
+								const notifications_array = followed_doc.data().notifications;
+								let condition = false;
+								notifications_array.forEach((notif) => {
+									if (!(notif.message === note.message)) {
+										condition = true;
+									}
+								});
+								if (condition) {
+									notifications_array.push(note);
+								}
+								console.log(notifications_array);
+								updateDoc(doc(collection(db, "Notifications"), followedId), {
+									notifications: notifications_array,
+								});
+							}
 						}
-						if ((followed_doc.data() === undefined) || (followed_doc.data().notifications.length === 0)) {
-							setDoc(doc(collection(db, 'Notifications'), followedId), { notifications: [note] })
-						} else {
-							const notifications_array = followed_doc.data().notifications;
-							let condition = false
-							notifications_array.forEach((notif)=>{
-                               if(!(notif.message === note.message)){
-                                condition = true;
-							   }
-							})
-							if(condition){
-								notifications_array.push(note)
-							}	
-							console.log(notifications_array)						
-							updateDoc(doc(collection(db, 'Notifications'), followedId),{
-								 notifications: notifications_array 
-							})
-
-						}
-					})
+					);
 				}
 			})
 			.catch((error) => {
@@ -132,18 +141,29 @@ function OtherUsersProfile() {
 		}
 	};
 
+	const getUserData = async () => {
+		try {
+			const userDoc = await getDoc(
+				doc(collection(db, "users_information"), id)
+			);
+
+			if (userDoc.exists) {
+				// Set the user state
+				setUser({ ...userDoc.data(), id: userDoc.id });
+				// Get the education data
+				const educationData = userDoc.data().education;
+				setEducation(educationData);
+
+				const workData = userDoc.data().workExperience;
+				setWork(workData);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	useEffect(() => {
-		getDoc(doc(collection(db, "users_information"), id))
-			.then((doc) => {
-				if (doc.exists) {
-					setUser({ ...doc.data(), id: doc.id });
-				} else {
-					console.log("error");
-				}
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+		getUserData();
 	}, [id]);
 
 	const downloadResume = async () => {
@@ -177,18 +197,18 @@ function OtherUsersProfile() {
 	};
 	useEffect(() => {
 		getDoc(doc(connection_requestsReference, currId)).then((requests_ids) => {
-			const request_array = requests_ids.data().requests
+			const request_array = requests_ids.data().requests;
 			if (request_array.includes(followedId)) {
-				setfollow(true)
+				setfollow(true);
 			}
-		})
+		});
 		getDoc(doc(connectionsRef, currId)).then((connections_ids) => {
-			const connections_array = connections_ids.data().connections
+			const connections_array = connections_ids.data().connections;
 			if (connections_array.includes(followedId)) {
-				Setconnect(true)
+				Setconnect(true);
 			}
-		})
-	}, [id])
+		});
+	}, [id]);
 	function handleUnconnect() {
 		const confirmed = window.confirm(
 			"Are you sure you want to unconnect this user?"
@@ -204,7 +224,7 @@ function OtherUsersProfile() {
 							);
 							return updateDoc(doc(connectionsRef, currId), {
 								...word.data(),
-								connections: updatedConnectedUsers
+								connections: updatedConnectedUsers,
 							});
 						}
 					}
@@ -224,28 +244,25 @@ function OtherUsersProfile() {
 							Unconnect
 						</Button>
 					</div>
+				) : !follow ? (
+					<div style={{ textAlign: "right" }}>
+						<Button className="follow_button" onClick={handlefollow}>
+							Connect
+						</Button>
+					</div>
 				) : (
-					!follow ? (
-						<div style={{ textAlign: "right" }}>
-							<Button className="follow_button" onClick={handlefollow}>
-								Connect
-							</Button>
-						</div>
-					) : (
-						<div style={{ textAlign: "right" }}>
-							<Button className="unfollow_button" onClick={handleunfollow}>
-								Pending
-							</Button>
-						</div>
-					)
+					<div style={{ textAlign: "right" }}>
+						<Button className="unfollow_button" onClick={handleunfollow}>
+							Pending
+						</Button>
+					</div>
 				)
 			) : null}
-			{informations(user, downloadResume, downloadCL)}
+			{informations(user, downloadResume, downloadCL, work, education)}
 		</div>
 	);
 }
-
-function informations(user, downloadResume, downloadCL) {
+function informations(user, downloadResume, downloadCL, work, education) {
 	return (
 		<div className="contain">
 			<Row className="gap-5">
@@ -370,39 +387,45 @@ function informations(user, downloadResume, downloadCL) {
 					<Card className="card">
 						<h5>Work Experience</h5>
 						<hr></hr>
-						<div className="profile-desc-row">
-							<img src={person}></img>
-							<div>
-								<h3>Business Intelligence Analyst</h3>
-								<p>DODO Inc.</p>
-								<p> Feb 2022 - Present</p>
-							</div>
-						</div>
-						<hr></hr>
-						<div className="profile-desc-row">
-							<img src={person}></img>
-							<div>
-								<h3>Junior Analyst</h3>
-								<p>FOFO Inc.</p>
-								<p> Feb 2021 - Feb 2022</p>
-							</div>
-						</div>
+						{work &&
+							work.map((work, index) => (
+								<Fragment key={index}>
+									<div className="profile-desc-row">
+										<img src={person} alt="person"></img>
+										<div>
+											<h3>{work.position}</h3>
+											<p>{work.company}</p>
+											<p>
+												{work.startDate} - {work.endDate}
+											</p>
+										</div>
+									</div>
+									{/* Add a horizontal rule between schools */}
+									{index !== work.length - 1 && <hr />}
+								</Fragment>
+							))}
 					</Card>
 
 					<Card className="educationcard">
 						<h5>Education</h5>
 						<hr></hr>
-						<div className="profile-desc-row">
-							<img src={person}></img>
-							<div>
-								<h3>{user.education}</h3>
-								<p style={{ color: "#272727" }}>
-									Bachelor's degree, software engineering
-								</p>
-								<p> Aug 2020 - May 2024</p>
-							</div>
-						</div>
-						<hr></hr>
+						{education &&
+							education.map((school, index) => (
+								<Fragment key={index}>
+									<div className="profile-desc-row">
+										<img src={person} alt="person"></img>
+										<div>
+											<h3>{school.name}</h3>
+											<p>
+												{school.startDate} - {school.endDate}
+											</p>
+											<p>{school.major}</p>
+										</div>
+									</div>
+									{/* Add a horizontal rule between schools */}
+									{index !== education.length - 1 && <hr />}
+								</Fragment>
+							))}
 					</Card>
 
 					<Card className="skillscard">

@@ -159,18 +159,18 @@ function EditProfile({ user, setUser }) {
 
 	function addWork() {
 		setUpdatedUser({
-			...updateUser,
+			...updatedUser,
 			workExperience: [
-				...updateUser.workExperience,
+				...updatedUser.workExperience,
 				{ position: "", company: "", startDate: "", endDate: "" },
 			],
 		});
 	}
 
 	function removeWork(index) {
-		const newWork = [...updateUser.workExperience];
+		const newWork = [...updatedUser.workExperience];
 		newWork.splice(index, 1);
-		setUpdatedUser({ ...updateUser, workExperience: newWork });
+		setUpdatedUser({ ...updatedUser, workExperience: newWork });
 	}
 	return (
 		<>
@@ -220,8 +220,8 @@ function EditProfile({ user, setUser }) {
 							/>
 						</Form.Group>
 						<Form.Group className="mb-3" controlId="formWorkExperience">
-							{user.workExperience &&
-								user.workExperience.map((exp, index) => (
+							{updatedUser.workExperience &&
+								updatedUser.workExperience.map((exp, index) => (
 									<div key={index}>
 										<Form.Control
 											className="input_box"
@@ -264,21 +264,21 @@ function EditProfile({ user, setUser }) {
 							<Button
 								className="sign_button mb-3 mt-3"
 								variant="outline-primary"
-								onClick={addWork}
-							>
-								Add Work Experience
-							</Button>
-							<Button
-								className="sign_button mb-3 mt-3"
-								variant="outline-primary"
 								onClick={removeWork}
 							>
 								Remove Work Experience
 							</Button>
+							<Button
+								className="sign_button mb-3 mt-3"
+								variant="outline-primary"
+								onClick={addWork}
+							>
+								Add Work Experience
+							</Button>
 						</Form.Group>
 						<Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-							{user.education &&
-								user.education.map((edu, index) => (
+							{updatedUser.education &&
+								updatedUser.education.map((edu, index) => (
 									<div key={index}>
 										<Form.Control
 											style={{ marginBottom: "1rem", marginTop: "1rem" }}
@@ -422,6 +422,7 @@ function EditProfile({ user, setUser }) {
 						variant="primary"
 						onClick={(e) => {
 							updateUser(e);
+							window.location.reload();
 						}}
 					>
 						Save Changes
