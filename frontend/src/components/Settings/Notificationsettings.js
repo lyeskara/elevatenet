@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   Col,
@@ -6,17 +6,41 @@ import {
   Form,
   Row,
 } from "react-bootstrap";
-
+import { collection, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { auth, db } from "../../firebase";
 function NotificationSettings() {
   const [dmNotifications, setDmNotifications] = useState(false);
   const [newsfeedNotifications, setNewsfeedNotifications] = useState(false);
+  const settingsdb = collection(db, "notification_settings");
+  const auth_id = auth.currentUser.uid
 
-  const handleDmNotifications = (e) => {
+  useEffect(() => {
+    getDoc(doc(settingsdb, auth_id)).then((data) => {
+      setDmNotifications(data.data().dm);
+      setNewsfeedNotifications(data.data().feed);
+    })
+  }, [])
+
+  const handleDmNotifications = async (e) => {
     setDmNotifications(e.target.checked);
+    const data = (await getDoc(doc(settingsdb, auth_id))).data()
+    if (data === undefined) {
+      setDoc(doc(settingsdb, auth_id), { dm: e.target.checked, feed: "" });
+    } else {
+      data.dm = e.target.checked
+      updateDoc(doc(settingsdb, auth_id), data)
+    }
   };
 
-  const handleNewsfeedNotifications = (e) => {
+  const handleNewsfeedNotifications = async (e) => {
     setNewsfeedNotifications(e.target.checked);
+    const data = (await getDoc(doc(settingsdb, auth_id))).data()
+    if (data === undefined) {
+      setDoc(doc(settingsdb, auth_id), { dm: "", feed: e.target.checked });
+    } else {
+      data.feed = e.target.checked
+      updateDoc(doc(settingsdb, auth_id), data)
+    }
   };
 
   // Function to redirect to the "Account Preferences" page
@@ -41,7 +65,7 @@ function NotificationSettings() {
             <h2>Settings</h2>
             <hr></hr>
 
-            <h4 onClick={handleClickAccount} style={{ color: "#27746a" }}>
+            <h4 onClick={handleClickAccount} style={{ color: "#888888" }}>
               {" "}
               Account Preferences{" "}
             </h4>
@@ -51,7 +75,7 @@ function NotificationSettings() {
               Security{" "}
             </h4>
             {/* Notifications */}
-            <h4 style={{ color: "#888888" }}>Notifications</h4>
+            <h4 style={{ color: "#27746a" }}>Notifications</h4>
           </Card>
         </Col>
 

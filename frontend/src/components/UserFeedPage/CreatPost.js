@@ -15,14 +15,17 @@ import { storage } from "../../firebase";
 import { v4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import generateKey from "../../generateKey";
+import { useUserAuth } from '../../context/UserAuthContext';
 
 function CreatPost() {
-
+  // const on info of the connected user
+  const { user } = useUserAuth();
   // initializing state for inputs
   const [postText, setPostText] = useState("");
   const [Picture, setPicture] = useState(null);
   const [PicUrl, SetPicUrl] = useState(null);
   const [userInfo, SetUserInfo] = useState(null);
+  const [condition, setcondition] = useState(false);
   // reference hook
   const inputRef = useRef();
   // Initialize useNavigate
@@ -64,7 +67,8 @@ function CreatPost() {
     image: PicUrl,
     id: generateKey(28),
     likes: [],
-    comments: []
+    comments: [],
+    created_by: user.email
   }
 
   //function which pushes the data inputed in the form into the collection user-posts under the user id
@@ -72,7 +76,6 @@ function CreatPost() {
     event.preventDefault(); // prevent the form from being submitted
     const posts = await getDocs(postsCollectionRef)
     const auth_doc = await getDoc(doc(postsCollectionRef, currentId));
-    console.log(auth_doc.data())
     if (auth_doc.data() === undefined) {
       setDoc(doc(postsCollectionRef, currentId), { "posts": [post] })
     } else {
@@ -89,36 +92,47 @@ function CreatPost() {
         if ((postText == "") && (Picture == null)) {
           alert("empty fields please write something or put an image")
         } else {
-          const connections = (await getDoc(doc(collection(db, "connection"), currentId))).data().connections
-          connections.forEach(id => {
-            getDoc(doc(collection(db, 'Notifications'), id)).then((followed_doc) => {
-              const note = {
-                message: `${user_info.first_name} ${user_info.last_name} has created a new post, go check it out!`,
-                profilePicUrl: user_info.profile_picture,
-                id: generateKey(8),
-                post_id:post.id
-              }
-              if ((followed_doc.data() === undefined) || (followed_doc.data().notifications.length === 0)) {
-                setDoc(doc(collection(db, 'Notifications'), id), { notifications: [note] })
-              } else {
-                const notifications_array = followed_doc.data().notifications;
-                let condition = false
-                notifications_array.forEach((notif) => {
-                  if (!(notif.id === note.id)) {
-                    condition = true;
+          if (((await getDoc(doc(collection(db, "connection"), currentId))).data()) !== undefined) {
+            const connections = (await getDoc(doc(collection(db, "connection"), currentId))).data().connections;
+            connections.forEach(id => {
+              getDoc(doc(collection(db, "notification_settings"), id)).then((note_data) => {
+                if (note_data.data() !== undefined) {
+                  if (note_data.data().feed) {
+                    getDoc(doc(collection(db, 'Notifications'), id)).then((followed_doc) => {
+                      const note = {
+                        message: `${user_info.first_name} ${user_info.last_name} has created a new post, go check it out!`,
+                        profilePicUrl: user_info.profile_picture,
+                        id: generateKey(8),
+                        post_id: post.id
+                      }
+                      if ((followed_doc.data() === undefined) || (followed_doc.data())) {
+                        console.log
+                        setDoc(doc(collection(db, 'Notifications'), id), { notifications: [note] })
+                      } else {
+                        const notifications_array = followed_doc.data().notifications;
+                        let condition = false
+                        notifications_array.forEach((notif) => {
+                          if (!(notif.id === note.id)) {
+                            condition = true;
+                          }
+                        })
+                        if (condition) {
+                          notifications_array.push(note)
+                        }
+                        console.log(notifications_array)
+                        updateDoc(doc(collection(db, 'Notifications'), id), {
+                          notifications: notifications_array
+                        })
+                      }
+                    })
                   }
-                })
-                if (condition) {
-                  notifications_array.push(note)
                 }
-                console.log(notifications_array)
-                updateDoc(doc(collection(db, 'Notifications'), id), {
-                  notifications: notifications_array
-                })
+              })
+            });
+          } else {
+            console.log("you have no connections.")
+          }
 
-              }
-            })
-          });
 
           posts_data.push(post)
           updateDoc(doc(postsCollectionRef, currentId), { "posts": posts_data })
@@ -129,8 +143,15 @@ function CreatPost() {
     }
 
 
-
   };
+  function handleImageLoad(e) {
+    e.target.style.display = "block";
+  }
+  
+  function handleImageError(e) {
+    e.target.style.display = "none";
+  }
+  
 
   // the template for post creation
   return (
@@ -143,8 +164,15 @@ function CreatPost() {
         <textarea
           value={postText}
           onChange={(e) => setPostText(e.target.value)}
-          placeholder="Say something here..."
+          placeholder="Say something here... "
         />
+        <img
+        src={PicUrl}
+        alt="Post preview"
+        style={{ display: "none" }}
+        onLoad={handleImageLoad}
+        onError={handleImageError}
+      />
         <div className="create-post-preview-box" id="preview-box"></div>
         <div className="create-post-options">
           <button >
@@ -157,10 +185,12 @@ function CreatPost() {
                 onChange={(e) => {
                   const selectedImage = e.target.files[0];
                   setPicture(selectedImage);
+
                 }}
               />
             </label>
           </button>
+          
           <button onClick={() => navigate("/Event")}>
             <img src={eventicon} alt="eventicon" />
           </button>

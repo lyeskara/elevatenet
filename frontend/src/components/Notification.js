@@ -2,7 +2,7 @@ import { collection, doc, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { auth, db } from "../firebase";
 import { Card, Container, Col, Row } from "react-bootstrap";
-import "../styles/Notification.css";
+import "./../styles/Notification.css";
 
 function Notification() {
   const [Notifications, SetNotifications] = useState([]);
@@ -25,7 +25,7 @@ function Notification() {
         <h1 className="notif-title">Notification Center</h1>
       </center>
       {Notifications ? (
-        Notifications.slice(-5).map((Notification) => {
+        Notifications.slice(0,5).map((Notification) => {
           return (
             <Container>
                 <center>

@@ -53,6 +53,7 @@ import Language from "./components/Settings/Language";
 
 
 
+import NameSetting from "./components/Settings/NameSetting";
 
 
 function App() {
@@ -267,6 +268,14 @@ function App() {
           element={
             <Protection>
               <NotificationSettings />
+            </Protection>
+          }
+        />
+         <Route
+          path="/NameSetting"
+          element={
+            <Protection>
+              <NameSetting />
             </Protection>
           }
         />
