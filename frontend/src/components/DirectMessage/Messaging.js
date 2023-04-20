@@ -32,7 +32,8 @@ const Message = () => {
   };
 
   const handleDeleteMessages = async () => {
-    if (recipientId !== null) {
+    const confirmed = window.confirm("Are you sure you want to delete all messages?");
+    if (confirmed && recipientId !== null) {
       const senderId = currentUser.uid;
       const conversationId = [senderId, recipientId].sort().join("-");
       const conversationRef = collection(messagesRef, conversationId, "conversation");
@@ -43,6 +44,7 @@ const Message = () => {
       setMessages([]); // clear the messages state after deleting all messages
     }
   };
+
   
 
   useEffect(() => {
