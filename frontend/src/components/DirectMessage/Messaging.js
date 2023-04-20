@@ -230,7 +230,7 @@ const Message = () => {
               <h2>{recipientId ? users_information.find(user => user.id === recipientId).firstName + " " + users_information.find(user => user.id === recipientId).lastName : "Message"}</h2>
                <div className="dm-component">
                 {/* Render DM content */}
-               <p>This is a DM</p>
+
                 {/* Render DMModerationMenu component */}
                <DMModerationMenu />
               </div>
