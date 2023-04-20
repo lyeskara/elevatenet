@@ -219,7 +219,7 @@ function EditProfile({ user, setUser }) {
 								autoFocus
 							/>
 						</Form.Group>
-						<Form.Group className="mb-3" controlId="formWorkExperience">
+						<Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
 							{updatedUser.workExperience &&
 								updatedUser.workExperience.map((exp, index) => (
 									<div key={index}>
@@ -259,15 +259,15 @@ function EditProfile({ user, setUser }) {
 											value={exp.endDate}
 											placeholder="End Date"
 										/>
+										<Button
+											className="sign_button mb-3 mt-3"
+											variant="outline-primary"
+											onClick={removeWork}
+										>
+											Remove Work Experience
+										</Button>
 									</div>
 								))}
-							<Button
-								className="sign_button mb-3 mt-3"
-								variant="outline-primary"
-								onClick={removeWork}
-							>
-								Remove Work Experience
-							</Button>
 							<Button
 								className="sign_button mb-3 mt-3"
 								variant="outline-primary"
