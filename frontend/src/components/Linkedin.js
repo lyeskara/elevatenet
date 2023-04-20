@@ -4,7 +4,7 @@ import gif from "./../images/test.gif";
 
 function Linkedin() {
 	return (
-		<div className="vh-100">
+		<div style={{ minHeight: "70vh" }}>
 			<Container fluid>
 				<div class="container mt-5">
 					<div>

@@ -54,57 +54,59 @@ function NotificationSettings() {
   };
 
   return (
-    <Container className="container d-flex justify-content-center mx-auto">
-      <Row
-        className="gap-6 d-flex justify-content-center"
-        style={{ minWidth: "80%" }}
-      >
-        <Col xs={12} sm={8} lg={4} style={{ minWidth: "30%" }}>
-          {/* This card displays the setting menu */}
-          <Card className="jobs-menu">
-            <h2>Settings</h2>
-            <hr></hr>
+    <div style={{ minHeight: "70vh" }}>
+      <Container className="container d-flex justify-content-center mx-auto">
+        <Row
+          className="gap-6 d-flex justify-content-center"
+          style={{ minWidth: "80%" }}
+        >
+          <Col xs={12} sm={8} lg={4} style={{ minWidth: "30%" }}>
+            {/* This card displays the setting menu */}
+            <Card className="jobs-menu">
+              <h2>Settings</h2>
+              <hr></hr>
 
-            <h4 onClick={handleClickAccount} style={{ color: "#888888" }}>
-              {" "}
-              Account Preferences{" "}
-            </h4>
-            {/* Security */}
-            <h4 onClick={handleClickSecurity} style={{ color: "#888888" }}>
-              {" "}
-              Security{" "}
-            </h4>
-            {/* Notifications */}
-            <h4 style={{ color: "#27746a" }}>Notifications</h4>
-          </Card>
-        </Col>
+              <h4 onClick={handleClickAccount} style={{ color: "#888888" }}>
+                {" "}
+                Account Preferences{" "}
+              </h4>
+              {/* Security */}
+              <h4 onClick={handleClickSecurity} style={{ color: "#888888" }}>
+                {" "}
+                Security{" "}
+              </h4>
+              {/* Notifications */}
+              <h4 style={{ color: "#27746a" }}>Notifications</h4>
+            </Card>
+          </Col>
 
-        <Col xs={12} sm={12} lg={8}>
-          <Card className="card">
-            <h2 style={{ color: "#555555" }}>Notification Preferences</h2>
-            <hr></hr>
-            <Form>
-              <Form.Group className="mb-3" controlId="dmNotifications">
-                <Form.Check
-                  type="checkbox"
-                  label="Receive notifications for DMs"
-                  checked={dmNotifications}
-                  onChange={handleDmNotifications}
-                />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="newsfeedNotifications">
-                <Form.Check
-                  type="checkbox"
-                  label="Receive notifications for Newsfeed"
-                  checked={newsfeedNotifications}
-                  onChange={handleNewsfeedNotifications}
-                />
-              </Form.Group>
-            </Form>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+          <Col xs={12} sm={12} lg={8}>
+            <Card className="card">
+              <h2 style={{ color: "#555555" }}>Notification Preferences</h2>
+              <hr></hr>
+              <Form>
+                <Form.Group className="mb-3" controlId="dmNotifications">
+                  <Form.Check
+                    type="checkbox"
+                    label="Receive notifications for DMs"
+                    checked={dmNotifications}
+                    onChange={handleDmNotifications}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="newsfeedNotifications">
+                  <Form.Check
+                    type="checkbox"
+                    label="Receive notifications for Newsfeed"
+                    checked={newsfeedNotifications}
+                    onChange={handleNewsfeedNotifications}
+                  />
+                </Form.Group>
+              </Form>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 }
 
