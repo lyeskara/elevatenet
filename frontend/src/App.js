@@ -47,6 +47,10 @@ import AdminUsers from "./components/Admin/AdminUsers";
 import ChangePassword from "./components/Settings/ChangePassword";
 
 import NotificationSettings from "./components/Settings/Notificationsettings";
+
+import NameSetting from "./components/Settings/NameSetting";
+
+
 function App() {
   return (
     <UserAuthContextProvider>
@@ -251,6 +255,14 @@ function App() {
           element={
             <Protection>
               <NotificationSettings />
+            </Protection>
+          }
+        />
+         <Route
+          path="/NameSetting"
+          element={
+            <Protection>
+              <NameSetting />
             </Protection>
           }
         />
