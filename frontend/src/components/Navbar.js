@@ -80,9 +80,7 @@ function NavbarFun() {
   };
 
   return (
-    <>{userType === null ? (
-      <div>Loading...</div>
-    ) : (
+    <>
     
       <Navbar bg="white" expand="lg" expanded={expanded}>
         <Container fluid>
@@ -193,7 +191,6 @@ function NavbarFun() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-)};
       <Outlet />
     </>
   );
