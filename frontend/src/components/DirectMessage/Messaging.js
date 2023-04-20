@@ -1,15 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import {
-  collection,
-  addDoc,
-  onSnapshot,
-  serverTimestamp,
-  query,
-  orderBy,
-  getDoc,
-  updateDoc,
-  doc,
-  setDoc
+import {collection,addDoc,onSnapshot,serverTimestamp,query,orderBy,getDoc,updateDoc,doc,setDoc
 } from "firebase/firestore"; // Importing Firestore functions
 import { auth } from "../../firebase"; // Importing Firebase authentication
 import { db } from '../../firebase'; // Importing Firebase Firestore database
