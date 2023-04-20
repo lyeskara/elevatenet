@@ -27,7 +27,7 @@ function Security() {
     window.location.href = "/Security";
   };
   const handleClickNotifications = () => {
-    window.location.href = "/";
+    window.location.href = "/NotificationSettings";
   };
 
   // This component displays a page for settings

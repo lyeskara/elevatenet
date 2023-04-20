@@ -28,7 +28,8 @@
 
 .sponsor{
   border-color: #27746a !important;
-  border-width: 10px;
+  border-width: 5px;
+  background-color: #E2E2E2;
 }
 .sponsor-title{
   color: #27746a;
