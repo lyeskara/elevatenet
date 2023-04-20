@@ -154,36 +154,38 @@ function Feed() {
 
   // the templates for markup
   return (
-    <div className="feed">
-      <div className="feed-inputContainer">
-        <div className="feed-input">
+    <div style={{ minHeight: "70vh" }}>
+      <div className="feed">
+        <div className="feed-inputContainer">
+          <div className="feed-input">
 
-          <img src={personicon} alt="person-icon" />
+            <img src={personicon} alt="person-icon" />
 
-          <button class="create-post" onClick={() => (window.location.href = "CreatPost")}>
-            Create a post
-          </button>
+            <button class="create-post" onClick={() => (window.location.href = "CreatPost")}>
+              Create a post
+            </button>
+          </div>
+
+          <div className="feedinputOption">
+
+
+
+          </div>
         </div>
 
-        <div className="feedinputOption">
+        {Data.map(obj => (
+          <Post
+            id={obj.poster_id}
+            post_id={obj.post.id}
+            key={obj.post.title}
+            photo={obj.user_info.profile_picture}
+            name={obj.user_info.first_name + obj.user_info.last_name}
+            message={obj.post.post_text}
+            image={obj.post.image}
+          />
+        ))}
 
-
-
-        </div>
       </div>
-
-      {Data.map(obj => (
-        <Post
-          id={obj.poster_id}
-          post_id={obj.post.id}
-          key={obj.post.title}
-          photo={obj.user_info.profile_picture}
-          name={obj.user_info.first_name + obj.user_info.last_name}
-          message={obj.post.post_text}
-          image={obj.post.image}
-        />
-      ))}
-
     </div>
   );
 }

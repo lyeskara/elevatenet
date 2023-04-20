@@ -48,6 +48,11 @@ import ChangePassword from "./components/Settings/ChangePassword";
 
 import NotificationSettings from "./components/Settings/Notificationsettings";
 
+import Language from "./components/Settings/Language";
+
+
+
+
 import NameSetting from "./components/Settings/NameSetting";
 
 
@@ -210,6 +215,14 @@ function App() {
           }
         />
         <Route
+          path="/Language"
+          element={
+            <Protection>
+              <Language />
+            </Protection>
+          }
+        />
+        <Route
           path="/CreateGroup"
           element={
             <Protection>
@@ -298,6 +311,7 @@ function App() {
           }
         />
       </Routes>
+      
     </UserAuthContextProvider>
   );
 }
