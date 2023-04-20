@@ -443,7 +443,9 @@ function JobPageForSeekers() {
                           </div>
                         )}
                         <hr/>
-                        <Card.Text>Apply Before: <b>{posting.deadline}</b></Card.Text>
+                        <Card.Text>Apply Before: <b>{new Date(posting.deadline).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</b></Card.Text>
+
+
                         {(posting.cover_letter_required||posting.resume_required||posting.advertise)&& <hr />}
                         {/* RESUME AND COVER LETTER REQUIRED */}
                         {posting.cover_letter_required && <div><b>Cover Letter Required</b><br/></div>}
