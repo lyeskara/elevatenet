@@ -31,6 +31,18 @@ const Message = () => {
     setFile(e.target.files[0]);
   };
 
+  const [blockedUsers, setBlockedUsers] = useState([]);
+  const blockUser = (userId) => {
+    setBlockedUsers((prevBlockedUsers) => [...prevBlockedUsers, userId]);
+  };
+  
+  const unblockUser = (userId) => {
+    setBlockedUsers((prevBlockedUsers) =>
+      prevBlockedUsers.filter((blockedUserId) => blockedUserId !== userId)
+    );
+  };
+  
+
   const handleDeleteMessages = async () => {
     const confirmed = window.confirm("Are you sure you want to delete all messages?");
     if (confirmed && recipientId !== null) {
@@ -66,9 +78,6 @@ const Message = () => {
       alert("User reported successfully!");
     }
   };
-  
-  
-  
   
 
   useEffect(() => {
@@ -139,6 +148,11 @@ const Message = () => {
       return;
     }
 
+    if (blockedUsers.includes(recipientId)) {
+      alert("You have blocked this user and cannot send messages to them.");
+      return;
+    }
+
     let fileUrl = null;
     if (file) {
       const storageRef = ref(storage, `messages/${file.name}`);
@@ -200,7 +214,13 @@ const Message = () => {
     }
   };
 
-
+  const handleBlockUser = () => {
+    if (blockedUsers.includes(recipientId)) {
+      unblockUser(recipientId);
+    } else {
+      blockUser(recipientId);
+    }
+  };
 
   // This function is called whenever the input field for the message changes
   const handleMessageChange = (e) => {
@@ -268,7 +288,8 @@ const Message = () => {
               {/* Render the DM moderation menu items */}
               <ul className="dm-moderation-menu-items">
                 {/* Add your DM moderation menu items as needed */}
-                <li>Block User</li>
+                <li onClick={handleBlockUser}>
+    {blockedUsers.includes(recipientId) ? "Unblock User" : "Block User"} </li> 
                 <li onClick={handleReportUser}>Report User</li>
                 <li onClick={handleDeleteMessages}>Delete Message</li>
 
