@@ -19,7 +19,7 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-
+import { Link } from 'react-router-dom';
 
 function Admin(){
 	// State and constants for handling data
@@ -27,11 +27,6 @@ function Admin(){
 	const [showModal, setShowModal] = useState(false);
 	const [currentJob, setCurrentJob] = useState({});
 	const [posts, setPosts] = useState([]);
-
-	// Function to redirect to the "CreateNewPosting" page
-	const handleClick = () => {
-		window.location.href = "/CreateNewPosting";
-	};
 
 	// Function to redirect to the "JobPostings" page
 	const goToAdmin = () => {
@@ -111,217 +106,231 @@ function Admin(){
 	function goToUser(){
 		window.location.href = "/AdminUsers";
 	}
-	return (
-		<Container className="container d-flex justify-content-center mx-auto">
-			{/* JOB MENU BLOCK ON THE LEFT TO NAVIGATE BETWEEN JOB POSTINGS AND ADVERTS */}
-			<Row
-				className="gap-6 d-flex justify-content-center"
-				style={{ minWidth: "80%" }}
-			>
-				<Col xs={12} sm={8} lg={4} style={{ minWidth: "30%" }}>
-					{/* This card displays the job menu block with Job Postings and Advertisements */}
-					<Card className="jobs-menu">
-						<h2> Manage </h2>
-						<hr></hr>
-						{/* When the user clicks the "Job Postings" text, it calls handleClickJobPostings */}
-						<h4 onClick={goToAdmin} style={{ color: "#27746a" }}>
-							{" "}
-							Job Postings{" "}
-						</h4>
-						{/* Advertisements */}
-						<h4
-							onClick={goToFeedPosts}
-							style={{ color: "#888888" }}
-						>
-							{" "}
-							Feed Posts{" "}
-						</h4>
-						<h4
-						onClick={goToUser}
-						style={{ color: "#888888" }}
-					>
-						{" "}
-						Users{" "}
-						</h4>
-						<br></br>
-					</Card>
-				</Col>
 
-				<Col xs={12} sm={12} lg={8}>
-					<h1 style={{ color: "#555555", marginTop: "32px" }}>
-						Admin Management Page
-					</h1>
-					{/* This button creates a new job posting */}
-					{/* <div>
-						<Button
-							variant="primary"
-							size="lg"
-							block
-							className="w-100"
-							style={{ backgroundColor: "#27746a" }}
-							onClick={handleClick}
-						>
-							Create a New Job Posting
-						</Button>
-					</div> */}
-					{/* CARD FOR JOB POSTINGS */}
-					{/* If job postings data is loaded, the map method creates a card for each job posting */}
-					{isLoaded ? (
-						posts.map((data) => (
-							<div className="post-content" key={data.id}>
-								<Card className="card">
-									{/* The job title */}
-									<div className="row">
-										<div className="col-sm-8">
-											<h4>{data.job_title}</h4>
-											<h5>Listed by: <u>{data.created_by}</u></h5>
-										</div>
-										{/* Edit and Delete buttons */}
-										<div className="col-sm-4 d-flex justify-content-end align-items-center">
-											{/* When the user clicks the "Edit" button, it sets the current job and shows the modal */}
-											<Button
-												variant="primary"
-												className="btn-sm"
-												style={{ backgroundColor: "#27746a" }}
-												onClick={() => {
-													setCurrentJob(data);
-													setShowModal(true);
-												}}
-											>
-												Edit
-											</Button>
-											{/* When the user clicks the "Delete" button, it calls handleDelete */}
-											<Button
-												variant="outline-danger"
-												className="btn-sm"
-												style={{
-													backgroundColor: "white",
-													color: "#ff7a7a",
-													border: "2px solid #ff7a7a",
-												}}
-												onClick={() => handleDelete(data.id)}
-											>
-												Delete
-											</Button>
-										</div>
+	const currentUser = auth.currentUser;
+
+	if (currentUser?.uid === '361FbyTxmmZqCT03kGd25kSyDff1') {
+		return (
+				<Container className="container d-flex justify-content-center mx-auto">
+					{/* JOB MENU BLOCK ON THE LEFT TO NAVIGATE BETWEEN JOB POSTINGS AND ADVERTS */}
+					<Row
+						className="gap-6 d-flex justify-content-center"
+						style={{ minWidth: "80%" }}
+					>
+						<Col xs={12} sm={8} lg={4} style={{ minWidth: "30%" }}>
+							{/* This card displays the job menu block with Job Postings and Advertisements */}
+							<Card className="jobs-menu">
+								<h2> Manage </h2>
+								<hr></hr>
+								{/* When the user clicks the "Job Postings" text, it calls handleClickJobPostings */}
+								<h4 onClick={goToAdmin} style={{ color: "#27746a" }}>
+									{" "}
+									Job Postings{" "}
+								</h4>
+								{/* Advertisements */}
+								<h4
+									onClick={goToFeedPosts}
+									style={{ color: "#888888" }}
+								>
+									{" "}
+									Feed Posts{" "}
+								</h4>
+								<h4
+								onClick={goToUser}
+								style={{ color: "#888888" }}
+							>
+								{" "}
+								Users{" "}
+								</h4>
+								<br></br>
+							</Card>
+						</Col>
+
+						<Col xs={12} sm={12} lg={8}>
+							<h1 style={{ color: "#555555", marginTop: "32px" }}>
+								Admin Management Page
+							</h1>
+							{/* This button creates a new job posting */}
+							{/* <div>
+								<Button
+									variant="primary"
+									size="lg"
+									block
+									className="w-100"
+									style={{ backgroundColor: "#27746a" }}
+									onClick={handleClick}
+								>
+									Create a New Job Posting
+								</Button>
+							</div> */}
+							{/* CARD FOR JOB POSTINGS */}
+							{/* If job postings data is loaded, the map method creates a card for each job posting */}
+							{isLoaded ? (
+								posts.map((data) => (
+									<div className="post-content" key={data.id}>
+										<Card className="card">
+											{/* The job title */}
+											<div className="row">
+												<div className="col-sm-8">
+													<h4>{data.job_title}</h4>
+													<h5>Listed by: <u>{data.created_by}</u></h5>
+												</div>
+												{/* Edit and Delete buttons */}
+												<div className="col-sm-4 d-flex justify-content-end align-items-center">
+													{/* When the user clicks the "Edit" button, it sets the current job and shows the modal */}
+													<Button
+														variant="primary"
+														className="btn-sm"
+														style={{ backgroundColor: "#27746a" }}
+														onClick={() => {
+															setCurrentJob(data);
+															setShowModal(true);
+														}}
+													>
+														Edit
+													</Button>
+													{/* When the user clicks the "Delete" button, it calls handleDelete */}
+													<Button
+														variant="outline-danger"
+														className="btn-sm"
+														style={{
+															backgroundColor: "white",
+															color: "#ff7a7a",
+															border: "2px solid #ff7a7a",
+														}}
+														onClick={() => handleDelete(data.id)}
+													>
+														Delete
+													</Button>
+												</div>
+											</div>
+											<hr />
+											{/* The company and description */}
+											<h6>{data.company}</h6>
+											<p>{data.description}</p>
+											{/* SKILLS */}
+											{data.skills && Array.isArray(data.skills) && (
+												<div style={{ display: "flex", flexDirection: "row" }}>
+													{data.skills.map((skill) => (
+														<span key={skill} className="skills-btn">
+															{skill}
+														</span>
+													))}
+												</div>
+											)}
+											<hr />
+											{/* RESUME AND COVER LETTER REQUIRED */}
+											{data.cover_letter_required && <p>Cover Letter Required</p>}
+											{data.resume_required && <p>Resume Required</p>}
+											{/* IF THE POSTING IS ADVERTISED */}
+											{data.advertise && <p>Currently being Advertised</p>}
+
+											{/* <p>{data.deadline}</p> */}
+										</Card>
 									</div>
-									<hr />
-									{/* The company and description */}
-									<h6>{data.company}</h6>
-									<p>{data.description}</p>
-									{/* SKILLS */}
-									{data.skills && Array.isArray(data.skills) && (
-										<div style={{ display: "flex", flexDirection: "row" }}>
-											{data.skills.map((skill) => (
-												<span key={skill} className="skills-btn">
-													{skill}
-												</span>
-											))}
-										</div>
-									)}
-									<hr />
-									{/* RESUME AND COVER LETTER REQUIRED */}
-									{data.cover_letter_required && <p>Cover Letter Required</p>}
-									{data.resume_required && <p>Resume Required</p>}
-									{/* IF THE POSTING IS ADVERTISED */}
-									{data.advertise && <p>Currently being Advertised</p>}
+								))
+							) : (
+								<p>Loading job postings...</p>
+							)}
+						</Col>
+					</Row>
 
-									{/* <p>{data.deadline}</p> */}
-								</Card>
-							</div>
-						))
-					) : (
-						<p>Loading job postings...</p>
-					)}
-				</Col>
-			</Row>
-
-			<Modal
-				show={showModal} // Controls whether the modal is displayed or hidden
-				onHide={() => setShowModal(false)} // Function to be called when the modal is closed
-			>
-				<Modal.Header closeButton>
-					<Modal.Title>Edit Job Posting</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-					<form>
-						<div className="form-group">
-							<label htmlFor="job_title">Job Title:</label>
-							<input
-								type="text"
-								className="form-control"
-								id="job_title"
-								defaultValue={currentJob.job_title} // Sets the default value of the input field to the current job title
-							/>
-						</div>
-						<div className="form-group">
-							<label htmlFor="company">Company:</label>
-							<input
-								type="text"
-								className="form-control"
-								id="company"
-								defaultValue={currentJob.company} // Sets the default value of the input field to the current company name
-							/>
-						</div>
-						<div className="form-group">
-							<label htmlFor="description">Description:</label>
-							<textarea
-								className="form-control"
-								id="description"
-								rows="3"
-								defaultValue={currentJob.description} // Sets the default value of the textarea field to the current job description
-							></textarea>
-						</div>
-						<div className="form-group">
-							<label htmlFor="skills">Skills:</label>
-							<textarea
-								className="form-control"
-								id="skills"
-								rows="3"
-								defaultValue={currentJob.skills} // Sets the default value of the textarea field to the current job description
-							></textarea>
-						</div>
-						<div className="form-group">
-							<label htmlFor="cover_letter_required">
-								Cover Letter Required:
-							</label>
-							<input
-								type="checkbox"
-								className="form-check-input"
-								id="cover_letter_required"
-								defaultChecked={currentJob.cover_letter_required} // Sets the default value of the checkbox to the current value of the cover_letter_required field
-							/>
-						</div>
-
-						<div className="form-group">
-							<label htmlFor="resume_required">Resume Required:</label>
-							<input
-								type="checkbox"
-								className="form-check-input"
-								id="resume_required"
-								defaultChecked={currentJob.resume_required} // Sets the default value of the checkbox to the current value of the resume_required field
-							/>
-						</div>
-					</form>
-				</Modal.Body>
-				<Modal.Footer>
-					<Button
-						variant="secondary"
-						onClick={() => setShowModal(false)} // Function to be called when the Close button is clicked
+					<Modal
+						show={showModal} // Controls whether the modal is displayed or hidden
+						onHide={() => setShowModal(false)} // Function to be called when the modal is closed
 					>
-						Close
-					</Button>
-					<Button
-						variant="primary"
-						onClick={() => handleSave(currentJob.id)} // Function to be called when the Save Changes button is clicked
-						style={{ backgroundColor: "#27746a" }} // Sets the background color of the Save Changes button
-					>
-						Save Changes
-					</Button>
-				</Modal.Footer>
-			</Modal>
-		</Container>
-	);
-  }
+						<Modal.Header closeButton>
+							<Modal.Title>Edit Job Posting</Modal.Title>
+						</Modal.Header>
+						<Modal.Body>
+							<form>
+								<div className="form-group">
+									<label htmlFor="job_title">Job Title:</label>
+									<input
+										type="text"
+										className="form-control"
+										id="job_title"
+										defaultValue={currentJob.job_title} // Sets the default value of the input field to the current job title
+									/>
+								</div>
+								<div className="form-group">
+									<label htmlFor="company">Company:</label>
+									<input
+										type="text"
+										className="form-control"
+										id="company"
+										defaultValue={currentJob.company} // Sets the default value of the input field to the current company name
+									/>
+								</div>
+								<div className="form-group">
+									<label htmlFor="description">Description:</label>
+									<textarea
+										className="form-control"
+										id="description"
+										rows="3"
+										defaultValue={currentJob.description} // Sets the default value of the textarea field to the current job description
+									></textarea>
+								</div>
+								<div className="form-group">
+									<label htmlFor="skills">Skills:</label>
+									<textarea
+										className="form-control"
+										id="skills"
+										rows="3"
+										defaultValue={currentJob.skills} // Sets the default value of the textarea field to the current job description
+									></textarea>
+								</div>
+								<div className="form-group">
+									<label htmlFor="cover_letter_required">
+										Cover Letter Required:
+									</label>
+									<input
+										type="checkbox"
+										className="form-check-input"
+										id="cover_letter_required"
+										defaultChecked={currentJob.cover_letter_required} // Sets the default value of the checkbox to the current value of the cover_letter_required field
+									/>
+								</div>
+
+								<div className="form-group">
+									<label htmlFor="resume_required">Resume Required:</label>
+									<input
+										type="checkbox"
+										className="form-check-input"
+										id="resume_required"
+										defaultChecked={currentJob.resume_required} // Sets the default value of the checkbox to the current value of the resume_required field
+									/>
+								</div>
+							</form>
+						</Modal.Body>
+						<Modal.Footer>
+							<Button
+								variant="secondary"
+								onClick={() => setShowModal(false)} // Function to be called when the Close button is clicked
+							>
+								Close
+							</Button>
+							<Button
+								variant="primary"
+								onClick={() => handleSave(currentJob.id)} // Function to be called when the Save Changes button is clicked
+								style={{ backgroundColor: "#27746a" }} // Sets the background color of the Save Changes button
+							>
+								Save Changes
+							</Button>
+						</Modal.Footer>
+					</Modal>
+				</Container>
+			);
+	  }
+	
+	  return (
+		<div>
+		  <h1>You do not have permission to view this page.</h1>
+		  <Link to="/" className="btn btn-primary" style={{ backgroundColor: '#27746A' }}>
+			Go to back to main page
+		  </Link>
+		</div>
+	  );
+	}
 
 export default Admin;
