@@ -141,5 +141,8 @@
     height: 100%;
     object-fit: cover;
   }
+  .hide-image {
+    display: none;
+  }
   
   
