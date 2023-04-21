@@ -35,7 +35,6 @@ function Profile() {
 			if (userDoc.exists) {
 				// Set the user state
 				setUser({ ...userDoc.data(), id: userDoc.id });
-				console.log(userDoc.data());
 				// Get the profile picture URL from Firebase Storage
 				if (
 					userDoc.data().profilePicURL !==
@@ -58,16 +57,13 @@ function Profile() {
 				// Get the education data
 				const educationData = userDoc.data().education;
 				setEducation(educationData);
-				console.log(educationData);
 
 				const workData = userDoc.data().workExperience;
 				setWork(workData);
-				console.log(workData);
 
 				const connections = (
 					await getDoc(doc(collection(db, "connection"), auth.currentUser.uid))
 				).data().connections;
-				console.log(connections);
 
 				let counter = 0;
 				connections.forEach(() => {

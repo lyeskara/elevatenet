@@ -100,7 +100,6 @@ function OtherUsersProfile() {
 								if (condition) {
 									notifications_array.push(note);
 								}
-								console.log(notifications_array);
 								updateDoc(doc(collection(db, "Notifications"), followedId), {
 									notifications: notifications_array,
 								});
@@ -161,7 +160,6 @@ function OtherUsersProfile() {
 			const connections = (
 				await getDoc(doc(collection(db, "connection"), id))
 			).data().connections;
-			console.log(connections);
 
 			let counter = 0;
 			connections.forEach(() => {
