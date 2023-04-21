@@ -42,10 +42,12 @@ function GroupPage() {
   const [showBanModal, setShowBanModal] = useState(false);
   const [showUnbanModal, setShowUnbanModal] = useState(false);
   const [showAdminModal, setShowAdminModal] = useState(false);
+  const [showDemoteModal, setShowDemoteModal] = useState(false);
   const [selectedKickUserId, setSelectedKickUserId] = useState(null);
   const [selectedBanUserId, setSelectedBanUserId] = useState(null);
   const [selectedUnbanUserId, setSelectedUnbanUserId] = useState(null);
   const [selectedAdminUserId, setSelectedAdminUserId] = useState(null);
+  const [selectedDemoteAdminUserId, setSelectedDemoteAdminUserId] = useState(null);
   const [reason, setReason] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
   
@@ -114,7 +116,7 @@ function GroupPage() {
         // Set the array for the both category of users
         setMemberNames(regularMemberNamesArray);
         setAdminNames(adminNamesArray);
-        setIsAdmin(groupDoc.data().adminUIDs.includes(auth.currentUser?.uid ?? ''));
+        setIsAdmin(groupDoc.data().adminUIDs.includes(auth.currentUser?.uid ?? '') || auth.currentUser?.uid === '361FbyTxmmZqCT03kGd25kSyDff1');
         console.log("Admin Status" + isAdmin);
       } else {
         console.log("No such group exists.");
@@ -176,6 +178,13 @@ function GroupPage() {
     setSelectedAdminUserId(user_id);
     console.log(selectedAdminUserId);
     setShowAdminModal(true);
+  };
+
+  //This opens the demote confirmation modal. (For site admins)
+  function demoteConfirmation(user_id){
+    setSelectedDemoteAdminUserId(user_id);
+    console.log(selectedDemoteAdminUserId);
+    setShowDemoteModal(true);
   };
 
   //This opens the unban confirmation modal.
@@ -300,9 +309,29 @@ function GroupPage() {
       console.error("Error promoting user to admin:", error);
     }
   }
-  
-  
 
+  // This deletes the selected member from the adminUIDs
+  async function handleDemoteAdmin(user_id) {
+    try {
+      // Get a reference to the group document in Firestore
+      const groupRef = doc(db, "groups", id);
+  
+      // Update the adminUIDs array in the group document
+      const groupDoc = await getDoc(groupRef);
+      const adminUIDs = groupDoc.data().adminUIDs || [];
+      if (adminUIDs.includes(user_id)) {
+        const newAdminUIDs = adminUIDs.filter(uid => uid !== user_id);
+        await updateDoc(groupRef, { adminUIDs: newAdminUIDs });
+        console.log("User removed from admin role successfully.");
+        window.location.reload();
+      } else {
+        console.log("User is not an admin.");
+      }
+    } catch (error) {
+      console.error("Error demoting user from admin:", error);
+    }
+  }
+  
   //Here we display the information relevant to the group
   return (
     <div className="contain">
@@ -352,9 +381,21 @@ function GroupPage() {
             <h2> Group Admins </h2>
             {group.adminUIDs.length > 0 ? (
               <ul className="list-group">
-                {adminNames.map(
-                  ({ fullName, profileLink, profilePic }, index) => (
-                    <li key={index} className="list-group-item">
+                {adminNames
+                  .filter(
+                    ({ id }) =>
+                      !group.banList.some((banned) => banned.user_id === id)
+                  )
+                  .map(({ fullName, profileLink, profilePic, id }, index) => (
+                    <li
+                      key={index}
+                      className="list-group-item"
+                      style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        alignItems: "center",
+                      }}
+                    >
                       <Link to={profileLink}>
                         <img
                           src={profilePic ? profilePic : grouplogo}
@@ -362,7 +403,7 @@ function GroupPage() {
                             width: "90px",
                             height: "90px",
                             objectFit: "cover",
-                            marginRight: "40px",
+                            marginRight: "0px",
                             float: "left",
                           }}
                           className="img-fluid my-3"
@@ -372,7 +413,7 @@ function GroupPage() {
                       <Link
                         to={profileLink}
                         style={{
-                          lineHeight: "2em",
+                          lineHeight: "1em",
                           display: "flex",
                           alignItems: "center",
                           width: "50%",
@@ -380,9 +421,67 @@ function GroupPage() {
                       >
                         {fullName}
                       </Link>
+                      {auth.currentUser &&
+                        auth.currentUser.uid ===
+                          "361FbyTxmmZqCT03kGd25kSyDff1" && (
+                          <div className="dropdown">
+                            <button
+                              className="btn btn-secondary dropdown-toggle"
+                              type="button"
+                              id={`dropdown-${id}`}
+                              data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                              style={{ backgroundColor: "#ff6347" }}
+                            >
+                              <img
+                                src={shield}
+                                alt="shield icon"
+                                style={{
+                                  height: "25px",
+                                  width: "25px",
+                                  marginRight: "8px",
+                                }}
+                              />
+                            </button>
+                            <ul
+                              className="dropdown-menu"
+                              aria-labelledby={`dropdown-${id}`}
+                            >
+                              <li>
+                                <button
+                                  className="dropdown-item"
+                                  type="button"
+                                  style={{ backgroundColor: "#F3F3F3" }}
+                                  onClick={() => kickConfirmation(id)}
+                                >
+                                  Kick
+                                </button>
+                              </li>
+                              <li>
+                                <button
+                                  className="dropdown-item"
+                                  type="button"
+                                  style={{ backgroundColor: "#F3F3F3" }}
+                                  onClick={() => banConfirmation(id)}
+                                >
+                                  Ban
+                                </button>
+                              </li>
+                              <li>
+                                <button
+                                  className="dropdown-item"
+                                  type="button"
+                                  style={{ backgroundColor: "#F3F3F3" }}
+                                  onClick={() => demoteConfirmation(id)}
+                                >
+                                  Demote admin
+                                </button>
+                              </li>
+                            </ul>
+                          </div>
+                        )}
                     </li>
-                  )
-                )}
+                  ))}
               </ul>
             ) : (
               <p>No active admins</p>
@@ -731,6 +830,41 @@ function GroupPage() {
             onClick={() => handlePromoteAdmin(selectedAdminUserId)}
           >
             Promote
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* ADMIN DEMOTION MODAL */}
+      <Modal show={showDemoteModal} onHide={() => setShowDemoteModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Admin Demotion Confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h5>Are you sure you want to remove admin permissions from this user?</h5>
+          <h6
+            style={{
+              color: "#800000",
+              fontWeight: "bold",
+              textAlign: "center",
+              marginTop: "30px",
+            }}
+          >
+            They will become a regular member.
+          </h6>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            style={{ borderRadius: "20px" }}
+            onClick={() => setShowDemoteModal(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            style={{ backgroundColor: "#27746a", borderRadius: "20px" }}
+            onClick={() => handleDemoteAdmin(selectedDemoteAdminUserId)}
+          >
+            Demote
           </Button>
         </Modal.Footer>
       </Modal>
