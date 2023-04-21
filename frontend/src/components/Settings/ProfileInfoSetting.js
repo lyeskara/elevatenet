@@ -93,15 +93,6 @@ function ProfileInfoSettings() {
 					</Link>
 					</div>
 				</div>
-				<hr></hr>
-				<div className="containRequest">
-					<h5 className="requests">Language</h5>
-					<div className="arrow">
-					<Link to="/Language">
-						<img src={arrow} alt="node" />
-					</Link>
-					</div>
-				</div>
 				</Card>
 			
 			
