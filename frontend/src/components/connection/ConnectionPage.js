@@ -132,133 +132,135 @@ function ConnectionPage() {
   }
 
   return (
-    <>
-      <div className="contain">
-        <Row className="gap-5">
-          <Col className="col1" xs={12} md={{ span: 3, offset: 1 }}>
-            <Card className="networkcard">
-              <h5 className="NetworkTitle">My Network</h5>
-              <Link to="/connections">
-                <img src={node} alt="node" /> Connections
-              </Link>
-              <Link to="/GroupNetwork">
-                <img src={group} alt="node" /> Groups
-              </Link>
-              <Link to="/Event">
-                <img src={event} alt="node" /> Events
-              </Link>
-            </Card>
-          </Col>
+    <div className="vh-100">
+      <>
+        <div className="contain">
+          <Row className="gap-5">
+            <Col className="col1" xs={12} md={{ span: 3, offset: 1 }}>
+              <Card className="networkcard">
+                <h5 className="NetworkTitle">My Network</h5>
+                <Link to="/connections">
+                  <img src={node} alt="node" /> Connections
+                </Link>
+                <Link to="/GroupNetwork">
+                  <img src={group} alt="node" /> Groups
+                </Link>
+                <Link to="/Event">
+                  <img src={event} alt="node" /> Events
+                </Link>
+              </Card>
+            </Col>
 
-          <Col xs={12} md={7}>
-            <Card className="card">
-              <div className="containRequest">
-                <h5 className="requests">Pending Requests</h5>
-                <div className="arrow">
-                  <Link to="/requests">
-                    <img src={arrow} alt="node" />
-                  </Link>
+            <Col xs={12} md={7}>
+              <Card className="card">
+                <div className="containRequest">
+                  <h5 className="requests">Pending Requests</h5>
+                  <div className="arrow">
+                    <Link to="/requests">
+                      <img src={arrow} alt="node" />
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            </Card>
-            <Card className="card">
-              <div className="containRequest">
-                <h5>My Connections</h5>
+              </Card>
+              <Card className="card">
+                <div className="containRequest">
+                  <h5>My Connections</h5>
 
-                {/* Show the connections */}
-              </div>
-              <br></br>
-              <hr></hr>
-              <Row className="mt-3">
-                {/*This is the displayal of the users onto the page, fetched from the database*/}
-                <div>
-                  {connections.map((user) => (
-                    <div className="containRequest mb-3" key={user.id}>
-                      <img
-                        className="connection-pic"
-                        src={user.profilePicUrl || defaultpic}
-                        alt={user.firstName}
-                      />
-                      <p className="connection_name">
-                        {user.firstName} {user.lastName}
-                      </p>
-                      <Button
-                        className="trash_button"
-                        onClick={() => {
-                          handleDeleteEvent(user);
-                        }}
-                      >
-                        <img src={trash} alt="node" />
-                        Delete Connection
-                      </Button>
-                      <hr></hr>
-                    </div>
-                  ))}
+                  {/* Show the connections */}
                 </div>
-              </Row>
+                <br></br>
+                <hr></hr>
+                <Row className="mt-3">
+                  {/*This is the displayal of the users onto the page, fetched from the database*/}
+                  <div>
+                    {connections.map((user) => (
+                      <div className="containRequest mb-3" key={user.id}>
+                        <img
+                          className="connection-pic"
+                          src={user.profilePicUrl || defaultpic}
+                          alt={user.firstName}
+                        />
+                        <p className="connection_name">
+                          {user.firstName} {user.lastName}
+                        </p>
+                        <Button
+                          className="trash_button"
+                          onClick={() => {
+                            handleDeleteEvent(user);
+                          }}
+                        >
+                          <img src={trash} alt="node" />
+                          Delete Connection
+                        </Button>
+                        <hr></hr>
+                      </div>
+                    ))}
+                  </div>
+                </Row>
 
-              {/*This is the confirmation modal that will appear when a connection deletion is initiated.*/}
-              <Modal show={showModal} onHide={() => setShowModal(false)}>
-                <Modal.Header closeButton>
-                  <Modal.Title>Connection Removal</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  You are about to remove your connection with {firstName} {lastName}, are you sure you want to proceed?
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button
-                    variant="secondary"
-                    style={{ borderRadius: "20px" }}
-                    onClick={() => setShowModal(false)}
-                  >
-                    Cancel
-                  </Button>
-                  <Button style={{ backgroundColor: "#27746a", borderRadius: "20px"}} onClick={confirmDeletion}>
-                    Remove Connection
-                  </Button>
-                </Modal.Footer>
-              </Modal>
-            </Card>
+                {/*This is the confirmation modal that will appear when a connection deletion is initiated.*/}
+                <Modal show={showModal} onHide={() => setShowModal(false)}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Connection Removal</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    You are about to remove your connection with {firstName} {lastName}, are you sure you want to proceed?
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button
+                      variant="secondary"
+                      style={{ borderRadius: "20px" }}
+                      onClick={() => setShowModal(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button style={{ backgroundColor: "#27746a", borderRadius: "20px"}} onClick={confirmDeletion}>
+                      Remove Connection
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+              </Card>
 
-            {/*If we add the Suggested Connection Feature */}
+              {/*If we add the Suggested Connection Feature */}
 
-            {/*<Card>
-              <h5>People you may know</h5>
-              <Row className="mt-3">
-                <Col className="connectCard">
-                  <center>
-                    <h5>First</h5>
+              {/*<Card>
+                <h5>People you may know</h5>
+                <Row className="mt-3">
+                  <Col className="connectCard">
+                    <center>
+                      <h5>First</h5>
 
-                    <Button className="connectButton">Connect</Button>
-                  </center>
-                </Col>
-                <Col className="connectCard">
-                  {" "}
-                  <center>
-                    <h5>Second</h5>
-                    <Button className="connectButton">Connect</Button>
-                  </center>
-                </Col>
-                <Col className="connectCard">
-                  {" "}
-                  <center>
-                    <h5>Third</h5>
-                    <Button className="connectButton">Connect</Button>
-                  </center>
-                </Col>
-                <Col className="connectCard">
-                  {" "}
-                  <center>
-                    <h5>Fourth</h5>
-                    <Button className="connectButton">Connect</Button>
-                  </center>
-                </Col>
-              </Row>
-            </Card>*/}
-          </Col>
-        </Row>
-      </div>
-    </>
+                      <Button className="connectButton">Connect</Button>
+                    </center>
+                  </Col>
+                  <Col className="connectCard">
+                    {" "}
+                    <center>
+                      <h5>Second</h5>
+                      <Button className="connectButton">Connect</Button>
+                    </center>
+                  </Col>
+                  <Col className="connectCard">
+                    {" "}
+                    <center>
+                      <h5>Third</h5>
+                      <Button className="connectButton">Connect</Button>
+                    </center>
+                  </Col>
+                  <Col className="connectCard">
+                    {" "}
+                    <center>
+                      <h5>Fourth</h5>
+                      <Button className="connectButton">Connect</Button>
+                    </center>
+                  </Col>
+                </Row>
+              </Card>*/}
+            </Col>
+          </Row>
+        </div>
+      </>
+    </div>
   );
 }
 

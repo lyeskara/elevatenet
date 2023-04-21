@@ -143,8 +143,15 @@ function CreatPost() {
     }
 
 
-
   };
+  function handleImageLoad(e) {
+    e.target.style.display = "block";
+  }
+  
+  function handleImageError(e) {
+    e.target.style.display = "none";
+  }
+  
 
   // the template for post creation
   return (
@@ -159,8 +166,13 @@ function CreatPost() {
           onChange={(e) => setPostText(e.target.value)}
           placeholder="Say something here... "
         />
-        {PicUrl && <img src={PicUrl} />}
-
+        <img
+        src={PicUrl}
+        alt="Post preview"
+        style={{ display: "none" }}
+        onLoad={handleImageLoad}
+        onError={handleImageError}
+      />
         <div className="create-post-preview-box" id="preview-box"></div>
         <div className="create-post-options">
           <button >
@@ -178,6 +190,7 @@ function CreatPost() {
               />
             </label>
           </button>
+          
           <button onClick={() => navigate("/Event")}>
             <img src={eventicon} alt="eventicon" />
           </button>
