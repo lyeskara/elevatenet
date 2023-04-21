@@ -87,6 +87,8 @@ function GroupNetwork() {
     window.location.reload();
   };
 
+  const allGroups = myGroupCards.concat(otherGroupCards);
+
   return (
     <>
       <div className="contain">
@@ -115,7 +117,66 @@ function GroupNetwork() {
                 </Button>
               </div>
             </Card>
-            <Card>
+
+            {/* Here, we post the Cards of all groups, this is the view of the site Admin.*/}
+
+            {auth.currentUser &&
+              auth.currentUser.uid === "361FbyTxmmZqCT03kGd25kSyDff1" ? (
+                <Card>
+                  <h5>All Groups</h5>
+                  <Row className="mt-3">
+                    {/* Here, we post the Cards of the groups that the current user belongs in*/}
+                    {allGroups.map((groupInfos) => (
+                      <div className="post-content" key={groupInfos.id}>
+                        <Card className="card">
+                          <Row>
+                            <Col md={2} sm={12} className="text-center">
+                              <img
+                                src={
+                                  groupInfos.group_img_url
+                                    ? groupInfos.group_img_url
+                                    : grouplogo
+                                }
+                                style={{
+                                  maxHeight: "150px",
+                                  minWidth: "100%",
+                                  width: "150px",
+                                  height: "150px",
+                                  objectFit: "contain",
+                                }}
+                                className="img-fluid my-3"
+                                alt="template_group_pic"
+                              />
+                            </Col>
+                            <Col md={8} sm={12}>
+                              <h3>{groupInfos.group_name}</h3>
+                              <h5>
+                                {groupInfos.memberUIDs.length}{" "}
+                                {groupInfos.memberUIDs.length === 1
+                                  ? "member"
+                                  : "members"}
+                              </h5>
+                              <hr />
+                              <p>
+                                {groupInfos.description === ""
+                                  ? "No description given."
+                                  : groupInfos.description}
+                              </p>
+                            </Col>
+                            <Col className="center-col" md={2} sm={12}>
+                              <Link to={`/group/${groupInfos.id}`}>
+                                <Button className="create_Group_Button">
+                                  View Group
+                                </Button>
+                              </Link>
+                            </Col>
+                          </Row>
+                        </Card>
+                      </div>
+                    ))}
+                  </Row>
+                </Card>
+              ) : <div> <Card>
               <h5>My Groups</h5>
               <Row className="mt-3">
                 {/* Here, we post the Cards of the groups that the current user belongs in*/}
@@ -253,7 +314,8 @@ function GroupNetwork() {
                   </div>
                 ))}
               </Row>
-            </Card>
+            </Card></div>}
+
           </Col>
         </Row>
 
