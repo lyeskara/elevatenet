@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { collection, getDoc, doc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import Card from "react-bootstrap/Card";
@@ -34,7 +34,7 @@ function Profile() {
 			if (userDoc.exists) {
 				// Set the user state
 				setUser({ ...userDoc.data(), id: userDoc.id });
-
+				console.log(userDoc.data());
 				// Get the profile picture URL from Firebase Storage
 				const storageRef = ref(
 					storage,
@@ -51,9 +51,11 @@ function Profile() {
 				// Get the education data
 				const educationData = userDoc.data().education;
 				setEducation(educationData);
+				console.log(educationData);
 
 				const workData = userDoc.data().workExperience;
 				setWork(workData);
+				console.log(workData);
 			}
 		} catch (error) {
 			console.log(error);
@@ -252,7 +254,7 @@ function Profile() {
 						<hr></hr>
 						{work &&
 							work.map((work, index) => (
-								<React.Fragment key={index}>
+								<Fragment key={index}>
 									<div className="profile-desc-row">
 										<img src={person} alt="person"></img>
 										<div>
@@ -265,7 +267,7 @@ function Profile() {
 									</div>
 									{/* Add a horizontal rule between schools */}
 									{index !== work.length - 1 && <hr />}
-								</React.Fragment>
+								</Fragment>
 							))}
 					</Card>
 					<Card className="educationcard">
@@ -273,7 +275,7 @@ function Profile() {
 						<hr></hr>
 						{education &&
 							education.map((school, index) => (
-								<React.Fragment key={index}>
+								<Fragment key={index}>
 									<div className="profile-desc-row">
 										<img src={person} alt="person"></img>
 										<div>
@@ -286,7 +288,7 @@ function Profile() {
 									</div>
 									{/* Add a horizontal rule between schools */}
 									{index !== education.length - 1 && <hr />}
-								</React.Fragment>
+								</Fragment>
 							))}
 					</Card>
 					<Card className="skillscard">
