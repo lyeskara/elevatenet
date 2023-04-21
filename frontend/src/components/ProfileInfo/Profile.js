@@ -26,6 +26,7 @@ function Profile() {
 	 */
 
 	const getUserData = async () => {
+		let storageRef;
 		try {
 			const userDoc = await getDoc(
 				doc(collection(db, "users_information"), auth.currentUser.uid)
@@ -36,11 +37,17 @@ function Profile() {
 				setUser({ ...userDoc.data(), id: userDoc.id });
 				console.log(userDoc.data());
 				// Get the profile picture URL from Firebase Storage
-				const storageRef = ref(
-					storage,
-					`profilepics/${auth.currentUser.uid}/profilePic`
-				);
-
+				if (
+					userDoc.data().profilePicURL !==
+					"https://firebasestorage.googleapis.com/v0/b/soen390-b027d.appspot.com/o/profilepics%2FBase%2Ftest.gif?alt=media&token=d295d8c2-493f-4c20-8fac-0ede65eaf0b6"
+				) {
+					storageRef = ref(
+						storage,
+						`profilepics/${auth.currentUser.uid}/profilePic`
+					);
+				} else {
+					storageRef = ref(storage, `profilepics/Base/test.gif`);
+				}
 				// Check if the profile picture exists in Firebase Storage
 				const metadata = await getMetadata(storageRef);
 				const downloadURL = await getDownloadURL(storageRef);
@@ -56,14 +63,21 @@ function Profile() {
 				const workData = userDoc.data().workExperience;
 				setWork(workData);
 				console.log(workData);
+
+				const connections = (
+					await getDoc(doc(collection(db, "connection"), auth.currentUser.uid))
+				).data().connections;
+				console.log(connections);
+
+				let counter = 0;
+				connections.forEach(() => {
+					counter++;
+				});
+
+				setNumConnections(counter);
 			}
 		} catch (error) {
 			console.log(error);
-
-			// Set the profile picture URL state to a default value
-			setProfilePicURL(
-				"https://firebasestorage.googleapis.com/v0/b/soen390-b027d.appspot.com/o/profilepics%2FBase%2Ftest.gif?alt=media&token=d295d8c2-493f-4c20-8fac-0ede65eaf0b6"
-			);
 		}
 	};
 
@@ -175,7 +189,7 @@ function Profile() {
 									color: "#626262",
 								}}
 							>
-								<u>0 Connections</u>
+								<u>{numConnections} Connections</u>
 							</h5>
 						</div>
 					</Card>
