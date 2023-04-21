@@ -17,7 +17,7 @@ import DatePicker from "react-datepicker";
 import "firebase/firestore";
 import { useUserAuth } from "../../context/UserAuthContext";
 import { useNavigate } from "react-router-dom";
-import { collection, setDoc, doc, addDoc } from "firebase/firestore";
+import { collection, setDoc, doc, addDoc, getDoc } from "firebase/firestore";
 
 function CreateNewPosting() {
 	const { user } = useUserAuth();
@@ -131,6 +131,7 @@ function CreateNewPosting() {
 												setDoc(doc(collection(db, "Notifications"), id), {
 													notifications: [note],
 												});
+												console.log("Notification Sent");
 											} else {
 												const notifications_array =
 													followed_doc.data().notifications;
