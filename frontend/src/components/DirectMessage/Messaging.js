@@ -50,14 +50,26 @@ const Message = () => {
     if (confirmed && recipientId !== null) {
       const recipient = users_information.find((user) => user.id === recipientId);
       const reportedUserRef = collection(db, "reported_user");
+      let reason = null;
+      while (reason === null || reason === "") {
+        reason = window.prompt("Please provide a reason for the report (empty response will not be accepted):");
+        if (reason === null) {
+          return; // exit the function if the user clicked "Cancel"
+        }
+      }
       await addDoc(reportedUserRef, {
         name: `${recipient.firstName} ${recipient.lastName}`,
         email: recipient.email,
-        uid: recipientId
+        uid: recipientId,
+        reason: reason
       });
       alert("User reported successfully!");
     }
   };
+  
+  
+  
+  
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'users_information'), (snapshot) => {
