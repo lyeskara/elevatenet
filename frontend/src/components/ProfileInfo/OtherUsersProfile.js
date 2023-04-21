@@ -29,6 +29,7 @@ function OtherUsersProfile() {
 	const [education, setEducation] = useState([]);
 	const [work, setWork] = useState([]);
 	const [connect, Setconnect] = useState(false);
+	const [numConnections, setNumConnections] = useState(0);
 	const storage = getStorage();
 	const currId = auth.currentUser.uid;
 	const followedId = id;
@@ -157,6 +158,17 @@ function OtherUsersProfile() {
 				const workData = userDoc.data().workExperience;
 				setWork(workData);
 			}
+			const connections = (
+				await getDoc(doc(collection(db, "connection"), id))
+			).data().connections;
+			console.log(connections);
+
+			let counter = 0;
+			connections.forEach(() => {
+				counter++;
+			});
+
+			setNumConnections(counter);
 		} catch (error) {
 			console.log(error);
 		}
@@ -258,11 +270,25 @@ function OtherUsersProfile() {
 					</div>
 				)
 			) : null}
-			{informations(user, downloadResume, downloadCL, work, education)}
+			{informations(
+				user,
+				downloadResume,
+				downloadCL,
+				work,
+				education,
+				numConnections
+			)}
 		</div>
 	);
 }
-function informations(user, downloadResume, downloadCL, work, education) {
+function informations(
+	user,
+	downloadResume,
+	downloadCL,
+	work,
+	education,
+	numConnections
+) {
 	return (
 		<div className="contain">
 			<Row className="gap-5">
@@ -309,21 +335,7 @@ function informations(user, downloadResume, downloadCL, work, education) {
 									color: "#626262",
 								}}
 							>
-								{user.connections} <u>Connections</u>
-							</h5>
-						</div>
-					</Card>
-
-					<Card className="recommendationcard">
-						<h5>Recommendation</h5>
-						<hr></hr>
-						<div className="Recommendation">
-							<h5
-								style={{
-									color: "black",
-								}}
-							>
-								<u>Jasmit Kalsi</u>
+								{numConnections} <u>Connections</u>
 							</h5>
 						</div>
 					</Card>

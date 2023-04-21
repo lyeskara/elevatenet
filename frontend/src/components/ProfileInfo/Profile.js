@@ -80,29 +80,6 @@ function Profile() {
 			console.log(error);
 		}
 	};
-
-	// Fix this code segment
-
-	// const getConnectionData = async () => {
-	// 	try {
-	// 		const connectionDoc = await getDoc(
-	// 			doc(collection(db, "connection", auth.currentUser.uid, "connections"))
-	// 		);
-
-	// 		if (connectionDoc.exists) {
-	// 			console.log("Connection document does exist");
-	// 			const connections = connectionDoc.connections;
-	// 			console.log(connections);
-	// 			const numConnections = connections ? connections.length : 0;
-	// 			setNumConnections(numConnections);
-	// 		} else {
-	// 			console.log("Connection document does not exist");
-	// 		}
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
-	// };
-
 	useEffect(() => {
 		getUserData();
 		//	getConnectionData();
@@ -190,20 +167,6 @@ function Profile() {
 								}}
 							>
 								<u>{numConnections} Connections</u>
-							</h5>
-						</div>
-					</Card>
-
-					<Card className="recommendationcard">
-						<h5>Recommendation</h5>
-						<hr></hr>
-						<div className="Recommendation">
-							<h5
-								style={{
-									color: "black",
-								}}
-							>
-								<u>Jasmit Kalsi</u>
 							</h5>
 						</div>
 					</Card>
