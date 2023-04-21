@@ -18,6 +18,7 @@ import "firebase/firestore";
 import { useUserAuth } from "../../context/UserAuthContext";
 import { useNavigate } from "react-router-dom";
 import { collection, setDoc, doc, addDoc, getDoc } from "firebase/firestore";
+import generateKey from "../../generateKey";
 
 function CreateNewPosting() {
 	const { user } = useUserAuth();
@@ -111,19 +112,20 @@ function CreateNewPosting() {
 				const connections = (
 					await getDoc(doc(collection(db, "connection"), currentId))
 				).data().connections;
+				console.log(connections);
 				connections.forEach((id) => {
 					getDoc(doc(collection(db, "notification_settings"), id)).then(
 						(note_data) => {
 							if (note_data.data() !== undefined) {
-								if (note_data.data().feed) {
+								if (note_data.data().jobs) {
 									getDoc(doc(collection(db, "Notifications"), id)).then(
 										(followed_doc) => {
 											const note = {
 												message: `${user_info.first_name} ${user_info.last_name} has created a new Job Application, go check it out!`,
 												profilePicUrl: user_info.profile_picture,
 												id: generateKey(8),
-												post_id: post.id,
 											};
+											console.log(note);
 											if (
 												followed_doc.data() === undefined ||
 												followed_doc.data()
@@ -131,7 +133,7 @@ function CreateNewPosting() {
 												setDoc(doc(collection(db, "Notifications"), id), {
 													notifications: [note],
 												});
-												console.log("Notification Sent");
+												console.log(note);
 											} else {
 												const notifications_array =
 													followed_doc.data().notifications;
@@ -140,14 +142,17 @@ function CreateNewPosting() {
 													if (notif.id !== note.id) {
 														condition = true;
 													}
+													console.log(note);
 												});
 												if (condition) {
 													notifications_array.push(note);
+													console.log(note);
 												}
 												console.log(notifications_array);
 												updateDoc(doc(collection(db, "Notifications"), id), {
 													notifications: notifications_array,
 												});
+												console.log(note);
 											}
 										}
 									);
