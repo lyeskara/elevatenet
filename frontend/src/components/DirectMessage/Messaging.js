@@ -45,7 +45,19 @@ const Message = () => {
     }
   };
 
-  
+  const handleReportUser = async () => {
+    const confirmed = window.confirm("Are you sure you want to report this user?");
+    if (confirmed && recipientId !== null) {
+      const recipient = users_information.find((user) => user.id === recipientId);
+      const reportedUserRef = collection(db, "reported_user");
+      await addDoc(reportedUserRef, {
+        name: `${recipient.firstName} ${recipient.lastName}`,
+        email: recipient.email,
+        uid: recipientId
+      });
+      alert("User reported successfully!");
+    }
+  };
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'users_information'), (snapshot) => {
@@ -245,7 +257,7 @@ const Message = () => {
               <ul className="dm-moderation-menu-items">
                 {/* Add your DM moderation menu items as needed */}
                 <li>Block User</li>
-                <li>Report Message</li>
+                <li onClick={handleReportUser}>Report User</li>
                 <li onClick={handleDeleteMessages}>Delete Message</li>
 
               </ul>
