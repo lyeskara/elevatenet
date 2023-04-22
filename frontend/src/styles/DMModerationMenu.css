@@ -24,7 +24,7 @@
   }
   
   .dm-moderation-menu:hover .dm-moderation-menu-items {
-    display: block;
+    display: contents;
   }
   
 .dm-moderation-menu-items li {
