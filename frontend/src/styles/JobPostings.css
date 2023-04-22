@@ -36,7 +36,13 @@
   margin-bottom: -20px;
 }
 
-
+.skills-btn-seeker {
+  border: 1px solid #777;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 500;
+  transition-duration: 0.4s;
+}
 @media screen and (max-width: 393px) {
   .apply-button{
     font-size: 15px;
@@ -48,6 +54,10 @@
   }
   .card-company{
     margin-top: 7%;
+  }
+  .skills-btn-seeker {
+    margin: 10px 5px;
+    padding: 1.5% 3%; 
   }
 }
 @media screen and (min-width: 394px) {
@@ -63,6 +73,10 @@
   }
   .container-job{
     width: 50%
+  }
+  .skills-btn-seeker {
+    margin: 10px 5px;
+    padding: 4px 18px; 
   }
 }
 
