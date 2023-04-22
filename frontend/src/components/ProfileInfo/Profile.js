@@ -35,18 +35,21 @@ function Profile() {
 			if (userDoc.exists) {
 				// Set the user state
 				setUser({ ...userDoc.data(), id: userDoc.id });
+				console.log(userDoc.data());
 				// Get the profile picture URL from Firebase Storage
+				storageRef = ref(
+					storage,
+					`profilepics/${auth.currentUser.uid}/profilePic`
+				);
+
 				if (
 					userDoc.data().profilePicURL !==
-					"https://firebasestorage.googleapis.com/v0/b/soen390-b027d.appspot.com/o/profilepics%2FBase%2Ftest.gif?alt=media&token=d295d8c2-493f-4c20-8fac-0ede65eaf0b6"
+						"https://firebasestorage.googleapis.com/v0/b/soen390-b027d.appspot.com/o/profilepics%2FBase%2Ftest.gif?alt=media&token=d295d8c2-493f-4c20-8fac-0ede65eaf0b6" &&
+					storageRef
 				) {
-					storageRef = ref(
-						storage,
-						`profilepics/${auth.currentUser.uid}/profilePic`
-					);
-				} else {
 					storageRef = ref(storage, `profilepics/Base/test.gif`);
 				}
+				console.log(storageRef);
 				// Check if the profile picture exists in Firebase Storage
 				const metadata = await getMetadata(storageRef);
 				const downloadURL = await getDownloadURL(storageRef);

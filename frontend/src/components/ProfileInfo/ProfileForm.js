@@ -82,7 +82,8 @@ function ProfileForm() {
 				volunteering: profileData.volunteering,
 				projects: profileData.projects,
 				awards: profileData.awards,
-				profilePicUrl: "",
+				profilePicUrl:
+					"https://firebasestorage.googleapis.com/v0/b/soen390-b027d.appspot.com/o/profilepics%2FBase%2Ftest.gif?alt=media&token=d295d8c2-493f-4c20-8fac-0ede65eaf0b6",
 				resumeUrl: "",
 				CLUrl: "",
 			});
