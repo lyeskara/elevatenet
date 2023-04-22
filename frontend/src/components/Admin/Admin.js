@@ -21,6 +21,10 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { Link } from 'react-router-dom';
 
+/** 
+   * This function deals with the pages related to the admin. It shows the job that are currently shown.
+   * 
+  */
 function Admin(){
 	// State and constants for handling data
 	const [isLoaded, setIsLoaded] = useState(false);
