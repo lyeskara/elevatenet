@@ -40,8 +40,40 @@
 
   }
   
-.dm-moderation-menu-items li {
-  /* Add any necessary styles for the menu item */
-  cursor: pointer;
-  display: block; /* displays each list item on a separate line */
-}
+  .dm-moderation-menu-items {
+    /* Add any necessary styles for the menu items container */
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0; /* set background color */
+    border: 1px solid #ccc; /* add border */
+    border-radius: 4px; /* round the corners */
+    width: 200px; /* set width as needed */
+    
+  }
+  
+  .dm-moderation-menu-items li {
+    /* Add any necessary styles for the menu item */
+    cursor: pointer;
+    padding: 10px; /* add padding around each list item */
+    color: #333; /* set text color */
+    transition: background-color 0.3s ease; /* add smooth transition effect */
+  }
+  
+  .dm-moderation-menu-items li:hover {
+    /* Add styles for list item when hovered */
+    background-color: #ddd; /* set background color when hovered */
+  }
+  
+  .dm-moderation-menu-items li:first-child {
+    /* Add styles for first list item */
+    border-top-left-radius: 4px; /* round the top-left corner */
+    border-top-right-radius: 4px; /* round the top-right corner */
+  }
+  
+  .dm-moderation-menu-items li:last-child {
+    /* Add styles for last list item */
+    border-bottom-left-radius: 4px; /* round the bottom-left corner */
+    border-bottom-right-radius: 4px; /* round the bottom-right corner */
+  }
+  
