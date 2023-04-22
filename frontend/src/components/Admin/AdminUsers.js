@@ -8,12 +8,13 @@ import {
   Timestamp,
   getDoc
 } from "firebase/firestore";
-import { db } from "../../firebase";
+import { auth, db } from "../../firebase";
 import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
+import { Link } from 'react-router-dom';
 
 function AdminUsers() {
   const [users, setUsers] = useState([]);
@@ -67,61 +68,73 @@ function AdminUsers() {
   function goToUser(){
     window.location.href = "/AdminUsers";
   }
+  //CHECK IF THE USER CONNECTED IS AN ADMIN
+  const currentUser = auth.currentUser;
+	if (currentUser?.uid === '361FbyTxmmZqCT03kGd25kSyDff1') {
+		return (
+      <Container>
+        <h1>Admin Users</h1>
+        <Row>
+          {/* This card displays the job menu block with Job Postings and Advertisements */}
+          <Card className="jobs-menu">
+            <h2> Manage </h2>
+            <hr></hr>
+            {/* When the user clicks the "Job Postings" text, it calls handleClickJobPostings */}
+            <h4 onClick={goToAdmin} style={{ color: "#888888" }}>
+              {" "}
+              Job Postings{" "}
+            </h4>
+            {/* Feed Posts */}
+            <h4
+              onClick={goToFeedPosts}
+              style={{ color: "#888888" }}
+            >
+              {" "}
+              Feed Posts{" "}
+            </h4>
+                      <h4
+              onClick={goToUser}
+              style={{ color: "#27746a" }}
+            >
+              {" "}
+              Users{" "}
+            </h4>
+            <br></br>
+          </Card>
+        </Row>
+        <Row>
+          {users.map((user) => (
+            <Col key={user.id} md={4} className="mb-4">
+              <Card>
+                <Card.Body>
+                  <Card.Title>{user.email} </Card.Title>
+                  <hr></hr>
+                  <Card.Text><h5>{user.firstName} {user.lastName}</h5></Card.Text>
+                  <Card.Subtitle className="mb-2 text-muted">
+                    ID: {user.id}
+                  </Card.Subtitle>
+                  <Button
+                    variant="outline-danger"
+                    onClick={() => handleDeleteUser(user.id)}
+                  >
+                    Delete
+                  </Button>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </Container>
+    );
+  }
   return (
-    <Container>
-      <h1>Admin Users</h1>
-      <Row>
-        {/* This card displays the job menu block with Job Postings and Advertisements */}
-				<Card className="jobs-menu">
-					<h2> Manage </h2>
-					<hr></hr>
-					{/* When the user clicks the "Job Postings" text, it calls handleClickJobPostings */}
-					<h4 onClick={goToAdmin} style={{ color: "#888888" }}>
-						{" "}
-						Job Postings{" "}
-					</h4>
-					{/* Feed Posts */}
-					<h4
-						onClick={goToFeedPosts}
-						style={{ color: "#888888" }}
-					>
-						{" "}
-						Feed Posts{" "}
-					</h4>
-                    <h4
-						onClick={goToUser}
-						style={{ color: "#27746a" }}
-					>
-						{" "}
-						Users{" "}
-					</h4>
-					<br></br>
-				</Card>
-      </Row>
-      <Row>
-        {users.map((user) => (
-          <Col key={user.id} md={4} className="mb-4">
-            <Card>
-              <Card.Body>
-                <Card.Title>{user.email} </Card.Title>
-                <hr></hr>
-                <Card.Text><h5>{user.firstName} {user.lastName}</h5></Card.Text>
-                <Card.Subtitle className="mb-2 text-muted">
-                  ID: {user.id}
-                </Card.Subtitle>
-                <Button
-                  variant="outline-danger"
-                  onClick={() => handleDeleteUser(user.id)}
-                >
-                  Delete
-                </Button>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-    </Container>
-  );
-}
+    <div>
+      <h1>You do not have permission to view this page.</h1>
+      <Link to="/" className="btn btn-primary" style={{ backgroundColor: '#27746A' }}>
+      Go to back to main page
+      </Link>
+    </div>
+    );
+  }
 
 export default AdminUsers;

@@ -57,25 +57,46 @@ function JobPostings() {
 	// Function to handle save when editing a job posting
 	const handleSave = async (id) => {
 		// Get job title, company and description from the input fields
+		const resume_required = document.getElementById("resume_required");
+		const cover_letter_required = document.getElementById("cover_letter_required");
+		const advertise = document.getElementById("advertise");
+		
 		const jobTitle = document.getElementById("job_title").value;
 		const company = document.getElementById("company").value;
 		const description = document.getElementById("description").value;
-		const resume_required = document.getElementById("resume_required").checked;
-		const cover_letter_required = document.getElementById(
-			"cover_letter_required"
-		).checked;
 		const skillsElement = document.getElementById("skills");
 		const skills = skillsElement.value.split(",");
-
+		const deadline = document.getElementById("deadline").value;
+		
+		if (resume_required && resume_required.checked) {
+		  currentJob.resume_required = true;
+		} else {
+		  currentJob.resume_required = false;
+		}
+		
+		if (cover_letter_required && cover_letter_required.checked) {
+		  currentJob.cover_letter_required = true;
+		} else {
+		  currentJob.cover_letter_required = false;
+		}
+		
+		if (advertise && advertise.checked) {
+		  currentJob.advertise = true;
+		} else {
+		  currentJob.advertise = false;
+		}
+		
 		// Update the job posting with the new data
 		await updateDoc(doc(db, "posting", id), {
 			job_title: jobTitle,
 			company: company,
 			description: description,
-			resume_required: resume_required,
-			cover_letter_required: cover_letter_required,
+			resume_required: currentJob.resume_required,
+			cover_letter_required: currentJob.cover_letter_required,
 			skills: skills,
-		});
+			deadline: deadline,
+			advertise: currentJob.advertise,
+		  });
 		// Hide the modal
 		setShowModal(false);
 		window.location.reload();
@@ -122,7 +143,7 @@ function JobPostings() {
 						{/* When the user clicks the "Job Postings" text, it calls handleClickJobPostings */}
 						<h4 onClick={handleClickJobPostings} style={{ color: "#27746a" }}>
 							{" "}
-							Job Postings{" "}
+							My Job Postings{" "}
 						</h4>
 						{/* Advertisements */}
 						<h4
@@ -130,7 +151,7 @@ function JobPostings() {
 							style={{ color: "#888888" }}
 						>
 							{" "}
-							Advertisements{" "}
+							My Advertisements{" "}
 						</h4>
 						<br></br>
 					</Card>
@@ -138,7 +159,7 @@ function JobPostings() {
 
 				<Col xs={12} sm={12} lg={8}>
 					<h2 style={{ color: "#555555", marginTop: "32px" }}>
-						Your Job Postings
+						
 					</h2>
 					{/* This button creates a new job posting */}
 					<div>
@@ -162,40 +183,36 @@ function JobPostings() {
 									{/* The job title */}
 									<div className="row">
 										<div className="col-sm-8">
-											<h4>{data.job_title}</h4>
+											<h3 style={{ color: "#27764A" }}>{data.job_title}</h3>
 										</div>
 										{/* Edit and Delete buttons */}
 										<div className="col-sm-4 d-flex justify-content-end align-items-center">
 											{/* When the user clicks the "Edit" button, it sets the current job and shows the modal */}
 											<Button
 												variant="primary"
-												className="btn-sm"
-												style={{ backgroundColor: "#27746a" }}
 												onClick={() => {
 													setCurrentJob(data);
 													setShowModal(true);
 												}}
+												style={{ backgroundColor: "#27746A" }}
 											>
 												Edit
 											</Button>
 											{/* When the user clicks the "Delete" button, it calls handleDelete */}
 											<Button
 												variant="outline-danger"
-												className="btn-sm"
-												style={{
-													backgroundColor: "white",
-													color: "#ff7a7a",
-													border: "2px solid #ff7a7a",
-												}}
 												onClick={() => handleDelete(data.id)}
+												style={{ marginLeft: "10px" }}
 											>
 												Delete
 											</Button>
 										</div>
+
 									</div>
+									<h5>{data.company}</h5>
 									<hr />
 									{/* The company and description */}
-									<h6>{data.company}</h6>
+
 									<p>{data.description}</p>
 									{/* SKILLS */}
 									{data.skills && Array.isArray(data.skills) && (
@@ -207,14 +224,22 @@ function JobPostings() {
 											))}
 										</div>
 									)}
+									
 									<hr />
-									{/* RESUME AND COVER LETTER REQUIRED */}
-									{data.cover_letter_required && <p>Cover Letter Required</p>}
-									{data.resume_required && <p>Resume Required</p>}
-									{/* IF THE POSTING IS ADVERTISED */}
-									{data.advertise && <p>Currently being Advertised</p>}
+									<h6>Apply before: <b>{data.deadline}</b></h6>
+									{(data.cover_letter_required||data.resume_required||data.advertise)&& <hr />}
+{/* RESUME AND COVER LETTER REQUIRED */}
+<div>
+  {data.cover_letter_required && <b>Cover Letter Required</b>}
+</div>
+<div>
+  {data.resume_required && <b>Resume Required</b>}
+</div>
+{/* IF THE POSTING IS ADVERTISED */}
+<div>
+  {data.advertise && <b>Currently being Advertised</b>}
+</div>
 
-									{/* <p>{data.deadline}</p> */}
 								</Card>
 							</div>
 						))
@@ -236,6 +261,7 @@ function JobPostings() {
 						<div className="form-group">
 							<label htmlFor="job_title">Job Title:</label>
 							<input
+								required
 								type="text"
 								className="form-control"
 								id="job_title"
@@ -245,6 +271,7 @@ function JobPostings() {
 						<div className="form-group">
 							<label htmlFor="company">Company:</label>
 							<input
+								required
 								type="text"
 								className="form-control"
 								id="company"
@@ -258,11 +285,13 @@ function JobPostings() {
 								id="description"
 								rows="3"
 								defaultValue={currentJob.description} // Sets the default value of the textarea field to the current job description
+								required
 							></textarea>
 						</div>
 						<div className="form-group">
 							<label htmlFor="skills">Skills:</label>
 							<textarea
+								required
 								className="form-control"
 								id="skills"
 								rows="3"
@@ -288,6 +317,27 @@ function JobPostings() {
 								className="form-check-input"
 								id="resume_required"
 								defaultChecked={currentJob.resume_required} // Sets the default value of the checkbox to the current value of the resume_required field
+							/>
+						</div>
+
+						<div className="form-group">
+							<label htmlFor="advertise">Advertised:</label>
+							<input
+								type="checkbox"
+								className="form-check-input"
+								// id="advertise"
+								defaultChecked={currentJob.advertise} // Sets the default value of the checkbox to the current value of the advertise field
+							/>
+							{console.log(currentJob.advertise)}
+						</div>
+
+						<div className="form-group">
+							<label htmlFor="deadline">Deadline:</label>
+							<input
+								required
+								type="date"
+								id="deadline"
+								defaultChecked={currentJob.deadline} // Sets the default value of the checkbox to the current value of the resume_required field
 							/>
 						</div>
 					</form>
