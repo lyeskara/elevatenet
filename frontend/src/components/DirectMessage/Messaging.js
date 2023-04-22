@@ -31,6 +31,7 @@ const Message = () => {
     setFile(e.target.files[0]);
     window.alert("File has been selected, press Send");
   };
+  const [reportedCount, setReportedCount] = useState(0);
 
   const [blockedUsers, setBlockedUsers] = useState([]);
   const blockUser = (userId) => {
@@ -38,10 +39,13 @@ const Message = () => {
   };
   
   const unblockUser = (userId) => {
-    setBlockedUsers((prevBlockedUsers) =>
-      prevBlockedUsers.filter((blockedUserId) => blockedUserId !== userId)
-    );
+    setTimeout(() => {
+      setBlockedUsers((prevBlockedUsers) =>
+        prevBlockedUsers.filter((blockedUserId) => blockedUserId !== userId)
+      );
+    }, 7 * 24 * 60 * 60 * 1000); // 7 days in milliseconds
   };
+  
   
 
   const handleDeleteMessages = async () => {
@@ -77,8 +81,35 @@ const Message = () => {
         reason: reason
       });
       alert("User reported successfully!");
+      
+      // Check how many times the user has been reported
+      const querySnapshot = await getDocs(query(collection(db, "reported_user"), where("uid", "==", recipientId)));
+      const count = querySnapshot.size;
+      setReportedCount(count);
+      
+      // If the user has been reported 3 or more times, add their UID to the blockedUsers state variable
+      if (count >= 3) {
+        blockUser(recipientId);
+      }
     }
   };
+
+  useEffect(() => {
+    const checkReportedCount = async () => {
+      const reportedUsersQuerySnapshot = await getDocs(collection(db, "reported_user"));
+      reportedUsersQuerySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const uid = data.uid;
+        const count = reportedUsersQuerySnapshot.docs.filter((doc) => doc.data().uid === uid).length;
+        if (count >= 3 && !blockedUsers.includes(uid)) {
+          blockUser(uid);
+        }
+      });
+    };
+    
+    checkReportedCount();
+  }, [blockedUsers]);
+  
   
 
   useEffect(() => {
@@ -150,7 +181,7 @@ const Message = () => {
     }
 
     if (blockedUsers.includes(recipientId)) {
-      alert("You have blocked this user and cannot send messages to them.");
+      alert("This user is blocked and cannot send messages to them.");
       return;
     }
 
@@ -223,6 +254,7 @@ const Message = () => {
       blockUser(recipientId);
     }
   };
+  
 
   // This function is called whenever the input field for the message changes
   const handleMessageChange = (e) => {
