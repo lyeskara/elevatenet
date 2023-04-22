@@ -29,6 +29,7 @@ const Message = () => {
   const handleFileChange = (e) => {
     // Event handler for file input change
     setFile(e.target.files[0]);
+    window.alert("File has been selected, press Send");
   };
 
   const [blockedUsers, setBlockedUsers] = useState([]);
@@ -171,6 +172,7 @@ const Message = () => {
       await uploadBytes(storageRef, file);
       data.fileName = file.name;
       data.fileUrl = await getDownloadURL(storageRef);
+      window.alert("File Successfully Uploaded!");
     }
 
     try {
