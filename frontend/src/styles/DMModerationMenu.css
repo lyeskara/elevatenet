@@ -8,8 +8,20 @@
   }
   
   .ellipsis-icon {
-    /* Style the ellipsis icon as needed */
+    /* Add any necessary styles for the ellipsis icon */
+    /* Example: */
+    display: flex;
+    justify-content: flex-end; /* aligns the icon to the right */
+    align-items: center; /* vertically aligns the icon */
+    height: 100%; /* adjust as needed */
   }
+  
+  .ellipsis-icon:hover {
+    /* Add any desired visual effects when hovered */
+    /* Example: */
+    transform: scale(1.1); /* increases the size of the icon by 10% when hovered */
+  }
+  
   
   .dm-moderation-menu-items {
     position: absolute;
@@ -25,6 +37,7 @@
   
   .dm-moderation-menu:hover .dm-moderation-menu-items {
     display: contents;
+
   }
   
 .dm-moderation-menu-items li {
