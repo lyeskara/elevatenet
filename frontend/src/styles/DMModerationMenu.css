@@ -27,3 +27,8 @@
     display: block;
   }
   
+.dm-moderation-menu-items li {
+  /* Add any necessary styles for the menu item */
+  cursor: pointer;
+  display: block; /* displays each list item on a separate line */
+}
