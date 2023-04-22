@@ -1,6 +1,10 @@
 /* Example CSS for DMModerationMenu component */
 .dm-moderation-menu {
-    position: relative;
+    position: fixed;
+    right:0;
+    margin-right: 120px;
+    
+
   }
   
   .ellipsis-icon {
