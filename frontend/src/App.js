@@ -37,6 +37,23 @@ import RecruiterForm from './components/ProfileInfo/RecruiterFrom'
 
 import Messaging from './components/DirectMessage/Messaging';
 import CompanySearch from './components/connection/CompanySearch';
+import Notification from "./components/Notification";
+import ProfileInfoSettings from "./components/Settings/ProfileInfoSetting";
+import Security from "./components/Settings/Security";
+import Admin from "./components/Admin/Admin";
+import AdminFeed from "./components/Admin/AdminFeed";
+import AdminUsers from "./components/Admin/AdminUsers";
+
+import ChangePassword from "./components/Settings/ChangePassword";
+
+import NotificationSettings from "./components/Settings/Notificationsettings";
+
+
+
+
+import NameSetting from "./components/Settings/NameSetting";
+
+
 function App() {
   return (
     <UserAuthContextProvider>
@@ -50,6 +67,18 @@ function App() {
         <Route
           path="/ProfileForm"
           element={<Protection>{<ProfileForm />}</Protection>}
+        ></Route>
+        <Route
+          path="/Admin"
+          element={<Protection>{<Admin />}</Protection>}
+        ></Route>
+        <Route
+          path="/AdminFeed"
+          element={<Protection>{<AdminFeed />}</Protection>}
+        ></Route>
+        <Route
+          path="/AdminUsers"
+          element={<Protection>{<AdminUsers />}</Protection>}
         ></Route>
         <Route
           path="/RecruiterForm"
@@ -83,6 +112,14 @@ function App() {
           element={
             <Protection>
               <ConnectionPage />
+            </Protection>
+          }
+        ></Route>
+          <Route
+          path="/Notification"
+          element={
+            <Protection>
+              <Notification/>
             </Protection>
           }
         ></Route>
@@ -207,6 +244,46 @@ function App() {
             </Protection>
           }
         />
+         <Route
+          path="/ProfileInfoSettings"
+          element={
+            <Protection>
+              <ProfileInfoSettings />
+            </Protection>
+          }
+        />
+
+        <Route
+          path="/NotificationSettings"
+          element={
+            <Protection>
+              <NotificationSettings />
+            </Protection>
+          }
+        />
+         <Route
+          path="/NameSetting"
+          element={
+            <Protection>
+              <NameSetting />
+            </Protection>
+          }
+        />
+          <Route
+          path="/Security"
+          element={
+            <Protection>
+              <Security />
+            </Protection>
+          }
+        /> <Route
+        path="/ChangePassword"
+        element={
+          <Protection>
+            <ChangePassword />
+          </Protection>
+        }
+      />
         <Route
           path="/Advertisements"
           element={
@@ -224,6 +301,7 @@ function App() {
           }
         />
       </Routes>
+      
     </UserAuthContextProvider>
   );
 }

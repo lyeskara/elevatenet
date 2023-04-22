@@ -1,0 +1,13 @@
+.button-password{
+    color: #fff;
+    background-color: #27746a !important;
+    border-color: #27746a !important;
+}
+
+.input-password{
+    max-width: 500px;
+    margin-bottom: 2%;
+}
+.width-name{
+    width: 50%;
+}

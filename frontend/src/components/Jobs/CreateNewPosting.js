@@ -30,7 +30,7 @@ function CreateNewPosting() {
         company: '',
         description: '',
         apply_here:'',
-        deadline: '',
+        deadline: "",
         resume_required: false,
         cover_letter_required: false,
         advertise: false,
@@ -104,13 +104,14 @@ function CreateNewPosting() {
     //function handleDateInputChange() to handle both functions for date picker field
     // @param {Date} 
     // handles changes to date chosen and updates the field to current choice
-    const handleDateInputChange = (date) => {
-        setStartDate(date);
-        setPostingData((prevState) => ({
-           ...prevState,
-           deadline: date,
-        }));
-     }; 
+    // const handleDateInputChange = (date) => {
+    //     setStartDate(date);
+    //     setPostingData((prevState) => ({
+    //       ...prevState,
+    //       deadline: date.toISOString(),
+    //     }));
+    //   };
+      
     
      useEffect(() => {
       }, [user]);
@@ -121,7 +122,7 @@ function CreateNewPosting() {
     // return users to JobPosting page with updates from database created with form submission
 	return (
 		//Container for new job posting
-		<Container className="container mx-auto w-50">
+		<Container className="container mx-auto container-job">
 			<Row className="gap-6">
 				<Col >
 					<Card className="card">
@@ -141,7 +142,8 @@ function CreateNewPosting() {
                                 name="job_title"
                                 value={postingData.job_title}
                                 onChange={handleInputChange}
-                                style={{backgroundColor: "#F3F3F3"}} 
+                                style={{backgroundColor: "#F3F3F3"}}
+                                required 
                                 />
                             </div>
                             {/* COMPANY */}
@@ -156,6 +158,7 @@ function CreateNewPosting() {
                                 value={postingData.company}
                                 onChange={handleInputChange}
                                 style={{backgroundColor: "#F3F3F3"}}
+                                required
                                 />
                             </div>
                             {/* DESCRIPTION */}
@@ -171,6 +174,7 @@ function CreateNewPosting() {
                                 value={postingData.description}
                                 onChange={handleInputChange}
                                 style={{backgroundColor: "#F3F3F3"}}
+                                required
                                 ></textarea>
                             </div>
                             {/* SKILLS */}
@@ -185,6 +189,7 @@ function CreateNewPosting() {
                                 value={postingData.skills}
                                 onChange={handleInputChange}
                                 style={{backgroundColor: "#F3F3F3"}}
+                                required
                                 />
                             </div>
                             {/* RESUME OR COVER LETTER REQUIRED */}
@@ -230,17 +235,36 @@ function CreateNewPosting() {
                                 />
                             </div>
                             {/* DATE PICKER FOR DEADLINE */}
-                            <div className="form-group mb-3">
+                            {/* <div className="form-group mb-3">
                                 <label htmlFor="formFile" className="form-label">
                                     <h6>Deadline</h6>
                                 </label>
-                                <DatePicker 
-                                selected={startDate} onChange={(startDate) => handleDateInputChange(startDate)} 
-                                id="deadline"
-                                name="deadline"
-                                value={postingData.deadline}
-                                style={{backgroundColor: "#F3F3F3"}}
-                                />
+                                <div className="date-picker">
+                                    <DatePicker
+                                    selected={startDate}
+                                    onChange={handleDateInputChange}
+                                    minDate={new Date()}
+                                    dateFormat="dd/MM/yyyy"
+                                    className="form-control"
+                                    name="deadline"
+                                    required
+                                    />
+                                </div>
+                            </div> */}
+                            {/*Start Date */}
+                            <div className="form-group mb-3">
+                            <label htmlFor="formFile" className="form-label">
+                                <h6>Deadline</h6>
+                            </label>
+                                <div>
+                                    <input
+                                    type="date"
+                                    onChange={handleInputChange}
+                                    id="deadline"
+                                    name="deadline"
+                                    required
+                                    ></input>
+                                </div>
                             </div>
                             {/* CHECKBOX TO KNOW IF POSTING SHOULD BE ADVERTISED   */}
                             <div className="form-group mb-3">
@@ -255,7 +279,7 @@ function CreateNewPosting() {
                                         onClick={() => setPostingData({...postingData, advertise: !postingData.advertise})}
                                         style={{ backgroundColor: postingData.advertise ? '#27746a' : '' }}
                                     >
-                                        {postingData.advertise ? 'Advertise' : 'Do Not Advertised'}
+                                        {postingData.advertise ? 'Advertised' : 'Do Not Advertise'}
                                     </button>
 
                                     {/* xxxxxxxxxxxxxxxxxxx */}

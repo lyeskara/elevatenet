@@ -95,7 +95,9 @@ function Profile() {
 		//Profile card
 
 		<div className="contain">
-			<EditProfile user={user} setUser={setUser}></EditProfile>
+			<div style={{ textAlign: "right", marginRight: "7%", marginTop: "1%" }}>
+				<EditProfile user={user} setUser={setUser}></EditProfile>
+			</div>
 			<Row className="gap-5">
 				<Col className="col1" xs={12} md={{ span: 3, offset: 1 }}>
 					<Card className="profilecard">

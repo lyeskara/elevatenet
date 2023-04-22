@@ -6,15 +6,19 @@ import {
   serverTimestamp,
   query,
   orderBy,
+  getDoc,
+  updateDoc,
+  doc,
+  setDoc
 } from "firebase/firestore"; // Importing Firestore functions
 import { auth } from "../../firebase"; // Importing Firebase authentication
 import { db } from '../../firebase'; // Importing Firebase Firestore database
-import { getStorage, ref, getDownloadURL,uploadBytes } from "firebase/storage";
+import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import "../../styles/Messaging.css"; // Importing styling
 import { Container, Form, Button, FormGroup } from "react-bootstrap";
 import pin from ".././../images/paperclip.png";
 import defpic from ".././../images/test.gif";
-
+import generateKey from "../../generateKey";
 const Message = () => {
   const currentUser = auth.currentUser; // Get the current authenticated user
   const [message, setMessage] = useState(""); // State for message input
@@ -23,7 +27,11 @@ const Message = () => {
   const messagesRef = collection(db, "messages"); // Firestore collection reference for messages
   const [recipientId, setRecipientId] = useState(null); // State for the recipient's user ID
   const [users_information, setUsers] = useState([]); // State for users' information
-
+  const [auth_user_info, setAuthUserInfo] = useState({
+    firstName: "",
+    lastName: "",
+    profilePicUrl: ""
+  })
   const fileRef = useRef(); // Reference to the file input element
   const [file, setFile] = useState(null); // State for selected file
   const handleFileChange = (e) => {
@@ -42,8 +50,15 @@ const Message = () => {
     return () => {
       unsubscribe();
     };
-  }, [setUsers]);
-  
+  }, []);
+
+  useEffect(() => {
+    setAuthUserInfo(users_information.find((obj) => obj.id === currentUser.uid));
+  }, [users_information])
+
+  console.log(auth_user_info)
+
+
   useEffect(() => {
     // Effect hook for fetching messages from Firestore
     const senderId = currentUser.uid;
@@ -62,7 +77,7 @@ const Message = () => {
         querySnapshot.forEach((doc) => {
           const messageData = doc.data();
           if (messageData.fileUrl) {
-            
+
             // If a file URL exists, include the file URL and name in the message object
             messageData.file = {
               url: messageData.fileUrl,
@@ -74,47 +89,76 @@ const Message = () => {
           messagesArray.push(messageData);
         });
         setMessages(messagesArray);
-        
+
       });
       return unsubscribe; // Unsubscribe from the snapshot listener when the component unmounts
     }
   }, [currentUser.uid, recipientId]); // Re-run the effect when either the current user ID or recipient ID changes
-  
+
 
   const storage = getStorage(); // Get Firebase Storage instance
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const message = messageRef.current.value.trim();
     if (!file && message === '') {
       // If the message is empty and no file was selected, return without submitting
       return;
     }
-  
+
     let fileUrl = null;
     if (file) {
       const storageRef = ref(storage, `messages/${file.name}`);
       await uploadBytes(storageRef, file);
       fileUrl = await getDownloadURL(storageRef);
     }
-  
+
     const data = {
       text: message,
       createdAt: serverTimestamp(),
       sender: currentUser.uid,
     };
-  
+
     if (file) {
       const storageRef = ref(storage, `messages/${file.name}`);
       await uploadBytes(storageRef, file);
       data.fileName = file.name;
       data.fileUrl = await getDownloadURL(storageRef);
     }
-  
+
     try {
       const conversationId = [currentUser.uid, recipientId].sort().join('-');
       const conversationRef = collection(db, 'messages', conversationId, 'conversation');
+
+      const notification_settings = (await getDoc(doc(collection(db, "notification_settings"), recipientId))).data();
+
+      if (notification_settings !== undefined && notification_settings.dm !== false) {
+        const receipient_notifications = (await getDoc(doc(collection(db, 'Notifications'), recipientId))).data();
+        const note = {
+          message: `${auth_user_info.firstName} ${auth_user_info.lastName} has sended you a message, go check it out!`,
+          profilePicUrl: auth_user_info.profilePicUrl,
+          receipient_notifications: generateKey(8),
+        }
+        if (receipient_notifications === undefined) {
+          console.log("error is here")
+          setDoc(doc(collection(db, 'Notifications'), recipientId), { notifications: [note] })
+        } else {
+          const notifications_array = receipient_notifications.notifications;
+          let condition = false
+          notifications_array.forEach((notif) => {
+            if (!(notif.receipient_notifications === note.receipient_notifications)) {
+              condition = true;
+            }
+          })
+          if (condition) {
+            notifications_array.push(note)
+          }
+          updateDoc(doc(collection(db, 'Notifications'), recipientId), {
+            notifications: notifications_array
+          })
+        }
+      }
       await addDoc(conversationRef, data);
       setMessages([...messages, data]);
       setMessage('');
@@ -123,8 +167,8 @@ const Message = () => {
       console.log(e);
     }
   };
-  
-  
+
+
 
   // This function is called whenever the input field for the message changes
   const handleMessageChange = (e) => {
@@ -140,46 +184,49 @@ const Message = () => {
 
   return (
     <>
-    <Container>
-      {/* The main container for the chat */}
-      <div className="container-m">
-        {/* The chat list section */}
-        <div className="chat-list-m">
-          <h2 className="mb-5">Chat List</h2>
-          <div style={{ overflowY: "scroll", height: "500px" }}>
-          {/* Maps through all the users in the 'users_information' array, 
+      <Container>
+        {/* The main container for the chat */}
+        <div className="container-m">
+          {/* The chat list section */}
+          <div className="chat-list-m">
+            <h2 className="mb-5">Chat List</h2>
+            <div style={{ overflowY: "scroll", height: "500px" }}>
+              {/* Maps through all the users in the 'users_information' array, 
               except the current user, and renders a 'user-tab' div for each */}
-          {users_information.map(
-            (user) =>
-              user.id !== currentUser.uid && (
-                <div
-                tabindex="0"
-                  key={user.id}
-                  className="user-tab-m"
-                  onClick={() => setRecipientId(user.id)}
-                >
-                  <img src={user.avatarUrl} style={{ marginRight: "20px" }} />
-                  <h3>
-                    {user.firstName} {user.lastName}
-                  </h3>
-                </div>
-              )
-            /*style={{
-                    backgroundColor: msg.sender === currentUser.uid ? '#27746A' : 'grey',
-                    textAlign: msg.sender === currentUser.uid ? 'right' : 'left',
-                  }}
-                  */
-          )}</div>
-        </div>
+              {users_information.map(
+                (user) =>
+                  user.id !== currentUser.uid && (
+                    <div
+                      tabindex="0"
+                      key={user.id}
+                      className="user-tab-m"
+                      onClick={() => setRecipientId(user.id)}
+                    >
+                      <img className="chat-pic" src={user.profilePicUrl || defpic} style={{ marginRight: "20px" }} />
+                      <h3>
+                        {user.firstName} {user.lastName}
+                      </h3>
+                    </div>
+                  )
+                /*style={{
+                        backgroundColor: msg.sender === currentUser.uid ? '#27746A' : 'grey',
+                        textAlign: msg.sender === currentUser.uid ? 'right' : 'left',
+                      }}
+                      */
+              )}</div>
+          </div>
 
-        {/* A divider between the chat list and messages section*/} 
-        <div className="divider-m"></div>
+          {/* A divider between the chat list and messages section*/}
+          <div className="divider-m"></div>
 
-        {/* The messages section */}
-        <div className="text-m">
+          {/* The messages section */}
+          <div className="text-m">
             <div className="containRequest">
-          <img src={defpic} className="defpic-m"></img>
-          <h2>{recipientId ? users_information.find(user => user.id === recipientId).firstName + " " + users_information.find(user => user.id === recipientId).lastName : "Message"}</h2>
+              {recipientId && users_information.find(user => user.id === recipientId) && (
+                <img src={users_information.find(user => user.id === recipientId).profilePicUrl || defpic} className="defpic-m"></img>
+              )}
+
+              <h2>{recipientId ? users_information.find(user => user.id === recipientId).firstName + " " + users_information.find(user => user.id === recipientId).lastName : "Message"}</h2>
             </div>
             {/* Renders all the messages in the 'messages' array, with the sender's 
                 messages having a green background and the receiver's messages having 
@@ -188,26 +235,25 @@ const Message = () => {
               {messages.map((msg, index) => (
                 <div
                   key={index}
-                  className={`message-m ${
-                    msg.sender === currentUser.uid ? "sent-m" : "received-m"
-                  }`}
+                  className={`message-m ${msg.sender === currentUser.uid ? "sent-m" : "received-m"
+                    }`}
                 >
-                <p>
-                {msg.text}
-                {msg.file && (
-                  <a href={msg.fileUrl} download={msg.fileName} target="_blank">
-                    <span style={{ textDecoration: 'underline', fontSize: '0.8em', color:"white" }}>{msg.fileName}</span>
-                  </a>
-                )}
-              </p>
+                  <p>
+                    {msg.text}
+                    {msg.file && (
+                      <a href={msg.fileUrl} download={msg.fileName} target="_blank">
+                        <span style={{ textDecoration: 'underline', fontSize: '0.8em', color: "white" }}>{msg.fileName}</span>
+                      </a>
+                    )}
+                  </p>
                 </div>
               ))}
             </div>
 
             {/* A form for sending a message */}
             <Form onSubmit={handleSubmit}>
-           
-            <div className="textarea-message form-group">  
+
+              <div className="textarea-message form-group">
                 <textarea
                   type="text"
                   className="textarea-message"
@@ -221,15 +267,15 @@ const Message = () => {
               </div>
 
               <div className="containRequest right-side"><label for="file-upload">
-              <img src={pin}></img>
-              <input
-                className="file-m"
-                id="file-upload"
-                type="file"
-                onChange={handleFileChange}
-                ref={fileRef}
-              ></input>
-            </label>
+                <img src={pin}></img>
+                <input
+                  className="file-m"
+                  id="file-upload"
+                  type="file"
+                  onChange={handleFileChange}
+                  ref={fileRef}
+                ></input>
+              </label>
                 <button
                   className="button-m form-control mt-2"
                   type="button"
@@ -238,13 +284,13 @@ const Message = () => {
                   Send
                 </button>
               </div>
-              
+
             </Form>
 
             {/* An input field for uploading a file */}
-           
+
           </div>
-          </div>
+        </div>
       </Container>
     </>
   );

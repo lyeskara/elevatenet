@@ -159,7 +159,7 @@ function RequestsPage() {
       <div className="contain">
         <Row className="gap-5">
           <center>
-            <Col xs={6} md={6}>
+            <Col xs={11} md={6}>
               <Card className="card">
                 <div className="containRequest">
                   <Link to="/connections">

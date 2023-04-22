@@ -6,6 +6,72 @@
 .w-100:hover {
   border: 1px solid #0e0e0e;}
 
-  .card-save{
-    margin-left: 10%;
+  
+
+  .search-job{
+    max-width: 55%;
   }
+  
+  .skill-button,
+.skill-button:hover {
+  color: #fff;
+  background-color: #27746a;
+  border-color: #27746a;
+}
+.skill-button:active,
+.skill-button:focus {
+  color: #fff;
+  background-color: #27746a !important;
+  border-color: #27746a !important;
+  box-shadow: 0 0 0 0.2rem #27746a !important;
+}
+
+.sponsor{
+  border-color: #27746a !important;
+  border-width: 5px;
+  background-color: #E2E2E2;
+}
+.sponsor-title{
+  color: #27746a;
+  margin-bottom: -20px;
+}
+
+
+@media screen and (max-width: 393px) {
+  .apply-button{
+    font-size: 15px;
+    width: 100px;
+    height: 70%;
+  }
+  .heart-button{
+    width: 30px;
+  }
+  .card-company{
+    margin-top: 7%;
+  }
+}
+@media screen and (min-width: 394px) {
+  .apply-button{
+    font-size: 15px;
+    width: 100%;
+  }
+  .heart-button{
+    width: 3rem;
+  }
+  .container-apply{
+    width: 50%;
+  }
+  .container-job{
+    width: 50%
+  }
+}
+
+@media screen and (min-width: 820px) {
+ 
+  .container-apply{
+    width: 90%;
+  }
+  .container-job{
+    width: 60%
+  }
+}
