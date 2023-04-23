@@ -1,63 +1,45 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { updatePassword } from 'firebase/auth';
-import { collection, getDoc, doc } from 'firebase/firestore';
-import { act } from 'react-dom/test-utils';
-import ChangePassword from './ChangePassword';
+// Import dependencies
+import React from "react";
+import { render, fireEvent, screen } from "@testing-library/react";
+import { ChangePassword } from "./ChangePassword";
 
-jest.mock('firebase/auth', () => ({
-  updatePassword: jest.fn(),
-}));
-
-jest.mock('firebase/firestore', () => ({
-  collection: jest.fn(),
-  doc: jest.fn(),
-  getDoc: jest.fn(),
-}));
-
-describe('ChangePassword component', () => {
-  afterEach(() => {
-    jest.clearAllMocks();
+describe("ChangePassword", () => {
+  it("should render the ChangePassword component", () => {
+    render(<ChangePassword />);
+    const title = screen.getByText("Change Password");
+    expect(title).toBeInTheDocument();
   });
 
-  it('updates password when button is clicked', async () => {
-    const mockUserDoc = {
-      exists: true,
-      data: () => ({
-        email: 'user@example.com',
-      }),
-    };
-    const mockGetDoc = jest.fn(() => Promise.resolve(mockUserDoc));
-    getDoc.mockImplementation(mockGetDoc);
-    updatePassword.mockImplementation(() => Promise.resolve());
+  it("should display an error message if the new password and confirm password fields are empty", async () => {
+    render(<ChangePassword />);
+    const changePasswordBtn = screen.getByText("Change Password");
+    fireEvent.click(changePasswordBtn);
+    const errorMessage = await screen.findByText("Missing input");
+    expect(errorMessage).toBeInTheDocument();
+  });
 
-    await act(async () => {
-      render(<ChangePassword />);
-    });
+  it("should display an error message if the new password and confirm password fields do not match", async () => {
+    render(<ChangePassword />);
+    const newPasswordField = screen.getByPlaceholderText("New password");
+    const confirmPasswordField = screen.getByPlaceholderText("Confirm password");
+    const changePasswordBtn = screen.getByText("Change Password");
+    fireEvent.change(newPasswordField, { target: { value: "newpassword" } });
+    fireEvent.change(confirmPasswordField, { target: { value: "differentpassword" } });
+    fireEvent.click(changePasswordBtn);
+    const errorMessage = await screen.findByText("Passwords do not match");
+    expect(errorMessage).toBeInTheDocument();
+  });
 
-    const newPasswordInput = screen.getByLabelText(/new password/i);
-    const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-    const changePasswordButton = screen.getByRole('button', {
-      name: /change password/i,
-    });
-
-    fireEvent.change(newPasswordInput, { target: { value: 'newpassword' } });
-    fireEvent.change(confirmPasswordInput, {
-      target: { value: 'newpassword' },
-    });
-    fireEvent.click(changePasswordButton);
-
-    await waitFor(() => {
-      expect(updatePassword).toHaveBeenCalledTimes(1);
-      expect(updatePassword).toHaveBeenCalledWith(
-        expect.any(Object),
-        'newpassword'
-      );
-      expect(mockGetDoc).toHaveBeenCalledTimes(1);
-      expect(mockGetDoc).toHaveBeenCalledWith(
-        doc(collection(), 'users_information', expect.any(String))
-      );
-      expect(screen.queryByText(/error/i)).not.toBeInTheDocument();
-      expect(screen.getByText(/success/i)).toBeInTheDocument();
-    });
+  it("should display a success message if the password is successfully updated", async () => {
+    render(<ChangePassword />);
+    const newPasswordField = screen.getByPlaceholderText("New password");
+    const confirmPasswordField = screen.getByPlaceholderText("Confirm password");
+    const changePasswordBtn = screen.getByText("Change Password");
+    fireEvent.change(newPasswordField, { target: { value: "newpassword" } });
+    fireEvent.change(confirmPasswordField, { target: { value: "newpassword" } });
+    fireEvent.click(changePasswordBtn);
+    const successMessage = await screen.findByText("Your password has been updated successfully.");
+    expect(successMessage).toBeInTheDocument();
   });
 });
+
