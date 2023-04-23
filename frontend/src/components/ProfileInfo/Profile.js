@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Fragment } from "react";
-import { collection, getDocs, doc, query, where } from "firebase/firestore";
+import { collection, getDoc, doc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import Card from "react-bootstrap/Card";
 import "../../styles/profile.css";
@@ -12,12 +12,9 @@ import workpic from "../../images/work.png";
 import { getStorage, ref, getDownloadURL, getMetadata } from "firebase/storage";
 
 /**
- * The Profile page displays the information of the user. It is used to access the user's information more easily.
- * @return { Object } The page as a React component with the information of the user.
- * @example
- * return (
- *  <Profile />
- * )
+ * Profile component displays the user's profile information.
+ * @returns Profile component
+ *
  */
 function Profile() {
 	const [user, setUser] = useState({});
@@ -26,98 +23,28 @@ function Profile() {
 	const storage = getStorage();
 	const [education, setEducation] = useState([]);
 	const [work, setWork] = useState([]);
-	const [userType, setUserType] = useState(null); // add state to store user type
-	const email = auth.currentUser.email;
-	var collec = "";
-	console.log(auth.currentUser.uid);
+
 	/**
-	 * Get the user data from Firestore
-	 * @return { Object } The user data
-	 * @example
-	 * const user = getUserData();
+	 * getUserInformation() gets the user's information from the database.
+	 * @returns user information
+	 *
 	 */
 
-	const getUserData = async () => {
-		try {
-			const recruiterQuerySnapshot = await getDocs(
-				query(
-					collection(db, "recruiters_informations"),
-					where("email", "==", email)
-				)
-			);
-			if (!recruiterQuerySnapshot.empty) {
-				setUserType("recruiter");
-				console.log("recruiter");
-				console.log({ userType } + "nihao");
-			}
-			// Check if the email belongs to a job seeker
-			const userQuerySnapshot = await getDocs(
-				query(collection(db, "users_information"), where("email", "==", email))
-			);
-			if (!userQuerySnapshot.empty) {
-				setUserType("job seeker");
-				console.log("job seeker");
-				console.log({ userType } + "chinchin");
-			}
-			if (userType === "job seeker") {
-				collec = "users_information";
-				if (userType === "recruiter") {
-					collec = "recruiters_informations";
-				}
-			}
-			console.log(collec + " collection");
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
 	const getUserInformation = async () => {
-		let userDoc = await getDoc(
-			doc(collection(db, collec), auth.currentUser.uid)
+		const userDoc = await getDoc(
+			doc(collection(db, "users_information"), auth.currentUser.uid)
 		);
-		if (userDoc.exists()) {
+
+		if (userDoc.exists) {
 			// Set the user state
 			setUser({ ...userDoc.data(), id: userDoc.id });
-			// Get the profile picture URL from Firebase Storage
-			if (
-				userDoc.data().profilePicURL !==
-				"https://firebasestorage.googleapis.com/v0/b/soen390-b027d.appspot.com/o/profilepics%2FBase%2Ftest.gif?alt=media&token=d295d8c2-493f-4c20-8fac-0ede65eaf0b6"
-			) {
-				storageRef = ref(
-					storage,
-					`profilepics/${auth.currentUser.uid}/profilePic`
-				);
-			} else {
-				storageRef = ref(storage, `profilepics/Base/test.gif`);
-			}
-			/**
-			 *  Check if the profile picture exists in Firebase Storage
-			 */
-			const metadata = await getMetadata(storageRef);
-			const downloadURL = await getDownloadURL(storageRef);
 
-			/**
-			 *  Set the profile picture URL state
-			 */
-
-			setProfilePicURL(downloadURL);
-
-			/**
-			 *  Get the education data
-			 */
+			// Get the education data
 			const educationData = userDoc.data().education;
 			setEducation(educationData);
 
-			/**
-			 *  Get the work data
-			 */
-
 			const workData = userDoc.data().workExperience;
 			setWork(workData);
-
-			/**
-			 *  Get the number of connections
-			 */
 
 			const connectionsDoc = await getDoc(
 				doc(collection(db, "connection"), auth.currentUser.uid)
@@ -137,11 +64,13 @@ function Profile() {
 			} else {
 				console.log("The connections document does not exist or has no data");
 			}
-		} else {
-			console.log("The user document does not exist or has no data");
 		}
 	};
-
+	/**
+	 * getUserProfilePicture() gets the user's profile picture from Firebase Storage.
+	 * @returns user's profile picture
+	 *
+	 */
 	const getUserProfilePicture = async () => {
 		const profilePicRef = ref(
 			storage,
@@ -164,15 +93,19 @@ function Profile() {
 			setProfilePicURL(downloadURL);
 		}
 	};
-
+	/**
+	 * useEffect() is a React hook that runs once the component is mounted.
+	 * @returns user information and profile picture
+	 *
+	 */
 	useEffect(() => {
 		getUserInformation();
 		getUserProfilePicture();
-		getUserData();
 	}, [auth]);
-
 	/**
-	 *  Handles download of resume
+	 * downloadResume() downloads the user's resume from Firebase Storage.
+	 * @returns user's resume
+	 *
 	 */
 	const downloadResume = async () => {
 		const storageRef = ref(storage, `resume/${auth.currentUser.uid}/resume`);
@@ -189,7 +122,8 @@ function Profile() {
 		}
 	};
 	/**
-	 *  Handles download of coverletter
+	 * downloadCL() downloads the user's cover letter from Firebase Storage.
+	 * @returns user's cover letter
 	 */
 	const downloadCL = async () => {
 		const storageRef = ref(storage, `CL/${auth.currentUser.uid}/CL`);

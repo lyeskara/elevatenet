@@ -30,33 +30,7 @@ function RecruiterForm() {
 					lastName: profileData.lastName,
 					company: profileData.company,
 					city: profileData.city,
-					bio: "",
-					workExperience: {
-						0: {
-							position: "",
-							company: profileData.company,
-							startDate: "",
-							endDate: "",
-						},
-					},
-					education: {
-						0: {
-							name: "",
-							startDate: "",
-							endDate: "",
-							major: "",
-						},
-					},
-					skills: [],
-					languages: "",
-					contact: "",
-					courses: [],
-					volunteering: [],
-					projects: [],
-					awards: [],
-					profilePicUrl: "",
-					resumeUrl: "",
-					CLUrl: "",
+					contact: profileData.contact,
 				}
 			);
 			// Clear the form fields
@@ -65,8 +39,9 @@ function RecruiterForm() {
 				lastName: "",
 				city: "",
 				company: "",
+				contact: "",
 			});
-			navigate("/Profile");
+			navigate("/RecruiterProfile");
 		} else {
 			console.log("error happened. Try again!");
 		}
@@ -122,6 +97,17 @@ function RecruiterForm() {
 								onChange={update}
 								value={profileData.company}
 								placeholder="company"
+							/>
+						</Form.Group>
+						<Form.Group className="mb-3" controlId="formcontact">
+							<Form.Control
+								as="textarea"
+								rows={3}
+								className="input_box"
+								name="contact"
+								onChange={update}
+								value={profileData.contact}
+								placeholder="contact"
 							/>
 						</Form.Group>
 					</center>
