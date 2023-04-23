@@ -31,6 +31,7 @@ function RecruiterForm() {
 					company: profileData.company,
 					city: profileData.city,
 					contact: profileData.contact,
+					profilePicUrl: "",
 				}
 			);
 			// Clear the form fields

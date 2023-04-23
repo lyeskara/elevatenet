@@ -110,6 +110,17 @@ function EditRecruiterProfile({ user, setUser }) {
 							/>
 						</Form.Group>
 
+						<Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+							<Form.Label>Company</Form.Label>
+							<Form.Control
+								name="company"
+								type="text"
+								defaultValue={user.company}
+								onChange={update}
+								autoFocus
+							/>
+						</Form.Group>
+
 						<Form.Group
 							className="mb-3"
 							controlId="exampleForm.ControlTextarea1"

@@ -12,6 +12,7 @@ import Profile from "./components/ProfileInfo/Profile";
 import JobPostings from "./components/Jobs/JobPostings";
 import Protection from "./context/Protection";
 import OtherUsersProfile from "./components/ProfileInfo/OtherUsersProfile";
+import OtherRecruitersProfile from "./components/ProfileInfo/OtherRecruitersProfile";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
 import EditProfile from "./components/ProfileInfo/EditProfile";
 import CreateNewPosting from "./components/Jobs/CreateNewPosting";
@@ -144,6 +145,14 @@ function App() {
 					element={
 						<Protection>
 							<OtherUsersProfile />
+						</Protection>
+					}
+				></Route>
+				<Route
+					path="recruiterprofile/:id"
+					element={
+						<Protection>
+							<OtherRecruitersProfile />
 						</Protection>
 					}
 				></Route>
