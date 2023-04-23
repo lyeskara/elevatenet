@@ -402,7 +402,7 @@ function JobPageForSeekers() {
                             display: "flex",
                             justifyContent: "space-between",
                             alignItems: "center",
-                            height: "50px" // set a fixed height for the containing element
+                            
                           }}
                         >
                           <h3 style={{ color: "#27764A" }}>{posting.job_title}</h3>
@@ -446,9 +446,9 @@ function JobPageForSeekers() {
                         <hr/>
                         <Card.Text>{posting.description}</Card.Text>
                         {posting.skills && Array.isArray(posting.skills) && (
-                          <div style={{ display: "flex", flexDirection: "row" }}>
+                          <div className="skill-card" style={{ flexDirection: "row" }}>
                             {posting.skills.map((skill) => (
-                              <span key={skill} className="skills-btn">
+                              <span key={skill} className="skills-btn-seeker">
                                 {skill}
                               </span>
                             ))}

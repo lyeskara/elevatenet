@@ -1,0 +1,68 @@
+/* Example CSS for DMModerationMenu component */
+.dm-moderation-menu {
+    position: fixed;
+    right:0;
+    margin-right: 120px;
+    
+
+  }
+  
+  .ellipsis-icon {
+    /* Add any necessary styles for the ellipsis icon */
+    /* Example: */
+    display: flex;
+    justify-content: flex-end; /* aligns the icon to the right */
+    align-items: center; /* vertically aligns the icon */
+    height: 100%; /* adjust as needed */
+  }
+  
+  .ellipsis-icon:hover {
+    /* Add any desired visual effects when hovered */
+    /* Example: */
+    transform: scale(1.1); /* increases the size of the icon by 10% when hovered */
+  }
+  
+  
+  .dm-moderation-menu-items {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #ffffff;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: none;
+  }
+  
+  .dm-moderation-menu:hover .dm-moderation-menu-items {
+    display: contents;
+
+  }
+  
+  .dm-moderation-menu-items li {
+    /* Add any necessary styles for the menu item */
+    cursor: pointer;
+    padding: 10px; /* add padding around each list item */
+    color: #333; /* set text color */
+    transition: background-color 0.3s ease; /* add smooth transition effect */
+
+  }
+  
+  .dm-moderation-menu-items li:hover {
+    /* Add styles for list item when hovered */
+    background-color: #ddd; /* set background color when hovered */
+  }
+  
+  .dm-moderation-menu-items li:first-child {
+    /* Add styles for first list item */
+    border-top-left-radius: 4px; /* round the top-left corner */
+    border-top-right-radius: 4px; /* round the top-right corner */
+  }
+  
+  .dm-moderation-menu-items li:last-child {
+    /* Add styles for last list item */
+    border-bottom-left-radius: 4px; /* round the bottom-left corner */
+    border-bottom-right-radius: 4px; /* round the bottom-right corner */
+    
+  }
+  
