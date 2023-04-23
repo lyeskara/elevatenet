@@ -15,6 +15,12 @@ import { useUserAuth } from '../../context/UserAuthContext';
 import { useNavigate } from 'react-router-dom';
 import { collection, setDoc ,doc, addDoc} from 'firebase/firestore';
 
+/* A function that allows job recruiter to create advertisement
+ *
+ * @param {none}
+ * @returns {collection item in database} A new advertisement instance is stored in the Firestore database for further use.
+ */
+
 function CreateAdvertisements() {
     const { user } = useUserAuth();
     const navigate =useNavigate();

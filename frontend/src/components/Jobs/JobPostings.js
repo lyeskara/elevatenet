@@ -20,6 +20,11 @@ import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
+/**
+ * The Jobposting page displays the jobs are posted
+ *
+ * @return { Object } The page as a React component with the information of the job posts gtom job recruiter.
+ */
 function JobPostings() {
 	// State and constants for handling data
 	const [isLoaded, setIsLoaded] = useState(false);
