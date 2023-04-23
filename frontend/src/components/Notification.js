@@ -4,6 +4,11 @@ import { auth, db } from "../firebase";
 import { Card, Container, Col, Row } from "react-bootstrap";
 import "./../styles/Notification.css";
 
+/**
+ * The Notfication page displays the notifications that the user receive
+ *
+ * @return { Object } The page as a React component with the information of the notification linked to the user account.
+ */
 function Notification() {
   // states for notification variable
   const [Notifications, SetNotifications] = useState([]);

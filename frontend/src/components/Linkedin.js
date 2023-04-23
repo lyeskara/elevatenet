@@ -2,6 +2,11 @@ import React from "react";
 import { Container } from "react-bootstrap";
 import gif from "./../images/test.gif";
 
+/**
+ * The Linkedin page displays the main page when the app is rendered.
+ *
+ * @return { Object } The page as a React component with home page
+ */
 function Linkedin() {
 	return (
 		<div style={{ minHeight: "70vh" }}>
