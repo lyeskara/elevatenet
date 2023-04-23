@@ -91,11 +91,6 @@ if (currentUser?.uid === '361FbyTxmmZqCT03kGd25kSyDff1') {
             {" "}
             Job Postings{" "}
           </h4>
-          {/* Reported Users */}
-          {/* <h4 onClick={goToReportedUsers} style={{ color: "#27746a" }}>
-            {" "}
-            Reported Users{" "}
-          </h4> */}
           {/* Feed Posts */}
           <h4 onClick={goToFeedPosts} style={{ color: "#888888" }}>
             {" "}
@@ -117,16 +112,13 @@ if (currentUser?.uid === '361FbyTxmmZqCT03kGd25kSyDff1') {
                 <hr></hr>
                 <Card.Text><h5>{reportedUser.firstName} {reportedUser.lastName}</h5></Card.Text>
                 <Card.Subtitle className="mb-2 text-muted">
-                  ID: {reportedUser.id}
-                </Card.Subtitle>
-                <Card.Subtitle className="mb-2 text-muted">
                   Reason: {reportedUser.reason}
                 </Card.Subtitle>
                 <Button
                   variant="outline-danger"
                   onClick={() => handleDeleteReportedUser(reportedUser.id)}
                 >
-                  Delete
+                  Delete Report
                 </Button>
               </Card.Body>
             </Card>
