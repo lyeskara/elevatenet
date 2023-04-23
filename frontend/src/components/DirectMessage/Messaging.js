@@ -12,12 +12,27 @@ import mod_icon from ".././../images/icon_mark.png";
 import generateKey from "../../generateKey";
 import "../../styles/DMModerationMenu.css"; // Importing styling
 
+// messaging.js
+//import { connections } from '.././connection/ConnectionPage';
+//import connectionsData from '.././connection/ConnectionPage'; // Import connectionPage.js
+
+
 const Message = () => {
+  // const connections = connectionsData;
+  // console.log("heyyyyyy");
+  // console.log("connections:"+ connections);
+  // const connectionIds = connections.map(connection => connection.id);
+
   const currentUser = auth.currentUser; // Get the current authenticated user
   const [message, setMessage] = useState(""); // State for message input
   const [messages, setMessages] = useState([]); // State for messages
   const messageRef = useRef(); // Reference to the message input element
   const messagesRef = collection(db, "messages"); // Firestore collection reference for messages
+  const colRef = collection(db, "connection");
+  const [connections, Setconnections] = useState([]);
+  const [ids, Setids] = useState([]);
+  const authUserId = auth.currentUser.uid;
+  const userRef = collection(db, "users_information");
   const [recipientId, setRecipientId] = useState(null); // State for the recipient's user ID
   const [users_information, setUsers] = useState([]); // State for users' information
   const [auth_user_info, setAuthUserInfo] = useState({
@@ -112,6 +127,47 @@ const Message = () => {
   }, [blockedUsers]);
   
   
+  console.log(connections);
+    /** 
+   * Accepts a function that contains imperative, possibly effectful code.
+   * @param effect — Imperative function that can return a cleanup function
+   * @param deps — If present, effect will only activate if the values in the list change.
+  */
+  useEffect(() => {
+    getDoc(doc(colRef, authUserId)).then((connection) => {
+      Setids(connection.data().connections);
+      console.log(ids);
+    });
+  }, []);
+
+/** 
+   * Accepts a function that contains imperative, possibly effectful code.
+   * @param effect — Imperative function that can return a cleanup function
+   * @param deps — If present, effect will only activate if the values in the list change.
+  */
+useEffect(() => {
+  ids.forEach((id) => {
+    getDoc(doc(userRef, id))
+      .then((user) => {
+        const { firstName, lastName } = user.data();
+        const id = user.id;
+        if (
+          !connections.find(
+            (user1) =>
+              user1.firstName === firstName && user1.lastName === lastName
+          )
+        ) {
+          Setconnections((prevData) => [
+            ...prevData,
+            { id, firstName, lastName },
+          ]);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+}, [ids]);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'users_information'), (snapshot) => {
@@ -281,7 +337,7 @@ const Message = () => {
             <div style={{ overflowY: "scroll", height: "500px" }}>
               {/* Maps through all the users in the 'users_information' array, 
               except the current user, and renders a 'user-tab' div for each */}
-              {users_information.map(
+              {connections.map(
                 (user) =>
                   user.id !== currentUser.uid && (
                     <div
@@ -466,6 +522,7 @@ const Message = () => {
           </div>
         </div>
       </Container>
+      
     </>
   );
 };
