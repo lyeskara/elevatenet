@@ -2,6 +2,16 @@ import React, { useState } from "react";
 import { useUserAuth } from "../../context/UserAuthContext.js";
 import { useNavigate } from "react-router-dom";
 import { Container, Form, Button, Modal } from "react-bootstrap";
+import { auth, db } from "../../firebase";
+import {
+  collection,
+  getDocs,
+  deleteDoc,
+  doc,
+  setDoc,
+  Timestamp,
+  getDoc
+} from "firebase/firestore";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -29,15 +39,31 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Check if the email exists in deleted_users collection
+      const deletedUsersCollection = collection(db, "deleted_users");
+      const deletedUsersSnapshot = await getDocs(deletedUsersCollection);
+      const isDeletedUser = deletedUsersSnapshot.docs.some(
+        (doc) => doc.id === email
+      );
+  
+      // If the email exists in deleted_users collection, don't allow login
+      if (isDeletedUser) {
+        setErrorMessage("This account has been deleted.");
+        console.log("deleted user")
+        setShowModal(true);
+        return;
+      }
+  
+      // Proceed with login
       await Login(email, password);
-      navigate("/Profile");
-      console.log(Login(email, password));
+      navigate("/");
     } catch (error) {
       console.log(error.message);
       setErrorMessage(error.message);
       setShowModal(true);
     }
   };
+  
 
   const [showModal, setShowModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");

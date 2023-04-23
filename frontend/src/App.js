@@ -53,6 +53,8 @@ import NotificationSettings from "./components/Settings/Notificationsettings";
 
 import NameSetting from "./components/Settings/NameSetting";
 
+import AdminReportedUsers from "./components/Admin/AdminReportedUsers";
+
 
 function App() {
   return (
@@ -79,6 +81,10 @@ function App() {
         <Route
           path="/AdminUsers"
           element={<Protection>{<AdminUsers />}</Protection>}
+        ></Route>
+        <Route
+          path="/AdminReportedUsers"
+          element={<Protection>{<AdminReportedUsers />}</Protection>}
         ></Route>
         <Route
           path="/RecruiterForm"
