@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Fragment } from "react";
-import { collection, getDoc, doc } from "firebase/firestore";
+import { collection, getDocs, doc, query, where } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import Card from "react-bootstrap/Card";
 import "../../styles/profile.css";
@@ -26,7 +26,10 @@ function Profile() {
 	const storage = getStorage();
 	const [education, setEducation] = useState([]);
 	const [work, setWork] = useState([]);
-
+	const [userType, setUserType] = useState(null); // add state to store user type
+	const email = auth.currentUser.email;
+	var collec = "";
+	console.log(auth.currentUser.uid);
 	/**
 	 * Get the user data from Firestore
 	 * @return { Object } The user data
@@ -34,12 +37,45 @@ function Profile() {
 	 * const user = getUserData();
 	 */
 
-	const getUserInformation = async () => {
-		const userDoc = await getDoc(
-			doc(collection(db, "users_information"), auth.currentUser.uid)
-		);
+	const getUserData = async () => {
+		try {
+			const recruiterQuerySnapshot = await getDocs(
+				query(
+					collection(db, "recruiters_informations"),
+					where("email", "==", email)
+				)
+			);
+			if (!recruiterQuerySnapshot.empty) {
+				setUserType("recruiter");
+				console.log("recruiter");
+				console.log({ userType } + "nihao");
+			}
+			// Check if the email belongs to a job seeker
+			const userQuerySnapshot = await getDocs(
+				query(collection(db, "users_information"), where("email", "==", email))
+			);
+			if (!userQuerySnapshot.empty) {
+				setUserType("job seeker");
+				console.log("job seeker");
+				console.log({ userType } + "chinchin");
+			}
+			if (userType === "job seeker") {
+				collec = "users_information";
+				if (userType === "recruiter") {
+					collec = "recruiters_informations";
+				}
+			}
+			console.log(collec + " collection");
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
-		if (userDoc.exists) {
+	const getUserInformation = async () => {
+		let userDoc = await getDoc(
+			doc(collection(db, collec), auth.currentUser.uid)
+		);
+		if (userDoc.exists()) {
 			// Set the user state
 			setUser({ ...userDoc.data(), id: userDoc.id });
 			// Get the profile picture URL from Firebase Storage
@@ -101,6 +137,8 @@ function Profile() {
 			} else {
 				console.log("The connections document does not exist or has no data");
 			}
+		} else {
+			console.log("The user document does not exist or has no data");
 		}
 	};
 
@@ -130,6 +168,7 @@ function Profile() {
 	useEffect(() => {
 		getUserInformation();
 		getUserProfilePicture();
+		getUserData();
 	}, [auth]);
 
 	/**

@@ -30,7 +30,33 @@ function RecruiterForm() {
 					lastName: profileData.lastName,
 					company: profileData.company,
 					city: profileData.city,
-					profilePicURL: "",
+					bio: "",
+					workExperience: {
+						0: {
+							position: "",
+							company: profileData.company,
+							startDate: "",
+							endDate: "",
+						},
+					},
+					education: {
+						0: {
+							name: "",
+							startDate: "",
+							endDate: "",
+							major: "",
+						},
+					},
+					skills: [],
+					languages: "",
+					contact: "",
+					courses: [],
+					volunteering: [],
+					projects: [],
+					awards: [],
+					profilePicUrl: "",
+					resumeUrl: "",
+					CLUrl: "",
 				}
 			);
 			// Clear the form fields

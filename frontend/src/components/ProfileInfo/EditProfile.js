@@ -4,7 +4,14 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { auth, db } from "../../firebase";
-import { collection, setDoc, doc } from "firebase/firestore";
+import {
+	collection,
+	setDoc,
+	doc,
+	getDocs,
+	query,
+	where,
+} from "firebase/firestore";
 
 const storageRef = ref(
 	"https://console.firebase.google.com/project/soen390-b027d/storage/soen390-b027d.appspot.com/images"
@@ -28,9 +35,12 @@ function EditProfile({ user, setUser }) {
 	const [selectedResume, setSelectedResume] = useState(null);
 	const [selectedCL, setSelectedCL] = useState(null);
 	const [updatedUser, setUpdatedUser] = useState({}); // create a copy of the user object using useState
+	const [userType, setUserType] = useState(null); // add state to store user type
 	let downloadPicURL = null;
 	let downloadResumeURL = null;
 	let downloadCLURL = null;
+	var collec = "";
+	const email = auth.currentUser.email;
 	/**
 	 * setUser allows us to set the User to our changled values stored in setUser.
 	 * @constructor
@@ -118,27 +128,50 @@ function EditProfile({ user, setUser }) {
 			 * @param {object} downloadResumeURL - Download URL for the resume.
 			 * @param {object} downloadCLURL - Download URL for the cover letter.
 			 */
-			await setDoc(
-				doc(collection(db, "users_information"), auth.currentUser.uid),
-				{
-					...updatedUser,
-					...(downloadPicURL && { profilePicUrl: downloadPicURL }),
-					...(downloadResumeURL && { resumeUrl: downloadResumeURL }),
-					...(downloadCLURL && { CLUrl: downloadCLURL }),
-					education: updatedUser.education.map((edu) => ({
-						name: edu.name,
-						major: edu.major,
-						startDate: edu.startDate,
-						endDate: edu.endDate,
-					})),
-					workExperience: updatedUser.workExperience.map((work) => ({
-						position: work.position,
-						company: work.company,
-						startDate: work.startDate,
-						endDate: work.endDate,
-					})),
-				}
+			const recruiterQuerySnapshot = await getDocs(
+				query(
+					collection(db, "recruiters_informations"),
+					where("email", "==", email)
+				)
 			);
+			if (!recruiterQuerySnapshot.empty) {
+				setUserType("recruiter");
+				console.log("recruiter");
+				console.log({ userType });
+			}
+			// Check if the email belongs to a job seeker
+			const userQuerySnapshot = await getDocs(
+				query(collection(db, "users_information"), where("email", "==", email))
+			);
+			if (!userQuerySnapshot.empty) {
+				setUserType("job seeker");
+				console.log("job seeker");
+				console.log({ userType });
+			}
+			if (userType === "job seeker") {
+				collec = "users_information";
+				if (userType === "recruiter") {
+					collec = "recruiters_informations";
+				}
+			}
+			await setDoc(doc(collection(db, collec), auth.currentUser.uid), {
+				...updatedUser,
+				...(downloadPicURL && { profilePicUrl: downloadPicURL }),
+				...(downloadResumeURL && { resumeUrl: downloadResumeURL }),
+				...(downloadCLURL && { CLUrl: downloadCLURL }),
+				education: updatedUser.education.map((edu) => ({
+					name: edu.name,
+					major: edu.major,
+					startDate: edu.startDate,
+					endDate: edu.endDate,
+				})),
+				workExperience: updatedUser.workExperience.map((work) => ({
+					position: work.position,
+					company: work.company,
+					startDate: work.startDate,
+					endDate: work.endDate,
+				})),
+			});
 			setUser(updatedUser);
 			setShow(false);
 			handleClose();
