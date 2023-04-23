@@ -60,6 +60,11 @@ function AdminFeed() {
       console.error(error);
     }
   };
+
+  function goToReportedUsers(){
+    window.location.href = "/AdminReportedUsers";
+  }
+
   function goToAdmin(){
     window.location.href = "/Admin";
   }
@@ -84,6 +89,11 @@ function AdminFeed() {
               {" "}
               Job Postings{" "}
             </h4>
+            {/* Reported Users */}
+            <h4 onClick={goToReportedUsers} style={{ color: "#888888" }}>
+            {" "}
+            Reported Users{" "}
+          </h4>
             {/* Feed Posts */}
             <h4
               onClick={goToFeedPosts}
