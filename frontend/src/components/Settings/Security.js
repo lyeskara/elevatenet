@@ -64,6 +64,7 @@ function Security() {
             </Card>
           </Col>
 
+          {/*Display the change password option link */}
           <Col xs={12} sm={12} lg={8}>
             <Card className="card">
               <h2 style={{ color: "#555555" }}>Account Access</h2>
