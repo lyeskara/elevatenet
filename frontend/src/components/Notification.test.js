@@ -1,60 +1,58 @@
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Notification from './Notification';
 
+// Mock Firebase functions
 jest.mock('../firebase', () => ({
   auth: {
     currentUser: {
-      uid: 'test-uid',
-    },
+      uid: 'test-uid'
+    }
   },
   db: {
-    collection: () => ({
-      doc: () => ({
-        get: () => Promise.resolve({
-          data: () => ({
+    collection: jest.fn(() => ({
+      doc: jest.fn(() => ({
+        get: jest.fn(() => Promise.resolve({
+          data: jest.fn(() => ({
             notifications: [
-              { message: 'Notification 1', profilePicUrl: 'http://example.com/profile1.png' },
-              { message: 'Notification 2', profilePicUrl: 'http://example.com/profile2.png' },
-            ],
-          }),
-        }),
-      }),
-    }),
-  },
+              {
+                profilePicUrl: 'test-url',
+                message: 'test-message'
+              }
+            ]
+          }))
+        }))
+      }))
+    }))
+  }
 }));
 
-describe('Notification component', () => {
-  test('renders notification messages', async () => {
+describe('Notification', () => {
+  it('renders a notification card', async () => {
     render(<Notification />);
-    const notif1 = await screen.findByText('Notification 1');
-    const notif2 = await screen.findByText('Notification 2');
-    expect(notif1).toBeInTheDocument();
-    expect(notif2).toBeInTheDocument();
+
+    // Wait for Firebase data to be fetched and state to be updated
+    await screen.findByText(/Notification Center/);
+
+    // Expect to find notification card with test data
+    expect(screen.getByAltText(/profilephoto-icon/)).toHaveAttribute('src', 'test-url');
+    expect(screen.getByText('test-message')).toBeInTheDocument();
   });
 
-  test('renders message when there are no notifications', async () => {
-    jest.spyOn(console, 'error').mockImplementation(() => {});
-    jest.spyOn(console, 'log').mockImplementation(() => {});
-    jest.spyOn(console, 'warn').mockImplementation(() => {});
-    jest.spyOn(console, 'info').mockImplementation(() => {});
-
-    jest.mock('../firebase', () => ({
-      auth: {
-        currentUser: {
-          uid: 'test-uid',
-        },
-      },
-      db: {
-        collection: () => ({
-          doc: () => ({
-            get: () => Promise.resolve({ data: undefined }),
-          }),
-        }),
-      },
-    }));
+  it('renders a "no notification received" message', async () => {
+    // Mock empty data returned from Firebase
+    jest.spyOn(global, 'fetch').mockResolvedValueOnce({
+      json: jest.fn(() => ({
+        data: undefined
+      }))
+    });
 
     render(<Notification />);
-    const noNotif = await screen.findByText('No notification recieved');
-    expect(noNotif).toBeInTheDocument();
+
+    // Wait for Firebase data to be fetched and state to be updated
+    await screen.findByText(/Notification Center/);
+
+    // Expect to find "no notification received" message
+    expect(screen.getByText(/no notification received/i)).toBeInTheDocument();
   });
 });
