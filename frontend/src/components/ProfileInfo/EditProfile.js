@@ -456,8 +456,9 @@ function EditProfile({ user, setUser }) {
 						style={{ backgroundColor: "#27746A", borderColor: "#27746A" }}
 						variant="primary"
 						onClick={(e) => {
-							updateUser(e);
-							window.location.reload();
+							updateUser(e).then(() => {
+								window.location.reload();
+							});
 						}}
 					>
 						Save Changes
