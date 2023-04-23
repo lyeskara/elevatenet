@@ -103,7 +103,7 @@ function RecruiterProfile() {
 				></EditRecruiterProfile>
 			</div>
 			<Row className="gap-5">
-				<Col className="col1" xs={12} md={{ span: 3, offset: 1 }}>
+				<Col className="col1" xs={12} md={{ span: 2, offset: 5 }}>
 					<Card className="profilecard">
 						<img
 							src={profilePicURL}
