@@ -77,7 +77,6 @@ function AdminUsers() {
 	if (currentUser?.uid === '361FbyTxmmZqCT03kGd25kSyDff1') {
 		return (
       <Container>
-        <h1>Admin Users</h1>
         <Row>
           {/* This card displays the job menu block with Job Postings and Advertisements */}
           <Card className="jobs-menu">
@@ -88,11 +87,6 @@ function AdminUsers() {
               {" "}
               Job Postings{" "}
             </h4>
-            {/* Reported Users */}
-            <h4 onClick={goToReportedUsers} style={{ color: "#888888" }}>
-            {" "}
-            Reported Users{" "}
-          </h4>
             {/* Feed Posts */}
             <h4
               onClick={goToFeedPosts}
@@ -101,7 +95,12 @@ function AdminUsers() {
               {" "}
               Feed Posts{" "}
             </h4>
-                      <h4
+            {/* Reported Users */}
+            <h4 onClick={goToReportedUsers} style={{ color: "#888888" }}>
+            {" "}
+            Reported Users{" "}
+          </h4>
+            <h4
               onClick={goToUser}
               style={{ color: "#27746a" }}
             >

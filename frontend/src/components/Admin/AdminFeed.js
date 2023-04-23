@@ -74,6 +74,9 @@ function AdminFeed() {
   function goToUser(){
     window.location.href = "/AdminUsers";
   }
+  function goToReports(){
+    window.location.href = "/adminreportedusers";
+  }
   //CHECK IF THE USER CONNECTED IS AN ADMIN
   const currentUser = auth.currentUser;
 	if (currentUser?.uid === '361FbyTxmmZqCT03kGd25kSyDff1') {
@@ -81,36 +84,28 @@ function AdminFeed() {
       <Container>
         <Row>
           {/* This card displays the job menu block with Job Postings and Advertisements */}
-          <Card className="jobs-menu">
-            <h2> Manage </h2>
-            <hr></hr>
-            {/* When the user clicks the "Job Postings" text, it calls handleClickJobPostings */}
-            <h4 onClick={goToAdmin} style={{ color: "#888888" }}>
-              {" "}
-              Job Postings{" "}
-            </h4>
-            {/* Reported Users */}
-            <h4 onClick={goToReportedUsers} style={{ color: "#888888" }}>
-            {" "}
-            Reported Users{" "}
-          </h4>
-            {/* Feed Posts */}
-            <h4
-              onClick={goToFeedPosts}
-              style={{ color: "#27746a" }}
-            >
-              {" "}
-              Feed Posts{" "}
-            </h4>
-                      <h4
-              onClick={goToUser}
-              style={{ color: "#888888" }}
-            >
-              {" "}
-              Users{" "}
-            </h4>
-            <br></br>
-          </Card>
+					<Card className="jobs-menu">
+						<h2> Manage </h2>
+						<hr></hr>
+						{/* When the user clicks the "Job Postings" text, it calls handleClickJobPostings */}
+						<h4 onClick={goToAdmin} style={{ color: "#888888" }}>
+							{" "}
+							Job Postings{" "}
+						</h4>
+						{/* Feed Posts */}
+						<h4 onClick={goToFeedPosts} style={{ color: "#27746A" }}>
+							{" "}
+							Feed Posts{" "}
+						</h4>
+						<h4 onClick={goToReports} style={{ color: "#888888" }}>
+							{" "}
+							Reported Users{" "}
+						</h4>
+						<h4 onClick={goToUser} style={{ color: "#888888" }}>
+							{" "}
+							Users{" "}
+						</h4>
+					</Card>
         </Row>
         <Row>
           {posts.map((post) => (

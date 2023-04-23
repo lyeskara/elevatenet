@@ -106,50 +106,46 @@ function Admin(){
 	function goToUser(){
 		window.location.href = "/AdminUsers";
 	}
+	function goToReports(){
+		window.location.href = "/adminreportedusers";
+	}
 
 	const currentUser = auth.currentUser;
 
 	if (currentUser?.uid === '361FbyTxmmZqCT03kGd25kSyDff1') {
 		return (
-				<Container className="container d-flex justify-content-center mx-auto">
+				<Container>
 					{/* JOB MENU BLOCK ON THE LEFT TO NAVIGATE BETWEEN JOB POSTINGS AND ADVERTS */}
+					<Row>
+					<Card className="jobs-menu">
+						<h2> Manage </h2>
+						<hr></hr>
+						{/* When the user clicks the "Job Postings" text, it calls handleClickJobPostings */}
+						<h4 onClick={goToAdmin} style={{ color: "#27746A" }}>
+							{" "}
+							Job Postings{" "}
+						</h4>
+						{/* Feed Posts */}
+						<h4 onClick={goToFeedPosts} style={{ color: "#888888" }}>
+							{" "}
+							Feed Posts{" "}
+						</h4>
+						<h4 onClick={goToReports} style={{ color: "#888888" }}>
+							{" "}
+							Reported Users{" "}
+						</h4>
+						<h4 onClick={goToUser} style={{ color: "#888888" }}>
+							{" "}
+							Users{" "}
+						</h4>
+					</Card>
+					</Row>
 					<Row
 						className="gap-6 d-flex justify-content-center"
 						style={{ minWidth: "80%" }}
 					>
-						<Col xs={12} sm={8} lg={4} style={{ minWidth: "30%" }}>
-							{/* This card displays the job menu block with Job Postings and Advertisements */}
-							<Card className="jobs-menu">
-								<h2> Manage </h2>
-								<hr></hr>
-								{/* When the user clicks the "Job Postings" text, it calls handleClickJobPostings */}
-								<h4 onClick={goToAdmin} style={{ color: "#27746a" }}>
-									{" "}
-									Job Postings{" "}
-								</h4>
-								{/* Advertisements */}
-								<h4
-									onClick={goToFeedPosts}
-									style={{ color: "#888888" }}
-								>
-									{" "}
-									Feed Posts{" "}
-								</h4>
-								<h4
-								onClick={goToUser}
-								style={{ color: "#888888" }}
-							>
-								{" "}
-								Users{" "}
-								</h4>
-								<br></br>
-							</Card>
-						</Col>
 
-						<Col xs={12} sm={12} lg={8}>
-							<h1 style={{ color: "#555555", marginTop: "32px" }}>
-								Admin Management Page
-							</h1>
+						<Col>
 							{/* This button creates a new job posting */}
 							{/* <div>
 								<Button
