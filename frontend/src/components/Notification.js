@@ -5,9 +5,12 @@ import { Card, Container, Col, Row } from "react-bootstrap";
 import "./../styles/Notification.css";
 
 function Notification() {
+  // states for notification variable
   const [Notifications, SetNotifications] = useState([]);
   const [unNotified, setUnNotified] = useState(false);
+  // authentication middleware
   const auth_id = auth.currentUser.uid;
+  // fetching the data of notifications from the database
   useEffect(() => {
     getDoc(doc(collection(db, "Notifications"), auth_id)).then((promise) => {
       if (promise.data() === undefined) {

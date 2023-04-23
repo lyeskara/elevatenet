@@ -125,7 +125,7 @@ const Message = () => {
       unsubscribe();
     };
   }, []);
-
+// setting the state variable to the current user informations
   useEffect(() => {
     setAuthUserInfo(users_information.find((obj) => obj.id === currentUser.uid));
   }, [users_information])
@@ -210,6 +210,7 @@ const Message = () => {
     try {
       const conversationId = [currentUser.uid, recipientId].sort().join('-');
       const conversationRef = collection(db, 'messages', conversationId, 'conversation');
+    // procedure that fetch notifications settings to see if the value is true to send a dm notification and also make  POST request to the server if true.
 
       const notification_settings = (await getDoc(doc(collection(db, "notification_settings"), recipientId))).data();
 

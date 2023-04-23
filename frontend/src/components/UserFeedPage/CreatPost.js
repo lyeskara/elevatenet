@@ -92,6 +92,7 @@ function CreatPost() {
         if ((postText == "") && (Picture == null)) {
           alert("empty fields please write something or put an image")
         } else {
+          // procedure that fetch notifications settings to see if the value is true to send a post notification and also make  POST request to the server if true.
           if (((await getDoc(doc(collection(db, "connection"), currentId))).data()) !== undefined) {
             const connections = (await getDoc(doc(collection(db, "connection"), currentId))).data().connections;
             connections.forEach(id => {
