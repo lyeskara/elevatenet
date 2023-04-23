@@ -116,8 +116,8 @@ function RecruiterProfile() {
 							<span style={{ color: "#27746A" }}> {user.lastName}</span>
 						</h1>
 						<p style={{ color: "#A6A6A6" }}> {user.city}</p>
+						<p style={{ color: "#A6A6A6" }}> {user.company}</p>
 						<p> {user.bio} </p>
-						<p> {user.languages} </p>
 					</Card>
 
 					<Card className="contactcard">
