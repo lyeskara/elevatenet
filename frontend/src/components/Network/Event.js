@@ -15,6 +15,11 @@ import {
   getDocs,
 } from "firebase/firestore";
 
+/**
+ * The Event page displays the events that are created by other users
+ *
+ * @return { Object } The page as a React component with the information of the events.
+ */
 function Event() {
   const [events, setEvents] = useState([]);
   const navigate = useNavigate();
