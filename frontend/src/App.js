@@ -48,6 +48,9 @@ import ChangePassword from "./components/Settings/ChangePassword";
 
 import NotificationSettings from "./components/Settings/Notificationsettings";
 
+
+
+
 import NameSetting from "./components/Settings/NameSetting";
 
 
@@ -298,6 +301,7 @@ function App() {
           }
         />
       </Routes>
+      
     </UserAuthContextProvider>
   );
 }

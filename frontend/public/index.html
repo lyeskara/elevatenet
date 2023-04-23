@@ -37,8 +37,21 @@
     -->
     <title>ElevateNet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+      body{
+        min-height: 200vh;
+      }
+      footer {
+        margin-top: 100px;
+        margin-left: 68px;
+      }
+    </style>
+    
   </head>
   <body>
+    
+    
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <!--
@@ -51,5 +64,22 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+
+    
   </body>
+
+
+  <footer class="index-footer">
+      
+    <div id="google_translate_element" style="margin-right: 100px; margin-bottom: 10px;"></div> 
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script>
+        function googleTranslateElementInit(){
+          new google.translate.TranslateElement(
+          {pageLanguage: 'en'},
+          'google_translate_element');
+        }
+    </script>
+  </footer>
+
 </html>

@@ -105,73 +105,75 @@ function SavedJobs() {
   }
   return (
     <>
-      <Container className="container d-flex justify-content-center mx-auto">
-        <Row
-          className="gap-6 d-flex justify-content-center"
-          style={{ minWidth: "80%" }}
-        >
-          {" "}
-          <Col xs={12} sm={8} lg={2} style={{ minWidth: "30%" }}>
-            {/* This card displays the job menu block with Job Postings and Advertisements */}
-            <Card className="jobs-menu">
-              <h2> Jobs </h2>
-              <hr></hr>
-              {/* When the user clicks the "Suggested jobs" text, it calls handleClickJobPostings */}
-              <h4 onClick={handleClickJobPostings} style={{ color: "#888888" }}>
-                {" "}
-                Suggested Jobs{" "}
-              </h4>
-              {/* Saved posts */}
-              <h4 onClick={handleClickSavedJobs} style={{ color: "#27746a" }}>
-                {" "}
-                Saved Jobs{" "}
-              </h4>
-              <br></br>
-            </Card>
-          </Col>
-          <Col xs={12} sm={12} lg={8}>
-            <h2
-              style={{ color: "#555555", marginTop: "32px" }}
-            >
-              Your Saved Jobs
-            </h2>
-            {saved.map((posting) => (
-              <Col md={10} key={posting.id}>
-                <Card className="mb-3 card-save">
-                  <Card.Body>
-                    <div
-                      className="containRequest"
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        
-                      }}
-                    >
-                      <Card.Title>{posting.job_title}</Card.Title>
-                      <Button
-                        variant="primary"
-                        style={{ backgroundColor: "#27746A" }}
-                        onClick={() =>
-                          handleRedirection(posting.id, posting.apply_here)
-                        }
+      <div style={{ minHeight: "70vh" }}>
+        <Container className="container d-flex justify-content-center mx-auto">
+          <Row
+            className="gap-6 d-flex justify-content-center"
+            style={{ minWidth: "80%" }}
+          >
+            {" "}
+            <Col xs={12} sm={8} lg={2} style={{ minWidth: "30%" }}>
+              {/* This card displays the job menu block with Job Postings and Advertisements */}
+              <Card className="jobs-menu">
+                <h2> Jobs </h2>
+                <hr></hr>
+                {/* When the user clicks the "Suggested jobs" text, it calls handleClickJobPostings */}
+                <h4 onClick={handleClickJobPostings} style={{ color: "#888888" }}>
+                  {" "}
+                  Suggested Jobs{" "}
+                </h4>
+                {/* Saved posts */}
+                <h4 onClick={handleClickSavedJobs} style={{ color: "#27746a" }}>
+                  {" "}
+                  Saved Jobs{" "}
+                </h4>
+                <br></br>
+              </Card>
+            </Col>
+            <Col xs={12} sm={12} lg={8}>
+              <h2
+                style={{ color: "#555555", marginTop: "32px" }}
+              >
+                Your Saved Jobs
+              </h2>
+              {saved.map((posting) => (
+                <Col md={10} key={posting.id}>
+                  <Card className="mb-3 card-save">
+                    <Card.Body>
+                      <div
+                        className="containRequest"
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          
+                        }}
                       >
-                        Apply Now
-                      </Button>
-                    </div>
+                        <Card.Title>{posting.job_title}</Card.Title>
+                        <Button
+                          variant="primary"
+                          style={{ backgroundColor: "#27746A" }}
+                          onClick={() =>
+                            handleRedirection(posting.id, posting.apply_here)
+                          }
+                        >
+                          Apply Now
+                        </Button>
+                      </div>
 
-                    <Card.Subtitle className="mb-2 text-muted">
-                      {posting.company}
-                    </Card.Subtitle>
-                    <Card.Text>{posting.description}</Card.Text>
-                    <Card.Text>{posting.skills}</Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Col>
-        </Row>
-      </Container>
+                      <Card.Subtitle className="mb-2 text-muted">
+                        {posting.company}
+                      </Card.Subtitle>
+                      <Card.Text>{posting.description}</Card.Text>
+                      <Card.Text>{posting.skills}</Card.Text>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              ))}
+            </Col>
+          </Row>
+        </Container>
+      </div>
     </>
   );
 }
