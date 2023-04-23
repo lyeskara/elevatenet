@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { collection, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  deleteDoc,
+  doc,
+  setDoc,
+  Timestamp,
+  getDoc
+} from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
@@ -10,118 +18,131 @@ import { Link } from 'react-router-dom';
 
 function AdminReportedUsers() {
   const [reportedUsers, setReportedUsers] = useState([]);
-  
+
   useEffect(() => {
-    async function fetchReportedUsers() {
-      try {
-        const reportedUsersRef = collection(db, "reported_user");
-        const snapshot = await getDocs(reportedUsersRef);
-        const reportedUserData = snapshot.docs.map((doc) => {
-          const user = doc.data().user;
-          const reason = doc.data().reason;
-          return { id: doc.id, user, reason };
-        });
-        setReportedUsers(reportedUserData);
-      } catch (error) {
-        console.error(error);
-      }
-    }
+    const fetchReportedUsers = async () => {
+      const reportedUsersCollection = collection(db, "reported_user");
+      const reportedUsersSnapshot = await getDocs(reportedUsersCollection);
+      const fetchedReportedUsers = reportedUsersSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        email: doc.data().email,
+        name: doc.data().name,
+        uid: doc.data().uid,
+        reason: doc.data().reason
+      }));
+      setReportedUsers(fetchedReportedUsers);
+    };
 
     fetchReportedUsers();
   }, []);
-  
-  const handleDelete = async (reportedUserId) => {
+
+  const handleDeleteReportedUser = async (reportedUserId) => {
     try {
-      const reportedUserRef = doc(db, "reported_user", reportedUserId);
-      await deleteDoc(reportedUserRef);
-      setReportedUsers((prevReportedUsers) => prevReportedUsers.filter((reportedUser) => reportedUser.id !== reportedUserId));
+      const reportedUserDocRef = doc(db, "reported_user", reportedUserId);
+      const reportedUserSnapshot = await getDoc(reportedUserDocRef);
+      const deletedReportedUser = {
+        id: reportedUserSnapshot.id,
+        email: reportedUserSnapshot.data().email,
+        name: reportedUserSnapshot.data().name,
+        uid: reportedUserSnapshot.data().uid,
+        reason: reportedUserSnapshot.data().reason,
+        deletedAt: Timestamp.now(),
+      };
+      await setDoc(
+        doc(db, "deleted_reported_user", "deleted_reported_user_doc"),
+        deletedReportedUser,
+        { merge: true }
+      );
+      await deleteDoc(reportedUserDocRef);
+      setReportedUsers((prevReportedUsers) =>
+        prevReportedUsers.filter((reportedUser) => reportedUser.id !== reportedUserId)
+      );
+      console.log("Document successfully deleted!");
     } catch (error) {
-      console.error(error);
+      console.error("Error removing document: ", error);
     }
   };
-  
+
   function goToAdmin(){
     window.location.href = "/Admin";
   }
-  
-  function goToReportedUsers(){
-    window.location.href = "/AdminReportedUsers";
-  }
-  
   function goToFeedPosts(){
     window.location.href = "/AdminFeed";
   }
-
   function goToUser(){
     window.location.href = "/AdminUsers";
   }
   
-  
-  // CHECK IF THE USER CONNECTED IS AN ADMIN
-  const currentUser = auth.currentUser;
-  if (currentUser?.uid === '361FbyTxmmZqCT03kGd25kSyDff1') {
-    return (
-        <Container>
-          <Row>
-            {/* This card displays the job menu block with Job Postings and Advertisements */}
-            <Card className="jobs-menu">
-              <h2> Manage </h2>
-              <hr></hr>
-              {/* When the user clicks the "Job Postings" text, it calls handleClickJobPostings */}
-              <h4 onClick={goToAdmin} style={{ color: "#888888" }}>
-                {" "}
-                Job Postings{" "}
-              </h4>
-              {/* Feed Posts */}
-              <h4 onClick={goToFeedPosts} style={{ color: "#888888" }}>
-                {" "}
-                Feed Posts{" "}
-              </h4>
-              {/* Reported Users */}
-              <h4 onClick={goToReportedUsers} style={{ color: "#888888" }}>
-                {" "}
-                Reported Users{" "}
-              </h4>
-              <h4 onClick={goToUser} style={{ color: "#888888" }}>
-                {" "}
-                Users{" "}
-              </h4>
-              <br></br>
+  //CHECK IF THE USER CONNECTED IS AN ADMIN
+const currentUser = auth.currentUser;
+if (currentUser?.uid === '361FbyTxmmZqCT03kGd25kSyDff1') {
+  return (
+    <Container>
+      <h1>Admin Users</h1>
+      <Row>
+        {/* This card displays the job menu block with Job Postings and Advertisements */}
+        <Card className="jobs-menu">
+          <h2> Manage </h2>
+          <hr></hr>
+          {/* When the user clicks the "Job Postings" text, it calls handleClickJobPostings */}
+          <h4 onClick={goToAdmin} style={{ color: "#888888" }}>
+            {" "}
+            Job Postings{" "}
+          </h4>
+          {/* Reported Users */}
+          <h4 onClick={goToReportedUsers} style={{ color: "#27746a" }}>
+            {" "}
+            Reported Users{" "}
+          </h4>
+          {/* Feed Posts */}
+          <h4 onClick={goToFeedPosts} style={{ color: "#888888" }}>
+            {" "}
+            Feed Posts{" "}
+          </h4>
+          <h4 onClick={goToUser} style={{ color: "#888888" }}>
+            {" "}
+            Users{" "}
+          </h4>
+          <br></br>
+        </Card>
+      </Row>
+      <Row>
+        {reportedUsers.map((reportedUser) => (
+          <Col key={reportedUser.id} md={4} className="mb-4">
+            <Card>
+              <Card.Body>
+                <Card.Title>{reportedUser.email} </Card.Title>
+                <hr></hr>
+                <Card.Text><h5>{reportedUser.firstName} {reportedUser.lastName}</h5></Card.Text>
+                <Card.Subtitle className="mb-2 text-muted">
+                  ID: {reportedUser.id}
+                </Card.Subtitle>
+                <Card.Subtitle className="mb-2 text-muted">
+                  Reason: {reportedUser.reason}
+                </Card.Subtitle>
+                <Button
+                  variant="outline-danger"
+                  onClick={() => handleDeleteReportedUser(reportedUser.id)}
+                >
+                  Delete
+                </Button>
+              </Card.Body>
             </Card>
-          </Row>
-          <Row>
-            {reportedUsers.map((reportedUser) => (
-              <Col key={reportedUser.id} sm={12} md={6} lg={4} className="mb-4">
-                <Card>
-                  <Card.Body>
-                    <Card.Title>{reportedUser.user.name}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">{reportedUser.user.email}</Card.Subtitle>
-                    <Card.Text>{reportedUser.reason}</Card.Text>
-                    <Button
-                      variant="outline-danger"
-                      size="sm"
-                      onClick={() => handleDelete(reportedUser.id)}
-                    >
-                      Delete
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        </Container>
-      );
-            }      
-     
-            
-            return (
-                <div>
-                  <h1>You do not have permission to view this page.</h1>
-                  <Link to="/" className="btn btn-primary" style={{ backgroundColor: '#27746A' }}>
-                  Go to back to main page
-                  </Link>
-                </div>
-                );
-                
-              }
-              export default AdminReportedUsers;
+          </Col>
+        ))}
+      </Row>
+    </Container>
+  );
+}
+
+return (
+    <div>
+      <h1>You do not have permission to view this page.</h1>
+      <Link to="/" className="btn btn-primary" style={{ backgroundColor: '#27746A' }}>
+      Go to back to main page
+      </Link>
+    </div>
+    );
+  }
+
+export default AdminReportedUsers;
