@@ -28,19 +28,7 @@ import { getDoc, doc, collection, setDoc, query, onSnapshot, where, getDocs } fr
 import { db, auth } from '../../firebase';
 import '../../styles/feed.css';
 import Post from './Post';
-import photo from '../../images/photo.png';
-import video from '../../images/video.png';
-import profile1 from '../../images/profile1.png';
-import post1 from '../../images/post1.png';
-import eventicon from '../../images/eventicon.png';
 import personicon from '../../images/personicon.png';
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
-import Button from 'react-bootstrap/Button';
-import Card from "react-bootstrap/Card";
-import { Carousel } from 'react-bootstrap';
-
 
 
 function Feed() {
@@ -74,6 +62,7 @@ function Feed() {
     })
   }, []);
 
+  //funtion that changes the info of post
   useEffect(() => {
     const posts_set = new Set()
     getDocs(postRef).then((posters) => {
@@ -98,6 +87,8 @@ function Feed() {
     last_name: "",
     id: ""
   }
+
+  //Function that fetches the information of each post
   useEffect(() => {
     const set = new Set()
     getDocs(infoRef).then((posters) => {
@@ -173,6 +164,7 @@ function Feed() {
           </div>
         </div>
 
+        {/*Display the information of the post */}
         {Data.map(obj => (
           <Post
             id={obj.poster_id}

@@ -89,9 +89,21 @@ function JobPageForSeekers() {
     });
   }, []);
 
+  /* A function that handles search query change
+ *
+ * @param event
+ *
+ */
+
   function handleSearchQueryChange(event) {
     setSearchQuery(event.target.value);
   }
+
+  /* A function that filters the skills
+ *
+ * @param {none}
+ * @returns {collection item in database} A new group instance is stored in the Firestore database for further use.
+ */
 
   function handleFilterBySkills() {
     const filteredPostings = postings.filter((posting) => {

@@ -1,9 +1,16 @@
+//import the modules
 import React, { useState } from "react";
 import { useUserAuth } from "../../context/UserAuthContext";
 import { auth, db } from "../../firebase";
 import { collection, setDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { Container, Form, Button } from "react-bootstrap";
+
+/**
+ * The ProfileForm page displays the form that job seekers must fill when signing in. 
+ *
+ * @return { Object } The page as a React component with the form to be filled and submitted.
+ */
 function ProfileForm() {
 	const { user } = useUserAuth();
 	const navigate = useNavigate();
@@ -31,6 +38,7 @@ function ProfileForm() {
 		volunteering: [],
 	});
 
+	//function to update the fields with input
 	function update(e) {
 		const { name, value } = e.target;
 		if (
@@ -64,6 +72,10 @@ function ProfileForm() {
 		}
 	}
 
+	/**
+ * The function add the user to the database with all the information that was added
+ *
+ */
 	function create_user(e) {
 		e.preventDefault();
 		if (user) {
@@ -118,6 +130,8 @@ function ProfileForm() {
 			console.log("error happened. Try again!");
 		}
 	}
+
+	//function to add the education of user
 	function addEducation() {
 		setProfileData({
 			...profileData,
@@ -128,12 +142,14 @@ function ProfileForm() {
 		});
 	}
 
+	//function to remove education of the user
 	function removeEducation(index) {
 		const newEducation = [...profileData.education];
 		newEducation.splice(index, 1);
 		setProfileData({ ...profileData, education: newEducation });
 	}
 
+	//function to add work field to user
 	function addWork() {
 		setProfileData({
 			...profileData,
@@ -144,6 +160,7 @@ function ProfileForm() {
 		});
 	}
 
+	//function to remove work field of user
 	function removeWork(index) {
 		const newWork = [...profileData.workExperience];
 		newWork.splice(index, 1);
@@ -157,6 +174,7 @@ function ProfileForm() {
 					<Form.Text className="sign center">About You</Form.Text>
 
 					<center>
+						{/*FORM TO BE FILLED BY USER JOINING*/}
 						<Form.Group className="mb-3 mt-4" controlId="formFirstName">
 							<Form.Control
 								className="input_box"

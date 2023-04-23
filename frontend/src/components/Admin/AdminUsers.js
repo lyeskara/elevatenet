@@ -16,9 +16,17 @@ import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import { Link } from 'react-router-dom';
 
+/** 
+   * Function that allows the admin to manage all the users of the platform
+  */
 function AdminUsers() {
   const [users, setUsers] = useState([]);
 
+  /** 
+   * Fetch all the users 
+   * @param effect — Imperative function that can return a cleanup function
+   * 
+  */
   useEffect(() => {
     const fetchUsers = async () => {
       const usersCollection = collection(db, "users_information");
@@ -35,6 +43,10 @@ function AdminUsers() {
     fetchUsers();
   }, []);
 
+  /** 
+   * Function to delete users
+   * @param userId pass the ID of the user
+  */
   const handleDeleteUser = async (userId) => {
     try {
       const userDocRef = doc(db, "users_information", userId);

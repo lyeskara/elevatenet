@@ -7,6 +7,10 @@ import { db } from "../../firebase.js";
 import { Container, Form, Button, Modal } from "react-bootstrap";
 import "../../styles/JoinPages.css";
 
+/** 
+   * Handles the user signing into his account
+   * 
+  */
 function JoinNow() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

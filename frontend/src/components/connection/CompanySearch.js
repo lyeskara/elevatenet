@@ -17,7 +17,9 @@ import { auth, db } from "../../firebase";
 import { GrMailOption, GrPhone } from "react-icons/gr";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
-
+/** 
+   * Function that displays a list of object related to the company name
+  */
 function CompanySearch() {
   const { result } = useParams();
   const [users, setUsers] = useState([]);

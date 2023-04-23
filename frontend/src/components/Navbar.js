@@ -1,3 +1,4 @@
+//import all modules
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import "../styles/nav.css";
@@ -21,6 +22,10 @@ import { Navbar, Nav, Container } from "react-bootstrap";
 
 import Search from "./connection/Search";
 
+/**
+ * The NavbarFun is the navbar that is found on all pages to navigate through the pages. 
+ *
+ */
 function NavbarFun() {
   const userr = auth.currentUser;
   const { logOut } = useUserAuth();

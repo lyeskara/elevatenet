@@ -8,6 +8,10 @@ import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import { Link } from 'react-router-dom';
 
+/** 
+   * Function that will display the admin feed. The user has access to all the posts and can manage them. 
+   *
+  */
 function AdminFeed() {
   const [posts, setPosts] = useState([]);
   useEffect(() => {
