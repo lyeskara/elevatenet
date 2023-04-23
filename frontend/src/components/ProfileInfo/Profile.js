@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { collection, getDoc, doc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import Card from "react-bootstrap/Card";
@@ -15,50 +15,79 @@ import { getStorage, ref, getDownloadURL, getMetadata } from "firebase/storage";
  */
 function Profile() {
 	const [user, setUser] = useState({});
+	const [numConnections, setNumConnections] = useState(0);
 	const [profilePicURL, setProfilePicURL] = useState("");
 	const storage = getStorage();
+	const [education, setEducation] = useState([]);
+	const [work, setWork] = useState([]);
 
 	/**
 	 * getUserData gets all values pertaining to the logged in user.
 	 */
 
-	const getUserData = async () => {
-		try {
-			const userDoc = await getDoc(
-				doc(collection(db, "users_information"), auth.currentUser.uid)
+	const getUserInformation = async () => {
+		const userDoc = await getDoc(
+			doc(collection(db, "users_information"), auth.currentUser.uid)
+		);
+
+		if (userDoc.exists) {
+			// Set the user state
+			setUser({ ...userDoc.data(), id: userDoc.id });
+
+			// Get the education data
+			const educationData = userDoc.data().education;
+			setEducation(educationData);
+
+			const workData = userDoc.data().workExperience;
+			setWork(workData);
+
+			const connectionsDoc = await getDoc(
+				doc(collection(db, "connection"), auth.currentUser.uid)
 			);
+			if (connectionsDoc.exists() && connectionsDoc.data()) {
+				const connections = connectionsDoc.data().connections;
+				if (connections == null) {
+					setNumConnections(0);
+				} else {
+					let counter = 0;
+					connections.forEach(() => {
+						counter++;
+					});
 
-			if (userDoc.exists) {
-				// Set the user state
-				setUser({ ...userDoc.data(), id: userDoc.id });
-
-				// Get the profile picture URL from Firebase Storage
-				const storageRef = ref(
-					storage,
-					`profilepics/${auth.currentUser.uid}/profilePic`
-				);
-
-				// Check if the profile picture exists in Firebase Storage
-				const metadata = await getMetadata(storageRef);
-				const downloadURL = await getDownloadURL(storageRef);
-
-				// Set the profile picture URL state
-				setProfilePicURL(downloadURL);
+					setNumConnections(counter);
+				}
 			} else {
-				console.log("User not found");
+				console.log("The connections document does not exist or has no data");
 			}
-		} catch (error) {
-			console.log(error);
+		}
+	};
 
-			// Set the profile picture URL state to a default value
-			setProfilePicURL(
-				"https://firebasestorage.googleapis.com/v0/b/soen390-b027d.appspot.com/o/profilepics%2FBase%2Ftest.gif?alt=media&token=d295d8c2-493f-4c20-8fac-0ede65eaf0b6"
-			);
+	const getUserProfilePicture = async () => {
+		const profilePicRef = ref(
+			storage,
+			`profilepics/${auth.currentUser.uid}/profilePic`
+		);
+
+		try {
+			// Check if the profile picture exists in Firebase Storage
+			const downloadURL = await getDownloadURL(profilePicRef);
+			console.log(downloadURL);
+			// Set the profile picture URL state
+			setProfilePicURL(downloadURL);
+		} catch (error) {
+			// Handle error
+			console.log("Profile picture not found");
+			const defaultPicRef = ref(storage, `profilepics/Base/test.gif`);
+			const metadata = await getMetadata(defaultPicRef);
+			const downloadURL = await getDownloadURL(defaultPicRef);
+			console.log(downloadURL + "       errors one");
+			setProfilePicURL(downloadURL);
 		}
 	};
 
 	useEffect(() => {
-		getUserData();
+		getUserInformation();
+		getUserProfilePicture();
 	}, [auth]);
 
 	const downloadResume = async () => {
@@ -142,21 +171,7 @@ function Profile() {
 									color: "#626262",
 								}}
 							>
-								{user.connections} <u>Connections</u>
-							</h5>
-						</div>
-					</Card>
-
-					<Card className="recommendationcard">
-						<h5>Recommendation</h5>
-						<hr></hr>
-						<div className="Recommendation">
-							<h5
-								style={{
-									color: "black",
-								}}
-							>
-								<u>Jasmit Kalsi</u>
+								<u>{numConnections} Connections</u>
 							</h5>
 						</div>
 					</Card>
@@ -215,46 +230,49 @@ function Profile() {
 						</div>
 					</Card>
 				</Col>
-
 				<Col xs={12} md={7}>
 					<Card className="card">
 						<h5>Work Experience</h5>
 						<hr></hr>
-						<div className="profile-desc-row">
-							<img src={person}></img>
-							<div>
-								<h3>Business Intelligence Analyst</h3>
-								<p>DODO Inc.</p>
-								<p> Feb 2022 - Present</p>
-							</div>
-						</div>
-						<hr></hr>
-						<div className="profile-desc-row">
-							<img src={person}></img>
-							<div>
-								<h3>Junior Analyst</h3>
-								<p>FOFO Inc.</p>
-								<p> Feb 2021 - Feb 2022</p>
-							</div>
-						</div>
+						{work &&
+							work.map((work, index) => (
+								<Fragment key={index}>
+									<div className="profile-desc-row">
+										<img src={person} alt="person"></img>
+										<div>
+											<h3>{work.position}</h3>
+											<p>{work.company}</p>
+											<p>
+												{work.startDate} - {work.endDate}
+											</p>
+										</div>
+									</div>
+									{/* Add a horizontal rule between schools */}
+									{index !== work.length - 1 && <hr />}
+								</Fragment>
+							))}
 					</Card>
-
 					<Card className="educationcard">
 						<h5>Education</h5>
 						<hr></hr>
-						<div className="profile-desc-row">
-							<img src={person}></img>
-							<div>
-								<h3>{user.education}</h3>
-								<p style={{ color: "#272727" }}>
-									Bachelor's degree, software engineering
-								</p>
-								<p> Aug 2020 - May 2024</p>
-							</div>
-						</div>
-						<hr></hr>
+						{education &&
+							education.map((school, index) => (
+								<Fragment key={index}>
+									<div className="profile-desc-row">
+										<img src={person} alt="person"></img>
+										<div>
+											<h3>{school.name}</h3>
+											<p>
+												{school.startDate} - {school.endDate}
+											</p>
+											<p>{school.major}</p>
+										</div>
+									</div>
+									{/* Add a horizontal rule between schools */}
+									{index !== education.length - 1 && <hr />}
+								</Fragment>
+							))}
 					</Card>
-
 					<Card className="skillscard">
 						<h5>Skills</h5>
 						<hr></hr>
