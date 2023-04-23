@@ -7,11 +7,17 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { GrMailOption, GrPhone } from "react-icons/gr";
 import EditProfile from "./EditProfile";
-import person from "./test.gif";
+import schoolpic from "../../images/school.png";
+import workpic from "../../images/work.png";
 import { getStorage, ref, getDownloadURL, getMetadata } from "firebase/storage";
 
 /**
- * Profile loads values stored in the data base and allows us to view them in a styled page.
+ * The Profile page displays the information of the user. It is used to access the user's information more easily.
+ * @return { Object } The page as a React component with the information of the user.
+ * @example
+ * return (
+ *  <Profile />
+ * )
  */
 function Profile() {
 	const [user, setUser] = useState({});
@@ -22,7 +28,10 @@ function Profile() {
 	const [work, setWork] = useState([]);
 
 	/**
-	 * getUserData gets all values pertaining to the logged in user.
+	 * Get the user data from Firestore
+	 * @return { Object } The user data
+	 * @example
+	 * const user = getUserData();
 	 */
 
 	const getUserData = async () => {
@@ -47,19 +56,34 @@ function Profile() {
 				} else {
 					storageRef = ref(storage, `profilepics/Base/test.gif`);
 				}
-				// Check if the profile picture exists in Firebase Storage
+				/**
+				 *  Check if the profile picture exists in Firebase Storage
+				 */
 				const metadata = await getMetadata(storageRef);
 				const downloadURL = await getDownloadURL(storageRef);
 
-				// Set the profile picture URL state
+				/**
+				 *  Set the profile picture URL state
+				 */
+
 				setProfilePicURL(downloadURL);
 
-				// Get the education data
+				/**
+				 *  Get the education data
+				 */
 				const educationData = userDoc.data().education;
 				setEducation(educationData);
 
+				/**
+				 *  Get the work data
+				 */
+
 				const workData = userDoc.data().workExperience;
 				setWork(workData);
+
+				/**
+				 *  Get the number of connections
+				 */
 
 				const connections = (
 					await getDoc(doc(collection(db, "connection"), auth.currentUser.uid))
@@ -76,11 +100,15 @@ function Profile() {
 			console.log(error);
 		}
 	};
+
 	useEffect(() => {
 		getUserData();
-		//	getConnectionData();
+		getRecruiterData();
 	}, [auth]);
 
+	/**
+	 *  Handles download of resume
+	 */
 	const downloadResume = async () => {
 		const storageRef = ref(storage, `resume/${auth.currentUser.uid}/resume`);
 		try {
@@ -95,7 +123,9 @@ function Profile() {
 			alert("Error downloading resume file!");
 		}
 	};
-
+	/**
+	 *  Handles download of coverletter
+	 */
 	const downloadCL = async () => {
 		const storageRef = ref(storage, `CL/${auth.currentUser.uid}/CL`);
 		try {
@@ -229,7 +259,7 @@ function Profile() {
 							work.map((work, index) => (
 								<Fragment key={index}>
 									<div className="profile-desc-row">
-										<img src={person} alt="person"></img>
+										<img src={workpic} alt="person"></img>
 										<div>
 											<h3>{work.position}</h3>
 											<p>{work.company}</p>
@@ -250,7 +280,7 @@ function Profile() {
 							education.map((school, index) => (
 								<Fragment key={index}>
 									<div className="profile-desc-row">
-										<img src={person} alt="person"></img>
+										<img src={schoolpic} alt="person"></img>
 										<div>
 											<h3>{school.name}</h3>
 											<p>

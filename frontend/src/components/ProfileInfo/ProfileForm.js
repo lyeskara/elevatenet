@@ -4,6 +4,14 @@ import { auth, db } from "../../firebase";
 import { collection, setDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { Container, Form, Button } from "react-bootstrap";
+
+/**
+ * ProfileForm allows us to create the database for an individual user and adding the information provided
+ * by said user.
+ * @constructor
+ * @param {object} user - User object which just logged in.
+ * @param {object} profileData - Object containing the information provided by the user.
+ */
 function ProfileForm() {
 	const { user } = useUserAuth();
 	const navigate = useNavigate();
@@ -30,7 +38,20 @@ function ProfileForm() {
 		projects: [],
 		volunteering: [],
 	});
-
+	/**
+	 * Update the profileData object with the information provided by the user.
+	 * @constructor
+	 * @param {object} user - User object which just logged in.
+	 * @param {object} profileData - Object containing the information provided by the user.
+	 * @param {object} e - Event object.
+	 * @param {object} name - Name of the field to be updated.
+	 * @param {object} value - Value of the field to be updated.
+	 * @param {object} arrayValue - Array of values of the field to be updated.
+	 * @param {object} index - Index of the field to be updated.
+	 * @param {object} field - Field to be updated.
+	 * @param {object} newWork - Array of objects containing the work experience of the user.
+	 * @param {object} newEducation - Array of objects containing the education of the user.
+	 */
 	function update(e) {
 		const { name, value } = e.target;
 		if (
@@ -63,7 +84,14 @@ function ProfileForm() {
 			setProfileData({ ...profileData, [name]: value });
 		}
 	}
-
+	/**
+	 * Create the user in the database with the information provided by the user.
+	 * @constructor
+	 * @param {object} auth.currentUser.uid - User object which just logged in.
+	 * @param {object} profileData - Object containing the information provided by the user.
+	 * @param {object} e - Event object.
+	 *
+	 */
 	function create_user(e) {
 		e.preventDefault();
 		if (user) {
@@ -118,6 +146,11 @@ function ProfileForm() {
 			console.log("error happened. Try again!");
 		}
 	}
+	/**
+	 * Add a new education object to the education array.
+	 * @constructor
+	 * @param {object} profileData - Object containing the information provided by the user.
+	 */
 	function addEducation() {
 		setProfileData({
 			...profileData,
@@ -127,7 +160,13 @@ function ProfileForm() {
 			],
 		});
 	}
-
+	/**
+	 * Remove an education object from the education array.
+	 * @constructor
+	 * @param {object} index - Index of the education object to be removed.
+	 * @param {object} newEducation - Array of objects containing the education of the user.
+	 * @param {object} profileData - Object containing the information provided by the user.
+	 */
 	function removeEducation(index) {
 		const newEducation = [...profileData.education];
 		newEducation.splice(index, 1);
@@ -143,7 +182,13 @@ function ProfileForm() {
 			],
 		});
 	}
-
+	/**
+	 * Remove a work object from the work array.
+	 * @constructor
+	 * @param {object} index - Index of the work object to be removed.
+	 * @param {object} newWork - Array of objects containing the work experience of the user.
+	 * @param {object} profileData - Object containing the information provided by the user.
+	 */
 	function removeWork(index) {
 		const newWork = [...profileData.workExperience];
 		newWork.splice(index, 1);

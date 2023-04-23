@@ -1,6 +1,8 @@
-//In this CreateNewPosting class with the CreateNewPosting() function
-//users and enter in the fields job title,company, description and deadline
-// and with after doing so and clicking post they can create a job posting job
+/**
+ * In this CreateNewPosting class with the CreateNewPosting() function
+	users and enter in the fields job title,company, description and deadline
+	and with after doing so and clicking post they can create a job posting job
+*/
 
 import React, { useEffect, useState } from "react";
 import { auth, db } from "../../firebase";
@@ -83,9 +85,13 @@ function CreateNewPosting() {
 	}, []);
 	user_info = { ...user_info, ...userInfo };
 
-	//creates the job posting with handleSubmit() method
-	// @param event
-	// adds the posting parameters job title, company, description, and deadline to the database
+	/**
+	 * handleSubmit() method is used to handle the submit of the form and create a new job posting in the database and redirect to the /JobPostings page
+	 * @param (event)
+	 * @returns (void)
+	 * @throws (error)
+	 *
+	 */
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		if (user) {
@@ -105,6 +111,11 @@ function CreateNewPosting() {
 				// full_time: postingData.full_time,                      no going to be used for this sprint
 			});
 
+			/**
+			 * This is the notification system, it will send a notification to all the users that are following the user that created the job posting
+			 * @param (event)
+			 * @returns (void)
+			 */
 			if (
 				(await getDoc(doc(collection(db, "connection"), currentId))).data() !==
 				undefined

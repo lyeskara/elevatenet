@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { useUserAuth } from "../../context/UserAuthContext";
 import { auth, db } from "../../firebase";
 import { collection, setDoc, doc } from "firebase/firestore";
@@ -11,7 +11,7 @@ function RecruiterForm() {
 		firstName: "",
 		lastName: "",
 		city: "",
-		company:""
+		company: "",
 	});
 
 	function update(e) {
@@ -21,20 +21,24 @@ function RecruiterForm() {
 	function create_user(e) {
 		e.preventDefault();
 		if (user) {
-			setDoc(doc(collection(db, "recruiters_informations"), auth.currentUser.uid), {
-				email: user.email,
-				id: user.uid,
-				firstName: profileData.firstName,
-				lastName: profileData.lastName,
-				company:profileData.company,
-				city: profileData.city,
-			});
+			setDoc(
+				doc(collection(db, "recruiters_informations"), auth.currentUser.uid),
+				{
+					email: user.email,
+					id: user.uid,
+					firstName: profileData.firstName,
+					lastName: profileData.lastName,
+					company: profileData.company,
+					city: profileData.city,
+					profilePicURL: "",
+				}
+			);
 			// Clear the form fields
 			setProfileData({
-                firstName: "",
-                lastName: "",
-                city: "",
-                company:""
+				firstName: "",
+				lastName: "",
+				city: "",
+				company: "",
 			});
 			navigate("/Profile");
 		} else {
@@ -72,8 +76,6 @@ function RecruiterForm() {
 							/>
 						</Form.Group>
 
-						
-
 						<Form.Group className="mb-3" controlId="formCity">
 							<Form.Control
 								className="input_box"
@@ -85,8 +87,6 @@ function RecruiterForm() {
 							/>
 						</Form.Group>
 
-						
-
 						<Form.Group className="mb-3" controlId="formcompany">
 							<Form.Control
 								as="textarea"
@@ -97,7 +97,7 @@ function RecruiterForm() {
 								value={profileData.company}
 								placeholder="company"
 							/>
-						</Form.Group>			
+						</Form.Group>
 					</center>
 					<Button className="sign_button mb-3 mt-3" type="submit">
 						Register
