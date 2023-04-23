@@ -111,9 +111,14 @@ function AdminFeed() {
           {posts.map((post) => (
             <Col key={post.id} sm={12} md={6} lg={4} className="mb-4">
               <Card>
-                <h5>{post.id}</h5>
-                <h6>Created by: {post.postTexts[0]?.created_by ?? 'N/A'}</h6>
+                {/* <h5>{post.id}</h5> */}
+                {/* <h6>Created by: </h6> */}
+                <Card.Title>{post.postTexts[0]?.created_by ?? 'N/A'}</Card.Title>
                 {console.log(post.postTexts[0])}
+                <Card.Subtitle className="mb-2 text-muted">
+                  UID: {post.id}
+                  </Card.Subtitle>
+                  <hr/>
                 <Card.Body>
                   {post.postTexts.map((text) => (
                     <div key={text.id} className="d-flex justify-content-between">

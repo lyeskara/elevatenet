@@ -114,6 +114,9 @@ if (currentUser?.uid === '361FbyTxmmZqCT03kGd25kSyDff1') {
             <Card>
               <Card.Body>
                 <Card.Title>{reportedUser.email} </Card.Title>
+                <Card.Subtitle className="mb-2 text-muted">
+                    UID: {reportedUser.uid}
+                  </Card.Subtitle>
                 <hr></hr>
                 <Card.Text><h5>{reportedUser.firstName} {reportedUser.lastName}</h5></Card.Text>
                 <Card.Subtitle className="mb-2 text-muted">

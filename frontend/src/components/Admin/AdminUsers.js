@@ -115,12 +115,13 @@ function AdminUsers() {
             <Col key={user.id} md={4} className="mb-4">
               <Card>
                 <Card.Body>
-                  <Card.Title>{user.email} </Card.Title>
+                  <Card.Title>{user.email} </Card.Title>                  
+                  <Card.Subtitle className="mb-2 text-muted">
+                    UID: {user.id}
+                  </Card.Subtitle>
                   <hr></hr>
                   <Card.Text><h5>{user.firstName} {user.lastName}</h5></Card.Text>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    ID: {user.id}
-                  </Card.Subtitle>
+
                   <Button
                     variant="outline-danger"
                     onClick={() => handleDeleteUser(user.id)}
