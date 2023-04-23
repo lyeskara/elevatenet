@@ -8,6 +8,7 @@ import "../../styles/Messaging.css"; // Importing styling
 import { Container, Form, Button, FormGroup } from "react-bootstrap";
 import pin from ".././../images/paperclip.png";
 import defpic from ".././../images/test.gif";
+import mod_icon from ".././../images/icon_mark.png";
 import generateKey from "../../generateKey";
 import "../../styles/DMModerationMenu.css"; // Importing styling
 
@@ -180,7 +181,7 @@ useEffect(() => {
       unsubscribe();
     };
   }, []);
-
+// setting the state variable to the current user informations
   useEffect(() => {
     setAuthUserInfo(users_information.find((obj) => obj.id === currentUser.uid));
   }, [users_information])
@@ -265,6 +266,7 @@ useEffect(() => {
     try {
       const conversationId = [currentUser.uid, recipientId].sort().join('-');
       const conversationRef = collection(db, 'messages', conversationId, 'conversation');
+    // procedure that fetch notifications settings to see if the value is true to send a dm notification and also make  POST request to the server if true.
 
       const notification_settings = (await getDoc(doc(collection(db, "notification_settings"), recipientId))).data();
 
@@ -344,7 +346,11 @@ useEffect(() => {
                       className="user-tab-m"
                       onClick={() => setRecipientId(user.id)}
                     >
-                      <img className="chat-pic" src={user.profilePicUrl || defpic} style={{ marginRight: "20px" }} />
+                      <img
+                        className="chat-pic"
+                        src={user.profilePicUrl || defpic}
+                        style={{ marginRight: "20px" }}
+                      />
                       <h3>
                         {user.firstName} {user.lastName}
                       </h3>
@@ -355,7 +361,8 @@ useEffect(() => {
                         textAlign: msg.sender === currentUser.uid ? 'right' : 'left',
                       }}
                       */
-              )}</div>
+              )}
+            </div>
           </div>
 
           {/* A divider between the chat list and messages section*/}
@@ -364,27 +371,81 @@ useEffect(() => {
           {/* The messages section */}
           <div className="text-m">
             <div className="containRequest">
-              {recipientId && users_information.find(user => user.id === recipientId) && (
-                <img src={users_information.find(user => user.id === recipientId).profilePicUrl || defpic} className="defpic-m"></img>
-              )}
+              {recipientId &&
+                users_information.find((user) => user.id === recipientId) && (
+                  <img
+                    src={
+                      users_information.find((user) => user.id === recipientId)
+                        .profilePicUrl || defpic
+                    }
+                    className="defpic-m"
+                  ></img>
+                )}
 
-              <h2>{recipientId ? users_information.find(user => user.id === recipientId).firstName + " " + users_information.find(user => user.id === recipientId).lastName : "Message"}</h2>
-              <div className="dm-moderation-menu">
-              {/* Render the three-dot (ellipsis) icon */}
-              <div className="ellipsis-icon">
-                {/* Add your ellipsis icon SVG or use a library like Material-UI icons */}
-                ...
+              <h2>
+                {recipientId
+                  ? users_information.find((user) => user.id === recipientId)
+                      .firstName +
+                    " " +
+                    users_information.find((user) => user.id === recipientId)
+                      .lastName
+                  : "Message"}
+              </h2>
+              <div className="dropdown">
+                {/* Render the DM moderation menu items */}
+                <button
+                  className="btn btn-secondary dropdown-toggle"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  style={{ backgroundColor: "#27746a", backgroundColor: "transparent", border: "none" }}
+                >
+                  <img
+                    src={mod_icon}
+                    alt="shield icon"
+                    style={{
+                      height: "30px",
+                      width: "30px",
+                      marginRight: "8px",
+                    }}
+                  ></img>
+                </button>
+                <ul className="dropdown-menu">
+                  {/* Add your DM moderation menu items as needed */}
+                  <li>
+                    <button
+                      className="dropdown-item"
+                      type="button"
+                      style={{ backgroundColor: "#F3F3F3" }}
+                      onClick={handleBlockUser}
+                    >
+                      {blockedUsers.includes(recipientId)
+                        ? "Unblock User"
+                        : "Block User"}{" "}
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      className="dropdown-item"
+                      type="button"
+                      style={{ backgroundColor: "#F3F3F3" }}
+                      onClick={handleReportUser}
+                    >
+                      Report User
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      className="dropdown-item"
+                      type="button"
+                      style={{ backgroundColor: "#F3F3F3" }}
+                      onClick={handleDeleteMessages}
+                    >
+                      Delete All Messages
+                    </button>
+                  </li>
+                </ul>
               </div>
-              {/* Render the DM moderation menu items */}
-              <ul className="dm-moderation-menu-items">
-                {/* Add your DM moderation menu items as needed */}
-                <li onClick={handleBlockUser}>
-    {blockedUsers.includes(recipientId) ? "Unblock User" : "Block User"} </li> 
-                <li onClick={handleReportUser}>Report User</li>
-                <li onClick={handleDeleteMessages}>Delete Message</li>
-
-              </ul>
-            </div>
             </div>
             {/* Renders all the messages in the 'messages' array, with the sender's 
                 messages having a green background and the receiver's messages having 
@@ -393,14 +454,27 @@ useEffect(() => {
               {messages.map((msg, index) => (
                 <div
                   key={index}
-                  className={`message-m ${msg.sender === currentUser.uid ? "sent-m" : "received-m"
-                    }`}
+                  className={`message-m ${
+                    msg.sender === currentUser.uid ? "sent-m" : "received-m"
+                  }`}
                 >
                   <p>
                     {msg.text}
                     {msg.file && (
-                      <a href={msg.fileUrl} download={msg.fileName} target="_blank">
-                        <span style={{ textDecoration: 'underline', fontSize: '0.8em', color: "white" }}>{msg.fileName}</span>
+                      <a
+                        href={msg.fileUrl}
+                        download={msg.fileName}
+                        target="_blank"
+                      >
+                        <span
+                          style={{
+                            textDecoration: "underline",
+                            fontSize: "0.8em",
+                            color: "white",
+                          }}
+                        >
+                          {msg.fileName}
+                        </span>
                       </a>
                     )}
                   </p>
@@ -410,7 +484,6 @@ useEffect(() => {
 
             {/* A form for sending a message */}
             <Form onSubmit={handleSubmit}>
-
               <div className="textarea-message form-group">
                 <textarea
                   type="text"
@@ -424,16 +497,17 @@ useEffect(() => {
                 ></textarea>
               </div>
 
-              <div className="containRequest right-side"><label for="file-upload">
-                <img src={pin}></img>
-                <input
-                  className="file-m"
-                  id="file-upload"
-                  type="file"
-                  onChange={handleFileChange}
-                  ref={fileRef}
-                ></input>
-              </label>
+              <div className="containRequest right-side">
+                <label for="file-upload">
+                  <img src={pin}></img>
+                  <input
+                    className="file-m"
+                    id="file-upload"
+                    type="file"
+                    onChange={handleFileChange}
+                    ref={fileRef}
+                  ></input>
+                </label>
                 <button
                   className="button-m form-control mt-2"
                   type="button"
@@ -442,11 +516,9 @@ useEffect(() => {
                   Send
                 </button>
               </div>
-
             </Form>
 
             {/* An input field for uploading a file */}
-
           </div>
         </div>
       </Container>
