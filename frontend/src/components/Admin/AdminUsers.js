@@ -45,9 +45,8 @@ function AdminUsers() {
         deletedAt: Timestamp.now(),
       };
       await setDoc(
-        doc(db, "deleted_users", "deleted_users_doc"),
-        deletedUser,
-        { merge: true }
+        doc(db, "deleted_users", userSnapshot.data().email),
+        deletedUser
       );
       await deleteDoc(userDocRef);
       setUsers((prevUsers) =>
@@ -58,6 +57,7 @@ function AdminUsers() {
       console.error("Error removing document: ", error);
     }
   };
+  
 
   function goToReportedUsers(){
     window.location.href = "/AdminReportedUsers";
