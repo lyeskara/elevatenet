@@ -15,7 +15,7 @@ function NotificationSettings() {
 		getDoc(doc(settingsdb, auth_id)).then((data) => {
 			setDmNotifications(data.data().dm);
 			setNewsfeedNotifications(data.data().feed);
-			setJobNotifications(data.data().job);
+			setJobNotifications(data.data().jobs);
 		});
 	}, []);
 	// function to update notifications settings
@@ -26,7 +26,7 @@ function NotificationSettings() {
 			setDoc(doc(settingsdb, auth_id), {
 				dm: e.target.checked,
 				feed: "",
-				job: "",
+				jobs: "",
 			});
 		} else {
 			data.dm = e.target.checked;
@@ -41,7 +41,7 @@ function NotificationSettings() {
 			setDoc(doc(settingsdb, auth_id), {
 				dm: "",
 				feed: e.target.checked,
-				job: "",
+				jobs: "",
 			});
 		} else {
 			data.feed = e.target.checked;
@@ -55,7 +55,7 @@ function NotificationSettings() {
 			setDoc(doc(settingsdb, auth_id), {
 				dm: "",
 				feed: "",
-				job: e.target.checked,
+				jobs: e.target.checked,
 			});
 		} else {
 			data.feed = e.target.checked;
