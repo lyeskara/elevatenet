@@ -93,9 +93,7 @@ function EditProfile({ user, setUser }) {
 					`profilepics/${auth.currentUser.uid}/profilePic`
 				);
 				const uploadPic = await uploadBytes(storageRef, selectedFile);
-				downloadPicURL = await getDownloadURL(uploadPic.ref).then(
-					console.log(downloadPicURL)
-				);
+				downloadPicURL = await getDownloadURL(uploadPic.ref).then();
 			}
 			if (selectedResume) {
 				const storageRef = ref(
@@ -110,6 +108,16 @@ function EditProfile({ user, setUser }) {
 				const uploadCL = await uploadBytes(storageRef, selectedCL);
 				downloadCLURL = await getDownloadURL(uploadCL.ref);
 			}
+
+			/**
+			 * setDoc allows us to set the document in the database to the new information provided by the user.
+			 * @constructor
+			 * @param {object} docRef - Reference to the document in the database.
+			 * @param {object} updatedUser - Updated user object containing attributes.
+			 * @param {object} downloadPicURL - Download URL for the profile picture.
+			 * @param {object} downloadResumeURL - Download URL for the resume.
+			 * @param {object} downloadCLURL - Download URL for the cover letter.
+			 */
 			await setDoc(
 				doc(collection(db, "users_information"), auth.currentUser.uid),
 				{
@@ -136,7 +144,14 @@ function EditProfile({ user, setUser }) {
 			handleClose();
 		}
 	}
-
+	/**
+	 * addEducation allows us to add a new education object to the user's education array.
+	 * @constructor
+	 * @param {object} e - Any element.
+	 * @param {object} updatedUser - Updated user object containing attributes.
+	 * @param {object} setUpdatedUser - Function to set the updated user object.
+	 * @param {object} updatedUser.education - Updated user object containing attributes.
+	 */
 	function addEducation() {
 		setUpdatedUser({
 			...updatedUser,
@@ -145,18 +160,30 @@ function EditProfile({ user, setUser }) {
 				{ name: "", major: "", startDate: "", endDate: "" },
 			],
 		});
-		console.log("education proc");
-		console.log(updatedUser);
 	}
-
+	/**
+	 * removeEducation allows us to remove an education object from the user's education array.
+	 * @constructor
+	 * @param {object} e - Any element.
+	 * @param {object} updatedUser - Updated user object containing attributes.
+	 * @param {object} setUpdatedUser - Function to set the updated user object.
+	 * @param {object} updatedUser.education - Updated user object containing attributes.
+	 * @param {object} index - Index of the education object to be removed.
+	 */
 	function removeEducation(index) {
 		const newEducation = [...updatedUser.education];
 		newEducation.splice(index, 1);
 		setUpdatedUser({ ...updatedUser, education: newEducation });
-		console.log(updatedUser);
-		console.log("education removed");
 	}
-
+	/**
+	 * addWork allows us to add a new work object to the user's work array.
+	 * @constructor
+	 * @param {object} e - Any element.
+	 * @param {object} updatedUser - Updated user object containing attributes.
+	 * @param {object} setUpdatedUser - Function to set the updated user object.
+	 * @param {object} updatedUser.workExperience - Updated user object containing attributes.
+	 * @param {object} index - Index of the work object to be removed.
+	 */
 	function addWork() {
 		setUpdatedUser({
 			...updatedUser,
@@ -166,7 +193,15 @@ function EditProfile({ user, setUser }) {
 			],
 		});
 	}
-
+	/**
+	 * removeWork allows us to remove a work object from the user's work array.
+	 * @constructor
+	 * @param {object} e - Any element.
+	 * @param {object} updatedUser - Updated user object containing attributes.
+	 * @param {object} setUpdatedUser - Function to set the updated user object.
+	 * @param {object} updatedUser.workExperience - Updated user object containing attributes.
+	 * @param {object} index - Index of the work object to be removed.
+	 */
 	function removeWork(index) {
 		const newWork = [...updatedUser.workExperience];
 		newWork.splice(index, 1);

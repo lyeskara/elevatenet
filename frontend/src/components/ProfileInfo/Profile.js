@@ -7,11 +7,14 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { GrMailOption, GrPhone } from "react-icons/gr";
 import EditProfile from "./EditProfile";
-import person from "./test.gif";
+import schoolpic from "../../images/school.png";
+import workpic from "../../images/work.png";
 import { getStorage, ref, getDownloadURL, getMetadata } from "firebase/storage";
 
 /**
- * Profile loads values stored in the data base and allows us to view them in a styled page.
+ * Profile component displays the user's profile information.
+ * @returns Profile component
+ *
  */
 function Profile() {
 	const [user, setUser] = useState({});
@@ -22,7 +25,9 @@ function Profile() {
 	const [work, setWork] = useState([]);
 
 	/**
-	 * getUserData gets all values pertaining to the logged in user.
+	 * getUserInformation() gets the user's information from the database.
+	 * @returns user information
+	 *
 	 */
 
 	const getUserInformation = async () => {
@@ -61,7 +66,11 @@ function Profile() {
 			}
 		}
 	};
-
+	/**
+	 * getUserProfilePicture() gets the user's profile picture from Firebase Storage.
+	 * @returns user's profile picture
+	 *
+	 */
 	const getUserProfilePicture = async () => {
 		const profilePicRef = ref(
 			storage,
@@ -84,12 +93,20 @@ function Profile() {
 			setProfilePicURL(downloadURL);
 		}
 	};
-
+	/**
+	 * useEffect() is a React hook that runs once the component is mounted.
+	 * @returns user information and profile picture
+	 *
+	 */
 	useEffect(() => {
 		getUserInformation();
 		getUserProfilePicture();
 	}, [auth]);
-
+	/**
+	 * downloadResume() downloads the user's resume from Firebase Storage.
+	 * @returns user's resume
+	 *
+	 */
 	const downloadResume = async () => {
 		const storageRef = ref(storage, `resume/${auth.currentUser.uid}/resume`);
 		try {
@@ -104,7 +121,10 @@ function Profile() {
 			alert("Error downloading resume file!");
 		}
 	};
-
+	/**
+	 * downloadCL() downloads the user's cover letter from Firebase Storage.
+	 * @returns user's cover letter
+	 */
 	const downloadCL = async () => {
 		const storageRef = ref(storage, `CL/${auth.currentUser.uid}/CL`);
 		try {
@@ -238,7 +258,7 @@ function Profile() {
 							work.map((work, index) => (
 								<Fragment key={index}>
 									<div className="profile-desc-row">
-										<img src={person} alt="person"></img>
+										<img src={workpic} alt="person"></img>
 										<div>
 											<h3>{work.position}</h3>
 											<p>{work.company}</p>
@@ -259,7 +279,7 @@ function Profile() {
 							education.map((school, index) => (
 								<Fragment key={index}>
 									<div className="profile-desc-row">
-										<img src={person} alt="person"></img>
+										<img src={schoolpic} alt="person"></img>
 										<div>
 											<h3>{school.name}</h3>
 											<p>

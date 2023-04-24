@@ -213,21 +213,19 @@ function Post({ name, description, message, photo, image, post_id, id }) {
                 <img src={photo} alt={name} />
                 <span className="username-forposts">{name}</span>
               </div>
-             {/* DELETE AND UPDATE BUTTONS */}
-             <div className="col-4 d-flex justify-content-end">
-  {(poster_id === auth_id) ?
-    ((isUpdated) ? (
-      <button className="btn btn-outline-secondary btn-sm px-2 py-1" onClick={handleCancel}>Cancel</button>
-    ) :
-      (
-        <>
-          <button className="btn btn-outline-danger btn-sm px-2 py-1 me-2" onClick={handleDelete}>Delete</button>
-          <button className="btn btn-outline btn-sm px-2 py-1" style={{ borderColor: '#27764A', color: '#27764A' }} onClick={() => setUpdate(true)}>Update</button>
-        </>
-      )) : (<></>)}
-</div>
-
-
+              {/* DELETE AND UPDATE BUTTONS */}
+              <div className="col-4 d-flex justify-content-end">
+                {(poster_id === auth_id) ?
+                  ((isUpdated) ? (
+                    <button className="btn btn-outline-secondary" onClick={handleCancel}>Cancel</button>
+                  ) :
+                    (
+                      <>
+                        <button className="btn btn-outline-danger me-2" onClick={handleDelete}>Delete</button>
+                        <button className="btn btn-outline" style={{ borderColor: '#27764A', color: '#27764A' }} onClick={() => setUpdate(true)}>Update</button>
+                      </>
+                    )) : (<></>)}
+              </div>
 
             </div>
           </div>
@@ -286,7 +284,21 @@ function Post({ name, description, message, photo, image, post_id, id }) {
               <p>Comment</p>
             </button>
           </div>
-          
+          {/* DELETE AND UPDATE BUTTONS */}
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            {(poster_id === auth_id) ?
+              ((isUpdated) ? (
+                <>
+                  <button className="post-update-cancel" onClick={handleCancel} >cancel</button>
+                </>
+              ) :
+                (
+                  <>
+                    <button className="post-delete"  onClick={handleDelete}>delete</button>
+                    <button className="post-update" onClick={() => setUpdate(true)}>update</button>
+                  </>
+                )) : (<></>)}
+          </div>
 
           {/*COMMENT BOX */}
           {showCommentBox && (
