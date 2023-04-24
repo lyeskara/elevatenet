@@ -285,20 +285,7 @@ function Post({ name, description, message, photo, image, post_id, id }) {
             </button>
           </div>
           {/* DELETE AND UPDATE BUTTONS */}
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            {(poster_id === auth_id) ?
-              ((isUpdated) ? (
-                <>
-                  <button className="post-update-cancel" onClick={handleCancel} >cancel</button>
-                </>
-              ) :
-                (
-                  <>
-                    <button className="post-delete"  onClick={handleDelete}>delete</button>
-                    <button className="post-update" onClick={() => setUpdate(true)}>update</button>
-                  </>
-                )) : (<></>)}
-          </div>
+         
 
           {/*COMMENT BOX */}
           {showCommentBox && (
