@@ -140,28 +140,24 @@ function Post({ name, description, message, photo, image, post_id, id }) {
   //Function that updates the database of the comment to be displayed
   async function handleCommentSubmit(e) {
     e.preventDefault();
-    const posts_data = (await getDoc(doc(postsRef, poster_id))).data().posts
-    const comment = {
+    const commenter = await getDoc(doc(usersRef, auth_id));
+    const { firstName, lastName } = commenter.data();
+    const commenter_name = `${firstName} ${lastName}`;
+    const comment_data = {
       commenter_id: auth_id,
       comment: commentText,
-      timeStamp: new Date().getTime()
-    }
-    for (let i = 0; i < posts_data.length; i++) {
-      if (posts_data[i].id === post_id) {
-        Setpost_data(posts_data[i])
-      }
-    }
-    post_data.comments = comments
-    post_data.comments.push(comment);
-    for (let i = 0; i < posts_data.length; i++) {
-      if (posts_data[i].id === post_id) {
-        posts_data[i].comments = post_data.comments
-      }
-    }
-    updateDoc(doc(postsRef, poster_id), { "posts": posts_data })
+      commenter_name: commenter_name,
+    };
+    const posts_data = (await getDoc(doc(postsRef, poster_id))).data().posts;
+    const post_index = posts_data.findIndex((post) => post.id === post_id);
+    const post = posts_data[post_index];
+    post.comments.push(comment_data);
+    posts_data[post_index] = post;
+    await updateDoc(doc(postsRef, poster_id), { "posts": posts_data });
+    setComments((prevComments) => [...prevComments, comment_data]);
     setCommentText("");
-
-  };
+  }
+  
 
   //Fetch the files
   useEffect(() => {
@@ -289,20 +285,7 @@ function Post({ name, description, message, photo, image, post_id, id }) {
             </button>
           </div>
           {/* DELETE AND UPDATE BUTTONS */}
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            {(poster_id === auth_id) ?
-              ((isUpdated) ? (
-                <>
-                  <button className="post-update-cancel" onClick={handleCancel} >cancel</button>
-                </>
-              ) :
-                (
-                  <>
-                    <button className="post-delete"  onClick={handleDelete}>delete</button>
-                    <button className="post-update" onClick={() => setUpdate(true)}>update</button>
-                  </>
-                )) : (<></>)}
-          </div>
+         
 
           {/*COMMENT BOX */}
           {showCommentBox && (
