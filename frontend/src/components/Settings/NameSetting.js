@@ -37,21 +37,24 @@ function NameSetting() {
   const userr = auth.currentUser;
   const getUserType = async () => {
     try {
-       // Get the current user's email
-    const email = auth.currentUser.email;
-    if (!email) {
-      console.log("No email found for current user.");
-      return;
-    }
+      // Get the current user's email
+      const email = auth.currentUser.email;
+      if (!email) {
+        console.log("No email found for current user.");
+        return;
+      }
       // Check if the email belongs to a recruiter
-    const recruiterQuerySnapshot = await getDocs(
-      query(collection(db, "recruiters_informations"), where("email", "==", email))
-    ); 
-    if (!recruiterQuerySnapshot.empty) {
-      setUserType("recruiter");
-      console.log("recruiter");
-      return;
-    }
+      const recruiterQuerySnapshot = await getDocs(
+        query(
+          collection(db, "recruiters_informations"),
+          where("email", "==", email)
+        )
+      );
+      if (!recruiterQuerySnapshot.empty) {
+        setUserType("recruiter");
+        console.log("recruiter");
+        return;
+      }
       // Check if the email belongs to a job seeker
       const userQuerySnapshot = await getDocs(
         query(collection(db, "users_information"), where("email", "==", email))
@@ -61,7 +64,7 @@ function NameSetting() {
         console.log("job seeker");
         return;
       }
-      console.log({userType});
+      console.log({ userType });
       console.log("No user found with the email: ", email);
     } catch (error) {
       console.log(error);
@@ -77,7 +80,7 @@ function NameSetting() {
       const recruiterDoc = await getDoc(
         doc(collection(db, "recruiters_informations"), auth.currentUser.uid)
       );
-  
+
       if (recruiterDoc.exists) {
         // Set the user state
         setUser({ ...recruiterDoc.data() });
@@ -90,8 +93,7 @@ function NameSetting() {
   };
   const getUserData = async () => {
     try {
-
-        const userDoc = await getDoc(
+      const userDoc = await getDoc(
         doc(collection(db, "users_information"), auth.currentUser.uid)
       );
 
@@ -101,7 +103,6 @@ function NameSetting() {
       } else {
         console.log("User not found");
       }
-      
     } catch (error) {
       console.log(error);
     }
@@ -112,46 +113,45 @@ function NameSetting() {
     e.preventDefault();
 
     try {
-      if(userType == "job seeker"){
+      if (userType == "job seeker") {
         const userRef = doc(
-        collection(db, "users_information"),
-        auth.currentUser.uid
-      );
+          collection(db, "users_information"),
+          auth.currentUser.uid
+        );
 
-      await updateDoc(userRef, {
-        firstName: updatedUser.firstName || user.firstName,
-        lastName: updatedUser.lastName || user.lastName,
-        city: updatedUser.city || user.city,
-        contact: updatedUser.contact || user.contact,
-      });
+        await updateDoc(userRef, {
+          firstName: updatedUser.firstName || user.firstName,
+          lastName: updatedUser.lastName || user.lastName,
+          city: updatedUser.city || user.city,
+          contact: updatedUser.contact || user.contact,
+        });
 
-      // Update the user state with the new data
-      setUser({ ...user, ...updatedUser });
+        // Update the user state with the new data
+        setUser({ ...user, ...updatedUser });
 
-      // Reset the updatedUser state
-      setUpdatedUser(null);
-      setShowModal(true);
-      }
-      else{
+        // Reset the updatedUser state
+        setUpdatedUser(null);
+        setShowModal(true);
+      } else {
         const recruitRef = doc(
           collection(db, "recruiters_informations"),
           auth.currentUser.uid
         );
-  
+
         await updateDoc(recruitRef, {
           firstName: updatedUser.firstName || user.firstName,
           lastName: updatedUser.lastName || user.lastName,
           city: updatedUser.city || user.city,
+          contact: updatedUser.contact || user.contact,
         });
-  
+
         // Update the user state with the new data
         setUser({ ...user, ...updatedUser });
-  
+
         // Reset the updatedUser state
         setUpdatedUser(null);
         setShowModal(true);
       }
-      
     } catch (error) {
       console.log(error);
     }
@@ -160,14 +160,13 @@ function NameSetting() {
   // This function updates the updatedUser state as the user types in the form
   const update = (e) => {
     setUpdatedUser({ ...updatedUser, [e.target.name]: e.target.value });
-    
   };
 
   useEffect(() => {
-    if (userType === 'job seeker') {
+    if (userType === "job seeker") {
       getUserData();
     }
-    if (userType === 'recruiter') {
+    if (userType === "recruiter") {
       // Call getUserData with recruiter data here
       getUserDataRecruiter();
     }
@@ -242,9 +241,7 @@ function NameSetting() {
                 className="mb-3"
                 controlId="exampleForm.ControlInput1"
               >
-                {userType === "job seeker" && (
-                  <>
-                  <Form.Label>Contact Number</Form.Label>
+                <Form.Label>Contact Number</Form.Label>
                 <Form.Control
                   name="contact"
                   type="text"
@@ -252,9 +249,6 @@ function NameSetting() {
                   onChange={update}
                   autoFocus
                 />
-                </>
-                )}
-                
               </Form.Group>
 
               <Button
@@ -271,8 +265,8 @@ function NameSetting() {
         </Col>
       </Row>
 
-        {/*Modal to display error message */}
-        <Modal show={showModal} onHide={handleClose}>
+      {/*Modal to display error message */}
+      <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Edit</Modal.Title>
         </Modal.Header>
@@ -283,7 +277,6 @@ function NameSetting() {
           </Button>
         </Modal.Footer>
       </Modal>
-
     </Container>
   );
 }
