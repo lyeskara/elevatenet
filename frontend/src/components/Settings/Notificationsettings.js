@@ -97,6 +97,7 @@ function NotificationSettings() {
 										onChange={handleNewsfeedNotifications}
 									/>
 								</Form.Group>
+								{/* 
 								<Form.Group className="mb-3" controlId="jobsNotifications">
 									<Form.Check
 										type="checkbox"
@@ -105,6 +106,7 @@ function NotificationSettings() {
 										onChange={handleJobNotifications}
 									/>
 								</Form.Group>
+								*/}
 							</Form>
 						</Card>
 					</Col>
