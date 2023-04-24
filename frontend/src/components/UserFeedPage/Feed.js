@@ -29,6 +29,7 @@ import { db, auth } from '../../firebase';
 import '../../styles/feed.css';
 import Post from './Post';
 import personicon from '../../images/personicon.png';
+import person from ".././../images/test.gif";
 
 
 function Feed() {
@@ -170,7 +171,7 @@ function Feed() {
             id={obj.poster_id}
             post_id={obj.post.id}
             key={obj.post.title}
-            photo={obj.user_info.profile_picture}
+            photo={obj.user_info.profile_picture || person}
             name={obj.user_info.first_name + obj.user_info.last_name}
             message={obj.post.post_text}
             image={obj.post.image}

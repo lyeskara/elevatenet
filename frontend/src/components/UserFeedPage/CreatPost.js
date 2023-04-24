@@ -17,6 +17,7 @@ import { v4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import generateKey from "../../generateKey";
 import { useUserAuth } from '../../context/UserAuthContext';
+import person from ".././../images/test.gif";
 
 /**
  * The CreatPost page displays the form that user use to create a post and post it on the feed.
@@ -165,7 +166,7 @@ function CreatPost() {
   return (
     <div className="create-post-container">
       <div className="create-post-header">
-        <img src={user_info.profile_picture} alt="profilephoto-icon" className="create-post-profile-photo" />
+        <img src={user_info.profile_picture || person} alt="profilephoto-icon" className="create-post-profile-photo" />
         <span className="create-post-profile-name">{user_info.first_name} {user_info.last_name}</span>
       </div>
       <form className="create-post-form">
