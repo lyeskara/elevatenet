@@ -13,6 +13,7 @@ import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 import { GrMailOption, GrPhone } from "react-icons/gr";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import "../../styles/profile.css";
+import person from ".././../images/test.gif";
 
 function OtherRecruitersProfile() {
 	const [follow, setfollow] = useState(false);
@@ -239,10 +240,10 @@ function informations(user, numConnections) {
 
 		<div className="contain">
 			<Row className="gap-5">
-				<Col className="col1" xs={12} md={{ span: 2, offset: 5 }}>
+				<Col className="col1" xs={12} md={{ span: 3, offset: 4 }}>
 					<Card className="profilecard">
 						<img
-							src={user.profilePicUrl || "/images/user.png"}
+							src={user.profilePicUrl || person}
 							id="profilepic"
 							alt="Avatar"
 							className="avatar"
