@@ -91,7 +91,7 @@ function Search() {
 	useEffect(() => {
 		if (url) {
 			console.log(url);
-			navigate({ url }); //if clicked link is another user's profile, navigate to /profile/userId route
+			navigate(url); //if clicked link is another user's profile, navigate to /profile/userId route
 		}
 	}, [url]);
 

@@ -2,8 +2,6 @@ import { React, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
 	getDoc,
-	query,
-	where,
 	getDocs,
 	setDoc,
 	collection,
@@ -35,7 +33,7 @@ function OtherRecruitersProfile() {
 	//function that handles the following feature, checks if the user is following each other, if not, the connection is added to the database
 
 	useEffect(() => {
-		getDoc(doc(collection(db, "recruiters_informations"), currId)).then(
+		getDoc(doc(collection(db, "users_information"), currId)).then(
 			(informations) => {
 				const { profilePicUrl, firstName, lastName } = informations.data();
 				const obj = {
@@ -141,7 +139,7 @@ function OtherRecruitersProfile() {
 	const getUserData = async () => {
 		try {
 			const userDoc = await getDoc(
-				doc(collection(db, "recruiters_information"), id)
+				doc(collection(db, "recruiters_informations"), id)
 			);
 
 			if (userDoc.exists) {
@@ -161,6 +159,7 @@ function OtherRecruitersProfile() {
 		} catch (error) {
 			console.log(error);
 		}
+		console.log(user);
 	};
 
 	useEffect(() => {
@@ -243,7 +242,7 @@ function informations(user, numConnections) {
 				<Col className="col1" xs={12} md={{ span: 2, offset: 5 }}>
 					<Card className="profilecard">
 						<img
-							src={profilePicURL}
+							src={user.profilePicUrl || "/images/user.png"}
 							id="profilepic"
 							alt="Avatar"
 							className="avatar"
