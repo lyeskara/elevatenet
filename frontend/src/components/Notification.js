@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { auth, db } from "../firebase";
 import { Card, Container, Col, Row } from "react-bootstrap";
 import "./../styles/Notification.css";
+import person from "./../images/test.gif";
 
 /**
  * The Notfication page displays the notifications that the user receive
@@ -40,7 +41,7 @@ function Notification() {
               <Card className="notif-card">
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <img
-                    src={Notification.profilePicUrl}
+                    src={Notification.profilePicUrl || person}
                     alt="profilephoto-icon"
                     className="create-post-profile-photo notif-pic"
                   />

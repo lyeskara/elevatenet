@@ -23,6 +23,7 @@ import {
 } from "firebase/storage";
 import { storage } from "../../firebase";
 import { v4 } from "uuid";
+import person from ".././../images/test.gif";
 
 function Post({ name, description, message, photo, image, post_id, id }) {
   // state variables
@@ -306,7 +307,7 @@ function Post({ name, description, message, photo, image, post_id, id }) {
 
           {extended_comments.map((comment) => (
             <div key={comment.commenter_id} className="post-comment">
-              <img src={comment.profile_Picture} alt="like" style={{ width: '30px', height: '30px', borderRadius: '50%' }} />
+              <img src={comment.profile_Picture || person} alt="like" style={{ width: '30px', height: '30px', borderRadius: '50%' }} />
               <strong>{comment.full_name}</strong>
 
               <p>{comment.comment}</p>
