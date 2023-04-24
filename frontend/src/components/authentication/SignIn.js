@@ -24,7 +24,7 @@ const SignIn = () => {
 	const handleGoogleSignIn = async () => {
 		try {
 			await googleSignIn();
-			navigate("/");
+			navigate("/Feed");
 		} catch (error) {
 			console.log(error.message);
 			setErrorMessage(error.message);
