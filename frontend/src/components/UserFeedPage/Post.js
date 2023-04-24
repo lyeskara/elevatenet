@@ -56,6 +56,7 @@ function Post({ name, description, message, photo, image, post_id, id }) {
     post_text: ""
   });
 
+  //This function fetches the post information as well as the like and comments
   useEffect(() => {
     getDoc(doc(postsRef, poster_id)).then((responce) => {
       const data = responce.data().posts
@@ -71,6 +72,7 @@ function Post({ name, description, message, photo, image, post_id, id }) {
     })
   }, [])
 
+  //This function display the comments of the post
   useEffect(() => {
     let set = new Set()
     comments.forEach((comment) => {
@@ -88,6 +90,7 @@ function Post({ name, description, message, photo, image, post_id, id }) {
     })
   }, [comments])
 
+  //This function handles the like button. A like will increase the count and unliking will decrease the count
   async function handleLike() {
     const posts_data = (await getDoc(doc(postsRef, poster_id))).data().posts;
     const post_index = posts_data.findIndex(post => post.id === post_id);
@@ -106,6 +109,7 @@ function Post({ name, description, message, photo, image, post_id, id }) {
     seton(true)
   };
 
+  //This function handles the unlike button. A like will increase the count and unliking will decrease the count. 
   async function handleUnlike() {
     const posts_data = (await getDoc(doc(postsRef, poster_id))).data().posts;
     const post_index = posts_data.findIndex(post => post.id === post_id);
@@ -128,10 +132,12 @@ function Post({ name, description, message, photo, image, post_id, id }) {
     e.target.classList.add("hidden");
   };
 
+  //Function that will update the comment box
   const handleCommentButtonClick = () => {
     setShowCommentBox(!showCommentBox);
   };
 
+  //Function that updates the database of the comment to be displayed
   async function handleCommentSubmit(e) {
     e.preventDefault();
     const posts_data = (await getDoc(doc(postsRef, poster_id))).data().posts
@@ -157,6 +163,7 @@ function Post({ name, description, message, photo, image, post_id, id }) {
 
   };
 
+  //Fetch the files
   useEffect(() => {
     if (!(UImage === null)) {
       const imageRef = ref(storage, `Uimages/${v4() + UImage}`);
@@ -168,11 +175,13 @@ function Post({ name, description, message, photo, image, post_id, id }) {
     }
   }, [UImage])
 
+  //handle the cancel function will nullify the post
   function handleCancel() {
     setUpdate(false)
     SetUImage(null)
     SetUmessage(message)
   }
+  //This function handles submit where the info inputted will be stored into the database.
   async function submitForm(e) {
     e.preventDefault();
     const posts_data = (await getDoc(doc(postsRef, poster_id))).data().posts;
@@ -184,6 +193,8 @@ function Post({ name, description, message, photo, image, post_id, id }) {
     updateDoc(doc(postsRef, poster_id), { "posts": posts_data })
     setUpdate(false);
   }
+
+  //function that handles delete of the post. Post is removed from database
   async function handleDelete() {
     const posts_data = (await getDoc(doc(postsRef, poster_id))).data().posts;
     const post_index = posts_data.findIndex(post => post.id === post_id);
@@ -259,7 +270,7 @@ function Post({ name, description, message, photo, image, post_id, id }) {
                   {PicUrl && <img src={PicUrl} onError={handleImageError} />}
                 </div>
               </>)}
-
+          {/*LIKE BUTTON */}
           <div className="post-buttons">
             {(on) ? (
               <button onClick={handleUnlike}>
@@ -292,6 +303,8 @@ function Post({ name, description, message, photo, image, post_id, id }) {
                   </>
                 )) : (<></>)}
           </div>
+
+          {/*COMMENT BOX */}
           {showCommentBox && (
             <div className="post-commentBox">
               <form onSubmit={handleCommentSubmit} style={{ display: "flex", alignItems: "center" }}>

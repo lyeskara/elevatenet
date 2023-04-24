@@ -1,3 +1,4 @@
+//import the modules
 import React, { useState } from "react";
 import { useUserAuth } from "../../context/UserAuthContext";
 import { auth, db } from "../../firebase";
@@ -173,6 +174,7 @@ function ProfileForm() {
 		setProfileData({ ...profileData, education: newEducation });
 	}
 
+	//function to add work field to user
 	function addWork() {
 		setProfileData({
 			...profileData,
@@ -202,6 +204,7 @@ function ProfileForm() {
 					<Form.Text className="sign center">About You</Form.Text>
 
 					<center>
+						{/*FORM TO BE FILLED BY USER JOINING*/}
 						<Form.Group className="mb-3 mt-4" controlId="formFirstName">
 							<Form.Control
 								className="input_box"

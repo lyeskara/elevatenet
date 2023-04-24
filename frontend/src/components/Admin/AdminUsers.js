@@ -16,9 +16,17 @@ import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import { Link } from 'react-router-dom';
 
+/** 
+   * Function that allows the admin to manage all the users of the platform
+  */
 function AdminUsers() {
   const [users, setUsers] = useState([]);
 
+  /** 
+   * Fetch all the users 
+   * @param effect — Imperative function that can return a cleanup function
+   * 
+  */
   useEffect(() => {
     const fetchUsers = async () => {
       const usersCollection = collection(db, "users_information");
@@ -35,6 +43,10 @@ function AdminUsers() {
     fetchUsers();
   }, []);
 
+  /** 
+   * Function to delete users
+   * @param userId pass the ID of the user
+  */
   const handleDeleteUser = async (userId) => {
     try {
       const userDocRef = doc(db, "users_information", userId);
@@ -45,9 +57,8 @@ function AdminUsers() {
         deletedAt: Timestamp.now(),
       };
       await setDoc(
-        doc(db, "deleted_users", "deleted_users_doc"),
-        deletedUser,
-        { merge: true }
+        doc(db, "deleted_users", userSnapshot.data().email),
+        deletedUser
       );
       await deleteDoc(userDocRef);
       setUsers((prevUsers) =>
@@ -58,6 +69,11 @@ function AdminUsers() {
       console.error("Error removing document: ", error);
     }
   };
+  
+
+  function goToReportedUsers(){
+    window.location.href = "/AdminReportedUsers";
+  }
 
   function goToAdmin(){
     window.location.href = "/Admin";
@@ -73,7 +89,6 @@ function AdminUsers() {
 	if (currentUser?.uid === '361FbyTxmmZqCT03kGd25kSyDff1') {
 		return (
       <Container>
-        <h1>Admin Users</h1>
         <Row>
           {/* This card displays the job menu block with Job Postings and Advertisements */}
           <Card className="jobs-menu">
@@ -92,7 +107,12 @@ function AdminUsers() {
               {" "}
               Feed Posts{" "}
             </h4>
-                      <h4
+            {/* Reported Users */}
+            <h4 onClick={goToReportedUsers} style={{ color: "#888888" }}>
+            {" "}
+            Reported Users{" "}
+          </h4>
+            <h4
               onClick={goToUser}
               style={{ color: "#27746a" }}
             >
@@ -107,12 +127,13 @@ function AdminUsers() {
             <Col key={user.id} md={4} className="mb-4">
               <Card>
                 <Card.Body>
-                  <Card.Title>{user.email} </Card.Title>
+                  <Card.Title>{user.email} </Card.Title>                  
+                  <Card.Subtitle className="mb-2 text-muted">
+                    UID: {user.id}
+                  </Card.Subtitle>
                   <hr></hr>
                   <Card.Text><h5>{user.firstName} {user.lastName}</h5></Card.Text>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    ID: {user.id}
-                  </Card.Subtitle>
+
                   <Button
                     variant="outline-danger"
                     onClick={() => handleDeleteUser(user.id)}

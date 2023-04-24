@@ -1,3 +1,4 @@
+//import necessary modules
 import React, { useState, useEffect, useRef } from "react";
 import { setDoc, collection, doc, getDocs, getDoc, updateDoc, query } from "firebase/firestore";
 import { db, auth } from "../../firebase";
@@ -17,6 +18,11 @@ import { useNavigate } from "react-router-dom";
 import generateKey from "../../generateKey";
 import { useUserAuth } from '../../context/UserAuthContext';
 
+/**
+ * The CreatPost page displays the form that user use to create a post and post it on the feed.
+ *
+ * @return { Object } The page as a React component with the form to create a post
+ */
 function CreatPost() {
   // const on info of the connected user
   const { user } = useUserAuth();
@@ -48,6 +54,7 @@ function CreatPost() {
     first_name: "",
     last_name: ""
   }
+  //fetches the information of the current user
   useEffect(() => {
     getDoc(doc(usersRef, currentId)).then((informations) => {
       const { profilePicUrl, firstName, lastName } = informations.data()
@@ -92,13 +99,14 @@ function CreatPost() {
         if ((postText == "") && (Picture == null)) {
           alert("empty fields please write something or put an image")
         } else {
+          // procedure that fetch notifications settings to see if the value is true to send a post notification and also make  POST request to the server if true.
           if (((await getDoc(doc(collection(db, "connection"), currentId))).data()) !== undefined) {
             const connections = (await getDoc(doc(collection(db, "connection"), currentId))).data().connections;
             connections.forEach(id => {
-              getDoc(doc(collection(db, "notification_settings"), id)).then((note_data) => {
+              getDoc(doc(collection(db, "notification_settings"), id)).then((note_data) => { 
                 if (note_data.data() !== undefined) {
                   if (note_data.data().feed) {
-                    getDoc(doc(collection(db, 'Notifications'), id)).then((followed_doc) => {
+                    getDoc(doc(collection(db, 'Notifications'), id)).then((followed_doc) => { //Send notificaiton when a post is created
                       const note = {
                         message: `${user_info.first_name} ${user_info.last_name} has created a new post, go check it out!`,
                         profilePicUrl: user_info.profile_picture,
@@ -107,7 +115,7 @@ function CreatPost() {
                       }
                       if ((followed_doc.data() === undefined) || (followed_doc.data())) {
                         console.log
-                        setDoc(doc(collection(db, 'Notifications'), id), { notifications: [note] })
+                        setDoc(doc(collection(db, 'Notifications'), id), { notifications: [note] }) //add notification to database
                       } else {
                         const notifications_array = followed_doc.data().notifications;
                         let condition = false
@@ -134,7 +142,7 @@ function CreatPost() {
           }
 
 
-          posts_data.push(post)
+          posts_data.push(post) //add post to the database
           updateDoc(doc(postsCollectionRef, currentId), { "posts": posts_data })
           // Navigate to the feed page
           navigate('/feed')
@@ -210,43 +218,3 @@ function CreatPost() {
 }
 
 export default CreatPost;
-
-
-/**
- * 
- *   const AllDocs = (await getDocs(postsCollectionRef)).docs 
-
-    const documentData = (await getDoc(doc(postsCollectionRef, currentId)))
-    const array = []
-    AllDocs.forEach((doc) => {
-      array.push(doc.id);
-    })
-    const condition = array.includes(currentId)
-    console.log(condition)
-
-    let objectsSize = 0;
-    if (documentData.data() === undefined) {
-      objectsSize = 0;
-    } else {
-      objectsSize = Object.keys(documentData.data()).length
-    }
-    const index = objectsSize + 1;
-    if (!condition) {
-      await setDoc(doc(postsCollectionRef, currentId), {
-        [index]: {
-          postText,
-          PicUrl
-        }
-      });
-    } else {
-      const obj = {
-        postText,
-        PicUrl
-      }
-      const Posts = documentData.data()
-      Posts[index] = obj
-      updateDoc(doc(postsCollectionRef, currentId), Posts)
-      // Navigate to the feed page
-      navigate("/feed");
-    }
- */

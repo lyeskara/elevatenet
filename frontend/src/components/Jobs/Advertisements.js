@@ -8,6 +8,11 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Button from 'react-bootstrap/Button';
 
+/* A function that displays the advertisements of the job poster
+ *
+ * @param {none}
+ */
+
 function Advertisements() {
     // State and constants for handling data
     const [isLoaded, setIsLoaded] = useState(false);
@@ -45,6 +50,7 @@ function Advertisements() {
     <Container className="container d-flex justify-content-center mx-auto">
         <h1></h1>
         <Row className="gap-6 d-flex justify-content-center" style={{minWidth: "80%"}}>
+            {/*Contain the options in the job menu*/}
         <Col xs={12} sm={8}  lg={4} style={{minWidth: "30%"}}>
             <Card className="jobs-menu">
             <h2> Jobs </h2>

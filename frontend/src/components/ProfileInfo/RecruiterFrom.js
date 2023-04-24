@@ -1,9 +1,15 @@
+//Import all modules
 import { useState } from "react";
 import { useUserAuth } from "../../context/UserAuthContext";
 import { auth, db } from "../../firebase";
 import { collection, setDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { Container, Form, Button } from "react-bootstrap";
+/**
+ * The RecruiterForm page displays form to be filled by recruiters when joining in.
+ *
+ * @return { Object } The page as a React component with the form for recruiter
+ */
 function RecruiterForm() {
 	const { user } = useUserAuth();
 	const navigate = useNavigate();
@@ -14,6 +20,7 @@ function RecruiterForm() {
 		company: "",
 	});
 
+	//function to update the recruiter fields
 	function update(e) {
 		setProfileData({ ...profileData, [e.target.name]: e.target.value });
 	}
@@ -54,6 +61,7 @@ function RecruiterForm() {
 					<Form.Text className="sign center">About You</Form.Text>
 
 					<center>
+						{/*FORM FOR RECRUITER TO FILL*/}
 						<Form.Group className="mb-3 mt-4" controlId="formFirstName">
 							<Form.Control
 								className="input_box"

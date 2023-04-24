@@ -3,50 +3,31 @@ import { Card, Col, Container, Form, Row } from "react-bootstrap";
 import { collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 function NotificationSettings() {
+	// state declared to hold the value of the feed and notifications settings
 	const [dmNotifications, setDmNotifications] = useState(false);
 	const [newsfeedNotifications, setNewsfeedNotifications] = useState(false);
-	const [jobNotifications, setJobNotifications] = useState(false);
+	// database and authentication middlewares
 	const settingsdb = collection(db, "notification_settings");
 	const auth_id = auth.currentUser.uid;
-
+	// a hook that runs async when the pages is rendered to display the current state of the button
 	useEffect(() => {
 		getDoc(doc(settingsdb, auth_id)).then((data) => {
 			setDmNotifications(data.data().dm);
 			setNewsfeedNotifications(data.data().feed);
-			setJobNotifications(data.data().jobs);
 		});
 	}, []);
-
+	// function to update notifications settings
 	const handleDmNotifications = async (e) => {
 		setDmNotifications(e.target.checked);
 		const data = (await getDoc(doc(settingsdb, auth_id))).data();
 		if (data === undefined) {
-			setDoc(doc(settingsdb, auth_id), {
-				dm: e.target.checked,
-				feed: "",
-				jobs: "",
-			});
+			setDoc(doc(settingsdb, auth_id), { dm: e.target.checked, feed: "" });
 		} else {
 			data.dm = e.target.checked;
 			updateDoc(doc(settingsdb, auth_id), data);
 		}
 	};
-
-	const handleJobNotifications = async (e) => {
-		setJobNotifications(e.target.checked);
-		const data = (await getDoc(doc(settingsdb, auth_id))).data();
-		if (data === undefined) {
-			setDoc(doc(settingsdb, auth_id), {
-				dm: "",
-				feed: "",
-				jobs: e.target.checked,
-			});
-		} else {
-			data.jobs = e.target.checked;
-			updateDoc(doc(settingsdb, auth_id), data);
-		}
-	};
-
+	// function to update notifications settings
 	const handleNewsfeedNotifications = async (e) => {
 		setNewsfeedNotifications(e.target.checked);
 		const data = (await getDoc(doc(settingsdb, auth_id))).data();

@@ -71,7 +71,7 @@ function RequestsPage() {
     const authdoc = doc(connectionRef, currentId);
     const acceptedoc = doc(connectionRef, userId);
     const array = [];
-    getDocs(connectionRef).then((docs) => {
+    getDocs(connectionRef).then((docs) => { //push the connections into the array
       docs.docs.forEach((document) => {
         array.push(document.id);
       });
@@ -81,7 +81,7 @@ function RequestsPage() {
       console.log(condition2);
 
       if (condition) {
-        const getConnection = getDoc(authdoc).then((document) => {
+        const getConnection = getDoc(authdoc).then((document) => { //add the connection of users that are not connected
           const connections = document.data().connections;
           if (!connections.includes(userId)) {
             connections.push(userId);
@@ -109,7 +109,7 @@ function RequestsPage() {
         setDoc(doc(connectionRef, userId), { connections: [currentId] });
       }
     });
-    getDoc(doc(dbRef, userId)).then((document) => {
+    getDoc(doc(dbRef, userId)).then((document) => { 
       if (document.exists()) {
         const array = document.data().requests;
         const updatedArray = array.filter((id) => id !== currentId);

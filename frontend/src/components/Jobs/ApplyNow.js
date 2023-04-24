@@ -25,6 +25,12 @@ import { applyActionCode } from "firebase/auth";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 
+/* A function that handles the user job application. All user information is inputted. If there is an error, a message will be displayed. 
+ *
+ * @param {none}
+ * @returns {collection item in database} A new job application
+ */
+
 function ApplyNow() {
   //hooks
   const [user, Setuser] = useState(null);
@@ -48,6 +54,7 @@ function ApplyNow() {
   const auth_id = auth.currentUser.uid;
   const job_id = useParams();
 
+  //Function that will obtain the documents downloaded
   useEffect(() => {
     const ResumeRef = ref(storage, `ApplicationsResumes/${v4() + { Resume }}`);
     uploadBytes(ResumeRef, Resume)
@@ -73,6 +80,7 @@ function ApplyNow() {
       });
   }, [cover]);
 
+  //Function that will map the job application to the job poster
   useEffect(() => {
     getDoc(doc(postingsRef, job_id.id)).then((job) => {
       const email = job.data().created_by;
@@ -101,6 +109,7 @@ function ApplyNow() {
     city: "",
   };
 
+  //function that fetch the current user's data
   useEffect(() => {
     getDoc(doc(usersRef, auth_id))
       .then((user_data) => {
@@ -120,6 +129,7 @@ function ApplyNow() {
   const coverhandleButtonClick = () => {
     CoverfileInputRef.current.click();
   };
+  //Fields required for a job application
   const application = {
     firstName: applicant.firstName,
     lastName: applicant.lastName,
@@ -133,9 +143,14 @@ function ApplyNow() {
     job_offer_id: job_id.id,
   };
 
+  /* A function that handles the data being sent for the job application
+ *
+ * @param {event} form submit
+ */
+
   async function ApplicationSend(event) {
     event.preventDefault();
-    const applications = await getDocs(applicationsRef);
+    const applications = await getDocs(applicationsRef); 
     const recruiter_document = await getDoc(doc(applicationsRef, Recruiter_id));
     const array = [];
     applications.forEach((doc) => {
@@ -148,6 +163,7 @@ function ApplyNow() {
     } else {
       const applications_data = recruiter_document.data().applications;
       let condition = false;
+      //Let the user apply for a job
       for (let i = 0; i < applications_data.length; i++) {
         if (
           applications_data[i].applicant_id == application.applicant_id &&
@@ -162,7 +178,7 @@ function ApplyNow() {
         setErrorMessage("You have already applied to this job.");
         setTitleMessage("Error");
       } else {
-        applications_data.push(application);
+        applications_data.push(application); //job application is successful, display success message.
         updateDoc(doc(applicationsRef, Recruiter_id), {
           applications: applications_data,
         });
