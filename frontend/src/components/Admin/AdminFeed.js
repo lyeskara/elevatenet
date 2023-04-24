@@ -64,6 +64,11 @@ function AdminFeed() {
       console.error(error);
     }
   };
+
+  function goToReportedUsers(){
+    window.location.href = "/AdminReportedUsers";
+  }
+
   function goToAdmin(){
     window.location.href = "/Admin";
   }
@@ -73,6 +78,9 @@ function AdminFeed() {
   function goToUser(){
     window.location.href = "/AdminUsers";
   }
+  function goToReports(){
+    window.location.href = "/adminreportedusers";
+  }
   //CHECK IF THE USER CONNECTED IS AN ADMIN
   const currentUser = auth.currentUser;
 	if (currentUser?.uid === '361FbyTxmmZqCT03kGd25kSyDff1') {
@@ -80,39 +88,41 @@ function AdminFeed() {
       <Container>
         <Row>
           {/* This card displays the job menu block with Job Postings and Advertisements */}
-          <Card className="jobs-menu">
-            <h2> Manage </h2>
-            <hr></hr>
-            {/* When the user clicks the "Job Postings" text, it calls handleClickJobPostings */}
-            <h4 onClick={goToAdmin} style={{ color: "#888888" }}>
-              {" "}
-              Job Postings{" "}
-            </h4>
-            {/* Feed Posts */}
-            <h4
-              onClick={goToFeedPosts}
-              style={{ color: "#27746a" }}
-            >
-              {" "}
-              Feed Posts{" "}
-            </h4>
-                      <h4
-              onClick={goToUser}
-              style={{ color: "#888888" }}
-            >
-              {" "}
-              Users{" "}
-            </h4>
-            <br></br>
-          </Card>
+					<Card className="jobs-menu">
+						<h2> Manage </h2>
+						<hr></hr>
+						{/* When the user clicks the "Job Postings" text, it calls handleClickJobPostings */}
+						<h4 onClick={goToAdmin} style={{ color: "#888888" }}>
+							{" "}
+							Job Postings{" "}
+						</h4>
+						{/* Feed Posts */}
+						<h4 onClick={goToFeedPosts} style={{ color: "#27746A" }}>
+							{" "}
+							Feed Posts{" "}
+						</h4>
+						<h4 onClick={goToReports} style={{ color: "#888888" }}>
+							{" "}
+							Reported Users{" "}
+						</h4>
+						<h4 onClick={goToUser} style={{ color: "#888888" }}>
+							{" "}
+							Users{" "}
+						</h4>
+					</Card>
         </Row>
         <Row>
           {posts.map((post) => (
             <Col key={post.id} sm={12} md={6} lg={4} className="mb-4">
               <Card>
-                <h5>{post.id}</h5>
-                <h6>Created by: {post.postTexts[0]?.created_by ?? 'N/A'}</h6>
+                {/* <h5>{post.id}</h5> */}
+                {/* <h6>Created by: </h6> */}
+                <Card.Title>{post.postTexts[0]?.created_by ?? 'N/A'}</Card.Title>
                 {console.log(post.postTexts[0])}
+                <Card.Subtitle className="mb-2 text-muted">
+                  UID: {post.id}
+                  </Card.Subtitle>
+                  <hr/>
                 <Card.Body>
                   {post.postTexts.map((text) => (
                     <div key={text.id} className="d-flex justify-content-between">
