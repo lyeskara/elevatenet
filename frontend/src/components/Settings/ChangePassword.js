@@ -3,7 +3,10 @@ import React, { useEffect, useState } from "react";
 import {
   collection,
   getDoc,
+  getDocs,
   doc,
+  query,
+  where,
 } from "firebase/firestore";
 import { auth, db, getAuth } from "../../firebase";
 
@@ -29,6 +32,46 @@ function ChangePassword() {
   const [showModal, setShowModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [titleMessage, setTitleMessage] = useState("");
+
+  const [userType, setUserType] = useState(null); // add state to store user type
+  const userr = auth.currentUser;
+  const getUserType = async () => {
+    try {
+       // Get the current user's email
+    const email = auth.currentUser.email;
+    if (!email) {
+      console.log("No email found for current user.");
+      return;
+    }
+      // Check if the email belongs to a recruiter
+    const recruiterQuerySnapshot = await getDocs(
+      query(collection(db, "recruiters_informations"), where("email", "==", email))
+    ); 
+    if (!recruiterQuerySnapshot.empty) {
+      setUserType("recruiter");
+      console.log("recruiter");
+      return;
+    }
+      // Check if the email belongs to a job seeker
+      const userQuerySnapshot = await getDocs(
+        query(collection(db, "users_information"), where("email", "==", email))
+      );
+      if (!userQuerySnapshot.empty) {
+        setUserType("job seeker");
+        console.log("job seeker");
+        return;
+      }
+      console.log({userType});
+      console.log("No user found with the email: ", email);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getUserType();
+  }, [userr]);
+
   const getUserData = async () => {
     try {
       const userDoc = await getDoc(
@@ -114,7 +157,9 @@ function ChangePassword() {
             <center>
               <form>
                 <div>
-                  <label htmlFor="formPassword" className="form-label">
+                {userType === "job seeker" && (
+                  <>
+                   <label htmlFor="formPassword" className="form-label">
                     <h3>Email</h3>
                   </label>
                   <input
@@ -128,6 +173,9 @@ function ChangePassword() {
                     style={{ backgroundColor: "#F3F3F3" }}
                     value={user.email}
                   ></input>
+                  </>
+                )}
+                 
                 </div>
                 <label htmlFor="formPassword" className="form-label">
                   <h3>New Password</h3>
