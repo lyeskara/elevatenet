@@ -6,6 +6,7 @@ function NotificationSettings() {
 	// state declared to hold the value of the feed and notifications settings
 	const [dmNotifications, setDmNotifications] = useState(false);
 	const [newsfeedNotifications, setNewsfeedNotifications] = useState(false);
+	const [jobNotifications, setJobNotifications] = useState(false);
 	// database and authentication middlewares
 	const settingsdb = collection(db, "notification_settings");
 	const auth_id = auth.currentUser.uid;
@@ -14,6 +15,7 @@ function NotificationSettings() {
 		getDoc(doc(settingsdb, auth_id)).then((data) => {
 			setDmNotifications(data.data().dm);
 			setNewsfeedNotifications(data.data().feed);
+			setJobNotifications(data.data().jobs);
 		});
 	}, []);
 	// function to update notifications settings
@@ -21,7 +23,11 @@ function NotificationSettings() {
 		setDmNotifications(e.target.checked);
 		const data = (await getDoc(doc(settingsdb, auth_id))).data();
 		if (data === undefined) {
-			setDoc(doc(settingsdb, auth_id), { dm: e.target.checked, feed: "" });
+			setDoc(doc(settingsdb, auth_id), {
+				dm: e.target.checked,
+				feed: "",
+				jobs: "",
+			});
 		} else {
 			data.dm = e.target.checked;
 			updateDoc(doc(settingsdb, auth_id), data);
@@ -32,13 +38,30 @@ function NotificationSettings() {
 		setNewsfeedNotifications(e.target.checked);
 		const data = (await getDoc(doc(settingsdb, auth_id))).data();
 		if (data === undefined) {
-			setDoc(doc(settingsdb, auth_id), { dm: "", feed: e.target.checked });
+			setDoc(doc(settingsdb, auth_id), {
+				dm: "",
+				feed: e.target.checked,
+				jobs: "",
+			});
 		} else {
 			data.feed = e.target.checked;
 			updateDoc(doc(settingsdb, auth_id), data);
 		}
 	};
-
+	const handleJobNotifications = async (e) => {
+		setJobNotifications(e.target.checked);
+		const data = (await getDoc(doc(settingsdb, auth_id))).data();
+		if (data === undefined) {
+			setDoc(doc(settingsdb, auth_id), {
+				dm: "",
+				feed: "",
+				jobs: e.target.checked,
+			});
+		} else {
+			data.jobs = e.target.checked;
+			updateDoc(doc(settingsdb, auth_id), data);
+		}
+	};
 	// Function to redirect to the "Account Preferences" page
 	const handleClickAccount = () => {
 		window.location.href = "/ProfileInfoSettings";
@@ -97,16 +120,16 @@ function NotificationSettings() {
 										onChange={handleNewsfeedNotifications}
 									/>
 								</Form.Group>
-								{/* 
-								<Form.Group className="mb-3" controlId="jobsNotifications">
-									<Form.Check
-										type="checkbox"
-										label="Receive notifications for Jobs"
-										checked={jobNotifications}
-										onChange={handleJobNotifications}
-									/>
-								</Form.Group>
-								*/}
+								{
+									<Form.Group className="mb-3" controlId="jobsNotifications">
+										<Form.Check
+											type="checkbox"
+											label="Receive notifications for Jobs"
+											checked={jobNotifications}
+											onChange={handleJobNotifications}
+										/>
+									</Form.Group>
+								}
 							</Form>
 						</Card>
 					</Col>
