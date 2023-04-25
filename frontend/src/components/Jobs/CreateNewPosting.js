@@ -71,7 +71,7 @@ function CreateNewPosting() {
 	};
 
 	useEffect(() => {
-		getDoc(doc(collection(db, "recruiters_informations"), currentId)).then(
+		getDoc(doc(collection(db, "recruiters_information"), currentId)).then(
 			(informations) => {
 				const { profilePicUrl, firstName, lastName } = informations.data();
 				const obj = {
