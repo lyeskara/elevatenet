@@ -58,7 +58,7 @@ function NotificationSettings() {
 				jobs: e.target.checked,
 			});
 		} else {
-			data.feed = e.target.checked;
+			data.jobs = e.target.checked;
 			updateDoc(doc(settingsdb, auth_id), data);
 		}
 	};
